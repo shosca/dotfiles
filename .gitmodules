@@ -49,3 +49,6 @@
 [submodule ".vim/bundle/ropevim"]
 	path = .vim/bundle/ropevim
 	url = https://github.com/sontek/rope-vim.git
+[submodule ".vim/bundle/jellybeans"]
+	path = .vim/bundle/jellybeans
+	url = git://github.com/nanotech/jellybeans.vim.git
