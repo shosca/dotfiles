@@ -116,12 +116,9 @@ end
 set autoindent
 set smartindent
 
-" Enable folds
-if has("folding")
-	set foldenable
-	set foldmethod=manual
-	set foldlevelstart=99
-endif
+set foldenable
+set foldmethod=indent
+set foldlevelstart=99
 
 " Enable filetype settings
 if has("eval")
@@ -250,7 +247,7 @@ if has("eval")
 	inoremap <S-Tab> <C-P>
 endif
 let g:SuperTabDefaultCompletionType = "context"
-set completeopt=menu
+set completeopt=menuone,longest,preview
 
 " In normal mode, jj escapes
 inoremap jj <Esc>
@@ -279,25 +276,6 @@ nmap <silent> <C-N> :silent noh<CR>
 
 " Ctrol-E to switch between 2 last buffers
 nmap <C-E> :b#<CR>
-
-" Ctrl-P to Display the file browser tree
-nmap <C-P> :NERDTreeToggle<CR>
-" ,p to show current file in the tree
-nmap <leader>p :NERDTreeFind<CR>
-
-" ,/ to invert comment on the current line/selection
-" nmap <leader>/ :call NERDComment(0, "invert")<cr>
-" vmap <leader>/ :call NERDComment(0, "invert")<cr>
-
-" ,t to show tags window
-" let Tlist_Show_Menu=1
-" nmap <leader>t :TlistToggle<CR>
-
-" ,e to fast finding files. just type beginning of a name and hit TAB
-nmap <leader>e :e **/
-
-" ,f to fast finding files using fuzzy finder.
-nmap <leader>f :FufFile **/<CR>
 
 " ,b to display current buffers list
 let g:miniBufExplMapWindowNavVim = 1
@@ -369,6 +347,35 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
+
+" and lets make these all work in insert mode too
+imap <C-W> <C-O><C-W>
+
+map <leader>td <Plug>TaskList
+
+" open/close the quickfix window
+nmap <leader>c :copen
+nmap <leader>cc :cclose
+
+" Open NerdTree
+map <leader>n :NERDTreeToggle<CR>
+
+" Run command-t file search
+map <leader>f :CommandT<CR>
+" Ack searching 
+nmap <leader>a <Esc>:Ack!
+
+" Load the Gundo window
+map <leader>g :GundoToggle<CR>
+
+" Jump to the definition of whatever the cursor is on
+map <leader>j :RopeGotoDefinition<CR>
+
+" Rename whatever the cursor is on (including references to it)
+map <leader>r :RopeRename<CR>
+
+" Run pep8
+let g:pep8_map='<leader>8'
 
 let g:yankring_replace_n_pkey = '<leader>['
 let g:yankring_replace_n_nkey = '<leader>]'
