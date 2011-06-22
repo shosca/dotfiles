@@ -27,7 +27,7 @@ ifndef from
 	#
 	@false
 endif
-	git submodule add $(from) bundle/$(to)
+	git submodule add $(from) .vim/bundle/$(to)
 	git commit -m 'add $(to) bundle' .vim/bundle/$(to) .gitmodules
 
 add-script:
