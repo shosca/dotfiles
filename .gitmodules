@@ -67,3 +67,6 @@
 [submodule ".vim/bundle/vim-javascript"]
 	path = .vim/bundle/vim-javascript
 	url = git://github.com/pangloss/vim-javascript.git
+[submodule ".vim/bundle/jslint"]
+	path = .vim/bundle/jslint
+	url = git://github.com/hallettj/jslint.vim.git
