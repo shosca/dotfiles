@@ -73,3 +73,6 @@
 [submodule ".vim/bundle/nerdcommenter"]
 	path = .vim/bundle/nerdcommenter
 	url = git://github.com/ddollar/nerdcommenter.git
+[submodule ".vim/bundle/zoomwin"]
+	path = .vim/bundle/zoomwin
+	url = git://github.com/vim-scripts/ZoomWin.git
