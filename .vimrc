@@ -148,10 +148,10 @@ let &inc.=' ["<]'
 
 " Show tabs and trailing whitespace visually
 if (&termencoding == "utf-8") || has("gui_running")
-	set list 
+	set list
 	set listchars=tab:»·,trail:·,extends:…,eol:¬
 else
-	set list 
+	set list
 	set listchars=tab:>-,trail:.,extends:>,nbsp:_,eol:¬
 endif
 
@@ -376,7 +376,7 @@ map <leader>n :NERDTreeToggle<CR>
 
 " Run command-t file search
 map <leader>f :CommandT<CR>
-" Ack searching 
+" Ack searching
 nmap <leader>a <Esc>:Ack!
 
 " Load the Gundo window
