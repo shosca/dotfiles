@@ -106,3 +106,6 @@
 [submodule ".vim/bundle/html5"]
 	path = .vim/bundle/html5
 	url = git://github.com/othree/html5.vim.git
+[submodule ".vim/bundle/html5-syntax"]
+	path = .vim/bundle/html5-syntax
+	url = git://github.com/othree/html5-syntax.vim.git
