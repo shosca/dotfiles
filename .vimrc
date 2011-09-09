@@ -373,6 +373,7 @@ nmap <leader>cc :cclose
 
 " Open NerdTree
 map <leader>n :NERDTreeToggle<CR>
+map <unique> <silent> <leader>tt :call MakeGreen()<cr>
 
 " Run command-t file search
 map <leader>f :FufFile **/<CR>

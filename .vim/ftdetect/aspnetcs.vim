@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.as[cp]x,*.brail set filetype=aspnetcs
+au BufRead,BufNewFile *.as[cp]x set filetype=aspnetcs

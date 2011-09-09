@@ -109,3 +109,9 @@
 [submodule ".vim/bundle/html5-syntax"]
 	path = .vim/bundle/html5-syntax
 	url = git://github.com/othree/html5-syntax.vim.git
+[submodule ".vim/bundle/command-t"]
+	path = .vim/bundle/command-t
+	url = git://github.com/wincent/Command-T.git
+[submodule ".vim/bundle/taglist"]
+	path = .vim/bundle/taglist
+	url = git://github.com/vim-scripts/taglist.vim.git
