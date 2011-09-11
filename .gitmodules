@@ -115,3 +115,9 @@
 [submodule ".vim/bundle/taglist"]
 	path = .vim/bundle/taglist
 	url = git://github.com/vim-scripts/taglist.vim.git
+[submodule ".vim/bundle/asynccomand"]
+	path = .vim/bundle/asynccomand
+	url = git://github.com/pydave/AsyncCommand.git
+[submodule ".vim/bundle/vim-ragtag"]
+	path = .vim/bundle/vim-ragtag
+	url = git://github.com/tpope/vim-ragtag.git

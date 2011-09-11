@@ -88,6 +88,7 @@ if has("gui_running")
 	endif
 endif
 
+
 colorscheme jellybeans
 set background=dark
 
@@ -388,3 +389,10 @@ map <leader>j :RopeGotoDefinition<CR>
 
 " Rename whatever the cursor is on (including references to it)
 map <leader>r :RopeRename<CR>
+
+if has("win32") || has("win64")
+    set shell=cmd.exe
+    set shellcmdflag=/c
+    set shellpipe=|
+    set shellredir=>
+endif
