@@ -1,8 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/etc/default'
 let g:netrw_dirhist_2='/home/serkan/src/xorg/mesa'
 let g:netrw_dirhist_3='c:/users/serkan.hosca/src/nyokm/nyokm/views/ecss2/home'
 let g:netrw_dirhist_4='/cygdrive/c/Users/serkan.hosca/src/nyokm/nyokm'
 let g:netrw_dirhist_5='/cygdrive/c/Users/serkan.hosca/src/nyokm'
 let g:netrw_dirhist_6='/cygdrive/c/Users/serkan.hosca/src/nyokm/nyokm'
+let g:netrw_dirhist_7='/cygdrive/c/Users/serkan.hosca/src/nyokm/nyokm/views'

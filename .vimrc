@@ -82,9 +82,9 @@ set virtualedit=block,onemore
 
 if has("gui_running")
 	if has("win32") || has("win64")
-		set guifont=Droid_Sans_Mono:h10
+		set guifont=Ubuntu_Mono:h10
 	else
-		set guifont=Droid\ Sans\ Mono\ 9
+		set guifont=Ubuntu\ Mono\ 10
 	endif
 endif
 
