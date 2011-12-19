@@ -104,6 +104,8 @@ set background=dark
 
 "Ignore these files when completing names and in Explorer
 set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.so
+set wildignore+=.git\*,.hg\*,.svn\*,*.dll,*.exe
 
 if has("win32") || has("win64")
 	set directory=$TMP
