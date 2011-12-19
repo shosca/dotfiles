@@ -94,9 +94,6 @@
 [submodule ".vim/bundle/vim-indent-object"]
 	path = .vim/bundle/vim-indent-object
 	url = git://github.com/michaeljsmith/vim-indent-object.git
-[submodule ".vim/bundle/fuzzyfinder"]
-	path = .vim/bundle/fuzzyfinder
-	url = git://github.com/vim-scripts/FuzzyFinder.git
 [submodule ".vim/bundle/l9"]
 	path = .vim/bundle/l9
 	url = git://github.com/vim-scripts/L9.git
