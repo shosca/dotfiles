@@ -89,7 +89,7 @@ if has("gui_running")
 endif
 
 
-colorscheme jellybeans
+colorscheme solarized
 set background=dark
 
 " No icky toolbar, menu or scrollbars in the GUI
@@ -379,7 +379,7 @@ map <leader>n :NERDTreeToggle<CR>
 map <unique> <silent> <leader>tt :call MakeGreen()<cr>
 
 " Run command-t file search
-map <leader>f :FufFile **/<CR>
+map <leader>f :CtrlP <CR>
 " Ack searching
 nmap <leader>a <Esc>:Ack!
 

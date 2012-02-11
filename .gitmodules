@@ -115,3 +115,9 @@
 [submodule ".vim/bundle/ctrlp"]
 	path = .vim/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
+[submodule ".vim/bundle/vim-colors-solarized"]
+	path = .vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule ".vim/bundle/vim-color-son-of-obsidian"]
+	path = .vim/bundle/vim-color-son-of-obsidian
+	url = https://github.com/vim-scripts/Son-of-Obisidian.git

@@ -19,7 +19,7 @@ syn keyword booStatement	checked unchecked params ref
 syn keyword booStatement	except ensure
 syn keyword booStatement	pass raise
 syn keyword booStatement	return try
-syn keyword booStatement	global assert
+syn keyword booStatement	global assert output new
 syn keyword booStatement	public private protected static final self super
 syn keyword booStatement	get set callable event
 syn keyword booStatement	def nextgroup=booFunction skipwhite
