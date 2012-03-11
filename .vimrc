@@ -1,4 +1,5 @@
 call pathogen#infect()
+
 scriptencoding utf-8
 
 " Don't be compatible with vi
@@ -10,9 +11,6 @@ set history=500
 
 " Make backspace delete lots of things
 set backspace=indent,eol,start
-
-" Create backups
-set backup
 
 " Show us the command we're typing
 set showcmd
