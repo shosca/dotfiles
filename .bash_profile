@@ -28,14 +28,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[0
 # Comment in the above and uncomment this below for a color prompt
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
-    ;;
-*)
-    ;;
-esac
+PROMPT_COMMAND='history -a' # echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -69,6 +62,7 @@ fi
 export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
 
 shopt -s cmdhist
+shopt -s histappend
 
 # enable color support of ls and also add handy aliases
 eval `dircolors -b`
@@ -101,7 +95,7 @@ alias up='cd ..'
 
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 
-PATH="${HOME}/bin:/usr/lib/distcc:${PATH}"
+PATH="${HOME}/bin:${PATH}"
 
 alias alert='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
@@ -115,3 +109,6 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
 fi
 
 source /etc/bash_completion
+
+PATH="${HOME}/.rbenv/bin:${PATH}"
+eval "$(rbenv init -)"

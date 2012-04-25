@@ -81,7 +81,7 @@ inoremap # X<BS>#
 " Enable folds
 if has("folding")
 	set foldenable
-	set foldmethod=manual
+	set foldmethod=indent
 	set foldlevelstart=99
 endif
 
