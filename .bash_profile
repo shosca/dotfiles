@@ -52,12 +52,6 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
 
 export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
 
@@ -108,7 +102,18 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
 	trap "kill $SSH_AGENT_PID" 0
 fi
 
-source /etc/bash_completion
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+if [[ -d "$HOME/.bash_completion.d" ]]; then
+	for f in $HOME/.bash_completion.d/* ; do
+		source $f
+	done
+fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 [[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"

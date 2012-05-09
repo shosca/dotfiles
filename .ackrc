@@ -1,0 +1,5 @@
+--type-add=html=.brail
+--type-add=brail=.brail
+--type-add=css=.less
+--type-add=less=.less
+--type-add=js=.coffee
