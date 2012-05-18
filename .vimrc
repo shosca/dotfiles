@@ -178,19 +178,6 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
-" tab completion
-if has("eval")
-    function! CleverTab()
-        if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-            return "\<Tab>"
-        else
-            return "\<C-N>"
-        endif
-    endfun
-    inoremap <Tab> <C-R>=CleverTab()<CR>
-    inoremap <S-Tab> <C-P>
-endif
-
 " v_K is really really annoying
 vmap K k
 
@@ -201,6 +188,8 @@ map Q gq
 
 " highlight trailing whitespace
 nmap <silent> <leader>s :set nolist!<CR>
+
+map <silent> <F2> :NERDTreeToggle<CR>
 
 " Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
