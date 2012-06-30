@@ -2,6 +2,8 @@ call pathogen#infect()
 
 scriptencoding utf-8
 
+set number
+
 " Don't be compatible with vi
 set nocompatible
 
@@ -51,7 +53,7 @@ set virtualedit=block,onemore
 " Set our fonts
 if has("gui_running")
 	if has("win32") || has("win64")
-		set guifont=Ubuntu_Mono:h10
+		set guifont=Consolas:h10
 	else
 		set guifont=Ubuntu\ Mono\ 10
 	endif
@@ -178,6 +180,13 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
+autocmd FileType text setlocal textwidth=78
+autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+autocmd FileType python set sw=4 sts=4 et
+autocmd BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:&gt;
+autocmd BufRead *.markdown set ai formatoptions=tcroqn2 comments=n:&gt;
+autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
+
 " v_K is really really annoying
 vmap K k
 
@@ -190,6 +199,8 @@ map Q gq
 nmap <silent> <leader>s :set nolist!<CR>
 
 map <silent> <F2> :NERDTreeToggle<CR>
+
+nmap ; :
 
 " Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>

@@ -3,6 +3,7 @@
 	ci = commit
 	co = checkout
 	br = branch
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 [user]
 	name = Serkan Hosca
 	email = serkan@hosca.com
@@ -13,3 +14,9 @@
 	status = auto
 [core]
 	fileMode = false
+	autocrlf = false
+	editor = gvim --nofork '%*'
+[merge]
+	stat = true
+[credential]
+	helper = cache --timeout=3600
