@@ -63,7 +63,7 @@ endif
 " Set colorscheme
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme ir_black
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
@@ -154,6 +154,7 @@ autocmd BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd BufRead *.markdown set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
 
+let mapleader=","
 " v_K is really really annoying
 vmap K k
 
@@ -186,3 +187,6 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
+
+" run make nicely
+noremap <leader>m :silent! :make \| :redraw! \| :botright :cw<cr>

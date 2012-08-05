@@ -94,14 +94,6 @@ PATH="${HOME}/bin:${PATH}"
 alias alert='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-SSHAGENT=/usr/bin/ssh-agent
-SSHAGENTARGS="-s"
-
-if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
-	eval `$SSHAGENT $SSHAGENTARGS`
-	trap "kill $SSH_AGENT_PID" 0
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
