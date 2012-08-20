@@ -58,12 +58,15 @@ if has("gui_running")
 	else
 		set guifont=Ubuntu\ Mono\ 10
 	endif
+else
+	set t_Co=256
+	let g:solarized_termcolors=256
 endif
 
 " Set colorscheme
 syntax enable
 set background=dark
-colorscheme ir_black
+colorscheme solarized
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
