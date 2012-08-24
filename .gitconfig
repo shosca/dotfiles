@@ -15,7 +15,7 @@
 [core]
 	fileMode = false
 	autocrlf = false
-	editor = gvim --nofork '%*'
+	editor = vim
 [merge]
 	stat = true
 [credential]
