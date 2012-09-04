@@ -40,3 +40,6 @@
 [submodule ".vim/bundle/vim-irblack"]
 	path = .vim/bundle/vim-irblack
 	url = https://github.com/wgibbs/vim-irblack.git
+[submodule ".vim/bundle/go.vim"]
+	path = .vim/bundle/go.vim
+	url = https://github.com/fsouza/go.vim.git
