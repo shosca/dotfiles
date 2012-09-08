@@ -2,8 +2,9 @@ all: update
 
 update:
 	@git submodule init
-	@git submodule status | awk '/^-/ { print $$2 }' | xargs -r git submodule update
-	@git submodule foreach git pull origin master
+	@git submodule status | awk '{ print $$2 }' | xargs -r git submodule update
+	@git submodule foreach git remote update
+	@git submodule foreach git reset --hard
 
 helptags:
 	@vim -u NONE -c "\

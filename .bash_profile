@@ -87,6 +87,14 @@ alias search='apt-cache search'
 alias c='clear'
 alias up='cd ..'
 
+alias radeondynpm='echo dynpm | sudo tee -a /sys/class/drm/card0/device/power_method'
+alias radeonprofile='echo profile | sudo tee -a /sys/class/drm/card0/device/power_method'
+alias radeonlow='echo low | sudo tee -a /sys/class/drm/card0/device/power_profile'
+alias radeondefault='echo default | sudo tee -a /sys/class/drm/card0/device/power_profile'
+alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_profile'
+alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
+alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
+
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 
 PATH="${HOME}/bin:${PATH}"
@@ -109,3 +117,7 @@ fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 [[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
+
+if [[ -d "$HOME/go/bin" ]]; then
+	PATH="${HOME}/go/bin:${PATH}"
+fi
