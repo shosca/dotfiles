@@ -99,6 +99,8 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 
 PATH="${HOME}/bin:${PATH}"
 
+export TERM="xterm-256color"
+
 alias alert='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
