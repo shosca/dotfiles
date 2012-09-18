@@ -56,11 +56,8 @@ if has("gui_running")
 	if has("win32") || has("win64")
 		set guifont=Ubuntu\ Mono:h10
 	else
-		set guifont=Ubuntu\ Mono\ 10
+		set guifont=Monaco\ 9
 	endif
-else
-	set t_Co=256
-	let g:solarized_termcolors=256
 endif
 
 " Set colorscheme
@@ -126,11 +123,9 @@ end
 set autoindent
 set smartindent
 
-
 filetype on
 filetype plugin on
 filetype indent on
-au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 
 if (&termencoding == "utf-8") || has("gui_running")
 	set list
@@ -156,6 +151,8 @@ autocmd FileType python set sw=4 sts=4 et
 autocmd BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd BufRead *.markdown set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
+
+let g:ragtag_global_maps=1
 
 let mapleader=","
 " v_K is really really annoying
