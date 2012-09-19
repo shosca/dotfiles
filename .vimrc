@@ -152,6 +152,12 @@ autocmd BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd BufRead *.markdown set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
 
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+highlight Pmenu ctermbg=238 gui=bold
+
 let g:ragtag_global_maps=1
 
 let mapleader=","
