@@ -56,7 +56,7 @@ if has("gui_running")
 	if has("win32") || has("win64")
 		set guifont=Ubuntu\ Mono:h10
 	else
-		set guifont=Monaco\ 9
+		set guifont=Monaco\ 10
 	endif
 endif
 
