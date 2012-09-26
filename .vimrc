@@ -63,7 +63,7 @@ endif
 " Set colorscheme
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme mustang
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
