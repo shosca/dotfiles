@@ -58,3 +58,6 @@
 [submodule ".vim/bundle/mustang-vim"]
 	path = .vim/bundle/mustang-vim
 	url = https://github.com/croaker/mustang-vim.git
+[submodule ".vim/bundle/tagbar"]
+	path = .vim/bundle/tagbar
+	url = https://github.com/majutsushi/tagbar.git
