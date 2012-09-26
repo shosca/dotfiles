@@ -55,3 +55,6 @@
 [submodule ".vim/bundle/pep8"]
 	path = .vim/bundle/pep8
 	url = https://github.com/vim-scripts/pep8.git
+[submodule ".vim/bundle/mustang-vim"]
+	path = .vim/bundle/mustang-vim
+	url = https://github.com/croaker/mustang-vim.git
