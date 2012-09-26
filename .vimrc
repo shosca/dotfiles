@@ -196,3 +196,4 @@ nnoremap <C-l> <C-W>l
 
 " run make nicely
 noremap <leader>m :silent! :make \| :redraw! \| :botright :cw<cr>
+map <silent><Leader>rt :!ctags --extra=+f --exclude=.git --exclude=log -R * `gem environment gemdir`/gems/*<CR><CR>
