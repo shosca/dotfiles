@@ -9,6 +9,7 @@
 export HISTCONTROL=ignoredups
 # ... and ignore same sucessive entries.
 export HISTCONTROL=ignoreboth
+export HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -22,22 +23,9 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n\$ '
 
-# Comment in the above and uncomment this below for a color prompt
-#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-
-PROMPT_COMMAND='history -a' # echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-#if [ -f ~/.bash_aliases ]; then
-#    . ~/.bash_aliases
-#fi
+PROMPT_COMMAND='history -a; history -n'
 
 # enable color support of ls and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
@@ -46,12 +34,6 @@ if [ "$TERM" != "dumb" ]; then
     #alias dir='ls --color=auto --format=vertical'
     #alias vdir='ls --color=auto --format=long'
 fi
-
-# some more ls aliases
-alias ll='ls -l'
-alias la='ls -A'
-alias l='ls -CF'
-
 
 export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
 
@@ -112,8 +94,8 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
-if [[ -d "$HOME/.bash_completion.d" ]]; then
-	for f in $HOME/.bash_completion.d/* ; do
+if [[ -d "$HOME/.local/share/bash-completion" ]]; then
+	for f in $HOME/.local/share/bash-completion/* ; do
 		source $f
 	done
 fi
