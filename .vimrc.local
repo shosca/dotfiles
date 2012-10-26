@@ -1,0 +1,31 @@
+set background=dark
+colorscheme solarized
+
+" Set our fonts
+if has("gui_running")
+    if has("win32") || has("win64")
+        set guifont=Ubuntu\ Mono:h10
+    else
+        set guifont=Monaco\ 10
+    endif
+endif
+
+" No annoying error noises
+set noerrorbells
+set visualbell t_vb=
+if has("autocmd")
+    autocmd GUIEnter * set visualbell t_vb=
+endif
+
+
+au BufRead,BufNewFile *.brail set filetype=html
+autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber,sh set ai sw=2 sts=2 et
+autocmd FileType make set noexpandtab
+
+" In normal mode, jj escapes
+inoremap jj <Esc>
+
+" edit the vimrc file
+nmap <silent> <Leader>ev :e $MYVIMRC<CR>
+nmap <silent> <Leader>sv :so $MYVIMRC<CR>
+nmap <silent> <Leader>b :CtrlPBuffer<CR>

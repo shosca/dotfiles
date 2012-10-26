@@ -23,16 +23,109 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n\$ '
+ps_scm_f() {
+  local s=
+  if [[ -d ".svn" ]] ; then
+    local r=$(svn info | sed -n -e '/^Revision: \([0-9]*\).*$/s//\1/p' )
+    s="(r$r$(svn status | grep -q -v '^?' && echo -n "*" ))"
+  else
+    local d=$(git rev-parse --git-dir 2>/dev/null ) b= r= a= c= e= f= g=
+    if [[ -n "${d}" ]] ; then
+      if [[ -d "${d}/../.dotest" ]] ; then
+        if [[ -f "${d}/../.dotest/rebase" ]] ; then
+          r="rebase"
+        elif [[ -f "${d}/../.dotest/applying" ]] ; then
+          r="am"
+        else
+          r="???"
+        fi
+        b=$(git symbolic-ref HEAD 2>/dev/null )
+      elif [[ -f "${d}/.dotest-merge/interactive" ]] ; then
+        r="rebase-i"
+        b=$(<${d}/.dotest-merge/head-name)
+      elif [[ -d "${d}/../.dotest-merge" ]] ; then
+        r="rebase-m"
+        b=$(<${d}/.dotest-merge/head-name)
+      elif [[ -f "${d}/MERGE_HEAD" ]] ; then
+        r="merge"
+        b=$(git symbolic-ref HEAD 2>/dev/null )
+      elif [[ -f "${d}/BISECT_LOG" ]] ; then
+        r="bisect"
+        b=$(git symbolic-ref HEAD 2>/dev/null )"???"
+      else
+        r=""
+        b=$(git symbolic-ref HEAD 2>/dev/null )
+      fi
+
+      if git status | grep -q '^# Changes not staged' ; then
+        a="${a}*"
+      fi
+
+      if git status | grep -q '^# Changes to be committed:' ; then
+        a="${a}+"
+      fi
+
+      if git status | grep -q '^# Untracked files:' ; then
+        a="${a}?"
+      fi
+
+      e=$(git status | sed -n -e '/^# Your branch is /s/^.*\(ahead\|behind\).* by \(.*\) commit.*/\1 \2/p' )
+      if [[ -n ${e} ]] ; then
+        f=${e#* }
+        g=${e% *}
+        if [[ ${g} == "ahead" ]] ; then
+          e="+${f}"
+        else
+          e="-${f}"
+        fi
+      else
+        e=
+      fi
+
+      b=${b#refs/heads/}
+      b=${b// }
+      [[ -n "${b}" ]] && c="$(git config "branch.${b}.remote" 2>/dev/null )"
+      [[ -n "${r}${b}${c}${a}" ]] && s="(${r:+${r}:}${b}${c:+@${c}}${e}${a:+ ${a}})"
+    fi
+  fi
+  s="${s:+${s} }"
+  echo -n "$s"
+}
+
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(ps_scm_f) \n\$ '
 
 PROMPT_COMMAND='history -a; history -n'
 
-# enable color support of ls and also add handy aliases
-if [ "$TERM" != "dumb" ]; then
-    eval "`dircolors -b`"
+case "${TERM}" in
+  xterm*)
+    export TERM=xterm-256color
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]] ; then
+      eval "`dircolors -b`"
+    fi
     alias ls='ls --color=auto'
-    #alias dir='ls --color=auto --format=vertical'
-    #alias vdir='ls --color=auto --format=long'
+    ;;
+  screen)
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]] ; then
+      eval "`dircolors -b`"
+    fi
+    alias ls='ls --color=auto'
+    ;;
+  dumb)
+    cache_term_colors=2
+    ;;
+  *)
+    cache_term_colors=16
+    if [[ -f "/usr/bin/dircolors" ]] ; then
+      eval "`dircolors -b`"
+    fi
+    alias ls='ls --color=auto'
+    ;;
+esac
+
+if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]] ; then
+  eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
 export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
@@ -41,7 +134,6 @@ shopt -s cmdhist
 shopt -s histappend
 
 # enable color support of ls and also add handy aliases
-eval `dircolors -b`
 alias ls='ls --color=auto'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
@@ -77,12 +169,10 @@ alias radeondefault='echo default | sudo tee -a /sys/class/drm/card0/device/powe
 alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_profile'
 alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
 alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
-
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig
+alias resrc='source ~/.bashrc'
 
 PATH="${HOME}/bin:${PATH}"
 
-export TERM="xterm-256color"
 export EDITOR="vim"
 
 alias alert='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
@@ -94,16 +184,20 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
+if [[ -d "/usr/lib/ccache/bin" ]]; then
+  PATH="/usr/lib/ccache/bin:${PATH}"
+fi
+
 if [[ -d "$HOME/.local/share/bash-completion" ]]; then
-	for f in $HOME/.local/share/bash-completion/* ; do
-		source $f
-	done
+  for f in $HOME/.local/share/bash-completion/* ; do
+    source $f
+  done
 fi
 
 [[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
 
 if [[ -d "$HOME/go/bin" ]]; then
-	PATH="${HOME}/go/bin:${PATH}"
+  PATH="${HOME}/go/bin:${PATH}"
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

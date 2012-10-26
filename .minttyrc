@@ -1,4 +1,5 @@
 BoldAsFont=no
-Font=Droid Sans Mono
+Font=Monaco
 CursorType=block
 CursorBlinks=no
+FontHeight=8
