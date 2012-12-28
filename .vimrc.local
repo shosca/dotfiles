@@ -4,7 +4,7 @@ colorscheme solarized
 " Set our fonts
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Ubuntu\ Mono:h10
+        set guifont=Monaco:h9
     else
         set guifont=Monaco\ 10
     endif
@@ -22,6 +22,13 @@ au BufRead,BufNewFile *.brail set filetype=html
 autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber,sh set ai sw=2 sts=2 et
 autocmd FileType make set noexpandtab
 
+" folding for cs
+au FileType cs set omnifunc=syntaxcomplete#Complete
+au FileType cs set foldmethod=marker
+au FileType cs set foldmarker={,}
+au FileType cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
+au FileType cs set foldlevelstart=2
+
 " In normal mode, jj escapes
 inoremap jj <Esc>
 
@@ -29,3 +36,5 @@ inoremap jj <Esc>
 nmap <silent> <Leader>ev :e $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
+
+let g:spf13_no_autochdir = 1

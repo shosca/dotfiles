@@ -1,1 +1,0 @@
-source ~/Dropbox/dotfiles/.vimrc

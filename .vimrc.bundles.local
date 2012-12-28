@@ -1,0 +1,4 @@
+Bundle "fholgado/minibufexpl.vim"
+
+
+let g:miniBufExplCheckDupeBufs = 0

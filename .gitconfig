@@ -1,24 +1,44 @@
 [alias]
-	st = status
-	ci = commit
-	co = checkout
-	br = branch
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    st = status -s
+    ci = commit
+    co = checkout
+    br = branch
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    filelog = log -u
+    fl = log -u
+    dl = "!git ll -1"
+    dlc = diff --cached HEAD^
+    dr  = "!f() { git diff "$1"^.."$1"; }; f"
+    lc  = "!f() { git ll "$1"^.."$1"; }; f"
+    diffr  = "!f() { git diff "$1"^.."$1"; }; f"
+    f = "!git ls-files | grep -i"
+    grep = grep -Ii
+    gr = grep -Ii
+    gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
+    news = log -p HEAD@{1}..HEAD@{0}
 [user]
-	name = Serkan Hosca
-	email = serkan@hosca.com
+    name = Serkan Hosca
+    email = serkan@hosca.com
 [color]
-	branch = auto
-	diff = auto
-	interactive = auto
-	status = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
 [core]
-	fileMode = false
-	autocrlf = false
-	editor = vim
+    fileMode = false
+	autocrlf = input
+    editor = vim
 [merge]
-	stat = true
+    stat = true
 [credential]
-	helper = cache --timeout=3600
+    helper = cache --timeout=3600
 [push]
-	default = simple
+    default = simple
