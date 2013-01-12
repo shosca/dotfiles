@@ -170,6 +170,7 @@ alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_prof
 alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
 alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
 alias resrc='source ~/.bashrc'
+alias rsyncf='rsync -v --recursive --links --times -D --delete'
 
 PATH="${HOME}/bin:${PATH}"
 

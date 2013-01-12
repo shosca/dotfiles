@@ -1,4 +1,4 @@
 Bundle "fholgado/minibufexpl.vim"
 
-
+"let g:spf13_no_autochdir = 1
 let g:miniBufExplCheckDupeBufs = 0

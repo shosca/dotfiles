@@ -37,4 +37,3 @@ nmap <silent> <Leader>ev :e $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
 
-let g:spf13_no_autochdir = 1
