@@ -171,12 +171,66 @@ alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
 alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
 alias resrc='source ~/.bashrc'
 alias rsyncf='rsync -v --recursive --links --times -D --delete'
+alias rsyncd='rsync -v --recursive --links --times -D'
+alias pushtobuttercup='rsync -v --recursive --links --times -D --delete ~/src/ buttercup.local:~/src/'
+alias pullfrombuttercup='rsync -v --recursive --links --times -D --delete buttercup.local:~/src/ ~/src/'
+alias ondemand='sudo cpupower frequency-set -g ondemand'
+alias powersave='sudo cpupower frequency-set -g powersave'
+alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 
-PATH="${HOME}/bin:${PATH}"
+rsyncpush() {
+  if [ -z "$1" ]; then
+    echo "provide destination server"
+    return 1
+  fi
+
+  if [ -z "$2" ]; then
+    echo "provide folder to sync"
+    return 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "folder does not exist"
+    return 1
+  fi
+  local d="$(realpath $2)/"
+
+  echo "rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $d $1:$d"
+  rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $d $1:$d
+}
+
+rsyncpull() {
+  if [ -z "$1" ]; then
+    echo "provide destination server"
+    return 1
+  fi
+
+  if [ -z "$2" ]; then
+    echo "provide folder to sync"
+    return 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "folder does not exist"
+    return 1
+  fi
+  local d="$(realpath $2)/"
+
+  echo "rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $1:$d $d"
+  rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $1:$d $d
+}
 
 export EDITOR="vim"
 
-alias alert='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
+PATH="${HOME}/bin:${PATH}"
+
+if [[ -d "$HOME/bin" ]]; then
+  PATH="${HOME}/bin:${PATH}"
+fi
+
+if [[ -d "$HOME/src/bin" ]]; then
+  PATH="${HOME}/src/bin:${PATH}"
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -195,12 +249,18 @@ if [[ -d "$HOME/.local/share/bash-completion" ]]; then
   done
 fi
 
-[[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
-
 if [[ -d "$HOME/go/bin" ]]; then
+  export GOPATH=$HOME/go
   PATH="${HOME}/go/bin:${PATH}"
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+if [[ -d "$HOME/node/bin" ]]; then
+  export NODE_PATH=$HOME/node
+  PATH="${HOME}/node/bin:${PATH}"
+fi
 
+[[ -s "/usr/bin/virtualenvwrapper.sh" ]] && source "/usr/bin/virtualenvwrapper_lazy.sh"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+[[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
