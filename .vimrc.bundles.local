@@ -1,5 +1,6 @@
 "Bundle "fholgado/minibufexpl.vim"
 Bundle "spolu/dwm.vim.git"
+Bundle "sickill/vim-monokai.git"
 
 let g:spf13_no_autochdir = 1
 let g:miniBufExplCheckDupeBufs = 0
