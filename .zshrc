@@ -32,7 +32,7 @@ ZSH_THEME="gentoo"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(history history-substring-search archlinux git mercurial rvm ruby rails django pip python virtualenv systemd)
+plugins=(history history-substring-search archlinux git mercurial ruby rbenv rails django pip python virtualenv systemd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,12 +101,26 @@ if [[ -d "$HOME/node/bin" ]]; then
   PATH="${HOME}/node/bin:${PATH}"
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+if [[ -f /usr/bin/virtualenvwrapper.sh ]]; then
+    export WORKON_HOME=~/.virtualenvs
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    source /usr/bin/virtualenvwrapper.sh
+fi
+
+#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+if [[ -d "$HOME/.rbenv/bin" ]]; then
+    PATH=$PATH:$HOME/.rbenv/bin
+    eval "$(rbenv init -)"
+fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
 export EDITOR=vim
+export PAGER=vimpager
 
+alias less=$PAGER
+alias zless=$PAGER
 alias pygrep="grep --include='*.py' $*"
 alias rbgrep="grep --include='*.rb' $*"
 alias csgrep="grep --include='*.cs' $*"
@@ -146,3 +160,4 @@ alias pullfrombuttercup='rsync -v --recursive --links --times -D --delete butter
 alias ondemand='sudo cpupower frequency-set -g ondemand'
 alias powersave='sudo cpupower frequency-set -g powersave'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
+

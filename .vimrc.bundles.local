@@ -1,9 +1,11 @@
-"Bundle "fholgado/minibufexpl.vim"
 Bundle "spolu/dwm.vim.git"
 Bundle "sickill/vim-monokai.git"
+Bundle "jaromero/vim-monokai-refined.git"
+Bundle "chriskempson/vim-tomorrow-theme.git"
+Bundle "wikitopian/hardmode.git"
 
-let g:spf13_no_autochdir = 1
-let g:miniBufExplCheckDupeBufs = 0
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprev<CR>
 
-set colorcolumn=80
+set nospell
 

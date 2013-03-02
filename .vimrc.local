@@ -1,8 +1,20 @@
-let g:spf13_no_autochdir = 1
-let g:miniBufExplCheckDupeBufs = 0
-
 set background=dark
-colorscheme solarized
+colorscheme molokai
+if has("gui_running")
+    set nomousehide
+    set colorcolumn=80
+else
+    hi NonText            ctermfg=59  ctermbg=233
+    hi SpecialKey         ctermfg=59  ctermbg=233
+    hi SpellBad           ctermfg=130 ctermbg=234
+    hi SpellCap           ctermfg=130 ctermbg=234
+    hi SpellLocal         ctermfg=130 ctermbg=234
+    hi SpellRare          ctermfg=130 ctermbg=234
+endif
+
+let g:indent_guides_auto_colors=0
+hi IndentGuidesOdd    guibg=red   ctermbg=235
+hi IndentGuidesEven   guibg=green ctermbg=236
 
 " Set our fonts
 if has("gui_running")
@@ -12,6 +24,9 @@ if has("gui_running")
         set guifont=Monaco\ 10
     endif
 endif
+
+set list
+set listchars=eol:¬,tab:▸·,trail:·,extends:…,nbsp:‗
 
 " No annoying error noises
 set noerrorbells
@@ -44,14 +59,21 @@ nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 
 nmap <C-o> :CtrlPBuffer<CR>
 
-let g:spf13_no_autochdir = 1
-let g:miniBufExplCheckDupeBufs = 0
+nmap <leader>l :set list!<CR>
+
 
 let g:ctrlp_match_window_bottom = 0
-"let g:ctrlp_switch_buffer = 0
+let g:ctrlp_match_window_reversed = 0
+"let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
 "let g:ctrlp_working_path_mode = 0
-"let g:ctrlp_match_window_reversed = 0
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+    \ 'fallback': 'find %s -type f'
+\ }
 
-set nomousehide
-set colorcolumn=80
-
+set nospell
