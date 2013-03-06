@@ -13,20 +13,20 @@ else
 endif
 
 let g:indent_guides_auto_colors=0
-hi IndentGuidesOdd    guibg=red   ctermbg=235
-hi IndentGuidesEven   guibg=green ctermbg=236
+hi IndentGuidesOdd    guibg=red   ctermbg=235 guibg=#232526
+hi IndentGuidesEven   guibg=green ctermbg=236 guibg=#4c4745
 
-" Set our fonts
+" Set our fonts and stuff
+set list
+set listchars=eol:¬,tab:¸·,trail:·
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Monaco:h9
+        set guifont=Monaco:h10
     else
         set guifont=Monaco\ 10
     endif
 endif
 
-set list
-set listchars=eol:Â¬,tab:â–¸Â·,trail:Â·,extends:â€¦,nbsp:â€—
 
 " No annoying error noises
 set noerrorbells

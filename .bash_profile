@@ -23,76 +23,7 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-ps_scm_f() {
-  local s=
-  if [[ -d ".svn" ]] ; then
-    local r=$(svn info | sed -n -e '/^Revision: \([0-9]*\).*$/s//\1/p' )
-    s="(r$r$(svn status | grep -q -v '^?' && echo -n "*" ))"
-  else
-    local d=$(git rev-parse --git-dir 2>/dev/null ) b= r= a= c= e= f= g=
-    if [[ -n "${d}" ]] ; then
-      if [[ -d "${d}/../.dotest" ]] ; then
-        if [[ -f "${d}/../.dotest/rebase" ]] ; then
-          r="rebase"
-        elif [[ -f "${d}/../.dotest/applying" ]] ; then
-          r="am"
-        else
-          r="???"
-        fi
-        b=$(git symbolic-ref HEAD 2>/dev/null )
-      elif [[ -f "${d}/.dotest-merge/interactive" ]] ; then
-        r="rebase-i"
-        b=$(<${d}/.dotest-merge/head-name)
-      elif [[ -d "${d}/../.dotest-merge" ]] ; then
-        r="rebase-m"
-        b=$(<${d}/.dotest-merge/head-name)
-      elif [[ -f "${d}/MERGE_HEAD" ]] ; then
-        r="merge"
-        b=$(git symbolic-ref HEAD 2>/dev/null )
-      elif [[ -f "${d}/BISECT_LOG" ]] ; then
-        r="bisect"
-        b=$(git symbolic-ref HEAD 2>/dev/null )"???"
-      else
-        r=""
-        b=$(git symbolic-ref HEAD 2>/dev/null )
-      fi
-
-      if git status | grep -q '^# Changes not staged' ; then
-        a="${a}*"
-      fi
-
-      if git status | grep -q '^# Changes to be committed:' ; then
-        a="${a}+"
-      fi
-
-      if git status | grep -q '^# Untracked files:' ; then
-        a="${a}?"
-      fi
-
-      e=$(git status | sed -n -e '/^# Your branch is /s/^.*\(ahead\|behind\).* by \(.*\) commit.*/\1 \2/p' )
-      if [[ -n ${e} ]] ; then
-        f=${e#* }
-        g=${e% *}
-        if [[ ${g} == "ahead" ]] ; then
-          e="+${f}"
-        else
-          e="-${f}"
-        fi
-      else
-        e=
-      fi
-
-      b=${b#refs/heads/}
-      b=${b// }
-      [[ -n "${b}" ]] && c="$(git config "branch.${b}.remote" 2>/dev/null )"
-      [[ -n "${r}${b}${c}${a}" ]] && s="(${r:+${r}:}${b}${c:+@${c}}${e}${a:+ ${a}})"
-    fi
-  fi
-  s="${s:+${s} }"
-  echo -n "$s"
-}
-
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(ps_scm_f) \n\$ '
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(__git_ps1 "(%s)" ) \n\$ '
 
 PROMPT_COMMAND='history -a; history -n'
 
