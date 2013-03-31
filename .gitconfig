@@ -35,7 +35,6 @@
 [core]
     fileMode = false
 	autocrlf = input
-    editor = vim
 [merge]
     stat = true
 [credential]

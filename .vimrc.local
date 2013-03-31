@@ -1,15 +1,18 @@
 set background=dark
 colorscheme molokai
+set colorcolumn=80
 if has("gui_running")
     set nomousehide
-    set colorcolumn=80
 else
+    " Some terminal color fixes
+    hi ColorColumn        ctermbg=53
     hi NonText            ctermfg=59  ctermbg=233
     hi SpecialKey         ctermfg=59  ctermbg=233
     hi SpellBad           ctermfg=130 ctermbg=234
     hi SpellCap           ctermfg=130 ctermbg=234
-    hi SpellLocal         ctermfg=130 ctermbg=234
+    hi SpellLocal         ctermfg=131 ctermbg=234
     hi SpellRare          ctermfg=130 ctermbg=234
+    hi MatchParen         ctermfg=white ctermbg=darkgray cterm=NONE
 endif
 
 let g:indent_guides_auto_colors=0
@@ -23,7 +26,8 @@ if has("gui_running")
     if has("win32") || has("win64")
         set guifont=Monaco:h10
     else
-        set guifont=Monaco\ 10
+        set guifont=Menlo\ for\ Powerline\ 10
+        "set guifont=Monaco\ for\ Powerline\ 10
     endif
 endif
 
