@@ -15,6 +15,8 @@ else
     hi MatchParen         ctermfg=white ctermbg=darkgray cterm=NONE
 endif
 
+let g:Powerline_symbols='fancy'
+
 let g:indent_guides_auto_colors=0
 hi IndentGuidesOdd    guibg=red   ctermbg=235 guibg=#232526
 hi IndentGuidesEven   guibg=green ctermbg=236 guibg=#4c4745
@@ -24,13 +26,11 @@ set list
 set listchars=eol:¬,tab:¸·,trail:·
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Monaco:h10
+        set guifont=Meslo_LG_M_for_Powerline:h10
     else
-        set guifont=Menlo\ for\ Powerline\ 10
-        "set guifont=Monaco\ for\ Powerline\ 10
+        set guifont=Meslo\ LG\ M\ for\ Powerline\ 10
     endif
 endif
-
 
 " No annoying error noises
 set noerrorbells
@@ -57,6 +57,9 @@ au FileType cs set foldlevelstart=2
 " In normal mode, jj escapes
 inoremap jj <Esc>
 
+nmap <silent> <Tab>n :bn<CR>
+nmap <silent> <Tab>p :bp<CR>
+
 " edit the vimrc file
 nmap <silent> <Leader>ev :e $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
@@ -81,3 +84,4 @@ let g:ctrlp_user_command = {
 \ }
 
 set nospell
+let g:spf13_no_autochdir = 1

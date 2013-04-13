@@ -1,6 +1,6 @@
 Bundle "spolu/dwm.vim.git"
 Bundle "wikitopian/hardmode.git"
+Bundle "tpope/vim-dispatch.git"
 
-nmap <C-m> :bn<CR>
 
 set nospell
