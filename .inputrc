@@ -11,6 +11,8 @@ set bell-style none
 # Note to get rid of a line just Ctrl-C
 "\e[B": history-search-forward
 "\e[A": history-search-backward
+"\C-N": history-search-forward
+"\C-P": history-search-backward
 
 $if Bash
   # F10 toggles mc on and off

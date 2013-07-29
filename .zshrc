@@ -32,7 +32,24 @@ ZSH_THEME="gentoo"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(history history-substring-search archlinux git golang mercurial ruby rbenv rails django pip python ssh-agent virtualenv systemd)
+plugins=(
+    archlinux
+    autojump
+    django
+    git
+    git-flow
+    go
+    golang
+    history-substring-search
+    mercurial
+    ruby
+    rbenv
+    pip
+    python
+    rails
+    systemd
+    virtualenv
+ )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -40,6 +57,9 @@ source $ZSH/oh-my-zsh.sh
 
 setopt inc_append_history
 setopt share_history
+
+bindkey '\C-P' history-substring-search-up
+bindkey '\C-N' history-substring-search-down
 
 autoload -U compinit
 compinit
@@ -117,10 +137,7 @@ fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
 export EDITOR=vim
-export PAGER=vimpager
 
-alias less=$PAGER
-alias zless=$PAGER
 alias pygrep="grep --include='*.py' $*"
 alias rbgrep="grep --include='*.rb' $*"
 alias csgrep="grep --include='*.cs' $*"

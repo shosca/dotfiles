@@ -1,6 +1,8 @@
 Bundle "spolu/dwm.vim.git"
 Bundle "wikitopian/hardmode.git"
 Bundle "tpope/vim-dispatch.git"
-
+Bundle "rking/ag.vim"
 
 set nospell
+"let g:spf13_use_powerline = 1
+"let g:airline_powerline_fonts=1

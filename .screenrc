@@ -1,5 +1,9 @@
 escape ``
-caption string "%?%F%{= Bk}%? %C%A %D %d-%m-%Y %{= kB} %t%= %?%F%{= Bk}%:%{= wk}%? %n "
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+defutf8 on
+utf8 on on
+startup_message off
+term "screen-256color"
+
+caption string "%{kY} %n%f* %t %?%{YR} %{kR} %u %{Rb}%:%{Yb}%?%?%F%{.b} %:%{.w} %?%="
+hardstatus alwayslastline "%{kG} %S %{kb} $LOGNAME %{bk}  %H %?%{kb} %{kY} %-Lw%{Yk} %:%{Yb} %{Yk}%?%{Yk} %n%f* %t %{kY} %+Lw %-="
 defscrollback 9999

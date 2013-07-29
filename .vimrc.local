@@ -26,9 +26,9 @@ set list
 set listchars=eol:¬,tab:¸·,trail:·
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Meslo_LG_M_for_Powerline:h10
+        set guifont=Meslo_LG_M:h10
     else
-        set guifont=Meslo\ LG\ M\ for\ Powerline\ 10
+        set guifont=Meslo\ LG\ M\ 10
     endif
 endif
 
@@ -84,4 +84,3 @@ let g:ctrlp_user_command = {
 \ }
 
 set nospell
-let g:spf13_no_autochdir = 1
