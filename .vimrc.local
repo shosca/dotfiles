@@ -26,9 +26,9 @@ set list
 set listchars=eol:¬,tab:¸·,trail:·
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Meslo_LG_M:h10
+        set guifont=Source_Code_Pro:h9
     else
-        set guifont=Meslo\ LG\ M\ 10
+        set guifont=Source\ Code\ Pro\ 9
     endif
 endif
 
@@ -46,6 +46,7 @@ autocmd FileType cs autocmd BufWritePre <buffer> :%s/\s\+$//e
 autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber,sh set ai sw=2 sts=2 et
 autocmd FileType javascript,python set ai sw=4 sts=4 et
 autocmd FileType make set noexpandtab
+autocmd FileType java set expandtab
 
 " folding for cs
 au FileType cs set omnifunc=syntaxcomplete#Complete
@@ -68,6 +69,16 @@ nmap <C-o> :CtrlPBuffer<CR>
 
 nmap <leader>l :set list!<CR>
 
+" split/buffer movement
+nnoremap <silent> <C-j> <C-W>w<CR>
+nnoremap <silent> <C-k> <C-W>W<CR>
+nnoremap <silent> <C-u> :resize +5<CR>
+nnoremap <silent> <C-i> :resize -5<CR>
+nnoremap <silent> <C-h> :vertical resize +5<CR>
+nnoremap <silent> <C-l> :vertical resize -5<CR>
+nnoremap <silent> <C-a><C-j> :bn<CR>
+nnoremap <silent> <C-a><C-k> :bp<CR>
+nnoremap <silent> <C-a><C-d> :bd<CR>
 
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0

@@ -47,6 +47,7 @@ plugins=(
     pip
     python
     rails
+    ssh-agent
     systemd
     virtualenv
  )
@@ -143,6 +144,7 @@ alias rbgrep="grep --include='*.rb' $*"
 alias csgrep="grep --include='*.cs' $*"
 alias brgrep="grep --include='*.brail' $*"
 
+alias dmesg="dmesg -L"
 # some more ls aliases
 alias ll='ls -lhX'
 alias la='ls -A'
@@ -178,3 +180,14 @@ alias ondemand='sudo cpupower frequency-set -g ondemand'
 alias powersave='sudo cpupower frequency-set -g powersave'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 
+cleanvim() {
+    echo "Cleaning ~/.vimbackup/"
+    rm -Rf ~/.vimbackup/*
+    echo "Cleaning ~/.vimswap/"
+    rm -Rf ~/.vimswap/*
+    echo "Cleaning ~/.vimviews/"
+    rm -Rf ~/.vimviews/*
+    echo "Cleaning ~/.vimundo/"
+    rm -Rf ~/.vimundo/*
+    echo "All done!"
+}
