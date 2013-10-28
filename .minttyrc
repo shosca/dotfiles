@@ -1,5 +1,4 @@
 BoldAsFont=no
-Font=Meslo LG M
 FontHeight=9
 Term=xterm-256color
 FontSmoothing=full
@@ -25,4 +24,6 @@ Cyan=137,156,161
 BoldCyan=70,84,87
 White=248,248,248
 BoldWhite=204,204,198
-
+Font=Source Code Pro for Powerline
+ClicksPlaceCursor=yes
+FontIsBold=no

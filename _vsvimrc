@@ -3,5 +3,9 @@
 set vsvim_useeditordefaults
 
 nmap <C-]> :vsc Edit.GoToDefinition<CR>
-nmap <Tab>n :vsc Window.NextDocumentWindow<CR>
-nmap <Tab>p :vsc Window.PreviousDocumentWindow<CR>
+nmap <C-o> :vsc View.NavigateBackward<CR>
+nmap <C-i> :vsc View.NavigateForward<CR>
+nmap <C-j> :vsc Window.NextSplitPane<CR>
+nmap <C-k> :vsc Window.PreviousSplitPane<CR>
+nmap <C-a>j :vsc Window.NextDocumentWindowNav<CR>
+nmap <C-a>k :vsc Window.PreviousDocumentWindowNav<CR>

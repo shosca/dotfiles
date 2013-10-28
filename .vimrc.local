@@ -5,7 +5,7 @@ if has("gui_running")
     set nomousehide
 else
     " Some terminal color fixes
-    hi ColorColumn        ctermbg=53
+    hi ColorColumn        ctermbg=17
     hi NonText            ctermfg=59  ctermbg=233
     hi SpecialKey         ctermfg=59  ctermbg=233
     hi SpellBad           ctermfg=130 ctermbg=234
@@ -14,8 +14,6 @@ else
     hi SpellRare          ctermfg=130 ctermbg=234
     hi MatchParen         ctermfg=white ctermbg=darkgray cterm=NONE
 endif
-
-let g:Powerline_symbols='fancy'
 
 let g:indent_guides_auto_colors=0
 hi IndentGuidesOdd    guibg=red   ctermbg=235 guibg=#232526
@@ -55,11 +53,14 @@ au FileType cs set foldmarker={,}
 au FileType cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
 au FileType cs set foldlevelstart=2
 
+au FileType java set omnifunc=syntaxcomplete#Complete
+au FileType java set foldmethod=marker
+au FileType java set foldmarker={,}
+au FileType java set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
+au FileType java set foldlevelstart=2
+
 " In normal mode, jj escapes
 inoremap jj <Esc>
-
-nmap <silent> <Tab>n :bn<CR>
-nmap <silent> <Tab>p :bp<CR>
 
 " edit the vimrc file
 nmap <silent> <Leader>ev :e $MYVIMRC<CR>
@@ -70,15 +71,15 @@ nmap <C-o> :CtrlPBuffer<CR>
 nmap <leader>l :set list!<CR>
 
 " split/buffer movement
-nnoremap <silent> <C-j> <C-W>w<CR>
-nnoremap <silent> <C-k> <C-W>W<CR>
-nnoremap <silent> <C-u> :resize +5<CR>
-nnoremap <silent> <C-i> :resize -5<CR>
-nnoremap <silent> <C-h> :vertical resize +5<CR>
-nnoremap <silent> <C-l> :vertical resize -5<CR>
-nnoremap <silent> <C-a><C-j> :bn<CR>
-nnoremap <silent> <C-a><C-k> :bp<CR>
-nnoremap <silent> <C-a><C-d> :bd<CR>
+noremap <silent> <C-j> <C-W>w<CR>
+noremap <silent> <C-k> <C-W>W<CR>
+noremap <silent> <C-u> :resize +5<CR>
+noremap <silent> <C-i> :resize -5<CR>
+noremap <silent> <C-h> :vertical resize +5<CR>
+noremap <silent> <C-l> :vertical resize -5<CR>
+noremap <silent> <C-a><C-j> :bn<CR>
+noremap <silent> <C-a><C-k> :bp<CR>
+noremap <silent> <C-a><C-d> :bd<CR>
 
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0

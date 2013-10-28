@@ -111,6 +111,10 @@ fi
 if [[ -d "/usr/lib/ccache/bin" ]]; then
   PATH="/usr/lib/ccache/bin:${PATH}"
 fi
+if [[ -d "/usr/lib/distcc/bin" ]]; then
+  PATH="/usr/lib/distcc/bin:${PATH}"
+  DISTCC_HOSTS="@buttercup.local/4"
+fi
 
 if [[ -d "$HOME/go/bin" ]]; then
   export GOPATH=$HOME/go
@@ -178,6 +182,7 @@ alias pushtobuttercup='rsync -v --recursive --links --times -D --delete ~/src/ b
 alias pullfrombuttercup='rsync -v --recursive --links --times -D --delete buttercup.local:~/src/ ~/src/'
 alias ondemand='sudo cpupower frequency-set -g ondemand'
 alias powersave='sudo cpupower frequency-set -g powersave'
+alias performance='sudo cpupower frequency-set -g performance'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 
 cleanvim() {
