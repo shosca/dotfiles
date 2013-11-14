@@ -27,3 +27,4 @@ BoldWhite=204,204,198
 Font=Source Code Pro for Powerline
 ClicksPlaceCursor=yes
 FontIsBold=no
+Scrollbar=none
