@@ -186,6 +186,8 @@ alias powersave='sudo cpupower frequency-set -g powersave'
 alias performance='sudo cpupower frequency-set -g performance'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 
+alias tma='tmux attach -d -t'
+
 cleanvim() {
     echo "Cleaning ~/.vimbackup/"
     rm -Rf ~/.vimbackup/*
