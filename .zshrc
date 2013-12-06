@@ -126,6 +126,10 @@ if [[ -d "$HOME/node/bin" ]]; then
   PATH="${HOME}/node/bin:${PATH}"
 fi
 
+if [[ -d "/usr/lib/smlnj/bin" ]]; then
+  PATH="/usr/lib/smlnj/bin:${PATH}"
+fi
+
 if [[ -f /usr/bin/virtualenvwrapper.sh ]]; then
     export WORKON_HOME=~/.virtualenvs
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
