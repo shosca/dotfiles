@@ -56,8 +56,11 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-setopt inc_append_history
-setopt share_history
+setopt appendhistory
+setopt extendedhistory
+setopt incappendhistory
+setopt histfindnodups
+setopt sharehistory
 
 bindkey '\C-P' history-substring-search-up
 bindkey '\C-N' history-substring-search-down
