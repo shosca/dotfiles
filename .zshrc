@@ -46,7 +46,6 @@ plugins=(
     rbenv
     pip
     python
-    rails
     ssh-agent
     systemd
     virtualenv
