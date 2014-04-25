@@ -1,5 +1,4 @@
-
-
+set backspace=indent,eol,start
 set vsvim_useeditordefaults
 
 nmap <C-]> :vsc Edit.GoToDefinition<CR>
