@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="gentoo"
+ZSH_THEME="gentoo2"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -178,7 +178,7 @@ alias brgrep="grep --include='*.brail' $*"
 
 alias dmesg="dmesg -L"
 # some more ls aliases
-alias ll='ls -lhX'
+alias ll='ls -lh'
 alias la='ls -A'
 alias ldir='ls -lhA |grep ^d'
 alias lfiles='ls -lhA |grep ^-'
