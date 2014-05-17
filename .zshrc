@@ -227,24 +227,24 @@ cleanvim() {
     echo "All done!"
 }
 
-function irssi_nickpane() {
-    tmux renamew irssi                                              # name the window
-    tmux -q setw main-pane-width $(( $(tput cols) - 21))            # set the main pane width to the total width-20
-    tmux splitw -v "cat ~/.irssi/nicklistfifo"                      # create the window and begin reading the fifo
-    tmux -q selectl main-vertical                                   # assign the layout
-    tmux selectw -t irssi                                           # select window 'irssi'
-    tmux selectp -t 0                                               # select pane 0
-}
+#function irssi_nickpane() {
+    #tmux renamew irssi                                              # name the window
+    #tmux -q setw main-pane-width $(( $(tput cols) - 21))            # set the main pane width to the total width-20
+    #tmux splitw -v "cat ~/.irssi/nicklistfifo"                      # create the window and begin reading the fifo
+    #tmux -q selectl main-vertical                                   # assign the layout
+    #tmux selectw -t irssi                                           # select window 'irssi'
+    #tmux selectp -t 0                                               # select pane 0
+#}
 
-function irssi_repair() {
-    tmux selectw -t irssi
-    tmux selectp -t 0
-    tmux killp -a
-    irssi_nickpane
-}
+#function irssi_repair() {
+    #tmux selectw -t irssi
+    #tmux selectp -t 0
+    #tmux killp -a
+    #irssi_nickpane
+#}
 
-function irssi() {
-    irssi_nickpane
-    /usr/bin/irssi
-}
+#function irssi() {
+    #irssi_nickpane
+    #/usr/bin/irssi
+#}
 
