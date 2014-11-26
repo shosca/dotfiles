@@ -174,7 +174,6 @@ export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 alias pygrep="grep --include='*.py' $*"
 alias rbgrep="grep --include='*.rb' $*"
 alias csgrep="grep --include='*.cs' $*"
-alias brgrep="grep --include='*.brail' $*"
 
 alias dmesg="dmesg -L"
 # some more ls aliases
@@ -188,8 +187,6 @@ alias l='ls -CF'
 alias pss='ps -ef | grep $1'
 
 # usefull alias to browse your filesystem for heavy usage quickly
-#alias ducks='ls -A | grep -v -e '\''^\.\.$'\'' |xargs -i du -ks {} |sort -rn |head -16 | awk '\''{print $2}'\'' | xargs -i du -hs {}'
-#lias ducks='for f in ./* ./.*; do du -ks "${f}"; done | sort -rn | head -16'
 alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 
 alias c='clear'
@@ -203,11 +200,8 @@ alias radeondefault='echo default | sudo tee -a /sys/class/drm/card0/device/powe
 alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_profile'
 alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
 alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
+
 alias resrc='source ~/.zshrc'
-alias rsyncf='rsync -v --recursive --links --times -D --delete'
-alias rsyncd='rsync -v --recursive --links --times -D'
-alias pushtobuttercup='rsync -v --recursive --links --times -D --delete ~/src/ buttercup.local:~/src/'
-alias pullfrombuttercup='rsync -v --recursive --links --times -D --delete buttercup.local:~/src/ ~/src/'
 alias ondemand='sudo cpupower frequency-set -g ondemand'
 alias powersave='sudo cpupower frequency-set -g powersave'
 alias performance='sudo cpupower frequency-set -g performance'
@@ -227,24 +221,5 @@ cleanvim() {
     echo "All done!"
 }
 
-#function irssi_nickpane() {
-    #tmux renamew irssi                                              # name the window
-    #tmux -q setw main-pane-width $(( $(tput cols) - 21))            # set the main pane width to the total width-20
-    #tmux splitw -v "cat ~/.irssi/nicklistfifo"                      # create the window and begin reading the fifo
-    #tmux -q selectl main-vertical                                   # assign the layout
-    #tmux selectw -t irssi                                           # select window 'irssi'
-    #tmux selectp -t 0                                               # select pane 0
-#}
-
-#function irssi_repair() {
-    #tmux selectw -t irssi
-    #tmux selectp -t 0
-    #tmux killp -a
-    #irssi_nickpane
-#}
-
-#function irssi() {
-    #irssi_nickpane
-    #/usr/bin/irssi
-#}
-
+unset GREP_OPTIONS
+alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
