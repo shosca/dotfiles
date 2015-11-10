@@ -1,3 +1,4 @@
 let g:spf13_no_easyWindows = 1
 let g:airline_powerline_fonts = 1
 let g:easytags_dynamic_files = 1
+let g:spf13_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc', 'youcompleteme']

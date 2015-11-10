@@ -38,7 +38,6 @@ if has("autocmd")
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-autocmd BufWritePre *.go :silent Fmt
 au BufRead,BufNewFile *.brail set filetype=html
 
 autocmd FileType cs autocmd BufWritePre <buffer> :%s/\s\+$//e

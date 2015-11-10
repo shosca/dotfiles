@@ -34,10 +34,9 @@
     status = auto
 [core]
     fileMode = false
-	autocrlf = input
+	autocrlf = false
 [merge]
     stat = true
-	conflictstyle = diff3
 [credential]
     helper = cache --timeout=3600
 [push]

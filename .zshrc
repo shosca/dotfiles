@@ -223,3 +223,5 @@ cleanvim() {
 
 unset GREP_OPTIONS
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
+alias npm-exec='PATH=$(npm bin):$PATH'
+
