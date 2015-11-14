@@ -25,9 +25,9 @@ set list
 set listchars=eol:¬,tab:¸·,trail:·
 if has("gui_running")
     if has("win32") || has("win64")
-        set guifont=Luculent:h9
+        set guifont=Hack:h10
     else
-        set guifont=Luculent\ 9
+        set guifont=Hack\ 9
     endif
 endif
 
@@ -106,3 +106,5 @@ set nospell
 
 let g:solarized_visibility='low'
 let g:solarized_termtrans=0
+
+inoremap <expr><CR> neosnippet#expandable() ? neosnippet#mappings#expand_or_jump_impl() : pumvisible() ? neocomplete#close_popup() : "\<CR>"
