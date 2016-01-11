@@ -107,4 +107,3 @@ set nospell
 let g:solarized_visibility='low'
 let g:solarized_termtrans=0
 
-inoremap <expr><CR> neosnippet#expandable() ? neosnippet#mappings#expand_or_jump_impl() : pumvisible() ? neocomplete#close_popup() : "\<CR>"
