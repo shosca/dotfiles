@@ -4,3 +4,5 @@ let g:easytags_dynamic_files=1
 let g:jedi#popup_select_first=0
 let g:jedi#popup_on_dot=0
 let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc', 'youcompleteme']
+
+let g:slimux_select_from_current_window = 1

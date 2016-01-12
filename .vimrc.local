@@ -81,13 +81,6 @@ noremap <silent> <C-a><C-j> :bn<CR>
 noremap <silent> <C-a><C-k> :bp<CR>
 noremap <silent> <C-a><C-d> :bd<CR>
 
-map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
-map <Leader>vp :VimuxPromptCommand<CR>
-map <Leader>vl :VimuxRunLastCommand<CR>
-map <Leader>vi :VimuxInspectRunner<CR>
-map <Leader>vq :VimuxCloseRunner<CR>
-map <Leader>vx :VimuxInterruptRunner<CR>
-
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
 "let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
@@ -107,3 +100,5 @@ set nospell
 let g:solarized_visibility='low'
 let g:solarized_termtrans=0
 
+map <C-c><C-c> :SlimuxREPLSendLine<CR>
+vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
