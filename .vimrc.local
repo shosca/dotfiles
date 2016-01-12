@@ -102,3 +102,11 @@ let g:solarized_termtrans=0
 
 map <C-c><C-c> :SlimuxREPLSendLine<CR>
 vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor\ --columm
+    set grepformat=%f:%l:%c%m
+
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_use_caching = 0
+endif
