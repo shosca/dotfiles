@@ -8,3 +8,6 @@ let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', '
 
 let g:slimux_select_from_current_window = 1
 
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
