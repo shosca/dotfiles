@@ -97,10 +97,14 @@ let g:ctrlp_user_command = {
 
 set nospell
 
-map <C-c><C-c> :SlimuxREPLSendLine<CR>
-vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-
 if executable('ag')
     set grepprg=ag\ --nogroup\ --nocolor\ --columm
     set grepformat=%f:%l:%c%m
 endif
+
+map <C-c><C-c> :SlimuxREPLSendLine<CR>
+vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>sa :SlimuxShellLast<CR>
+map <Leader>sk :SlimuxSendKeysLast<CR>
