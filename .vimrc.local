@@ -87,20 +87,27 @@ let g:ctrlp_match_window_reversed = 0
 "let g:ctrlp_working_path_mode = 0
 let g:ctrlp_dotfiles = 0
 let g:ctrlp_switch_buffer = 0
-let g:ctrlp_user_command = {
-    \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-    \ 'fallback': 'find %s -type f'
-\ }
-
-set nospell
 
 if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor\ --columm
-    set grepformat=%f:%l:%c%m
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = {
+        \ 'types': {
+            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+        \ },
+        \ 'fallback': 'ag %s -l --nocolor -g ""'
+    \ }
+else
+    let g:ctrlp_user_command = {
+        \ 'types': {
+            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+        \ },
+        \ 'fallback': 'find %s -type f'
+    \ }
 endif
+
+set nospell
 
 map <C-c><C-c> :SlimuxREPLSendLine<CR>
 vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
