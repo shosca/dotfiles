@@ -29,8 +29,14 @@ symlinks:
 	ln -sf $(PWD)/.ackrc ~/.ackrc
 	ln -sf $(PWD)/.pdbrc ~/.pdbrc 
 	ln -sf $(PWD)/.gitconfig ~/.gitconfig
+	ln -sf $(PWD)/.hgrc ~/.hgrc
+	ln -sf $(PWD)/.psqlrc ~/.psqlrc
+	ln -sf $(PWD)/.rspec ~/.rspec
+	ln -sf $(PWD)/.rvmrc ~/.rvmrc
 	ln -sf $(PWD)/.zshrc ~/.zshrc
 	ln -sf $(PWD)/.inputrc ~/.inputrc
+	ln -sf $(PWD)/.jshintrc~/.jshintrc
+	ln -sf $(PWD)/.ctags ~/.ctags
 	ln -sf $(PWD)/.vimrc.local ~/.vimrc.local
 	ln -sf $(PWD)/.vimrc.before.local ~/.vimrc.before.local
 	ln -sf $(PWD)/.vimrc.bundles.local ~/.vimrc.bundles.local
