@@ -27,24 +27,11 @@ $endif
 # by default if one has their own .inputrc
 $include /etc/inputrc
 
-"\e[2~": paste-from-clipboard
-"\e[3~": delete-char
-"\e[5~": beginning-of-history
-"\e[6~": end-of-history
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
 "\e[7~": beginning-of-line
 "\e[8~": end-of-line
-
-# Ctrl+Left/Right to move by whole words
-"\e[1;5D": backward-word
-"\e[1;5C": forward-word
-
-# Ctrl+Backspace/Delete to delete whole words
-"\d": backward-kill-word
-"\e[3;5~": kill-word
-
-# Ctrl+Shift+Backspace/Delete to delete to start/end of the line
-"\e\d": backward-kill-line
-"\e[3;6~": kill-line
-
-# Alt-Backspace for undo
-"\e\b": undo
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+"\e[H": beginning-of-line
+"\e[F": end-of-line"
