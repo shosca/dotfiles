@@ -70,16 +70,35 @@ nmap <C-o> :CtrlPBuffer<CR>
 
 nmap <leader>l :set list!<CR>
 
-" split/buffer movement
-noremap <silent> <C-j> <C-W>w<CR>
-noremap <silent> <C-k> <C-W>W<CR>
-noremap <silent> <C-u> :resize +5<CR>
-noremap <silent> <C-i> :resize -5<CR>
-noremap <silent> <C-h> :vertical resize +5<CR>
-noremap <silent> <C-l> :vertical resize -5<CR>
-noremap <silent> <C-a><C-j> :bn<CR>
-noremap <silent> <C-a><C-k> :bp<CR>
-noremap <silent> <C-a><C-d> :bd<CR>
+" split management
+nnoremap sj <C-W>w<CR>
+nnoremap sk <C-W>W<CR>
+nnoremap su :resize +5<CR>
+nnoremap si :resize -5<CR>
+nnoremap sh :vertical resize +5<CR>
+nnoremap sl :vertical resize -5<CR>
+nnoremap sd :hide<CR>
+nnoremap so :only<CR>
+nnoremap ss :split<Space>
+nnoremap sv :vsplit<Space>
+
+" buffer management
+nnoremap th :bfirst<CR>
+nnoremap tj :bnext<CR>
+nnoremap tk :bprev<CR>
+nnoremap tl :blast<CR>
+nnoremap td :bdelete<CR>
+
+" tab management
+nnoremap th :tabfirst<CR>
+nnoremap tj :tabnext<CR>
+nnoremap tk :tabprev<CR>
+nnoremap tl :tablast<CR>
+nnoremap tt :tabedit<Space>
+nnoremap tn :tabnext<Space>
+nnoremap tm :tabm<Space>
+nnoremap td :tabclose<CR>
+
 
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
