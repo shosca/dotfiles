@@ -62,6 +62,9 @@ au FileType java set foldlevelstart=2
 " In normal mode, jj escapes
 inoremap jj <Esc>
 
+" Disable Ex mode
+:map Q <Nop>
+
 " edit the vimrc file
 nmap <silent> <Leader>ev :e $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
@@ -78,7 +81,7 @@ nnoremap si :resize -5<CR>
 nnoremap sh :vertical resize +5<CR>
 nnoremap sl :vertical resize -5<CR>
 nnoremap sd :hide<CR>
-nnoremap so :only<CR>
+nnoremap so :<CR>
 nnoremap ss :split<Space>
 nnoremap sv :vsplit<Space>
 
@@ -87,7 +90,7 @@ nnoremap th :bfirst<CR>
 nnoremap tj :bnext<CR>
 nnoremap tk :bprev<CR>
 nnoremap tl :blast<CR>
-nnoremap td :bdelete<CR>
+nnoremap vd :bdelete<CR>
 
 " tab management
 nnoremap th :tabfirst<CR>
