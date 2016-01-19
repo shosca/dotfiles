@@ -138,4 +138,4 @@ vmap <Leader>s :SlimuxREPLSendSelection<CR>
 map <Leader>sa :SlimuxShellLast<CR>
 map <Leader>sk :SlimuxSendKeysLast<CR>
 
-nnoremap <leader>p oimport ipdb;ipdb.set_trace()
+nnoremap <leader>p oimport ipdb;ipdb.set_trace() #noqa
