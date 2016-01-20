@@ -86,11 +86,11 @@ nnoremap ss :split<Space>
 nnoremap sv :vsplit<Space>
 
 " buffer management
-nnoremap bh :bfirst<CR>
-nnoremap bj :bnext<CR>
-nnoremap bk :bprev<CR>
-nnoremap bl :blast<CR>
-nnoremap bd :bdelete<CR>
+nnoremap vh :bfirst<CR>
+nnoremap vj :bnext<CR>
+nnoremap vk :bprev<CR>
+nnoremap vl :blast<CR>
+nnoremap vd :bdelete<CR>
 
 " tab management
 nnoremap th :tabfirst<CR>
