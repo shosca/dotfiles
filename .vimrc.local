@@ -95,6 +95,9 @@ nnoremap tn :tabnext<CR>
 nnoremap tm :tabm<Space>
 nnoremap td :tabclose<CR>
 
+" buffer management
+nnoremap <c-k> :bnext<CR>
+nnoremap <c-j> :bprev<CR>
 
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
@@ -131,4 +134,4 @@ vmap <Leader>s :SlimuxREPLSendSelection<CR>
 map <Leader>sa :SlimuxShellLast<CR>
 map <Leader>sk :SlimuxSendKeysLast<CR>
 
-nnoremap <leader>p oimport ipdb;ipdb.set_trace() #noqa
+nnoremap <leader>p oimport ipdb;ipdb.set_trace()  # flake8: noqa<Esc>
