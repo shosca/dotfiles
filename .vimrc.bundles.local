@@ -1,3 +1,5 @@
 Bundle 'davidhalter/jedi-vim'
 Bundle 'epeli/slimux'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+
+UnBundle 'klen/python-mode'
