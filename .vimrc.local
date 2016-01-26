@@ -1,28 +1,14 @@
-"set background=dark
+set background=dark
 colorscheme Tomorrow-Night
+scriptencoding utf-8
+set fileencodings=utf-8
 set colorcolumn=80
-"if has("gui_running")
-    "set nomousehide
-"else
-    "" Some terminal color fixes
-    "hi NonText            ctermfg=59  ctermbg=233
-    "hi SpecialKey         ctermfg=59  ctermbg=233
-    "hi SpellBad           ctermfg=130 ctermbg=234
-    "hi SpellCap           ctermfg=130 ctermbg=234
-    "hi SpellLocal         ctermfg=131 ctermbg=234
-    "hi SpellRare          ctermfg=130 ctermbg=234
-    "hi MatchParen         ctermfg=white ctermbg=darkgray cterm=NONE
-"endif
-
-"hi ColorColumn        ctermbg=53
 let g:indent_guides_start_level=2
 let g:indent_guides_auto_colors=0
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=0
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=8
 
 " Set our fonts and stuff
 set list
-set listchars=eol:¬,tab:¸·,trail:·
+set listchars=tab:â€º\ ,eol:Â¬,trail:â€¢,extends:#,nbsp:. " Highlight problematic whitespace
 if has("gui_running")
     if has("win32") || has("win64")
         set guifont=Hack:h10
@@ -38,26 +24,9 @@ if has("autocmd")
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-au BufRead,BufNewFile *.brail set filetype=html
-
-autocmd FileType cs autocmd BufWritePre <buffer> :%s/\s\+$//e
 autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber,sh set ai sw=2 sts=2 et
 autocmd FileType javascript,python set ai sw=4 sts=4 et
 autocmd FileType make set noexpandtab
-autocmd FileType java set expandtab
-
-" folding for cs
-au FileType cs set omnifunc=syntaxcomplete#Complete
-au FileType cs set foldmethod=marker
-au FileType cs set foldmarker={,}
-au FileType cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
-au FileType cs set foldlevelstart=2
-
-au FileType java set omnifunc=syntaxcomplete#Complete
-au FileType java set foldmethod=marker
-au FileType java set foldmarker={,}
-au FileType java set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
-au FileType java set foldlevelstart=2
 
 " In normal mode, jj escapes
 inoremap jj <Esc>
@@ -101,13 +70,12 @@ nnoremap <c-j> :bprev<CR>
 
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
-"let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
-"let g:ctrlp_working_path_mode = 0
 let g:ctrlp_dotfiles = 0
 let g:ctrlp_switch_buffer = 0
 
 if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
     let g:ctrlp_user_command = {
         \ 'types': {
             \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
