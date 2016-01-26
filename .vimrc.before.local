@@ -1,10 +1,6 @@
 let g:spf13_no_easyWindows=1
 let g:spf13_no_autochdir = 1
-if WINDOWS()
-    let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc']
-else
-    let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc', 'youcompleteme']
-endif
+let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc', 'youcompleteme']
 
 let g:airline_powerline_fonts=1
 

@@ -4,7 +4,16 @@ SPF13FILES= \
 			.vimrc \
 			.vimrc.before \
 			.vimrc.bundles
+
+SPF13LOCALFILES= \
+			.vimrc.local \
+			.vimrc.before.local \
+			.vimrc.bundles.local
+
 OHMYZSH=.oh-my-zsh
+OHMYZSHFILES=\
+			.zshrc
+
 SYMLINKS= \
 	.ackrc \
 	.pdbrc \
@@ -13,13 +22,11 @@ SYMLINKS= \
 	.psqlrc \
 	.rspec \
 	.rvmrc \
-	.zshrc \
 	.inputrc \
 	.jshintrc \
 	.ctags \
-	.vimrc.local \
-	.vimrc.before.local \
-	.vimrc.bundles.local
+	.yaourtrc
+
 CLEANFILES= \
 			.vim \
 			.vimbackup \
@@ -28,18 +35,26 @@ CLEANFILES= \
 			.vimundo \
 			.vimviews \
 			$(OHMYZSH) \
+			$(OHMYZSHFILES) \
 			$(SPF13) \
-			$(SPF13FILES)
+			$(SPF13FILES) \
+			$(SPF13LOCALFILES)
 
-all: ohmyzsh spf13
+all: ohmyzsh spf13 symlinks
 
-ohmyzsh: symlinks
+ohmyzsh:
+	for f in $(OHMYZSHFILES); do \
+		ln -sf $(PWD)/$$f ~/$$f ; \
+	done
 	if [[ ! -e ~/$(OHMYZSH) ]]; then \
 		git clone https://github.com/robbyrussell/oh-my-zsh.git ~/$(OHMYZSH) ; \
 		ln -sf $(PWD)/gentoo2.zsh-theme ~/$(OHMYZSH)/themes/gentoo2.zsh-theme ; \
 	fi
 
-spf13: symlinks
+spf13:
+	for f in $(SPF13LOCALFILES); do \
+		ln -sf $(PWD)/$$f ~/$$f ; \
+	done
 	if [[ -e ~/$(SPF13) ]]; then \
 		cd ~/.spf13-vim-3 && git pull ; \
 		vim "+BundleInstall!" "+BundleClean" "+qall" ; \
