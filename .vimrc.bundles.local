@@ -1,4 +1,5 @@
 Bundle 'davidhalter/jedi-vim'
 Bundle 'epeli/slimux'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Bundle 'vim-airline/vim-airline-themes'
 Bundle 'Konfekt/FastFold'
