@@ -28,6 +28,10 @@ autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber,sh set ai sw=2 sts=2 et
 autocmd FileType javascript,python set ai sw=4 sts=4 et
 autocmd FileType make set noexpandtab
 autocmd FileType json,jsonp set foldmethod=syntax
+augroup vagrant
+    au!
+    au BufRead,BufNewFile Vagrantfile set filetype=ruby
+augroup END
 
 " In normal mode, jj escapes
 inoremap jj <Esc>
