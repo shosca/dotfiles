@@ -12,6 +12,9 @@ alias pi import inspect; inspect.getmembers(%1, lambda x: not callable(x))
 # Pretty print
 alias pp import pprint; pprint.pprint(%1)
 
+# fast exc_info
+alias exc_info !import sys; sys.exc_info()
+
 # Next and list, and step and list.
 alias nl n;;l
 alias sl s;;l
