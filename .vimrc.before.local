@@ -3,7 +3,7 @@ let g:spf13_no_autochdir = 1
 let g:spf13_bundle_groups=['general', 'writing', 'programming', 'php', 'ruby', 'python', 'go', 'javascript', 'html', 'misc', 'youcompleteme']
 
 let g:airline_powerline_fonts=1
-let g:airline_theme='tomorrow'
+let g:airline_theme='base16_default'
 
 let g:easytags_dynamic_files=1
 

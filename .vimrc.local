@@ -1,5 +1,6 @@
 set background=dark
-colorscheme Tomorrow-Night
+let base16colorspace=256
+colorscheme base16-default
 scriptencoding utf-8
 set fileencodings=utf-8
 set colorcolumn=80
