@@ -325,6 +325,8 @@
         au BufRead,BufNewFile Vagrantfile set filetype=ruby
     augroup END
 
+    autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+
 " }
 
 " Key Mappings {
