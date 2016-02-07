@@ -51,13 +51,13 @@
         " NeoBundle {
 
             NeoBundleFetch 'Shougo/neobundle.vim'
-            NeoBundle 'Shougo/vimproc.vim', {
+            NeoBundleFetch 'Shougo/vimproc.vim', {
             \ 'build': {
-            \       'windows': 'tools\\update-dll-mingw',
-            \       'cygwin': 'make -f make_cygwin.mak',
             \       'linux': 'make',
-            \       'mac': 'make',
+            \       'cygwin': 'make -f make_cygwin.mak',
             \       'unix': 'gmake',
+            \       'mac': 'make',
+            \       'windows': 'tools\\update-dll-mingw',
             \   },
             \ }
 
@@ -77,15 +77,19 @@
 
         " Programming {
 
-            " Pick one of the checksyntax, jslint, or syntastic
-            NeoBundle 'scrooloose/syntastic'
-            NeoBundle 'tpope/vim-fugitive'
-            NeoBundle 'airblade/vim-gitgutter'
-            NeoBundle 'scrooloose/nerdcommenter'
-            NeoBundle 'godlygeek/tabular'
-            NeoBundle 'luochen1990/rainbow'
-            NeoBundle 'majutsushi/tagbar'
-            NeoBundle 'matchit.zip'
+            " General {
+
+                " Pick one of the checksyntax, jslint, or syntastic
+                NeoBundle 'scrooloose/syntastic'
+                NeoBundle 'tpope/vim-fugitive'
+                NeoBundle 'airblade/vim-gitgutter'
+                NeoBundle 'scrooloose/nerdcommenter'
+                NeoBundle 'godlygeek/tabular'
+                NeoBundle 'luochen1990/rainbow'
+                NeoBundle 'majutsushi/tagbar'
+                NeoBundle 'matchit.zip'
+
+            " }
 
             " Python {
 
@@ -141,9 +145,16 @@
 
             NeoBundle 'garbas/vim-snipmate'
             NeoBundle 'MarcWeber/vim-addon-mw-utils'
-            NeoBundle 'honza/vim-snippets'
-            NeoBundle 'Shougo/neocomplete.vim'
             NeoBundle 'SirVer/ultisnips'
+            NeoBundle 'Valloric/YouCompleteMe', {
+            \ 'build': {
+            \       'linux': 'python2 install.py',
+            \       'cygwin': 'python2 install.py',
+            \       'unix': 'python2 install.py',
+            \       'mac': 'python2 install.py',
+            \       'windows': 'python2 install.py',
+            \   },
+            \ }
             NeoBundle 'honza/vim-snippets'
 
         " }
@@ -647,7 +658,7 @@
 
     " }
 
-    " PyMode {
+    " Python-Mode {
 
         " Disable if python support not present
         if !has('python') && !has('python3')
@@ -689,82 +700,35 @@
 
     " }
 
-    " neocomplete {
+    " YouCompleteMe {
 
-        let g:acp_enableAtStartup = 0
-        let g:neocomplete#enable_at_startup = 1
-        let g:neocomplete#enable_auto_select = 0
-        let g:neocomplete#enable_auto_delimiter = 1
-        let g:neocomplete#enable_smart_case = 1
-        let g:neocomplete#auto_completion_start_length = 2
-        let g:neocomplete#max_list = 15
-        let g:neocomplete#force_overwrite_completefunc = 1
-        let g:neocomplete#sources#syntax#min_keyword_length = 3
+            let g:acp_enableAtStartup = 0
 
-        " increase limit for tag cache files
-        let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
+            " enable completion from tags
+            let g:ycm_collect_identifiers_from_tags_files = 1
 
-        " fuzzy completion breaks dot-repeat more noticeably
-        " https://github.com/Shougo/neocomplete.vim/issues/332
-        let g:neocomplete#enable_fuzzy_completion = 0
+            " remap Ultisnips for compatibility for YCM
+            let g:UltiSnipsExpandTrigger = '<C-j>'
+            let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+            let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
-        " always use completions from all buffers
-        if !exists('g:neocomplete#same_filetypes')
-            let g:neocomplete#same_filetypes = {}
-        endif
-        let g:neocomplete#same_filetypes._ = '_'
+            " Enable omni completion.
+            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
-        " Define dictionary.
-        let g:neocomplete#sources#dictionary#dictionaries = {
-                    \ 'default' : '',
-                    \ 'vimshell' : $HOME.'/.vimshell_hist',
-                    \ 'scheme' : $HOME.'/.gosh_completions'
-                    \ }
+            if has('conceal')
+                set conceallevel=2 concealcursor=i
+            endif
 
-        " Define keyword.
-        if !exists('g:neocomplete#keyword_patterns')
-            let g:neocomplete#keyword_patterns = {}
-        endif
-        let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-        " Plugin key-mappings {
-
-            inoremap <expr> <C-g>   neocomplete#undo_completion()
-            inoremap <expr> <C-l>   neocomplete#complete_common_string()
-
-            " <ESC> takes you out of insert mode
-            inoremap <expr> <Esc>   pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
-
-            " <CR> accepts first, then sends the <CR>
-            inoremap <expr> <CR>    pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
-
-            " <TAB>: completion.
-            inoremap <expr><TAB>    pumvisible() ? "\<C-n>" : "\<TAB>"
-            inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
-
-            " <Down> and <Up> cycle like <Tab> and <S-Tab>
-            inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
-            inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
-
-            " <C-h>, <BS>: close popup and delete backword char.
-            inoremap <expr> <C-h>   neocomplete#smart_close_popup()."\<C-h>"
-            inoremap <expr> <BS>    neocomplete#smart_close_popup()."\<C-h>"
-            inoremap <expr> <C-y>   neocomplete#close_popup()
-            inoremap <expr> <C-e>   neocomplete#cancel_popup()
-
-        " }
-
-        " Enable heavy omni completion.
-        if !exists('g:neocomplcache_omni_patterns')
-            let g:neocomplcache_omni_patterns = {}
-        endif
-        let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-        let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-        let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-        let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-        let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-        let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
-
+            " Disable the preview candidate window
+            " When enabled, there can be too much visual noise
+            " especially when splits are used.
+            set completeopt-=preview
     " }
 
     " Vim omni-completion {
@@ -811,22 +775,10 @@
 
         let g:jedi#use_tabs_not_buffers = 1
 
-        " Using jedi omni for neocomplete
         let g:jedi#popup_on_dot = 0
         let g:jedi#popup_select_first = 0
         let g:jedi#completions_enabled = 0
         let g:jedi#auto_vim_configuration = 0
-
-        autocmd FileType python setlocal omnifunc=jedi#completions
-        if !exists('g:neocomplete#force_omni_input_patterns')
-            let g:neocomplete#force_omni_input_patterns = {}
-        endif
-        let g:neocomplete#force_omni_input_patterns.python =
-        \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-        " alternative pattern: '\h\w*\|[^. \t]\.\w*'
-
-        " No docstring window to popup during completion
-        autocmd FileType python setlocal completeopt-=preview
 
         " Plugin key-mappings {
 
