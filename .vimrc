@@ -93,8 +93,8 @@
 
             " Python {
 
-                NeoBundle 'klen/python-mode'
                 NeoBundle 'davidhalter/jedi-vim'
+                NeoBundle 'tmhedberg/SimpylFold'
 
             " }
 
@@ -499,6 +499,13 @@
 
 " Plugins {
 
+
+    " Syntastic {
+
+        let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+
+    " }
+
     " GoLang {
 
         let g:go_highlight_functions = 1
@@ -658,22 +665,6 @@
 
     " }
 
-    " Python-Mode {
-
-        " Disable if python support not present
-        if !has('python') && !has('python3')
-            let g:pymode = 0
-        endif
-
-        if isdirectory(expand("~/.vim/bundle/python-mode"))
-            let g:pymode_lint_checkers = ['pyflakes']
-            let g:pymode_trim_whitespaces = 0
-            let g:pymode_options = 0
-            let g:pymode_rope = 0
-        endif
-
-    " }
-
     " Fugitive {
 
         if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
@@ -791,6 +782,13 @@
             let g:jedi#rename_command = "<leader>r"
 
         " }
+    " }
+
+    " Jedi {
+
+        autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+        autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+
     " }
 
     " Slimux {
