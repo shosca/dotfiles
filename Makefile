@@ -62,6 +62,12 @@ ohmyzsh:
 		cd $(OHMYZSH) && git pull ; \
 	fi
 
+vim:
+	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
+		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neocomplete.vim
+	fi
+	ln -sf $(PWD)/.vimrc ~/.vimrc
+
 spf13:
 	for f in $(SPF13LOCALFILES); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
