@@ -19,6 +19,7 @@
     " Basics {
 
         set nocompatible
+        filetype plugin indent on   " Automatically detect file types.
 
     " }
 
@@ -50,6 +51,15 @@
         " NeoBundle {
 
             NeoBundleFetch 'Shougo/neobundle.vim'
+            NeoBundle 'Shougo/vimproc.vim', {
+            \ 'build': {
+            \       'windows': 'tools\\update-dll-mingw',
+            \       'cygwin': 'make -f make_cygwin.mak',
+            \       'linux': 'make',
+            \       'mac': 'make',
+            \       'unix': 'gmake',
+            \   },
+            \ }
 
         " }
 
@@ -70,10 +80,12 @@
             " Pick one of the checksyntax, jslint, or syntastic
             NeoBundle 'scrooloose/syntastic'
             NeoBundle 'tpope/vim-fugitive'
+            NeoBundle 'airblade/vim-gitgutter'
             NeoBundle 'scrooloose/nerdcommenter'
             NeoBundle 'godlygeek/tabular'
             NeoBundle 'luochen1990/rainbow'
             NeoBundle 'majutsushi/tagbar'
+            NeoBundle 'matchit.zip'
 
             " Python {
 
@@ -131,15 +143,25 @@
             NeoBundle 'MarcWeber/vim-addon-mw-utils'
             NeoBundle 'honza/vim-snippets'
             NeoBundle 'Shougo/neocomplete.vim'
-            NeoBundle 'Shougo/neosnippet'
-            NeoBundle 'Shougo/neosnippet-snippets'
+            NeoBundle 'SirVer/ultisnips'
             NeoBundle 'honza/vim-snippets'
+
+        " }
+
+        " Writing {
+
+            NeoBundle 'reedes/vim-litecorrect'
+            NeoBundle 'reedes/vim-textobj-sentence'
+            NeoBundle 'reedes/vim-textobj-quote'
+            NeoBundle 'reedes/vim-wordy'
 
         " }
 
     " }
 
     call neobundle#end()
+
+    filetype plugin indent on
 
     " If there are uninstalled bundles found on startup,
     " this will conveniently prompt you to install them.
@@ -192,6 +214,7 @@
     set smartcase                   " Case sensitive when uc present
     set wildmenu                    " Show list instead of just completing
     set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+    set wildignore=*.pyc,*.o,*.lo,*.la,*.exe,*.swp,*.db,*.bak,*.old,*.dat,*.,tmp,*.mdb,*~,~*
     set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
     set scrolljump=5                " Lines to scroll when cursor leaves screen
     set scrolloff=3                 " Minimum lines to keep above and below cursor
@@ -204,7 +227,6 @@
 " General {
 
     set colorcolumn=80
-    filetype plugin indent on   " Automatically detect file types.
     syntax on                   " Syntax highlighting
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
@@ -658,6 +680,13 @@
 
     " }
 
+    " GitGutter {
+
+        let g:gitgutter_enabled = 1
+        let g:gitgutter_map_keys = 0
+
+    " }
+
     " neocomplete {
 
         let g:acp_enableAtStartup = 0
@@ -665,10 +694,23 @@
         let g:neocomplete#enable_auto_select = 0
         let g:neocomplete#enable_auto_delimiter = 1
         let g:neocomplete#enable_smart_case = 1
-        let g:neocomplete#wkax_list = 15
+        let g:neocomplete#auto_completion_start_length = 2
+        let g:neocomplete#max_list = 15
         let g:neocomplete#force_overwrite_completefunc = 1
         let g:neocomplete#sources#syntax#min_keyword_length = 3
 
+        " increase limit for tag cache files
+        let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
+
+        " fuzzy completion breaks dot-repeat more noticeably
+        " https://github.com/Shougo/neocomplete.vim/issues/332
+        let g:neocomplete#enable_fuzzy_completion = 0
+
+        " always use completions from all buffers
+        if !exists('g:neocomplete#same_filetypes')
+            let g:neocomplete#same_filetypes = {}
+        endif
+        let g:neocomplete#same_filetypes._ = '_'
 
         " Define dictionary.
         let g:neocomplete#sources#dictionary#dictionaries = {
@@ -684,80 +726,50 @@
         let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
         " Plugin key-mappings {
-            " These two lines conflict with the default digraph mapping of <C-K>
-            imap <C-k> <Plug>(neosnippet_expand_or_jump)
-            smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
-            " <C-k> Complete Snippet
-            " <C-k> Jump to next snippet point
-            imap <silent><expr><C-k> neosnippet#expandable() ?
-                        \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
-                        \ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
-            smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
+            inoremap <expr> <C-g>   neocomplete#undo_completion()
+            inoremap <expr> <C-l>   neocomplete#complete_common_string()
 
-            inoremap <expr><C-g> neocomplete#undo_completion()
-            inoremap <expr><C-l> neocomplete#complete_common_string()
-            inoremap <expr><CR> neocomplete#complete_common_string()
+            " <ESC> takes you out of insert mode
+            inoremap <expr> <Esc>   pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
 
-            " <CR>: close popup
-            " <s-CR>: close popup and save indent.
-            inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
-
-            function! CleverCr()
-                if pumvisible()
-                    if neosnippet#expandable()
-                        let exp = "\<Plug>(neosnippet_expand)"
-                        return exp . neocomplete#smart_close_popup()
-                    else
-                        return neocomplete#smart_close_popup()
-                    endif
-                else
-                    return "\<CR>"
-                endif
-            endfunction
-
-            " <CR> close popup and save indent or expand snippet
-            imap <expr> <CR> CleverCr()
-            " <C-h>, <BS>: close popup and delete backword char.
-            inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-            inoremap <expr><C-y> neocomplete#smart_close_popup()
+            " <CR> accepts first, then sends the <CR>
+            inoremap <expr> <CR>    pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
             " <TAB>: completion.
-            inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-            inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+            inoremap <expr><TAB>    pumvisible() ? "\<C-n>" : "\<TAB>"
+            inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
 
-            " Courtesy of Matteo Cavalleri
+            " <Down> and <Up> cycle like <Tab> and <S-Tab>
+            inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+            inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
 
-            function! CleverTab()
-                if pumvisible()
-                    return "\<C-n>"
-                endif
-                let substr = strpart(getline('.'), 0, col('.') - 1)
-                let substr = matchstr(substr, '[^ \t]*$')
-                if strlen(substr) == 0
-                    " nothing to match on empty string
-                    return "\<Tab>"
-                else
-                    " existing text matching
-                    if neosnippet#expandable_or_jumpable()
-                        return "\<Plug>(neosnippet_expand_or_jump)"
-                    else
-                        return neocomplete#start_manual_complete()
-                    endif
-                endif
-            endfunction
+            " <C-h>, <BS>: close popup and delete backword char.
+            inoremap <expr> <C-h>   neocomplete#smart_close_popup()."\<C-h>"
+            inoremap <expr> <BS>    neocomplete#smart_close_popup()."\<C-h>"
+            inoremap <expr> <C-y>   neocomplete#close_popup()
+            inoremap <expr> <C-e>   neocomplete#cancel_popup()
 
-            imap <expr> <Tab> CleverTab()
         " }
+
+        " Enable heavy omni completion.
+        if !exists('g:neocomplcache_omni_patterns')
+            let g:neocomplcache_omni_patterns = {}
+        endif
+        let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+        let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+        let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+        let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+        let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+        let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
     " }
 
-    " Normal Vim omni-completion {
+    " Vim omni-completion {
 
         autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
         autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
         autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
         autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
         autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
@@ -769,21 +781,20 @@
         " Use honza's snippets.
         let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
-        " Enable neosnippet snipmate compatibility mode
-        let g:neosnippet#enable_snipmate_compatibility = 1
-
         " For snippet_complete marker.
         if has('conceal')
             set conceallevel=2 concealcursor=i
         endif
 
-        " Enable neosnippets when using go
-        let g:go_snippet_engine = "neosnippet"
-
         " Disable the neosnippet preview candidate window
         " When enabled, there can be too much visual noise
         " especially when splits are used.
         set completeopt-=preview
+
+        " remap Ultisnips
+        let g:UltiSnipsExpandTrigger = '<C-j>'
+        let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+        let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
     " }
 
@@ -796,19 +807,50 @@
 
     " Jedi {
 
-        let g:jedi#use_tabs_not_buffers=1
-        let g:jedi#completions_enabled=0
+        let g:jedi#use_tabs_not_buffers = 1
 
+        " Using jedi omni for neocomplete
+        let g:jedi#popup_on_dot = 0
+        let g:jedi#popup_select_first = 0
+        let g:jedi#completions_enabled = 0
+        let g:jedi#auto_vim_configuration = 0
+
+        autocmd FileType python setlocal omnifunc=jedi#completions
+        if !exists('g:neocomplete#force_omni_input_patterns')
+            let g:neocomplete#force_omni_input_patterns = {}
+        endif
+        let g:neocomplete#force_omni_input_patterns.python =
+        \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+        " alternative pattern: '\h\w*\|[^. \t]\.\w*'
+
+        " No docstring window to popup during completion
+        autocmd FileType python setlocal completeopt-=preview
+
+        " Plugin key-mappings {
+
+            let g:jedi#goto_command = "<leader>d"
+            let g:jedi#goto_assignments_command = "<leader>g"
+            let g:jedi#goto_definitions_command = ""
+            let g:jedi#documentation_command = "K"
+            let g:jedi#usages_command = "<leader>n"
+            let g:jedi#completions_command = "<C-Space>"
+            let g:jedi#rename_command = "<leader>r"
+
+        " }
     " }
 
     " Slimux {
 
-        map <C-c><C-c> :SlimuxREPLSendLine<CR>
-        vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-        map <Leader>s :SlimuxREPLSendLine<CR>
-        vmap <Leader>s :SlimuxREPLSendSelection<CR>
-        map <Leader>sa :SlimuxShellLast<CR>
-        map <Leader>sk :SlimuxSendKeysLast<CR>
+        " Plugin Mappings {
+
+            map <C-c><C-c> :SlimuxREPLSendLine<CR>
+            vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+            map <Leader>s :SlimuxREPLSendLine<CR>
+            vmap <Leader>s :SlimuxREPLSendSelection<CR>
+            map <Leader>sa :SlimuxShellLast<CR>
+            map <Leader>sk :SlimuxSendKeysLast<CR>
+
+        " }
 
     " }
 

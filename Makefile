@@ -62,11 +62,18 @@ ohmyzsh:
 		cd $(OHMYZSH) && git pull ; \
 	fi
 
-vim:
+neobundle:
+	mkdir -p ~/.vim/bundle ; \
 	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
-		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neocomplete.vim
-	fi
-	ln -sf $(PWD)/.vimrc ~/.vimrc
+		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim ; \
+	fi ; \
+	if [[ ! -d ~/.vim/bundle/vimproc.vim ]] ; then \
+		git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim ; \
+	fi ; \
+	ln -sf $(PWD)/.vimrc ~/.vimrc ; \
+	make -C ~/.vim/bundle/vimproc.vim/ ; \
+	vim -N -u ~/.vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
+		-U NONE -i NONE -V1 -e -s
 
 spf13:
 	for f in $(SPF13LOCALFILES); do \
