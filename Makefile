@@ -71,7 +71,7 @@ neobundle:
 		git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim ; \
 	fi ; \
 	ln -sf $(PWD)/.vimrc ~/.vimrc ; \
-	make -C ~/.vim/bundle/vimproc.vim/ ; \
+	make -C ~/.vim/bundle/vimproc.vim/ && \
 	vim -N -u ~/.vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
 		-U NONE -i NONE -V1 -e -s
 

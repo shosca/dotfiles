@@ -51,7 +51,7 @@
         " NeoBundle {
 
             NeoBundleFetch 'Shougo/neobundle.vim'
-            NeoBundleFetch 'Shougo/vimproc.vim', {
+            NeoBundle 'Shougo/vimproc.vim', {
             \ 'build': {
             \       'linux': 'make',
             \       'cygwin': 'make -f make_cygwin.mak',
