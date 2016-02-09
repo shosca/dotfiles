@@ -96,7 +96,7 @@
                 endif
             "}
 
-            " NeoBundle 'ctrlpvim/ctrlp.vim' " {
+            NeoBundle 'ctrlpvim/ctrlp.vim' " {
                 if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
 
                     NeoBundle 'tacahiroy/ctrlp-funky'
@@ -123,36 +123,6 @@
                             \ 'fallback': 'find %s -type f'
                         \ }
                     endif
-                endif
-            " }
-
-            NeoBundle 'Shougo/unite.vim' " {
-                if isdirectory(expand("~/.vim/bundle/unite.vim"))
-                    let g:unite_source_history_yank_enable = 1
-                    let g:unite_prompt = '>>>'
-                    let g:unite_winheight = 15
-                    let g:unite_update_time = 200
-                    let g:unite_split_rule = 'botright'
-                    let g:unite_data_directory = $HOME.'/vim/tmp/unite'
-
-                    if executable('ag')
-                        let g:unite_source_grep_command = 'ag'
-                        let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-                        let g:unite_source_grep_recursive_opt = ''
-                    endif
-
-                    autocmd FileType unite call s:unite_my_settings()
-                    function! s:unite_my_settings() "{
-                        nnoremap <C-p> :Unite -start-insert file_rec/async<CR>
-                        nnoremap <C-o> :Unite -quick-match buffer<CR>
-                        nnoremap <space>/ :Unite grep:.<CR>
-                        nnoremap <space>y :Unite history/yank<CR>
-                        nmap <buffer> <ESC> <Plug>(unite_exit)
-                        imap <silent><buffer><expr> <C-s> unite#do_action('split')
-                        imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-                        imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-                    endfunction "}
-                    call s:unite_my_settings()
                 endif
             " }
 
@@ -900,8 +870,5 @@
 " }
 
 " Other plugin settings {
-    call unite#filters#matcher_default#use(['matcher_fuzzy'])
-    call unite#filters#sorter_default#use(['sorter_rank'])
-    call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
-                \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
+
 " }
