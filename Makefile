@@ -1,15 +1,5 @@
 PWD=$(shell pwd)
 BASE16_SHELL=~/.config/base16-shell
-SPF13=~/.spf13-vim-3
-SPF13FILES= \
-			.vimrc \
-			.vimrc.before \
-			.vimrc.bundles
-
-SPF13LOCALFILES= \
-			.vimrc.local \
-			.vimrc.before.local \
-			.vimrc.bundles.local
 
 OHMYZSH=~/.oh-my-zsh
 OHMYZSHFILES=\
@@ -17,19 +7,21 @@ OHMYZSHFILES=\
 
 SYMLINKS= \
 	.ackrc \
-	.pdbrc \
+	.ctags \
 	.gitconfig \
 	.hgrc \
+	.inputrc \
+	.jshintrc \
+	.pdbrc \
 	.psqlrc \
 	.rspec \
 	.rvmrc \
-	.inputrc \
-	.jshintrc \
-	.ctags \
+	.tmux.conf \
 	.yaourtrc
 
 CLEANFILES= \
 			.vim \
+			.vimrc \
 			.vimbackup \
 			.viminfo \
 			.vimswap \
@@ -37,12 +29,9 @@ CLEANFILES= \
 			.vimviews \
 			$(OHMYZSH) \
 			$(OHMYZSHFILES) \
-			$(SPF13) \
-			$(SPF13FILES) \
-			$(SPF13LOCALFILES) \
 			$(BASE16_SHELL)
 
-all: ohmyzsh spf13 symlinks
+all: ohmyzsh symlinks base16
 
 base16:
 	if [[ ! -d $(BASE16_SHELL) ]]; then \
@@ -75,30 +64,12 @@ neobundle:
 	vim -N -u ~/.vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
 		-U NONE -i NONE -V1 -e -s
 
-spf13:
-	for f in $(SPF13LOCALFILES); do \
-		ln -sf $(PWD)/$$f ~/$$f ; \
-	done
-	if [[ -e $(SPF13) ]]; then \
-		cd ~/.spf13-vim-3 && git pull ; \
-		vim "+BundleInstall!" "+BundleClean" "+qall" ; \
-	else \
-		git clone -b 3.0 https://github.com/spf13/spf13-vim.git ~/$(SPF13) ; \
-		mkdir -p ~/.vim/bundle ; \
-		git clone -b master https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle ; \
-		for f in $(SPF13FILES) ; do \
-			ln -sf $(SPF13)/$$f ~/$$f ; \
-		done ; \
-		vim -u "$(SPF13)/.vimrc.bundles.default" "+BundleInstall!" "+BundleClean" "+qall" ; \
-	fi ; \
-	python2 ~/.vim/bundle/YouCompleteMe/install.py
-
 symlinks:
 	for f in $(SYMLINKS); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
 	done
 
 clean:
-	for f in $(SYMLINKS) $(OHMYZSH) $(SPF13) $(CLEANFILES) ; do \
+	for f in $(SYMLINKS) $(OHMYZSH) $(CLEANFILES) ; do \
 		rm -rf ~/$$f ; \
 	done
