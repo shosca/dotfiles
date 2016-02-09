@@ -1,5 +1,0 @@
-Bundle 'davidhalter/jedi-vim'
-Bundle 'epeli/slimux'
-Bundle 'vim-airline/vim-airline-themes'
-Bundle 'Konfekt/FastFold'
-Bundle 'chriskempson/base16-vim'

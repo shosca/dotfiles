@@ -46,11 +46,12 @@
 
     call neobundle#begin(expand('~/.vim/bundle/'))
 
-    " Bundles here: {
+    " Bundles and their config here: {
 
         " NeoBundle {
 
             NeoBundleFetch 'Shougo/neobundle.vim'
+
             NeoBundle 'Shougo/vimproc.vim', {
             \ 'build': {
             \       'linux': 'make',
@@ -65,13 +66,93 @@
 
         " General {
 
-            NeoBundle 'scrooloose/nerdtree'
-            NeoBundle 'ctrlpvim/ctrlp.vim'
-            NeoBundle 'tacahiroy/ctrlp-funky'
+            NeoBundle 'scrooloose/nerdtree' "{
+                if isdirectory(expand("~/.vim/bundle/nerdtree"))
+                    nnoremap <c-e> :NERDTreeToggle<CR>
+                    nnoremap <leader>e :NERDTreeToggle<CR>
+                    let g:NERDShutUp=1
+                    let NERDTreeShowBookmarks=1
+                    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+                    let NERDTreeChDirMode=0
+                    let NERDTreeQuitOnOpen=1
+                    let NERDTreeMouseMode=2
+                    let NERDTreeShowHidden=1
+                    let NERDTreeKeepTreeInNewTab=1
+                    let g:nerdtree_tabs_open_on_gui_startup=0
+                    let g:NERDTreeDirArrowExpandable = '▸'
+                    let g:NERDTreeDirArrowCollapsible = '▾'
+                    function! NERDTreeInitAsNeeded() " {
+                        redir => bufoutput
+                        buffers!
+                        redir END
+                        let idx = stridx(bufoutput, "NERD_tree")
+                        if idx > -1
+                            NERDTreeMirror
+                            NERDTreeFind
+                            wincmd l
+                        endif
+                    endfunction
+                    " }
+                endif
+            "}
+
+            NeoBundle 'ctrlpvim/ctrlp.vim' " {
+                if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
+
+                    NeoBundle 'tacahiroy/ctrlp-funky'
+
+                    nmap <C-o> :CtrlPBuffer<CR>
+                    let g:ctrlp_match_window_bottom = 0
+                    let g:ctrlp_match_window_reversed = 0
+                    let g:ctrlp_dotfiles = 0
+                    let g:ctrlp_switch_buffer = 0
+                    if executable('ag')
+                        let g:ctrlp_user_command = {
+                            \ 'types': {
+                                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                            \ },
+                            \ 'fallback': 'ag %s -l --nocolor -g ""'
+                        \ }
+                    else
+                        let g:ctrlp_user_command = {
+                            \ 'types': {
+                                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                            \ },
+                            \ 'fallback': 'find %s -type f'
+                        \ }
+                    endif
+                endif
+            " }
+
             NeoBundle 'Shougo/vimshell.vim'
+
             NeoBundle 'tpope/vim-markdown'
-            NeoBundle 'epeli/slimux'
+
+            NeoBundle 'epeli/slimux' " {
+                if isdirectory(expand("~/.vim/bundle/slimux"))
+                    map <C-c><C-c> :SlimuxREPLSendLine<CR>
+                    vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+                    map <Leader>s :SlimuxREPLSendLine<CR>
+                    vmap <Leader>s :SlimuxREPLSendSelection<CR>
+                    map <Leader>sa :SlimuxShellLast<CR>
+                    map <Leader>sk :SlimuxSendKeysLast<CR>
+                endif
+            " }
+
             NeoBundle 'Konfekt/FastFold'
+
+            NeoBundle 'tpope/vim-markdown'
+
+            NeoBundle 'vim-scripts/sessionman.vim' " {
+                set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+                if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
+                    nmap <leader>sl :SessionList<CR>
+                    nmap <leader>ss :SessionSave<CR>
+                    nmap <leader>sc :SessionClose<CR>
+                endif
+            " }
 
         " }
 
@@ -79,41 +160,154 @@
 
             " General {
 
-                " Pick one of the checksyntax, jslint, or syntastic
-                NeoBundle 'scrooloose/syntastic'
-                NeoBundle 'tpope/vim-fugitive'
-                NeoBundle 'airblade/vim-gitgutter'
+                NeoBundle 'scrooloose/syntastic' " {
+                    " Pick one of the checksyntax, jslint, or syntastic
+                    if isdirectory(expand("~/.vim/bundle/syntastic"))
+                        let g:syntastic_error_symbol = '✗'
+                        let g:syntastic_style_error_symbol = '✠'
+                        let g:syntastic_warning_symbol = '∆'
+                        let g:syntastic_style_warning_symbol = '≈'
+                        let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+                    endif
+                " }
+
+                NeoBundle 'tpope/vim-fugitive' " {
+                    if isdirectory(expand("~/.vim/bundle/vim-fugitive"))
+                        nnoremap <silent> <leader>gs :Gstatus<CR>
+                        nnoremap <silent> <leader>gd :Gdiff<CR>
+                        nnoremap <silent> <leader>gc :Gcommit<CR>
+                        nnoremap <silent> <leader>gb :Gblame<CR>
+                        nnoremap <silent> <leader>gl :Glog<CR>
+                        nnoremap <silent> <leader>gp :Git push<CR>
+                        nnoremap <silent> <leader>gr :Gread<CR>
+                        nnoremap <silent> <leader>gw :Gwrite<CR>
+                        nnoremap <silent> <leader>ge :Gedit<CR>
+                        " Mnemonic _i_nteractive
+                        nnoremap <silent> <leader>gi :Git add -p %<CR>
+                        nnoremap <silent> <leader>gg :SignifyToggle<CR>
+                    endif
+                " }
+
+                NeoBundle 'airblade/vim-gitgutter' " {
+                    if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
+                        let g:gitgutter_enabled = 1
+                        let g:gitgutter_map_keys = 0
+                    endif
+                " }
+
                 NeoBundle 'scrooloose/nerdcommenter'
-                NeoBundle 'godlygeek/tabular'
+
+                NeoBundle 'godlygeek/tabular' " {
+                    if isdirectory(expand("~/.vim/bundle/tabular"))
+                        nmap <Leader>a& :Tabularize /&<CR>
+                        vmap <Leader>a& :Tabularize /&<CR>
+                        nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+                        vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+                        nmap <Leader>a=> :Tabularize /=><CR>
+                        vmap <Leader>a=> :Tabularize /=><CR>
+                        nmap <Leader>a: :Tabularize /:<CR>
+                        vmap <Leader>a: :Tabularize /:<CR>
+                        nmap <Leader>a:: :Tabularize /:\zs<CR>
+                        vmap <Leader>a:: :Tabularize /:\zs<CR>
+                        nmap <Leader>a, :Tabularize /,<CR>
+                        vmap <Leader>a, :Tabularize /,<CR>
+                        nmap <Leader>a,, :Tabularize /,\zs<CR>
+                        vmap <Leader>a,, :Tabularize /,\zs<CR>
+                        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+                        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+                    endif
+                " }
+
                 NeoBundle 'luochen1990/rainbow'
-                NeoBundle 'majutsushi/tagbar'
+
+                NeoBundle 'majutsushi/tagbar' "{
+                    if isdirectory(expand("~/.vim/bundle/tagbar"))
+                        set tags=./tags;/,~/.vimtags
+                        " Make tags placed in .git/tags file available in all levels of a repository
+                        let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+                        if gitroot != ''
+                            let &tags = &tags . ',' . gitroot . '/.git/tags'
+                        endif
+                    endif
+                "}
+
                 NeoBundle 'matchit.zip'
+
+                NeoBundle 'majutsushi/tagbar'
+
+                NeoBundle 'tpope/vim-surround'
 
             " }
 
             " Python {
 
-                NeoBundle 'davidhalter/jedi-vim'
-                NeoBundle 'tmhedberg/SimpylFold'
+                NeoBundle 'davidhalter/jedi-vim' " {
+                    if isdirectory(expand("~/.vim/bundle/jedi-vim"))
+                        let g:jedi#use_tabs_not_buffers = 1
+                        let g:jedi#popup_on_dot = 0
+                        let g:jedi#popup_select_first = 0
+                        let g:jedi#completions_enabled = 0
+                        let g:jedi#auto_vim_configuration = 0
+                        let g:jedi#goto_command = "<leader>d"
+                        let g:jedi#goto_assignments_command = "<leader>g"
+                        let g:jedi#goto_definitions_command = ""
+                        let g:jedi#documentation_command = "K"
+                        let g:jedi#usages_command = "<leader>n"
+                        let g:jedi#completions_command = "<C-Space>"
+                        let g:jedi#rename_command = "<leader>r"
+                    endif
+                " }
+
+                NeoBundle 'tmhedberg/SimpylFold' " {
+                    if isdirectory(expand("~/.vim/bundle/SimpylFold"))
+                        autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+                        autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+                    endif
+                " }
+
+            " }
+
+            " Ruby {
+
+                NeoBundle 'tpope/vim-rails'
 
             " }
 
             " Javascript {
 
-                NeoBundle 'elzr/vim-json'
+                NeoBundle 'elzr/vim-json' " {
+                    if isdirectory(expand("~/.vim/bundle/vim-json"))
+                        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+                        let g:vim_json_syntax_conceal = 0
+                    endif
+                " }
+
                 NeoBundle 'groenewege/vim-less'
+
                 NeoBundle 'pangloss/vim-javascript'
+
                 NeoBundle 'briancollins/vim-jst'
+
                 NeoBundle 'kchmck/vim-coffee-script'
 
             " }
 
             " HTML {
 
-                NeoBundle 'amirh/HTML-AutoCloseTag'
+                NeoBundle 'amirh/HTML-AutoCloseTag' " {
+                    if isdirectory(expand("~/.vim/bundle/HTML-AutoCloseTag"))
+                        " Make it so AutoCloseTag works for xml and xhtml files as well
+                        au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+                        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+                    endif
+                " }
+
                 NeoBundle 'hail2u/vim-css3-syntax'
+
                 NeoBundle 'gorodinskiy/vim-coloresque'
+
                 NeoBundle 'tpope/vim-haml'
+
                 NeoBundle 'mattn/emmet-vim'
 
             " }
@@ -127,7 +321,28 @@
             " Go Lang {
 
                 "Bundle 'Blackrush/vim-gocode'
-                NeoBundle 'fatih/vim-go'
+
+                NeoBundle 'fatih/vim-go' " {
+                    if isdirectory(expand("~/.vim/bundle/vim-go"))
+                        let g:go_highlight_functions = 1
+                        let g:go_highlight_methods = 1
+                        let g:go_highlight_structs = 1
+                        let g:go_highlight_operators = 1
+                        let g:go_highlight_build_constraints = 1
+                        let g:go_fmt_command = "goimports"
+                        let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+                        let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+                        au FileType go nmap <Leader>s <Plug>(go-implements)
+                        au FileType go nmap <Leader>i <Plug>(go-info)
+                        au FileType go nmap <Leader>e <Plug>(go-rename)
+                        au FileType go nmap <leader>r <Plug>(go-run)
+                        au FileType go nmap <leader>b <Plug>(go-build)
+                        au FileType go nmap <leader>t <Plug>(go-test)
+                        au FileType go nmap <Leader>gd <Plug>(go-doc)
+                        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+                        au FileType go nmap <leader>co <Plug>(go-coverage)
+                    endif
+                "}
 
             " }
 
@@ -136,16 +351,37 @@
         " Theme and Visual {
 
             NeoBundle 'chriskempson/base16-vim'
-            NeoBundle 'vim-airline/vim-airline'
-            NeoBundle 'vim-airline/vim-airline-themes'
+
+            NeoBundle 'vim-airline/vim-airline' " {
+                NeoBundle 'vim-airline/vim-airline-themes'
+                if isdirectory(expand("~/.vim/bundle/vim-airline"))
+                    let g:airline_powerline_fonts=1
+                    let g:airline_theme='base16_default'
+                endif
+            " }
 
         " }
 
         " Snippets & AutoComplete {
 
-            NeoBundle 'garbas/vim-snipmate'
+            NeoBundle 'garbas/vim-snipmate' "{
+                " Setting the author var
+                let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
+            " }
+
             NeoBundle 'MarcWeber/vim-addon-mw-utils'
-            NeoBundle 'SirVer/ultisnips'
+
+            NeoBundle 'SirVer/ultisnips' "{
+                " For snippet_complete marker.
+                if has('conceal')
+                    set conceallevel=2 concealcursor=i
+                endif
+                " remap Ultisnips for compatibility for YCM
+                let g:UltiSnipsExpandTrigger = '<C-j>'
+                let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+                let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+            " }
+
             NeoBundle 'Valloric/YouCompleteMe', {
             \ 'build': {
             \       'linux': 'python2 install.py',
@@ -154,7 +390,51 @@
             \       'mac': 'python2 install.py',
             \       'windows': 'python2 install.py',
             \   },
-            \ }
+            \ } " {
+                if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
+                    let g:acp_enableAtStartup = 0
+
+                    " enable completion from tags
+                    let g:ycm_collect_identifiers_from_tags_files = 1
+
+                    if has("autocmd") && exists("+omnifunc")
+                        autocmd Filetype *
+                            \if &omnifunc == "" |
+                            \setlocal omnifunc=syntaxcomplete#Complete |
+                            \endif
+                    endif
+
+                    " Some convenient mappings
+                    "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+                    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+                    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+                    inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+                    inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+                    " Automatically open and close the popup menu / preview window
+                    au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+                    set completeopt=menu,preview,longest
+
+                    " Enable omni completion.
+                    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+                    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+                    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+                    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+                    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+                    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+                    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+                    if has('conceal')
+                        set conceallevel=2 concealcursor=i
+                    endif
+
+                    " Disable the preview candidate window
+                    " When enabled, there can be too much visual noise
+                    " especially when splits are used.
+                    set completeopt-=preview
+                endif
+            " }
+
             NeoBundle 'honza/vim-snippets'
 
         " }
@@ -162,8 +442,25 @@
         " Writing {
 
             NeoBundle 'reedes/vim-litecorrect'
+
             NeoBundle 'reedes/vim-textobj-sentence'
-            NeoBundle 'reedes/vim-textobj-quote'
+
+            NeoBundle 'reedes/vim-textobj-quote' " {
+                augroup textobj_sentence
+                  autocmd!
+                  autocmd FileType markdown call textobj#sentence#init()
+                  autocmd FileType textile call textobj#sentence#init()
+                  autocmd FileType text call textobj#sentence#init()
+                augroup END
+
+                augroup textobj_quote
+                    autocmd!
+                    autocmd FileType markdown call textobj#quote#init()
+                    autocmd FileType textile call textobj#quote#init()
+                    autocmd FileType text call textobj#quote#init({'educate': 0})
+                augroup END
+            " }
+
             NeoBundle 'reedes/vim-wordy'
 
         " }
@@ -497,344 +794,6 @@
 
 " }
 
-" Plugins {
-
-
-    " Syntastic {
-
-        let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
-
-    " }
-
-    " GoLang {
-
-        let g:go_highlight_functions = 1
-        let g:go_highlight_methods = 1
-        let g:go_highlight_structs = 1
-        let g:go_highlight_operators = 1
-        let g:go_highlight_build_constraints = 1
-        let g:go_fmt_command = "goimports"
-        let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-        let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-        au FileType go nmap <Leader>s <Plug>(go-implements)
-        au FileType go nmap <Leader>i <Plug>(go-info)
-        au FileType go nmap <Leader>e <Plug>(go-rename)
-        au FileType go nmap <leader>r <Plug>(go-run)
-        au FileType go nmap <leader>b <Plug>(go-build)
-        au FileType go nmap <leader>t <Plug>(go-test)
-        au FileType go nmap <Leader>gd <Plug>(go-doc)
-        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-        au FileType go nmap <leader>co <Plug>(go-coverage)
-
-    " }
-
-    " TextObj {
-
-        augroup textobj_sentence
-          autocmd!
-          autocmd FileType markdown call textobj#sentence#init()
-          autocmd FileType textile call textobj#sentence#init()
-          autocmd FileType text call textobj#sentence#init()
-        augroup END
-
-        augroup textobj_quote
-            autocmd!
-            autocmd FileType markdown call textobj#quote#init()
-            autocmd FileType textile call textobj#quote#init()
-            autocmd FileType text call textobj#quote#init({'educate': 0})
-        augroup END
-
-    " }
-
-    " PIV {
-
-        if isdirectory(expand("~/.vim/bundle/PIV"))
-            let g:DisableAutoPHPFolding = 0
-            let g:PIVAutoClose = 0
-        endif
-
-    " }
-
-    " OmniComplete {
-
-        if has("autocmd") && exists("+omnifunc")
-            autocmd Filetype *
-                \if &omnifunc == "" |
-                \setlocal omnifunc=syntaxcomplete#Complete |
-                \endif
-        endif
-
-        " Some convenient mappings
-        "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-        inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-        inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-        inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-        inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-        " Automatically open and close the popup menu / preview window
-        au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-        set completeopt=menu,preview,longest
-
-    " }
-
-    " Ctags {
-
-        set tags=./tags;/,~/.vimtags
-
-        " Make tags placed in .git/tags file available in all levels of a repository
-        let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-        if gitroot != ''
-            let &tags = &tags . ',' . gitroot . '/.git/tags'
-        endif
-
-    " }
-
-    " AutoCloseTag {
-
-        " Make it so AutoCloseTag works for xml and xhtml files as well
-        au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-
-    " }
-
-    " SnipMate {
-
-        " Setting the author var
-        let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
-
-    " }
-
-    " NerdTree {
-
-        nnoremap <c-e> :NERDTreeToggle<CR>
-        nnoremap <leader>e :NERDTreeToggle<CR>
-
-        let g:NERDShutUp=1
-        let NERDTreeShowBookmarks=1
-        let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-        let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=1
-        let NERDTreeMouseMode=2
-        let NERDTreeShowHidden=1
-        let NERDTreeKeepTreeInNewTab=1
-        let g:nerdtree_tabs_open_on_gui_startup=0
-
-        let g:NERDTreeDirArrowExpandable = '▸'
-        let g:NERDTreeDirArrowCollapsible = '▾'
-
-    " }
-
-    " Tabularize {
-
-        if isdirectory(expand("~/.vim/bundle/tabular"))
-            nmap <Leader>a& :Tabularize /&<CR>
-            vmap <Leader>a& :Tabularize /&<CR>
-            nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            nmap <Leader>a=> :Tabularize /=><CR>
-            vmap <Leader>a=> :Tabularize /=><CR>
-            nmap <Leader>a: :Tabularize /:<CR>
-            vmap <Leader>a: :Tabularize /:<CR>
-            nmap <Leader>a:: :Tabularize /:\zs<CR>
-            vmap <Leader>a:: :Tabularize /:\zs<CR>
-            nmap <Leader>a, :Tabularize /,<CR>
-            vmap <Leader>a, :Tabularize /,<CR>
-            nmap <Leader>a,, :Tabularize /,\zs<CR>
-            vmap <Leader>a,, :Tabularize /,\zs<CR>
-            nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-            vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-        endif
-
-    " }
-
-    " Session List {
-
-        set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-        if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
-            nmap <leader>sl :SessionList<CR>
-            nmap <leader>ss :SessionSave<CR>
-            nmap <leader>sc :SessionClose<CR>
-        endif
-
-    " }
-
-    " JSON {
-
-        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-        let g:vim_json_syntax_conceal = 0
-
-    " }
-
-    " Fugitive {
-
-        if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
-            nnoremap <silent> <leader>gs :Gstatus<CR>
-            nnoremap <silent> <leader>gd :Gdiff<CR>
-            nnoremap <silent> <leader>gc :Gcommit<CR>
-            nnoremap <silent> <leader>gb :Gblame<CR>
-            nnoremap <silent> <leader>gl :Glog<CR>
-            nnoremap <silent> <leader>gp :Git push<CR>
-            nnoremap <silent> <leader>gr :Gread<CR>
-            nnoremap <silent> <leader>gw :Gwrite<CR>
-            nnoremap <silent> <leader>ge :Gedit<CR>
-            " Mnemonic _i_nteractive
-            nnoremap <silent> <leader>gi :Git add -p %<CR>
-            nnoremap <silent> <leader>gg :SignifyToggle<CR>
-        endif
-
-    " }
-
-    " GitGutter {
-
-        let g:gitgutter_enabled = 1
-        let g:gitgutter_map_keys = 0
-
-    " }
-
-    " YouCompleteMe {
-
-            let g:acp_enableAtStartup = 0
-
-            " enable completion from tags
-            let g:ycm_collect_identifiers_from_tags_files = 1
-
-            " remap Ultisnips for compatibility for YCM
-            let g:UltiSnipsExpandTrigger = '<C-j>'
-            let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-            let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-            " Enable omni completion.
-            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-            autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-            if has('conceal')
-                set conceallevel=2 concealcursor=i
-            endif
-
-            " Disable the preview candidate window
-            " When enabled, there can be too much visual noise
-            " especially when splits are used.
-            set completeopt-=preview
-    " }
-
-    " Vim omni-completion {
-
-        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-    " }
-
-    " Snippets {
-
-        " Use honza's snippets.
-        let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-
-        " For snippet_complete marker.
-        if has('conceal')
-            set conceallevel=2 concealcursor=i
-        endif
-
-        " Disable the neosnippet preview candidate window
-        " When enabled, there can be too much visual noise
-        " especially when splits are used.
-        set completeopt-=preview
-
-        " remap Ultisnips
-        let g:UltiSnipsExpandTrigger = '<C-j>'
-        let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-        let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-    " }
-
-    " Airline config {
-
-        let g:airline_powerline_fonts=1
-        let g:airline_theme='base16_default'
-
-    " }
-
-    " Jedi {
-
-        let g:jedi#use_tabs_not_buffers = 1
-
-        let g:jedi#popup_on_dot = 0
-        let g:jedi#popup_select_first = 0
-        let g:jedi#completions_enabled = 0
-        let g:jedi#auto_vim_configuration = 0
-
-        " Plugin key-mappings {
-
-            let g:jedi#goto_command = "<leader>d"
-            let g:jedi#goto_assignments_command = "<leader>g"
-            let g:jedi#goto_definitions_command = ""
-            let g:jedi#documentation_command = "K"
-            let g:jedi#usages_command = "<leader>n"
-            let g:jedi#completions_command = "<C-Space>"
-            let g:jedi#rename_command = "<leader>r"
-
-        " }
-    " }
-
-    " SimpylFold {
-
-        autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-        autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
-
-    " }
-
-    " Slimux {
-
-        " Plugin Mappings {
-
-            map <C-c><C-c> :SlimuxREPLSendLine<CR>
-            vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-            map <Leader>s :SlimuxREPLSendLine<CR>
-            vmap <Leader>s :SlimuxREPLSendSelection<CR>
-            map <Leader>sa :SlimuxShellLast<CR>
-            map <Leader>sk :SlimuxSendKeysLast<CR>
-
-        " }
-
-    " }
-
-    " CtrlP {
-
-        nmap <C-o> :CtrlPBuffer<CR>
-        let g:ctrlp_match_window_bottom = 0
-        let g:ctrlp_match_window_reversed = 0
-        let g:ctrlp_dotfiles = 0
-        let g:ctrlp_switch_buffer = 0
-        if executable('ag')
-            let g:ctrlp_user_command = {
-                \ 'types': {
-                    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': 'ag %s -l --nocolor -g ""'
-            \ }
-        else
-            let g:ctrlp_user_command = {
-                \ 'types': {
-                    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': 'find %s -type f'
-            \ }
-        endif
-
-    " }
-
-" }
-
 " GUI Settings {
 
     " GVIM- (here instead of .gvimrc)
@@ -859,72 +818,50 @@
 
 " Functions {
 
-    " Initialize directories {
+    function! InitializeDirectories() " {
+        let parent = $HOME
+        let prefix = 'vim'
+        let dir_list = {
+                    \ 'backup': 'backupdir',
+                    \ 'views': 'viewdir',
+                    \ 'swap': 'directory' }
 
-        function! InitializeDirectories()
-            let parent = $HOME
-            let prefix = 'vim'
-            let dir_list = {
-                        \ 'backup': 'backupdir',
-                        \ 'views': 'viewdir',
-                        \ 'swap': 'directory' }
+        if has('persistent_undo')
+            let dir_list['undo'] = 'undodir'
+        endif
 
-            if has('persistent_undo')
-                let dir_list['undo'] = 'undodir'
-            endif
+        let common_dir = parent . '/.' . prefix
 
-            let common_dir = parent . '/.' . prefix
-
-            for [dirname, settingname] in items(dir_list)
-                let directory = common_dir . dirname . '/'
-                if exists("*mkdir")
-                    if !isdirectory(directory)
-                        call mkdir(directory)
-                    endif
-                endif
+        for [dirname, settingname] in items(dir_list)
+            let directory = common_dir . dirname . '/'
+            if exists("*mkdir")
                 if !isdirectory(directory)
-                    echo "Warning: Unable to create backup directory: " . directory
-                    echo "Try: mkdir -p " . directory
-                else
-                    let directory = substitute(directory, " ", "\\\\ ", "g")
-                    exec "set " . settingname . "=" . directory
+                    call mkdir(directory)
                 endif
-            endfor
-        endfunction
-        call InitializeDirectories()
-
-    " }
-
-    " Strip whitespace {
-
-        function! StripTrailingWhitespace()
-            " Preparation: save last search, and cursor position.
-            let _s=@/
-            let l = line(".")
-            let c = col(".")
-            " do the business:
-            %s/\s\+$//e
-            " clean up: restore previous search history, and cursor position
-            let @/=_s
-            call cursor(l, c)
-        endfunction
-
-    " }
-
-    " Initialize NERDTree as needed {
-
-        function! NERDTreeInitAsNeeded()
-            redir => bufoutput
-            buffers!
-            redir END
-            let idx = stridx(bufoutput, "NERD_tree")
-            if idx > -1
-                NERDTreeMirror
-                NERDTreeFind
-                wincmd l
             endif
-        endfunction
+            if !isdirectory(directory)
+                echo "Warning: Unable to create backup directory: " . directory
+                echo "Try: mkdir -p " . directory
+            else
+                let directory = substitute(directory, " ", "\\\\ ", "g")
+                exec "set " . settingname . "=" . directory
+            endif
+        endfor
+    endfunction
+    call InitializeDirectories()
+    " }
 
+    function! StripTrailingWhitespace() " {
+        " Preparation: save last search, and cursor position.
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        " do the business:
+        %s/\s\+$//e
+        " clean up: restore previous search history, and cursor position
+        let @/=_s
+        call cursor(l, c)
+    endfunction
     " }
 
 " }
