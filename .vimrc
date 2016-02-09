@@ -237,6 +237,8 @@
 
                 NeoBundle 'tpope/vim-surround'
 
+                NeoBundle 'jiangmiao/auto-pairs'
+
             " }
 
             " Python {
