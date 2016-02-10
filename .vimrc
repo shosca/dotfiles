@@ -270,6 +270,15 @@
 
             NeoBundle 'majutsushi/tagbar'
 
+            NeoBundle 'xolox/vim-misc'
+
+            NeoBundle 'xolox/vim-easytags' " {
+                let g:easytags_async = 1
+                let g:easytags_file = '~/.vim/tags'
+                let g:easytags_by_filetype = '~/.vim/ftags/'
+                let g:easytags_events = ['BufWritePost']
+            " }
+
             NeoBundle 'tpope/vim-surround'
 
             NeoBundle 'jiangmiao/auto-pairs'
