@@ -230,6 +230,7 @@
             NeoBundle 'airblade/vim-gitgutter' " {
                 if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
                     let g:gitgutter_enabled = 1
+                    let g:gitgutter_eager = 0
                     let g:gitgutter_map_keys = 0
                 endif
             " }
