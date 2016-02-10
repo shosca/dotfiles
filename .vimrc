@@ -39,439 +39,476 @@
 
 " }
 
-" NeoBundle Setup {
+" NeoBundle Start {
 
     " Required:
     set runtimepath^=~/.vim/bundle/neobundle.vim/
 
     call neobundle#begin(expand('~/.vim/bundle/'))
 
-    " Bundles and their config here: {
+" }
 
-        " NeoBundle {
+" Bundles and their config here: {
 
-            NeoBundleFetch 'Shougo/neobundle.vim'
+    " NeoBundle {
 
-            NeoBundle 'Shougo/vimproc.vim', {
-            \ 'build': {
-            \       'linux': 'make',
-            \       'cygwin': 'make -f make_cygwin.mak',
-            \       'unix': 'gmake',
-            \       'mac': 'make',
-            \       'windows': 'tools\\update-dll-mingw',
-            \   },
-            \ }
+        NeoBundleFetch 'Shougo/neobundle.vim'
 
+        NeoBundle 'Shougo/vimproc.vim', {
+        \ 'build': {
+        \       'linux': 'make',
+        \       'cygwin': 'make -f make_cygwin.mak',
+        \       'unix': 'gmake',
+        \       'mac': 'make',
+        \       'windows': 'tools\\update-dll-mingw',
+        \   },
+        \ }
+
+    " }
+
+    " General {
+
+        NeoBundle 'scrooloose/nerdtree' "{
+            if isdirectory(expand("~/.vim/bundle/nerdtree"))
+                nnoremap <c-e> :NERDTreeToggle<CR>
+                nnoremap <leader>e :NERDTreeToggle<CR>
+                let g:NERDShutUp=1
+                let NERDTreeShowBookmarks=1
+                let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+                let NERDTreeChDirMode=0
+                let NERDTreeQuitOnOpen=1
+                let NERDTreeMouseMode=2
+                let NERDTreeShowHidden=1
+                let NERDTreeKeepTreeInNewTab=1
+                let g:nerdtree_tabs_open_on_gui_startup=0
+                let g:NERDTreeDirArrowExpandable = '▸'
+                let g:NERDTreeDirArrowCollapsible = '▾'
+                function! NERDTreeInitAsNeeded() " {
+                    redir => bufoutput
+                    buffers!
+                    redir END
+                    let idx = stridx(bufoutput, "NERD_tree")
+                    if idx > -1
+                        NERDTreeMirror
+                        NERDTreeFind
+                        wincmd l
+                    endif
+                endfunction
+                " }
+            endif
+        "}
+
+        " NeoBundle 'ctrlpvim/ctrlp.vim' " {
+            if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
+
+                NeoBundle 'tacahiroy/ctrlp-funky'
+
+                nmap <C-o> :CtrlPBuffer<CR>
+                let g:ctrlp_match_window_bottom = 0
+                let g:ctrlp_match_window_reversed = 0
+                let g:ctrlp_dotfiles = 0
+                let g:ctrlp_switch_buffer = 0
+                if executable('ag')
+                    let g:ctrlp_user_command = {
+                        \ 'types': {
+                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                        \ },
+                        \ 'fallback': 'ag %s -l --nocolor -g ""'
+                    \ }
+                else
+                    let g:ctrlp_user_command = {
+                        \ 'types': {
+                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                        \ },
+                        \ 'fallback': 'find %s -type f'
+                    \ }
+                endif
+            endif
         " }
+
+        NeoBundle 'Shougo/unite.vim' " {
+            NeoBundle 'k0kubun/unite-git-files'
+
+            let g:unite_source_history_yank_enable = 1
+            let g:unite_marked_icon = '✓'
+            nnoremap <C-p> :Unite -start-insert git_files<cr>
+            nnoremap <C-o> :Unite -start-insert buffer<cr>
+            nnoremap <space>f :Unite -no-quit grep:.<cr>
+            nnoremap <space>y :Unite history/yank<cr>
+
+
+            if executable('ag')
+                let g:unite_source_grep_command = 'ag'
+                let g:unite_source_grep_default_opts =
+                    \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
+                    \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+                let g:unite_source_grep_recursive_opt = ''
+            endif
+
+            function! s:unite_settings() "{
+                nmap <buffer> <ESC> <Plug>(unite_exit)
+                imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+                imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+                nmap <buffer> <C-j> j
+                nmap <buffer> <C-k> k
+                imap <buffer><expr> <C-s> unite#do_action('split')
+                imap <buffer><expr> <C-v> unite#do_action('vsplit')
+                imap <buffer><expr> <C-t> unite#do_action('tabopen')
+            endfunction " }
+            autocmd FileType unite call s:unite_settings()
+            call s:unite_settings()
+        " }
+
+        NeoBundle 'Shougo/vimshell.vim'
+
+        NeoBundle 'tpope/vim-markdown'
+
+        NeoBundle 'epeli/slimux' " {
+            if isdirectory(expand("~/.vim/bundle/slimux"))
+                map <C-c><C-c> :SlimuxREPLSendLine<CR>
+                vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+                map <Leader>s :SlimuxREPLSendLine<CR>
+                vmap <Leader>s :SlimuxREPLSendSelection<CR>
+                map <Leader>sa :SlimuxShellLast<CR>
+                map <Leader>sk :SlimuxSendKeysLast<CR>
+            endif
+        " }
+
+        NeoBundle 'Konfekt/FastFold'
+
+        NeoBundle 'tpope/vim-markdown'
+
+        NeoBundle 'vim-scripts/sessionman.vim' " {
+            set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+            if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
+                nmap <leader>sl :SessionList<CR>
+                nmap <leader>ss :SessionSave<CR>
+                nmap <leader>sc :SessionClose<CR>
+            endif
+        " }
+
+    " }
+
+    " Programming {
 
         " General {
 
-            NeoBundle 'scrooloose/nerdtree' "{
-                if isdirectory(expand("~/.vim/bundle/nerdtree"))
-                    nnoremap <c-e> :NERDTreeToggle<CR>
-                    nnoremap <leader>e :NERDTreeToggle<CR>
-                    let g:NERDShutUp=1
-                    let NERDTreeShowBookmarks=1
-                    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-                    let NERDTreeChDirMode=0
-                    let NERDTreeQuitOnOpen=1
-                    let NERDTreeMouseMode=2
-                    let NERDTreeShowHidden=1
-                    let NERDTreeKeepTreeInNewTab=1
-                    let g:nerdtree_tabs_open_on_gui_startup=0
-                    let g:NERDTreeDirArrowExpandable = '▸'
-                    let g:NERDTreeDirArrowCollapsible = '▾'
-                    function! NERDTreeInitAsNeeded() " {
-                        redir => bufoutput
-                        buffers!
-                        redir END
-                        let idx = stridx(bufoutput, "NERD_tree")
-                        if idx > -1
-                            NERDTreeMirror
-                            NERDTreeFind
-                            wincmd l
-                        endif
-                    endfunction
-                    " }
+            NeoBundle 'scrooloose/syntastic' " {
+                " Pick one of the checksyntax, jslint, or syntastic
+                if isdirectory(expand("~/.vim/bundle/syntastic"))
+                    let g:syntastic_error_symbol = '✗'
+                    let g:syntastic_style_error_symbol = '✠'
+                    let g:syntastic_warning_symbol = '∆'
+                    let g:syntastic_style_warning_symbol = '≈'
+                    let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+                endif
+            " }
+
+            NeoBundle 'tpope/vim-fugitive' " {
+                if isdirectory(expand("~/.vim/bundle/vim-fugitive"))
+                    nnoremap <silent> <leader>gs :Gstatus<CR>
+                    nnoremap <silent> <leader>gd :Gdiff<CR>
+                    nnoremap <silent> <leader>gc :Gcommit<CR>
+                    nnoremap <silent> <leader>gb :Gblame<CR>
+                    nnoremap <silent> <leader>gl :Glog<CR>
+                    nnoremap <silent> <leader>gp :Git push<CR>
+                    nnoremap <silent> <leader>gr :Gread<CR>
+                    nnoremap <silent> <leader>gw :Gwrite<CR>
+                    nnoremap <silent> <leader>ge :Gedit<CR>
+                    " Mnemonic _i_nteractive
+                    nnoremap <silent> <leader>gi :Git add -p %<CR>
+                    nnoremap <silent> <leader>gg :SignifyToggle<CR>
+                endif
+            " }
+
+            NeoBundle 'airblade/vim-gitgutter' " {
+                if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
+                    let g:gitgutter_enabled = 1
+                    let g:gitgutter_map_keys = 0
+                endif
+            " }
+
+            NeoBundle 'scrooloose/nerdcommenter'
+
+            NeoBundle 'godlygeek/tabular' " {
+                if isdirectory(expand("~/.vim/bundle/tabular"))
+                    nmap <Leader>a& :Tabularize /&<CR>
+                    vmap <Leader>a& :Tabularize /&<CR>
+                    nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+                    vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+                    nmap <Leader>a=> :Tabularize /=><CR>
+                    vmap <Leader>a=> :Tabularize /=><CR>
+                    nmap <Leader>a: :Tabularize /:<CR>
+                    vmap <Leader>a: :Tabularize /:<CR>
+                    nmap <Leader>a:: :Tabularize /:\zs<CR>
+                    vmap <Leader>a:: :Tabularize /:\zs<CR>
+                    nmap <Leader>a, :Tabularize /,<CR>
+                    vmap <Leader>a, :Tabularize /,<CR>
+                    nmap <Leader>a,, :Tabularize /,\zs<CR>
+                    vmap <Leader>a,, :Tabularize /,\zs<CR>
+                    nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+                    vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+                endif
+            " }
+
+            NeoBundle 'luochen1990/rainbow'
+
+            NeoBundle 'majutsushi/tagbar' "{
+                if isdirectory(expand("~/.vim/bundle/tagbar"))
+                    set tags=./tags;/,~/.vimtags
+                    " Make tags placed in .git/tags file available in all levels of a repository
+                    let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+                    if gitroot != ''
+                        let &tags = &tags . ',' . gitroot . '/.git/tags'
+                    endif
                 endif
             "}
 
-            NeoBundle 'ctrlpvim/ctrlp.vim' " {
-                if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
+            NeoBundle 'matchit.zip'
 
-                    NeoBundle 'tacahiroy/ctrlp-funky'
+            NeoBundle 'majutsushi/tagbar'
 
-                    nmap <C-o> :CtrlPBuffer<CR>
-                    let g:ctrlp_match_window_bottom = 0
-                    let g:ctrlp_match_window_reversed = 0
-                    let g:ctrlp_dotfiles = 0
-                    let g:ctrlp_switch_buffer = 0
-                    if executable('ag')
-                        let g:ctrlp_user_command = {
-                            \ 'types': {
-                                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                            \ },
-                            \ 'fallback': 'ag %s -l --nocolor -g ""'
-                        \ }
-                    else
-                        let g:ctrlp_user_command = {
-                            \ 'types': {
-                                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                            \ },
-                            \ 'fallback': 'find %s -type f'
-                        \ }
-                    endif
+            NeoBundle 'tpope/vim-surround'
+
+            NeoBundle 'jiangmiao/auto-pairs'
+
+        " }
+
+        " Python {
+
+            NeoBundle 'davidhalter/jedi-vim' " {
+                if isdirectory(expand("~/.vim/bundle/jedi-vim"))
+                    let g:jedi#use_tabs_not_buffers = 1
+                    let g:jedi#popup_on_dot = 0
+                    let g:jedi#popup_select_first = 0
+                    let g:jedi#completions_enabled = 0
+                    let g:jedi#auto_vim_configuration = 0
+                    let g:jedi#goto_command = "<leader>d"
+                    let g:jedi#goto_assignments_command = "<leader>g"
+                    let g:jedi#goto_definitions_command = ""
+                    let g:jedi#documentation_command = "K"
+                    let g:jedi#usages_command = "<leader>n"
+                    let g:jedi#completions_command = "<C-Space>"
+                    let g:jedi#rename_command = "<leader>r"
                 endif
             " }
 
-            NeoBundle 'Shougo/vimshell.vim'
-
-            NeoBundle 'tpope/vim-markdown'
-
-            NeoBundle 'epeli/slimux' " {
-                if isdirectory(expand("~/.vim/bundle/slimux"))
-                    map <C-c><C-c> :SlimuxREPLSendLine<CR>
-                    vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-                    map <Leader>s :SlimuxREPLSendLine<CR>
-                    vmap <Leader>s :SlimuxREPLSendSelection<CR>
-                    map <Leader>sa :SlimuxShellLast<CR>
-                    map <Leader>sk :SlimuxSendKeysLast<CR>
+            NeoBundle 'tmhedberg/SimpylFold' " {
+                if isdirectory(expand("~/.vim/bundle/SimpylFold"))
+                    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+                    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
                 endif
             " }
 
-            NeoBundle 'Konfekt/FastFold'
-
-            NeoBundle 'tpope/vim-markdown'
-
-            NeoBundle 'vim-scripts/sessionman.vim' " {
-                set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-                if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
-                    nmap <leader>sl :SessionList<CR>
-                    nmap <leader>ss :SessionSave<CR>
-                    nmap <leader>sc :SessionClose<CR>
-                endif
+            NeoBundle 'hdima/python-syntax' " {
+                let python_highlight_all = 1
             " }
 
         " }
 
-        " Programming {
+        " Ruby {
 
-            " General {
-
-                NeoBundle 'scrooloose/syntastic' " {
-                    " Pick one of the checksyntax, jslint, or syntastic
-                    if isdirectory(expand("~/.vim/bundle/syntastic"))
-                        let g:syntastic_error_symbol = '✗'
-                        let g:syntastic_style_error_symbol = '✠'
-                        let g:syntastic_warning_symbol = '∆'
-                        let g:syntastic_style_warning_symbol = '≈'
-                        let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
-                    endif
-                " }
-
-                NeoBundle 'tpope/vim-fugitive' " {
-                    if isdirectory(expand("~/.vim/bundle/vim-fugitive"))
-                        nnoremap <silent> <leader>gs :Gstatus<CR>
-                        nnoremap <silent> <leader>gd :Gdiff<CR>
-                        nnoremap <silent> <leader>gc :Gcommit<CR>
-                        nnoremap <silent> <leader>gb :Gblame<CR>
-                        nnoremap <silent> <leader>gl :Glog<CR>
-                        nnoremap <silent> <leader>gp :Git push<CR>
-                        nnoremap <silent> <leader>gr :Gread<CR>
-                        nnoremap <silent> <leader>gw :Gwrite<CR>
-                        nnoremap <silent> <leader>ge :Gedit<CR>
-                        " Mnemonic _i_nteractive
-                        nnoremap <silent> <leader>gi :Git add -p %<CR>
-                        nnoremap <silent> <leader>gg :SignifyToggle<CR>
-                    endif
-                " }
-
-                NeoBundle 'airblade/vim-gitgutter' " {
-                    if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
-                        let g:gitgutter_enabled = 1
-                        let g:gitgutter_map_keys = 0
-                    endif
-                " }
-
-                NeoBundle 'scrooloose/nerdcommenter'
-
-                NeoBundle 'godlygeek/tabular' " {
-                    if isdirectory(expand("~/.vim/bundle/tabular"))
-                        nmap <Leader>a& :Tabularize /&<CR>
-                        vmap <Leader>a& :Tabularize /&<CR>
-                        nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-                        vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-                        nmap <Leader>a=> :Tabularize /=><CR>
-                        vmap <Leader>a=> :Tabularize /=><CR>
-                        nmap <Leader>a: :Tabularize /:<CR>
-                        vmap <Leader>a: :Tabularize /:<CR>
-                        nmap <Leader>a:: :Tabularize /:\zs<CR>
-                        vmap <Leader>a:: :Tabularize /:\zs<CR>
-                        nmap <Leader>a, :Tabularize /,<CR>
-                        vmap <Leader>a, :Tabularize /,<CR>
-                        nmap <Leader>a,, :Tabularize /,\zs<CR>
-                        vmap <Leader>a,, :Tabularize /,\zs<CR>
-                        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-                        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-                    endif
-                " }
-
-                NeoBundle 'luochen1990/rainbow'
-
-                NeoBundle 'majutsushi/tagbar' "{
-                    if isdirectory(expand("~/.vim/bundle/tagbar"))
-                        set tags=./tags;/,~/.vimtags
-                        " Make tags placed in .git/tags file available in all levels of a repository
-                        let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-                        if gitroot != ''
-                            let &tags = &tags . ',' . gitroot . '/.git/tags'
-                        endif
-                    endif
-                "}
-
-                NeoBundle 'matchit.zip'
-
-                NeoBundle 'majutsushi/tagbar'
-
-                NeoBundle 'tpope/vim-surround'
-
-                NeoBundle 'jiangmiao/auto-pairs'
-
-            " }
-
-            " Python {
-
-                NeoBundle 'davidhalter/jedi-vim' " {
-                    if isdirectory(expand("~/.vim/bundle/jedi-vim"))
-                        let g:jedi#use_tabs_not_buffers = 1
-                        let g:jedi#popup_on_dot = 0
-                        let g:jedi#popup_select_first = 0
-                        let g:jedi#completions_enabled = 0
-                        let g:jedi#auto_vim_configuration = 0
-                        let g:jedi#goto_command = "<leader>d"
-                        let g:jedi#goto_assignments_command = "<leader>g"
-                        let g:jedi#goto_definitions_command = ""
-                        let g:jedi#documentation_command = "K"
-                        let g:jedi#usages_command = "<leader>n"
-                        let g:jedi#completions_command = "<C-Space>"
-                        let g:jedi#rename_command = "<leader>r"
-                    endif
-                " }
-
-                NeoBundle 'tmhedberg/SimpylFold' " {
-                    if isdirectory(expand("~/.vim/bundle/SimpylFold"))
-                        autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-                        autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
-                    endif
-                " }
-
-                NeoBundle 'hdima/python-syntax' " {
-                    let python_highlight_all = 1
-                " }
-
-            " }
-
-            " Ruby {
-
-                NeoBundle 'tpope/vim-rails'
-
-            " }
-
-            " Javascript {
-
-                NeoBundle 'elzr/vim-json' " {
-                    if isdirectory(expand("~/.vim/bundle/vim-json"))
-                        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-                        let g:vim_json_syntax_conceal = 0
-                    endif
-                " }
-
-                NeoBundle 'groenewege/vim-less'
-
-                NeoBundle 'pangloss/vim-javascript'
-
-                NeoBundle 'briancollins/vim-jst'
-
-                NeoBundle 'kchmck/vim-coffee-script'
-
-            " }
-
-            " HTML {
-
-                NeoBundle 'amirh/HTML-AutoCloseTag' " {
-                    if isdirectory(expand("~/.vim/bundle/HTML-AutoCloseTag"))
-                        " Make it so AutoCloseTag works for xml and xhtml files as well
-                        au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-                        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-                    endif
-                " }
-
-                NeoBundle 'hail2u/vim-css3-syntax'
-
-                NeoBundle 'gorodinskiy/vim-coloresque'
-
-                NeoBundle 'tpope/vim-haml'
-
-                NeoBundle 'mattn/emmet-vim'
-
-            " }
-
-            " Puppet {
-
-                NeoBundle 'rodjek/vim-puppet'
-
-            " }
-
-            " Go Lang {
-
-                "Bundle 'Blackrush/vim-gocode'
-
-                NeoBundle 'fatih/vim-go' " {
-                    if isdirectory(expand("~/.vim/bundle/vim-go"))
-                        let g:go_highlight_functions = 1
-                        let g:go_highlight_methods = 1
-                        let g:go_highlight_structs = 1
-                        let g:go_highlight_operators = 1
-                        let g:go_highlight_build_constraints = 1
-                        let g:go_fmt_command = "goimports"
-                        let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-                        let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-                        au FileType go nmap <Leader>s <Plug>(go-implements)
-                        au FileType go nmap <Leader>i <Plug>(go-info)
-                        au FileType go nmap <Leader>e <Plug>(go-rename)
-                        au FileType go nmap <leader>r <Plug>(go-run)
-                        au FileType go nmap <leader>b <Plug>(go-build)
-                        au FileType go nmap <leader>t <Plug>(go-test)
-                        au FileType go nmap <Leader>gd <Plug>(go-doc)
-                        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-                        au FileType go nmap <leader>co <Plug>(go-coverage)
-                    endif
-                "}
-
-            " }
+            NeoBundle 'tpope/vim-rails'
 
         " }
 
-        " Theme and Visual {
+        " Javascript {
 
-            NeoBundle 'chriskempson/base16-vim'
-
-            NeoBundle 'vim-airline/vim-airline' " {
-                NeoBundle 'vim-airline/vim-airline-themes'
-                if isdirectory(expand("~/.vim/bundle/vim-airline"))
-                    let g:airline_powerline_fonts=1
-                    let g:airline_theme='base16_default'
+            NeoBundle 'elzr/vim-json' " {
+                if isdirectory(expand("~/.vim/bundle/vim-json"))
+                    nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+                    let g:vim_json_syntax_conceal = 0
                 endif
             " }
+
+            NeoBundle 'groenewege/vim-less'
+
+            NeoBundle 'pangloss/vim-javascript'
+
+            NeoBundle 'briancollins/vim-jst'
+
+            NeoBundle 'kchmck/vim-coffee-script'
 
         " }
 
-        " Snippets & AutoComplete {
+        " HTML {
 
-            NeoBundle 'garbas/vim-snipmate' "{
-                " Setting the author var
-                let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
-            " }
-
-            NeoBundle 'MarcWeber/vim-addon-mw-utils'
-
-            NeoBundle 'SirVer/ultisnips' "{
-                " For snippet_complete marker.
-                if has('conceal')
-                    set conceallevel=2 concealcursor=i
-                endif
-                " remap Ultisnips for compatibility for YCM
-                let g:UltiSnipsExpandTrigger = '<C-j>'
-                let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-                let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-            " }
-
-            NeoBundle 'Valloric/YouCompleteMe', {
-            \ 'build': {
-            \       'linux': 'python2 install.py',
-            \       'cygwin': 'python2 install.py',
-            \       'unix': 'python2 install.py',
-            \       'mac': 'python2 install.py',
-            \       'windows': 'python2 install.py',
-            \   },
-            \ } " {
-                if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
-                    let g:acp_enableAtStartup = 0
-
-                    " enable completion from tags
-                    let g:ycm_collect_identifiers_from_tags_files = 1
-
-                    if has("autocmd") && exists("+omnifunc")
-                        autocmd Filetype *
-                            \if &omnifunc == "" |
-                            \setlocal omnifunc=syntaxcomplete#Complete |
-                            \endif
-                    endif
-
-                    " Some convenient mappings
-                    "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-                    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-                    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-                    inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-                    inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-                    " Automatically open and close the popup menu / preview window
-                    au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-                    set completeopt=menu,preview,longest
-
-                    " Enable omni completion.
-                    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-                    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-                    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-                    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-                    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-                    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-                    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-                    if has('conceal')
-                        set conceallevel=2 concealcursor=i
-                    endif
-
-                    " Disable the preview candidate window
-                    " When enabled, there can be too much visual noise
-                    " especially when splits are used.
-                    set completeopt-=preview
+            NeoBundle 'amirh/HTML-AutoCloseTag' " {
+                if isdirectory(expand("~/.vim/bundle/HTML-AutoCloseTag"))
+                    " Make it so AutoCloseTag works for xml and xhtml files as well
+                    au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+                    nmap <Leader>ac <Plug>ToggleAutoCloseMappings
                 endif
             " }
 
-            NeoBundle 'honza/vim-snippets'
+            NeoBundle 'hail2u/vim-css3-syntax'
+
+            NeoBundle 'gorodinskiy/vim-coloresque'
+
+            NeoBundle 'tpope/vim-haml'
+
+            NeoBundle 'mattn/emmet-vim'
 
         " }
 
-        " Writing {
+        " Puppet {
 
-            NeoBundle 'reedes/vim-litecorrect'
+            NeoBundle 'rodjek/vim-puppet'
 
-            NeoBundle 'reedes/vim-textobj-sentence'
+        " }
 
-            NeoBundle 'reedes/vim-textobj-quote' " {
-                augroup textobj_sentence
-                  autocmd!
-                  autocmd FileType markdown call textobj#sentence#init()
-                  autocmd FileType textile call textobj#sentence#init()
-                  autocmd FileType text call textobj#sentence#init()
-                augroup END
+        " Go Lang {
 
-                augroup textobj_quote
-                    autocmd!
-                    autocmd FileType markdown call textobj#quote#init()
-                    autocmd FileType textile call textobj#quote#init()
-                    autocmd FileType text call textobj#quote#init({'educate': 0})
-                augroup END
-            " }
+            "Bundle 'Blackrush/vim-gocode'
 
-            NeoBundle 'reedes/vim-wordy'
+            NeoBundle 'fatih/vim-go' " {
+                if isdirectory(expand("~/.vim/bundle/vim-go"))
+                    let g:go_highlight_functions = 1
+                    let g:go_highlight_methods = 1
+                    let g:go_highlight_structs = 1
+                    let g:go_highlight_operators = 1
+                    let g:go_highlight_build_constraints = 1
+                    let g:go_fmt_command = "goimports"
+                    let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+                    let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+                    au FileType go nmap <Leader>s <Plug>(go-implements)
+                    au FileType go nmap <Leader>i <Plug>(go-info)
+                    au FileType go nmap <Leader>e <Plug>(go-rename)
+                    au FileType go nmap <leader>r <Plug>(go-run)
+                    au FileType go nmap <leader>b <Plug>(go-build)
+                    au FileType go nmap <leader>t <Plug>(go-test)
+                    au FileType go nmap <Leader>gd <Plug>(go-doc)
+                    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+                    au FileType go nmap <leader>co <Plug>(go-coverage)
+                endif
+            "}
 
         " }
 
     " }
+
+    " Theme and Visual {
+
+        NeoBundle 'chriskempson/base16-vim'
+
+        NeoBundle 'vim-airline/vim-airline' " {
+            NeoBundle 'vim-airline/vim-airline-themes'
+            if isdirectory(expand("~/.vim/bundle/vim-airline"))
+                let g:airline_powerline_fonts=1
+                let g:airline_theme='base16_default'
+            endif
+        " }
+
+    " }
+
+    " Snippets & AutoComplete {
+
+        NeoBundle 'garbas/vim-snipmate' "{
+            " Setting the author var
+            let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
+        " }
+
+        NeoBundle 'MarcWeber/vim-addon-mw-utils'
+
+        NeoBundle 'SirVer/ultisnips' "{
+            " For snippet_complete marker.
+            if has('conceal')
+                set conceallevel=2 concealcursor=i
+            endif
+            " remap Ultisnips for compatibility for YCM
+            let g:UltiSnipsExpandTrigger = '<C-j>'
+            let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+            let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+        " }
+
+        NeoBundle 'Valloric/YouCompleteMe', {
+        \ 'build': {
+        \       'linux': 'python2 install.py',
+        \       'cygwin': 'python2 install.py',
+        \       'unix': 'python2 install.py',
+        \       'mac': 'python2 install.py',
+        \       'windows': 'python2 install.py',
+        \   },
+        \ } " {
+            if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
+                let g:acp_enableAtStartup = 0
+
+                " enable completion from tags
+                let g:ycm_collect_identifiers_from_tags_files = 1
+
+                if has("autocmd") && exists("+omnifunc")
+                    autocmd Filetype *
+                        \if &omnifunc == "" |
+                        \setlocal omnifunc=syntaxcomplete#Complete |
+                        \endif
+                endif
+
+                " Some convenient mappings
+                "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+                inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+                inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+                inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+                inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+                " Automatically open and close the popup menu / preview window
+                au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+                set completeopt=menu,preview,longest
+
+                " Enable omni completion.
+                autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+                autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+                autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+                autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+                autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+                autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+                autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+                if has('conceal')
+                    set conceallevel=2 concealcursor=i
+                endif
+
+                " Disable the preview candidate window
+                " When enabled, there can be too much visual noise
+                " especially when splits are used.
+                set completeopt-=preview
+            endif
+        " }
+
+        NeoBundle 'honza/vim-snippets'
+
+    " }
+
+    " Writing {
+
+        NeoBundle 'reedes/vim-litecorrect'
+
+        NeoBundle 'reedes/vim-textobj-sentence'
+
+        NeoBundle 'reedes/vim-textobj-quote' " {
+            augroup textobj_sentence
+              autocmd!
+              autocmd FileType markdown call textobj#sentence#init()
+              autocmd FileType textile call textobj#sentence#init()
+              autocmd FileType text call textobj#sentence#init()
+            augroup END
+
+            augroup textobj_quote
+                autocmd!
+                autocmd FileType markdown call textobj#quote#init()
+                autocmd FileType textile call textobj#quote#init()
+                autocmd FileType text call textobj#quote#init({'educate': 0})
+            augroup END
+        " }
+
+        NeoBundle 'reedes/vim-wordy'
+
+    " }
+
+" }
+
+" NeoBundle End {
 
     call neobundle#end()
 
@@ -682,8 +719,8 @@
     nnoremap td :tabclose<CR>
 
     " buffer management
-    nnoremap <c-k> :bnext<CR>
-    nnoremap <c-j> :bprev<CR>
+    "nnoremap <c-k> :bnext<CR>
+    "nnoremap <c-j> :bprev<CR>
 
     " End/Start of line motion keys act relative to row/wrap width in the
     " presence of `:set wrap`, and relative to line for `:set nowrap`.
@@ -874,5 +911,13 @@
 " }
 
 " Other plugin settings {
+
+    if isdirectory(expand("~/.vim/bundle/unite.vim")) " { "
+        call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        call unite#filters#sorter_default#use(['sorter_reverse'])
+        call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
+          \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
+    " }"
+    endif
 
 " }
