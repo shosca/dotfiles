@@ -266,6 +266,8 @@
                     if gitroot != ''
                         let &tags = &tags . ',' . gitroot . '/.git/tags'
                     endif
+                    nnoremap <c-t> :TagbarToggle<CR>
+                    nnoremap <leader>t :TagbarToggle<CR>
                 endif
             "}
 
