@@ -130,8 +130,11 @@
 
         NeoBundle 'Shougo/unite.vim' " {
             NeoBundle 'k0kubun/unite-git-files'
+            NeoBundle 'Shougo/neoyank.vim'
 
             let g:unite_source_history_yank_enable = 1
+            let g:unite_source_history_yank_linut = 10000
+            let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
             let g:unite_marked_icon = '✓'
             nnoremap <C-p> :Unite -start-insert git_files<cr>
             nnoremap <C-o> :Unite -start-insert buffer<cr>
