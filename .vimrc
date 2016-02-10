@@ -205,6 +205,7 @@
                     let g:syntastic_style_error_symbol = '✠'
                     let g:syntastic_warning_symbol = '∆'
                     let g:syntastic_style_warning_symbol = '≈'
+                    let g:syntastic_always_populate_loc_list = 1
                     let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
                 endif
             " }
@@ -410,6 +411,7 @@
         NeoBundle 'vim-airline/vim-airline' " {
             NeoBundle 'vim-airline/vim-airline-themes'
             if isdirectory(expand("~/.vim/bundle/vim-airline"))
+                let g:airline#extensions#tabline#enabled = 1
                 let g:airline_powerline_fonts=1
                 let g:airline_theme='base16_default'
             endif
@@ -732,9 +734,9 @@
     nnoremap tm :tabm<Space>
     nnoremap td :tabclose<CR>
 
-    " buffer management
-    "nnoremap <c-k> :bnext<CR>
-    "nnoremap <c-j> :bprev<CR>
+    " next error
+    nmap ej :lnext<CR>
+    nmap ek :lprevious<CR>
 
     " End/Start of line motion keys act relative to row/wrap width in the
     " presence of `:set wrap`, and relative to line for `:set nowrap`.
