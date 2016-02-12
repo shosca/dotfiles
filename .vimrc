@@ -98,36 +98,6 @@
             endif
         "}
 
-        " NeoBundle 'ctrlpvim/ctrlp.vim' " {
-            if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
-
-                NeoBundle 'tacahiroy/ctrlp-funky'
-
-                nmap <C-o> :CtrlPBuffer<CR>
-                let g:ctrlp_match_window_bottom = 0
-                let g:ctrlp_match_window_reversed = 0
-                let g:ctrlp_dotfiles = 0
-                let g:ctrlp_switch_buffer = 0
-                if executable('ag')
-                    let g:ctrlp_user_command = {
-                        \ 'types': {
-                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                        \ },
-                        \ 'fallback': 'ag %s -l --nocolor -g ""'
-                    \ }
-                else
-                    let g:ctrlp_user_command = {
-                        \ 'types': {
-                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                        \ },
-                        \ 'fallback': 'find %s -type f'
-                    \ }
-                endif
-            endif
-        " }
-
         NeoBundle 'Shougo/unite.vim' " {
             NeoBundle 'k0kubun/unite-git-files'
             NeoBundle 'Shougo/neoyank.vim'
@@ -136,7 +106,7 @@
             let g:unite_source_history_yank_linut = 10000
             let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
             let g:unite_marked_icon = '✓'
-            nnoremap <C-p> :Unite -start-insert git_files<cr>
+            nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
             nnoremap <C-o> :Unite -start-insert buffer<cr>
             nnoremap <space>f :Unite -no-quit grep:.<cr>
             nnoremap <space>y :Unite history/yank<cr>
@@ -360,8 +330,6 @@
             " }
 
             NeoBundle 'hail2u/vim-css3-syntax'
-
-            NeoBundle 'gorodinskiy/vim-coloresque'
 
             NeoBundle 'tpope/vim-haml'
 
