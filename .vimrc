@@ -134,8 +134,6 @@
             call s:unite_settings()
         " }
 
-        NeoBundle 'Shougo/vimshell.vim'
-
         NeoBundle 'tpope/vim-markdown'
 
         NeoBundle 'epeli/slimux' " {
@@ -228,7 +226,19 @@
                 endif
             " }
 
-            NeoBundle 'luochen1990/rainbow'
+            NeoBundle 'luochen1990/rainbow' " {
+                if isdirectory(expand("~/.vim/bundle/rainbow"))
+                    let g:rainbow_active=1
+                    let g:rainbow_load_separately = [
+                        \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                        \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
+                        \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                        \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
+                    \ ]
+                    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+                    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+                endif
+            " }
 
             NeoBundle 'majutsushi/tagbar' "{
                 if isdirectory(expand("~/.vim/bundle/tagbar"))
@@ -542,7 +552,7 @@
     set backspace=indent,eol,start  " Backspace for dummies
     set linespace=0                 " No extra spaces between rows
     set number                      " Line numbers on
-    set showmatch                   " Show matching brackets/parenthesis
+    "set showmatch                   " Show matching brackets/parenthesis
     set incsearch                   " Find as you type search
     set hlsearch                    " Highlight search terms
     set winminheight=0              " Windows can be 0 line high
