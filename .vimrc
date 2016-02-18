@@ -174,7 +174,7 @@
                     let g:syntastic_warning_symbol = '∆'
                     let g:syntastic_style_warning_symbol = '≈'
                     let g:syntastic_always_populate_loc_list = 1
-                    let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+                    let g:syntastic_python_checkers = ['flake8']
                 endif
             " }
 
@@ -524,7 +524,8 @@
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
 
-    set cursorline                  " Highlight current line
+    " this is a performance killer
+    "set cursorline                  " Highlight current line
 
     highlight clear SignColumn      " SignColumn should match background
     highlight clear LineNr          " Current line number row will have same background color in relative mode
