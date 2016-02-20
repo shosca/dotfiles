@@ -174,6 +174,7 @@
                     let g:syntastic_warning_symbol = '∆'
                     let g:syntastic_style_warning_symbol = '≈'
                     let g:syntastic_always_populate_loc_list = 1
+                    let g:syntastic_aggregate_errors = 1
                     let g:syntastic_python_checkers = ['flake8']
                 endif
             " }
@@ -269,6 +270,8 @@
             NeoBundle 'tpope/vim-surround'
 
             NeoBundle 'jiangmiao/auto-pairs'
+
+            NeoBundle 'Chiel92/vim-autoformat'
 
         " }
 
@@ -716,7 +719,7 @@
     nnoremap tm :tabm<Space>
     nnoremap td :tabclose<CR>
 
-    " next error
+    " navigate errors
     nmap ej :lnext<CR>
     nmap ek :lprevious<CR>
 
