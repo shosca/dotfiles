@@ -124,6 +124,8 @@
 
         NeoBundle 'tpope/vim-markdown'
 
+        NeoBundle 'easymotion/vim-easymotion'
+
         NeoBundle 'vim-scripts/sessionman.vim' " {
             set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
         " }
@@ -187,8 +189,6 @@
             "}
 
             NeoBundle 'matchit.zip'
-
-            NeoBundle 'majutsushi/tagbar'
 
             NeoBundle 'xolox/vim-misc'
 
