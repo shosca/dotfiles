@@ -70,8 +70,6 @@
 
         NeoBundle 'scrooloose/nerdtree' "{
             if isdirectory(expand("~/.vim/bundle/nerdtree"))
-                nnoremap <c-e> :NERDTreeToggle<CR>
-                nnoremap <leader>e :NERDTreeToggle<CR>
                 let g:NERDShutUp=1
                 let NERDTreeShowBookmarks=1
                 let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
@@ -106,10 +104,6 @@
             let g:unite_source_history_yank_linut = 10000
             let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
             let g:unite_marked_icon = '✓'
-            nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
-            nnoremap <C-o> :Unite -start-insert buffer<cr>
-            nnoremap <space>f :Unite -no-quit grep:.<cr>
-            nnoremap <space>y :Unite history/yank<cr>
 
 
             if executable('ag')
@@ -120,32 +114,11 @@
                 let g:unite_source_grep_recursive_opt = ''
             endif
 
-            function! s:unite_settings() "{
-                nmap <buffer> <ESC> <Plug>(unite_exit)
-                imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-                imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-                nmap <buffer> <C-j> j
-                nmap <buffer> <C-k> k
-                imap <buffer><expr> <C-s> unite#do_action('split')
-                imap <buffer><expr> <C-v> unite#do_action('vsplit')
-                imap <buffer><expr> <C-t> unite#do_action('tabopen')
-            endfunction " }
-            autocmd FileType unite call s:unite_settings()
-            call s:unite_settings()
         " }
 
         NeoBundle 'tpope/vim-markdown'
 
-        NeoBundle 'epeli/slimux' " {
-            if isdirectory(expand("~/.vim/bundle/slimux"))
-                map <C-c><C-c> :SlimuxREPLSendLine<CR>
-                vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-                map <Leader>s :SlimuxREPLSendLine<CR>
-                vmap <Leader>s :SlimuxREPLSendSelection<CR>
-                map <Leader>sa :SlimuxShellLast<CR>
-                map <Leader>sk :SlimuxSendKeysLast<CR>
-            endif
-        " }
+        NeoBundle 'epeli/slimux'
 
         NeoBundle 'Konfekt/FastFold'
 
@@ -153,11 +126,6 @@
 
         NeoBundle 'vim-scripts/sessionman.vim' " {
             set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-            if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
-                nmap <leader>sl :SessionList<CR>
-                nmap <leader>ss :SessionSave<CR>
-                nmap <leader>sc :SessionClose<CR>
-            endif
         " }
 
     " }
@@ -179,22 +147,7 @@
                 endif
             " }
 
-            NeoBundle 'tpope/vim-fugitive' " {
-                if isdirectory(expand("~/.vim/bundle/vim-fugitive"))
-                    nnoremap <silent> <leader>gs :Gstatus<CR>
-                    nnoremap <silent> <leader>gd :Gdiff<CR>
-                    nnoremap <silent> <leader>gc :Gcommit<CR>
-                    nnoremap <silent> <leader>gb :Gblame<CR>
-                    nnoremap <silent> <leader>gl :Glog<CR>
-                    nnoremap <silent> <leader>gp :Git push<CR>
-                    nnoremap <silent> <leader>gr :Gread<CR>
-                    nnoremap <silent> <leader>gw :Gwrite<CR>
-                    nnoremap <silent> <leader>ge :Gedit<CR>
-                    " Mnemonic _i_nteractive
-                    nnoremap <silent> <leader>gi :Git add -p %<CR>
-                    nnoremap <silent> <leader>gg :SignifyToggle<CR>
-                endif
-            " }
+            NeoBundle 'tpope/vim-fugitive'
 
             NeoBundle 'airblade/vim-gitgutter' " {
                 if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
@@ -206,26 +159,7 @@
 
             NeoBundle 'scrooloose/nerdcommenter'
 
-            NeoBundle 'godlygeek/tabular' " {
-                if isdirectory(expand("~/.vim/bundle/tabular"))
-                    nmap <Leader>a& :Tabularize /&<CR>
-                    vmap <Leader>a& :Tabularize /&<CR>
-                    nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-                    vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-                    nmap <Leader>a=> :Tabularize /=><CR>
-                    vmap <Leader>a=> :Tabularize /=><CR>
-                    nmap <Leader>a: :Tabularize /:<CR>
-                    vmap <Leader>a: :Tabularize /:<CR>
-                    nmap <Leader>a:: :Tabularize /:\zs<CR>
-                    vmap <Leader>a:: :Tabularize /:\zs<CR>
-                    nmap <Leader>a, :Tabularize /,<CR>
-                    vmap <Leader>a, :Tabularize /,<CR>
-                    nmap <Leader>a,, :Tabularize /,\zs<CR>
-                    vmap <Leader>a,, :Tabularize /,\zs<CR>
-                    nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-                    vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-                endif
-            " }
+            NeoBundle 'godlygeek/tabular'
 
             NeoBundle 'luochen1990/rainbow' " {
                 if isdirectory(expand("~/.vim/bundle/rainbow"))
@@ -249,8 +183,6 @@
                     if gitroot != ''
                         let &tags = &tags . ',' . gitroot . '/.git/tags'
                     endif
-                    nnoremap <c-t> :TagbarToggle<CR>
-                    nnoremap <leader>t :TagbarToggle<CR>
                 endif
             "}
 
@@ -317,7 +249,6 @@
 
             NeoBundle 'elzr/vim-json' " {
                 if isdirectory(expand("~/.vim/bundle/vim-json"))
-                    nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
                     let g:vim_json_syntax_conceal = 0
                 endif
             " }
@@ -338,7 +269,6 @@
                 if isdirectory(expand("~/.vim/bundle/HTML-AutoCloseTag"))
                     " Make it so AutoCloseTag works for xml and xhtml files as well
                     au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-                    nmap <Leader>ac <Plug>ToggleAutoCloseMappings
                 endif
             " }
 
@@ -443,12 +373,6 @@
                         \endif
                 endif
 
-                " Some convenient mappings
-                "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-                inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-                inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-                inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-                inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
 
                 " Automatically open and close the popup menu / preview window
                 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
@@ -481,6 +405,8 @@
     " Writing {
 
         NeoBundle 'reedes/vim-litecorrect'
+
+        NeoBundle 'kana/vim-textobj-user'
 
         NeoBundle 'reedes/vim-textobj-sentence'
 
@@ -679,6 +605,8 @@
 
     autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
 
+    autocmd FileType json nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+
 " }
 
 " Key Mappings {
@@ -830,11 +758,106 @@
     " Easier formatting
     nnoremap <silent> <leader>q gwip
 
-    nnoremap <leader>p oimport ipdb;ipdb.set_trace()  # flake8: noqa<Esc>
+    au FileType python nnoremap <leader>p oimport ipdb;ipdb.set_trace()  # flake8: noqa<Esc>
 
     " edit the vimrc file
     nmap <silent> <Leader>ev :e $MYVIMRC<CR>
     nmap <silent> <Leader>sv :so $MYVIMRC<CR>
+
+    " Plugin Key Mappings {
+
+        " Completion {
+            "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+            inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+            inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+            inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+            inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+        " }
+
+        " Autoclose {
+            nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+        " }
+
+        " Tagbar {
+            nnoremap <c-t> :TagbarToggle<CR>
+            nnoremap <leader>t :TagbarToggle<CR>
+        " }
+
+        " Sessionman {
+            nmap <leader>sl :SessionList<CR>
+            nmap <leader>ss :SessionSave<CR>
+            nmap <leader>sc :SessionClose<CR>
+        " }
+
+        " Slimux {
+            map <C-c><C-c> :SlimuxREPLSendLine<CR>
+            vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+            map <Leader>s :SlimuxREPLSendLine<CR>
+            vmap <Leader>s :SlimuxREPLSendSelection<CR>
+            map <Leader>sa :SlimuxShellLast<CR>
+            map <Leader>sk :SlimuxSendKeysLast<CR>
+        " }
+
+        " NERDTree {
+            nnoremap <c-e> :NERDTreeToggle<CR>
+            nnoremap <leader>e :NERDTreeToggle<CR>
+        " }
+
+        " Unite {
+            nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
+            nnoremap <C-o> :Unite -start-insert buffer<cr>
+            nnoremap <space>f :Unite -no-quit grep:.<cr>
+            nnoremap <space>y :Unite history/yank<cr>
+
+            function! s:unite_settings() "{
+                nmap <buffer> <ESC> <Plug>(unite_exit)
+                imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+                imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+                nmap <buffer> <C-j> j
+                nmap <buffer> <C-k> k
+                imap <buffer><expr> <C-s> unite#do_action('split')
+                imap <buffer><expr> <C-v> unite#do_action('vsplit')
+                imap <buffer><expr> <C-t> unite#do_action('tabopen')
+            endfunction " }
+
+            autocmd FileType unite call s:unite_settings()
+        " }
+
+        " Git {
+            nnoremap <silent> <leader>gs :Gstatus<CR>
+            nnoremap <silent> <leader>gd :Gdiff<CR>
+            nnoremap <silent> <leader>gc :Gcommit<CR>
+            nnoremap <silent> <leader>gb :Gblame<CR>
+            nnoremap <silent> <leader>gl :Glog<CR>
+            nnoremap <silent> <leader>gp :Git push<CR>
+            nnoremap <silent> <leader>gr :Gread<CR>
+            nnoremap <silent> <leader>gw :Gwrite<CR>
+            nnoremap <silent> <leader>ge :Gedit<CR>
+            " Mnemonic _i_nteractive
+            nnoremap <silent> <leader>gi :Git add -p %<CR>
+            nnoremap <silent> <leader>gg :SignifyToggle<CR>
+        " }
+
+        " Tabularize {
+            nmap <Leader>a& :Tabularize /&<CR>
+            vmap <Leader>a& :Tabularize /&<CR>
+            nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+            vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+            nmap <Leader>a=> :Tabularize /=><CR>
+            vmap <Leader>a=> :Tabularize /=><CR>
+            nmap <Leader>a: :Tabularize /:<CR>
+            vmap <Leader>a: :Tabularize /:<CR>
+            nmap <Leader>a:: :Tabularize /:\zs<CR>
+            vmap <Leader>a:: :Tabularize /:\zs<CR>
+            nmap <Leader>a, :Tabularize /,<CR>
+            vmap <Leader>a, :Tabularize /,<CR>
+            nmap <Leader>a,, :Tabularize /,\zs<CR>
+            vmap <Leader>a,, :Tabularize /,\zs<CR>
+            nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+            vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        " }
+
+    " }
 
 " }
 
@@ -913,12 +936,31 @@
 
 " Other plugin settings {
 
-    if isdirectory(expand("~/.vim/bundle/unite.vim")) " { "
+    if isdirectory(expand("~/.vim/bundle/unite.vim")) " {
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
         call unite#filters#sorter_default#use(['sorter_reverse'])
         call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
           \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
-    " }"
     endif
+    " }
 
+    if isdirectory(expand("~/.vim/bundle/vim-textobj-user")) " {
+        if isdirectory(expand("~/.vim/bundle/vim-textobj-sentence")) " {
+            augroup textobj_sentence
+              autocmd!
+              autocmd FileType markdown call textobj#sentence#init()
+              autocmd FileType textile call textobj#sentence#init()
+              autocmd FileType text call textobj#sentence#init()
+            augroup END
+        endif " }
+
+        if isdirectory(expand("~/.vim/bundle/vim-textobj-quote")) " {
+            augroup textobj_quote
+                autocmd!
+                autocmd FileType markdown call textobj#quote#init()
+                autocmd FileType textile call textobj#quote#init()
+                autocmd FileType text call textobj#quote#init({'educate': 0})
+            augroup END
+        endif " }
+    endif " }
 " }
