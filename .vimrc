@@ -559,6 +559,7 @@
         set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
         set grepformat=%f:%l:%c:%m
     endif
+    let g:pymode_indent=0
 
 " }
 
