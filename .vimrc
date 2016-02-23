@@ -233,6 +233,8 @@
                 endif
             " }
 
+            NeoBundle 'hynek/vim-python-pep8-indent'
+
             NeoBundle 'hdima/python-syntax' " {
                 let python_highlight_all = 1
             " }
