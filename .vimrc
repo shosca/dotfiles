@@ -226,8 +226,14 @@
                 endif
             " }
 
-            NeoBundle 'tweekmonster/braceless.vim' "{
+            NeoBundle 'tmhedberg/SimpylFold' " {
+                if isdirectory(expand("~/.vim/bundle/SimpylFold"))
+                    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+                    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+                endif
             " }
+
+            NeoBundle 'hynek/vim-python-pep8-indent'
 
             NeoBundle 'hdima/python-syntax' " {
                 let python_highlight_all = 1
@@ -960,10 +966,4 @@
             augroup END
         endif " }
     endif " }
-
-    if isdirectory(expand("~/.vim/bundle/braceless.vim")) " {
-        autocmd FileType python,haml,yaml,coffee BracelessEnable +indent +fold +highlight
-    endif " }
-
-
 " }
