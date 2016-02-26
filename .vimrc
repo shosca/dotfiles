@@ -290,8 +290,6 @@
 
         " Go Lang {
 
-            "Bundle 'Blackrush/vim-gocode'
-
             NeoBundle 'fatih/vim-go' " {
                 if isdirectory(expand("~/.vim/bundle/vim-go"))
                     let g:go_highlight_functions = 1
@@ -313,6 +311,12 @@
                     au FileType go nmap <leader>co <Plug>(go-coverage)
                 endif
             "}
+
+        " }
+
+        " SQL {
+
+            NeoBundle 'talek/vorax4'
 
         " }
 
