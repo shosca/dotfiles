@@ -197,6 +197,8 @@
                 let g:easytags_file = '~/.vim/tags'
                 let g:easytags_by_filetype = '~/.vim/ftags/'
                 let g:easytags_events = ['BufWritePost']
+
+                autocmd FileType python let b:easytags_auto_highlight = 0
             " }
 
             NeoBundle 'tpope/vim-surround'
