@@ -107,6 +107,7 @@
 
 
             if executable('ag')
+                let g:unite_source_rec_aync_command = [ 'ag', '-l', '-g', '', '--nocolor'  ]
                 let g:unite_source_grep_command = 'ag'
                 let g:unite_source_grep_default_opts =
                     \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .

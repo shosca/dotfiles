@@ -225,7 +225,7 @@ unset GREP_OPTIONS
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 alias npm-exec='PATH=$(npm bin):$PATH'
 
-BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+BASE16_SHELL="$HOME/.config/base16-shell/base16-embers.dark.sh"
 [[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
 
 if [[ -f ~/.zshrc.local ]]; then
