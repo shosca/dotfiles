@@ -155,8 +155,8 @@ fi
 
 if [[ -f /usr/bin/keychain ]]; then
     /usr/bin/keychain ~/.ssh/id_rsa
-    source ~/.keychain/$HOST-sh
-    source ~/.keychain/$HOST-sh-gpg
+    [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
+    [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
 fi
 
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
@@ -225,7 +225,7 @@ unset GREP_OPTIONS
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 alias npm-exec='PATH=$(npm bin):$PATH'
 
-BASE16_SHELL="$HOME/.config/base16-shell/base16-embers.dark.sh"
+BASE16_SHELL="~/dotfiles/base16-turkishcoffee.dark.sh"
 [[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
 
 if [[ -f ~/.zshrc.local ]]; then
