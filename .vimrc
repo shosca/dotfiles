@@ -317,12 +317,6 @@
 
         " }
 
-        " SQL {
-
-            NeoBundle 'talek/vorax4'
-
-        " }
-
     " }
 
     " Theme and Visual {
