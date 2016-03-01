@@ -143,10 +143,6 @@ if [[ -d "$HOME/node/bin" ]]; then
   PATH="${HOME}/node/bin:${PATH}"
 fi
 
-if [[ -d "/usr/lib/smlnj/bin" ]]; then
-  PATH="/usr/lib/smlnj/bin:${PATH}"
-fi
-
 if [[ -f /usr/bin/virtualenvwrapper.sh ]]; then
     export WORKON_HOME=~/.virtualenvs
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
@@ -159,9 +155,6 @@ if [[ -f /usr/bin/keychain ]]; then
     [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
 fi
 
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
 if [[ -d "$HOME/.rbenv/bin" ]]; then
     PATH=$PATH:$HOME/.rbenv/bin
     eval "$(rbenv init -)"
@@ -170,10 +163,6 @@ fi
 export WORKON_HOME="$HOME/.virtualenvs"
 export EDITOR=vim
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
-
-alias pygrep="grep --include='*.py' $*"
-alias rbgrep="grep --include='*.rb' $*"
-alias csgrep="grep --include='*.cs' $*"
 
 alias dmesg="dmesg -L"
 # some more ls aliases
@@ -192,19 +181,7 @@ alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw
 alias c='clear'
 alias up='cd ..'
 
-alias radeondynpm='echo dynpm | sudo tee -a /sys/class/drm/card0/device/power_method'
-alias radeonprofile='echo profile | sudo tee -a /sys/class/drm/card0/device/power_method'
-alias radeonlow='echo low | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeonmid='echo mid| sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeondefault='echo default | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
-alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
-
 alias resrc='source ~/.zshrc'
-alias ondemand='sudo cpupower frequency-set -g ondemand'
-alias powersave='sudo cpupower frequency-set -g powersave'
-alias performance='sudo cpupower frequency-set -g performance'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 
 alias tma='tmux attach -d -t'
@@ -225,9 +202,9 @@ unset GREP_OPTIONS
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 alias npm-exec='PATH=$(npm bin):$PATH'
 
-BASE16_SHELL="~/dotfiles/base16-turkishcoffee.dark.sh"
-[[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
+BASE16_SHELL="$HOME/dotfiles/base16-turkishcoffee.dark.sh"
+[[ -f $BASE16_SHELL  ]] && source $BASE16_SHELL
 
-if [[ -f ~/.zshrc.local ]]; then
-    source ~/.zshrc.local
+if [[ -f $HOME/.zshrc.local ]]; then
+    source $HOME/.zshrc.local
 fi
