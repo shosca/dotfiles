@@ -68,34 +68,6 @@
 
     " General {
 
-        NeoBundle 'scrooloose/nerdtree' "{
-            if isdirectory(expand("~/.vim/bundle/nerdtree"))
-                let g:NERDShutUp=1
-                let NERDTreeShowBookmarks=1
-                let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-                let NERDTreeChDirMode=0
-                let NERDTreeQuitOnOpen=1
-                let NERDTreeMouseMode=2
-                let NERDTreeShowHidden=1
-                let NERDTreeKeepTreeInNewTab=1
-                let g:nerdtree_tabs_open_on_gui_startup=0
-                let g:NERDTreeDirArrowExpandable = '▸'
-                let g:NERDTreeDirArrowCollapsible = '▾'
-                function! NERDTreeInitAsNeeded() " {
-                    redir => bufoutput
-                    buffers!
-                    redir END
-                    let idx = stridx(bufoutput, "NERD_tree")
-                    if idx > -1
-                        NERDTreeMirror
-                        NERDTreeFind
-                        wincmd l
-                    endif
-                endfunction
-                " }
-            endif
-        "}
-
         NeoBundle 'Shougo/unite.vim' " {
             NeoBundle 'k0kubun/unite-git-files'
             NeoBundle 'Shougo/neoyank.vim'
@@ -115,6 +87,19 @@
                 let g:unite_source_grep_recursive_opt = ''
             endif
 
+        " }
+
+        NeoBundle 'Shougo/vimfiler.vim' " {
+            let g:vimfiler_as_default_explorer = 1
+            let g:vimfiler_safe_mode_by_default = 0
+            let g:vimfiler_tree_leaf_icon = " "
+            let g:vimfiler_tree_opened_icon = '▾'
+            let g:vimfiler_tree_closed_icon = '▸'
+            let g:vimfiler_file_icon = '-'
+            let g:vimfiler_marked_file_icon = '✓'
+            let g:vimfiler_readonly_file_icon = '✗'
+            let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+            let g:vimfiler_expand_jump_to_first_child = 0
         " }
 
         NeoBundle 'tpope/vim-markdown'
@@ -616,7 +601,7 @@
 " Key Mappings {
     " The default leader is '\', but many people prefer ',' as it's in a standard
     " location.
-    let mapleader = ','
+    let mapleader = " "
 
     " In normal mode, jj escapes
     inoremap jj <Esc>
@@ -802,11 +787,6 @@
             map <Leader>sk :SlimuxSendKeysLast<CR>
         " }
 
-        " NERDTree {
-            nnoremap <c-e> :NERDTreeToggle<CR>
-            nnoremap <leader>e :NERDTreeToggle<CR>
-        " }
-
         " Unite {
             nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
             nnoremap <C-o> :Unite -start-insert buffer<cr>
@@ -859,6 +839,10 @@
             vmap <Leader>a,, :Tabularize /,\zs<CR>
             nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
             vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        " }
+
+        " VimFiler {
+            nnoremap <silent> <c-e> :<C-u>VimFiler -parent -toggle<CR>
         " }
 
     " }

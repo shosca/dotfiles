@@ -31,16 +31,9 @@ CLEANFILES= \
 			$(OHMYZSHFILES) \
 			$(BASE16_SHELL)
 
-all: ohmyzsh symlinks base16
+install: ohmyzsh symlinks base16 ## Installs dotfiles
 
-base16:
-	if [[ ! -d $(BASE16_SHELL) ]]; then \
-		git clone https://github.com/chriskempson/base16-shell.git $(BASE16_SHELL) ; \
-	else \
-		cd $(BASE16_SHELL) && git pull ; \
-	fi
-
-ohmyzsh:
+ohmyzsh: ## Sets up oh-my-zsh
 	for f in $(OHMYZSHFILES); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
 	done
@@ -51,25 +44,31 @@ ohmyzsh:
 		cd $(OHMYZSH) && git pull ; \
 	fi
 
-neobundle:
+neobundle: ## Sets vim with neobundle
 	mkdir -p ~/.vim/bundle ; \
+	ln -sf $(PWD)/.vimrc ~/.vim/vimrc ; \
 	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
 		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim ; \
 	fi ; \
 	if [[ ! -d ~/.vim/bundle/vimproc.vim ]] ; then \
 		git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim ; \
 	fi ; \
-	ln -sf $(PWD)/.vimrc ~/.vimrc ; \
 	make -C ~/.vim/bundle/vimproc.vim/ && \
-	vim -N -u ~/.vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
+	vim -N -u ~/.vim/vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
 		-U NONE -i NONE -V1 -e -s
 
-symlinks:
+symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
 	done
 
-clean:
+clean: ## Cleans symlinks and such
 	for f in $(SYMLINKS) $(OHMYZSH) $(CLEANFILES) ; do \
 		rm -rf ~/$$f ; \
 	done
+
+.PHONY: help
+
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+	 
