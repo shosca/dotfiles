@@ -39,7 +39,6 @@ ohmyzsh: ## Sets up oh-my-zsh
 	done
 	if [[ ! -e $(OHMYZSH) ]]; then \
 		git clone https://github.com/robbyrussell/oh-my-zsh.git $(OHMYZSH) ; \
-		ln -sf $(PWD)/gentoo2.zsh-theme $(OHMYZSH)/themes/gentoo2.zsh-theme ; \
 	else \
 		cd $(OHMYZSH) && git pull ; \
 	fi
