@@ -52,10 +52,13 @@ neobundle: ## Sets vim with neobundle
 	fi ; \
 	if [[ ! -d ~/.vim/bundle/vimproc.vim ]] ; then \
 		git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim ; \
+		make -C ~/.vim/bundle/vimproc.vim/ && \
+		vim -N -u ~/.vim/vimrc -c "try | NeoBundleInstall | finally | qall! | endtry" \
+			-U NONE -i NONE -V1 -e -s ; \
+	else \
+		vim -N -u ~/.vim/vimrc -c "try | NeoBundleUpdate | finally | qall! | endtry" \
+			-U NONE -i NONE -V1 -e -s ; \
 	fi ; \
-	make -C ~/.vim/bundle/vimproc.vim/ && \
-	vim -N -u ~/.vim/vimrc -c "try | NeoBundleUpdate! | finally | qall! | endtry" \
-		-U NONE -i NONE -V1 -e -s
 
 symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \
