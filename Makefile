@@ -45,7 +45,10 @@ ohmyzsh: ## Sets up oh-my-zsh
 
 neobundle: ## Sets vim with neobundle
 	mkdir -p ~/.vim/bundle ; \
+	mkdir -p ~/.config/; \
+	ln -sf ~/.vim ~/.config/nvim ; \
 	ln -sf $(PWD)/.vimrc ~/.vim/vimrc ; \
+	ln -sf $(PWD)/.vimrc ~/.config/nvim/init.vim; \
 	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
 		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim ; \
 	fi ; \
