@@ -1,10 +1,15 @@
 PWD=$(shell pwd)
-BASE16_SHELL=~/.config/base16-shell
-
-OHMYZSH=~/.oh-my-zsh
+OHMYZSH=.oh-my-zsh
 OHMYZSHFILES=\
-			.zshrc
-
+	$(OHMYZSH) \
+	.zshrc
+VIMFILES= \
+	.vim \
+	.vimbackup \
+	.viminfo \
+	.vimswap \
+	.vimundo \
+	.vimviews
 SYMLINKS= \
 	.ackrc \
 	.ctags \
@@ -19,36 +24,22 @@ SYMLINKS= \
 	.tmux.conf \
 	.yaourtrc
 
-CLEANFILES= \
-			.vim \
-			.vimrc \
-			.vimbackup \
-			.viminfo \
-			.vimswap \
-			.vimundo \
-			.vimviews \
-			$(OHMYZSH) \
-			$(OHMYZSHFILES) \
-			$(BASE16_SHELL)
+install: install-vim install-zsh install-symlinks ## Installs all
 
-install: ohmyzsh symlinks base16 ## Installs dotfiles
-
-ohmyzsh: ## Sets up oh-my-zsh
-	for f in $(OHMYZSHFILES); do \
-		ln -sf $(PWD)/$$f ~/$$f ; \
-	done
-	if [[ ! -e $(OHMYZSH) ]]; then \
-		git clone https://github.com/robbyrussell/oh-my-zsh.git $(OHMYZSH) ; \
+install-zsh: ## Sets up zsh
+	ln -sf $(PWD)/.zshrc ~/.zshrc ; \
+	if [[ ! -e ~/$(OHMYZSH) ]]; then \
+		git clone https://github.com/robbyrussell/oh-my-zsh.git ~/$(OHMYZSH) ; \
 	else \
-		cd $(OHMYZSH) && git pull ; \
+		cd ~/$(OHMYZSH) && git pull ; \
 	fi
 
-neobundle: ## Sets vim with neobundle
+install-vim: ## Sets up vim
 	mkdir -p ~/.vim/bundle ; \
 	mkdir -p ~/.config/; \
 	ln -sf ~/.vim ~/.config/nvim ; \
-	ln -sf $(PWD)/.vimrc ~/.vim/vimrc ; \
-	ln -sf $(PWD)/.vimrc ~/.config/nvim/init.vim; \
+	ln -sf $(PWD)/vim/vimrc ~/.vim/vimrc ; \
+	ln -sf $(PWD)/vim/vimrc ~/.config/nvim/init.vim; \
 	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
 		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim ; \
 	fi ; \
@@ -62,18 +53,30 @@ neobundle: ## Sets vim with neobundle
 			-U NONE -i NONE -V1 -e -s ; \
 	fi ; \
 
-symlinks: ## Symlinks dotfiles into homedir
+install-symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
 	done
 
-clean: ## Cleans symlinks and such
-	for f in $(SYMLINKS) $(OHMYZSH) $(CLEANFILES) ; do \
+clean: clean-symlinks clean-vim clean-zsh ## Cleans all configs
+
+clean-symlinks: ## Cleans symlinks and such
+	for f in $(SYMLINKS) ; do \
+		rm -rf ~/$$f ; \
+	done
+
+clean-zsh: ## Cleans zsh config files
+	for f in $(OHMYZSHFILES) ; do \
+		rm -rf ~/$$f ; \
+	done
+
+clean-vim: ## Cleans vim config files
+	for f in $(VIMFILES) ; do \
 		rm -rf ~/$$f ; \
 	done
 
 .PHONY: help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 	 

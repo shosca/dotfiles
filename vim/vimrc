@@ -71,6 +71,10 @@
         NeoBundle 'Shougo/unite.vim' " {
             NeoBundle 'k0kubun/unite-git-files'
             NeoBundle 'Shougo/neoyank.vim'
+            NeoBundle 'Shougo/unite-build'
+            NeoBundle 'tsukkee/unite-tag'
+            NeoBundle 'thinca/vim-unite-history'
+            NeoBundle 'Shougo/neomru.vim'
 
             let g:unite_source_history_yank_enable = 1
             let g:unite_source_history_yank_linut = 10000
@@ -753,98 +757,101 @@
     nmap <silent> <Leader>ev :e $MYVIMRC<CR>
     nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 
-    " Plugin Key Mappings {
+" }
 
-        " Completion {
-            "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-            inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-            inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-            inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-            inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-        " }
+" Plugin Key Mappings {
 
-        " Autoclose {
-            nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-        " }
+    " Completion {
+        "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+        inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+        inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+        inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+        inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+    " }
 
-        " Tagbar {
-            nnoremap <c-t> :TagbarToggle<CR>
-            nnoremap <leader>t :TagbarToggle<CR>
-        " }
+    " Autoclose {
+        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+    " }
 
-        " Sessionman {
-            nmap <leader>sl :SessionList<CR>
-            nmap <leader>ss :SessionSave<CR>
-            nmap <leader>sc :SessionClose<CR>
-        " }
+    " Tagbar {
+        nnoremap <c-t> :TagbarToggle<CR>
+        nnoremap <leader>t :TagbarToggle<CR>
+    " }
 
-        " Slimux {
-            map <C-c><C-c> :SlimuxREPLSendLine<CR>
-            vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-            map <Leader>s :SlimuxREPLSendLine<CR>
-            vmap <Leader>s :SlimuxREPLSendSelection<CR>
-            map <Leader>sa :SlimuxShellLast<CR>
-            map <Leader>sk :SlimuxSendKeysLast<CR>
-        " }
+    " Sessionman {
+        nmap <leader>sl :SessionList<CR>
+        nmap <leader>ss :SessionSave<CR>
+        nmap <leader>sc :SessionClose<CR>
+    " }
 
-        " Unite {
-            nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
-            nnoremap <C-o> :Unite -start-insert buffer<cr>
-            nnoremap <space>f :Unite -no-quit grep:.<cr>
-            nnoremap <space>y :Unite history/yank<cr>
+    " Slimux {
+        map <C-c><C-c> :SlimuxREPLSendLine<CR>
+        vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+        map <Leader>s :SlimuxREPLSendLine<CR>
+        vmap <Leader>s :SlimuxREPLSendSelection<CR>
+        map <Leader>sa :SlimuxShellLast<CR>
+        map <Leader>sk :SlimuxSendKeysLast<CR>
+    " }
 
-            function! s:unite_settings() "{
-                nmap <buffer> <ESC> <Plug>(unite_exit)
-                imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-                imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-                nmap <buffer> <C-j> j
-                nmap <buffer> <C-k> k
-                imap <buffer><expr> <C-s> unite#do_action('split')
-                imap <buffer><expr> <C-v> unite#do_action('vsplit')
-                imap <buffer><expr> <C-t> unite#do_action('tabopen')
-            endfunction " }
+    " Unite {
+        nnoremap <silent> <C-p> :Unite -start-insert file_rec/async<CR>
+        nnoremap <silent> <C-i> :Unite -start-insert file_rec/git<CR>
+        nnoremap <silent> <C-o> :Unite buffer<CR>
+        nnoremap <silent> <C-k> :Unite change jump<CR>
+        nnoremap <silent> <C-f> :Unite grep -auto-preview -no-empty -no-quit -resume<CR>
+        nnoremap <silent> <C-y> :Unite -default-action=append register history/yank<CR>
+        nnoremap <silent> <C-l> :Unite -start-insert command history/command<CR>
 
-            autocmd FileType unite call s:unite_settings()
-        " }
+        function! s:unite_settings() "{
+            nmap <buffer> <ESC> <Plug>(unite_exit)
+            imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+            imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+            nmap <buffer> <C-j> j
+            nmap <buffer> <C-k> k
+            imap <buffer><expr> <C-s> unite#do_action('split')
+            imap <buffer><expr> <C-v> unite#do_action('vsplit')
+            imap <buffer><expr> <C-t> unite#do_action('tabopen')
+        endfunction " }
 
-        " Git {
-            nnoremap <silent> <leader>gs :Gstatus<CR>
-            nnoremap <silent> <leader>gd :Gdiff<CR>
-            nnoremap <silent> <leader>gc :Gcommit<CR>
-            nnoremap <silent> <leader>gb :Gblame<CR>
-            nnoremap <silent> <leader>gl :Glog<CR>
-            nnoremap <silent> <leader>gp :Git push<CR>
-            nnoremap <silent> <leader>gr :Gread<CR>
-            nnoremap <silent> <leader>gw :Gwrite<CR>
-            nnoremap <silent> <leader>ge :Gedit<CR>
-            " Mnemonic _i_nteractive
-            nnoremap <silent> <leader>gi :Git add -p %<CR>
-            nnoremap <silent> <leader>gg :SignifyToggle<CR>
-        " }
+        autocmd FileType unite call s:unite_settings()
+    " }
 
-        " Tabularize {
-            nmap <Leader>a& :Tabularize /&<CR>
-            vmap <Leader>a& :Tabularize /&<CR>
-            nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            nmap <Leader>a=> :Tabularize /=><CR>
-            vmap <Leader>a=> :Tabularize /=><CR>
-            nmap <Leader>a: :Tabularize /:<CR>
-            vmap <Leader>a: :Tabularize /:<CR>
-            nmap <Leader>a:: :Tabularize /:\zs<CR>
-            vmap <Leader>a:: :Tabularize /:\zs<CR>
-            nmap <Leader>a, :Tabularize /,<CR>
-            vmap <Leader>a, :Tabularize /,<CR>
-            nmap <Leader>a,, :Tabularize /,\zs<CR>
-            vmap <Leader>a,, :Tabularize /,\zs<CR>
-            nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-            vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-        " }
+    " Git {
+        nnoremap <silent> <leader>gs :Gstatus<CR>
+        nnoremap <silent> <leader>gd :Gdiff<CR>
+        nnoremap <silent> <leader>gc :Gcommit<CR>
+        nnoremap <silent> <leader>gb :Gblame<CR>
+        nnoremap <silent> <leader>gl :Glog<CR>
+        nnoremap <silent> <leader>gp :Git push<CR>
+        nnoremap <silent> <leader>gr :Gread<CR>
+        nnoremap <silent> <leader>gw :Gwrite<CR>
+        nnoremap <silent> <leader>ge :Gedit<CR>
+        " Mnemonic _i_nteractive
+        nnoremap <silent> <leader>gi :Git add -p %<CR>
+        nnoremap <silent> <leader>gg :SignifyToggle<CR>
+    " }
 
-        " VimFiler {
-            nnoremap <silent> <c-e> :<C-u>VimFiler -parent -toggle<CR>
-        " }
+    " Tabularize {
+        nmap <Leader>a& :Tabularize /&<CR>
+        vmap <Leader>a& :Tabularize /&<CR>
+        nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+        vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+        nmap <Leader>a=> :Tabularize /=><CR>
+        vmap <Leader>a=> :Tabularize /=><CR>
+        nmap <Leader>a: :Tabularize /:<CR>
+        vmap <Leader>a: :Tabularize /:<CR>
+        nmap <Leader>a:: :Tabularize /:\zs<CR>
+        vmap <Leader>a:: :Tabularize /:\zs<CR>
+        nmap <Leader>a, :Tabularize /,<CR>
+        vmap <Leader>a, :Tabularize /,<CR>
+        nmap <Leader>a,, :Tabularize /,\zs<CR>
+        vmap <Leader>a,, :Tabularize /,\zs<CR>
+        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+    " }
 
+    " VimFiler {
+        nnoremap <silent> <c-e> :<C-u>VimFiler -parent -toggle<CR>
     " }
 
 " }
