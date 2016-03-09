@@ -13,6 +13,7 @@ VIMFILES= \
 SYMLINKS= \
 	.ackrc \
 	.ctags \
+	.eslintrc \
 	.gitconfig \
 	.hgrc \
 	.inputrc \
