@@ -41,3 +41,5 @@
     helper = cache --timeout=3600
 [push]
 	default = matching
+[url "https://github.com/"]
+	insteadOf = git://github.com/
