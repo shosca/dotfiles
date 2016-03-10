@@ -26,7 +26,7 @@ prompt_segment() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    echo "$fg_bold[green]$USER@%m "
+    echo "$fg_bold[green]$USER@%m"
   fi
 }
 
@@ -45,5 +45,5 @@ prompt_venv() {
   fi
 }
 
-PROMPT='$(prompt_context)$(prompt_dir)$(git_prompt_info)$(prompt_venv)
+PROMPT='$(prompt_context):$(prompt_dir)$(git_prompt_info)$(prompt_venv)
 $(prompt_char)'
