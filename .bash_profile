@@ -69,92 +69,7 @@ export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
 shopt -s cmdhist
 shopt -s histappend
 
-# enable color support of ls and also add handy aliases
-alias ls='ls --color=auto'
-alias dir='ls --color=auto --format=vertical'
-alias vdir='ls --color=auto --format=long'
-alias pygrep="grep --include='*.py' $*"
-alias rbgrep="grep --include='*.rb' $*"
-alias csgrep="grep --include='*.cs' $*"
-alias brgrep="grep --include='*.brail' $*"
-
-# some more ls aliases
-alias ll='ls -lhX'
-alias la='ls -A'
-alias ldir='ls -lhA |grep ^d'
-alias lfiles='ls -lhA |grep ^-'
-alias l='ls -CF'
-
-# To check a process is running in a box with a heavy load: pss
-alias pss='ps -ef | grep $1'
-
-# usefull alias to browse your filesystem for heavy usage quickly
-#alias ducks='ls -A | grep -v -e '\''^\.\.$'\'' |xargs -i du -ks {} |sort -rn |head -16 | awk '\''{print $2}'\'' | xargs -i du -hs {}'
-#lias ducks='for f in ./* ./.*; do du -ks "${f}"; done | sort -rn | head -16'
-alias ducks='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
-
-alias search='apt-cache search'
-alias c='clear'
-alias up='cd ..'
-
-alias radeondynpm='echo dynpm | sudo tee -a /sys/class/drm/card0/device/power_method'
-alias radeonprofile='echo profile | sudo tee -a /sys/class/drm/card0/device/power_method'
-alias radeonlow='echo low | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeonmid='echo mid| sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeondefault='echo default | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias radeonhigh='echo high | sudo tee -a /sys/class/drm/card0/device/power_profile'
-alias drmdebug='echo 14 | sudo tee -a /sys/module/drm/parameters/debug'
-alias drmnodebug='echo 0 | sudo tee -a /sys/module/drm/parameters/debug'
 alias resrc='source ~/.bashrc'
-alias rsyncf='rsync -v --recursive --links --times -D --delete'
-alias rsyncd='rsync -v --recursive --links --times -D'
-alias pushtobuttercup='rsync -v --recursive --links --times -D --delete ~/src/ buttercup.local:~/src/'
-alias pullfrombuttercup='rsync -v --recursive --links --times -D --delete buttercup.local:~/src/ ~/src/'
-alias ondemand='sudo cpupower frequency-set -g ondemand'
-alias powersave='sudo cpupower frequency-set -g powersave'
-alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
-
-rsyncpush() {
-  if [ -z "$1" ]; then
-    echo "provide destination server"
-    return 1
-  fi
-
-  if [ -z "$2" ]; then
-    echo "provide folder to sync"
-    return 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "folder does not exist"
-    return 1
-  fi
-  local d="$(realpath $2)/"
-
-  echo "rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $d $1:$d"
-  rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $d $1:$d
-}
-
-rsyncpull() {
-  if [ -z "$1" ]; then
-    echo "provide destination server"
-    return 1
-  fi
-
-  if [ -z "$2" ]; then
-    echo "provide folder to sync"
-    return 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "folder does not exist"
-    return 1
-  fi
-  local d="$(realpath $2)/"
-
-  echo "rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $1:$d $d"
-  rsync --recursive --links --times -D $3 $4 $5 $6 $7 $8 $1:$d $d
-}
 
 export EDITOR="vim"
 
@@ -197,7 +112,9 @@ fi
 
 [[ -s "/usr/bin/virtualenvwrapper.sh" ]] && source "/usr/bin/virtualenvwrapper_lazy.sh"
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-[[ -s "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
-[[ -s "$HOME/.rvm/bin" ]] && ecport PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+BASE16_SHELL="$HOME/dotfiles/base16-turkishcoffee.dark.sh"
+[[ -f $BASE16_SHELL  ]] && source $BASE16_SHELL
+
+[[ -f $HOME/dotfiles/.aliases ]] && source $HOME/dotfiles/.aliases
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
 

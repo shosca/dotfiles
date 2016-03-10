@@ -35,15 +35,15 @@ prompt_dir() {
 }
 
 prompt_char() {
-  echo "%{$fg_bold[blue]%}»%{$reset_color%}"
+  echo "%{$fg_bold[blue]%}$%{$reset_color%} "
 }
 
 prompt_venv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment black red "$(basename $virtualenv_path):"
+    prompt_segment black red " ($(basename $virtualenv_path))"
   fi
 }
 
-PROMPT='$(prompt_context)$(prompt_dir)$(git_prompt_info)
-$(prompt_venv)$(prompt_char) '
+PROMPT='$(prompt_context)$(prompt_dir)$(git_prompt_info)$(prompt_venv)
+$(prompt_char)'

@@ -5,6 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
+#ZSH_THEME="gentoo2"
 ZSH_THEME="gentoo2"
 
 # Example aliases
@@ -58,10 +59,10 @@ plugins=(
     golang
     history-substring-search
     mercurial
-    ruby
-    rbenv
     pip
     python
+    rbenv
+    ruby
     systemd
     virtualenv
  )
@@ -69,7 +70,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 
 setopt appendhistory
 setopt extendedhistory
@@ -90,14 +90,12 @@ case "${TERM}" in
     if [[ -f "/usr/bin/dircolors" ]] ; then
       eval "`dircolors -b`"
     fi
-    alias ls='ls --color=auto'
     ;;
   screen)
     cache_term_colors=256
     if [[ -f "/usr/bin/dircolors" ]] ; then
       eval "`dircolors -b`"
     fi
-    alias ls='ls --color=auto'
     ;;
   dumb)
     cache_term_colors=2
@@ -107,7 +105,6 @@ case "${TERM}" in
     if [[ -f "/usr/bin/dircolors" ]] ; then
       eval "`dircolors -b`"
     fi
-    alias ls='ls --color=auto'
     ;;
 esac
 
@@ -164,48 +161,11 @@ fi
 export WORKON_HOME="$HOME/.virtualenvs"
 export EDITOR=vim
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
-
-alias dmesg="dmesg -L"
-# some more ls aliases
-alias ll='ls -lh'
-alias la='ls -A'
-alias ldir='ls -lhA |grep ^d'
-alias lfiles='ls -lhA |grep ^-'
-alias l='ls -CF'
-
-# To check a process is running in a box with a heavy load: pss
-alias pss='ps -ef | grep $1'
-
-# usefull alias to browse your filesystem for heavy usage quickly
-alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
-
-alias c='clear'
-alias up='cd ..'
-
-alias resrc='source ~/.zshrc'
-alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
-
-alias tma='tmux attach -d -t'
-
-cleanvim() {
-    echo "Cleaning ~/.vimbackup/"
-    rm -Rf ~/.vimbackup/*
-    echo "Cleaning ~/.vimswap/"
-    rm -Rf ~/.vimswap/*
-    echo "Cleaning ~/.vimviews/"
-    rm -Rf ~/.vimviews/*
-    echo "Cleaning ~/.vimundo/"
-    rm -Rf ~/.vimundo/*
-    echo "All done!"
-}
-
 unset GREP_OPTIONS
-alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
-alias npm-exec='PATH=$(npm bin):$PATH'
 
 BASE16_SHELL="$HOME/dotfiles/base16-turkishcoffee.dark.sh"
 [[ -f $BASE16_SHELL  ]] && source $BASE16_SHELL
 
-if [[ -f $HOME/.zshrc.local ]]; then
-    source $HOME/.zshrc.local
-fi
+[[ -f $HOME/dotfiles/.aliases ]] && source $HOME/dotfiles/.aliases
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
+

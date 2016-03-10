@@ -1,0 +1,18 @@
+# vim: set ft=zsh ts=4 sw=4
+
+alias c='clear'
+alias dmesg="dmesg -L"
+alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
+alias l='ls -CF'
+alias la='ls -A'
+alias ldir='ls -lhA |grep ^d'
+alias lfiles='ls -lhA |grep ^-'
+alias ll='ls -lh'
+alias ls='ls --color=auto'
+alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
+alias npm-exec='PATH=$(npm bin):$PATH'
+alias pss='ps -ef | grep $1'
+alias resrc='source ~/.zshrc'
+alias tma='tmux attach -d -t'
+alias up='cd ..'

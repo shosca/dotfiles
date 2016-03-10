@@ -12,6 +12,8 @@ VIMFILES= \
 	.vimviews
 SYMLINKS= \
 	.ackrc \
+	.bashrc \
+	.bash_profile \
 	.ctags \
 	.eslintrc \
 	.gitconfig \
