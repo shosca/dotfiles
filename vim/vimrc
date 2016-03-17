@@ -262,6 +262,8 @@
 
             NeoBundle 'mxw/vim-jsx'
 
+            NeoBundle 'ternjs/tern_for_vim'
+
         " }
 
         " HTML {
