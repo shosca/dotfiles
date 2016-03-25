@@ -204,6 +204,12 @@
 
         " }
 
+        " SQL {
+
+            NeoBundle 'talek/vorax4'
+
+        " }
+
         " Python {
 
             NeoBundle 'davidhalter/jedi-vim' " {
