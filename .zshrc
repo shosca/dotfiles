@@ -62,6 +62,7 @@ plugins=(
     pip
     python
     rbenv
+    rvm
     ruby
     systemd
     virtualenv
@@ -151,11 +152,6 @@ if [[ -f /usr/bin/keychain ]]; then
     /usr/bin/keychain ~/.ssh/id_rsa
     [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
     [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
-fi
-
-if [[ -d "$HOME/.rbenv/bin" ]]; then
-    PATH=$PATH:$HOME/.rbenv/bin
-    eval "$(rbenv init -)"
 fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
