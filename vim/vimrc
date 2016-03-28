@@ -206,7 +206,7 @@
 
         " SQL {
 
-            NeoBundle 'talek/vorax4'
+            NeoBundle 'vim-scripts/dbext.vim'
 
         " }
 
