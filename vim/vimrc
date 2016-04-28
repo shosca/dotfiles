@@ -514,7 +514,7 @@
     set colorcolumn=80
     syntax on                   " Syntax highlighting
     set mouse=a                 " Automatically enable mouse usage
-    set ttymouse=sgr            " Stick to SGR 1006 mouse mode
+    "set ttymouse=sgr            " Stick to SGR 1006 mouse mode
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
     if has('clipboard')
