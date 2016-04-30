@@ -5,6 +5,10 @@ ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}*"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+ZSH_THEME_HG_PROMPT_PREFIX="%{$fg[yellow]%}:"
+ZSH_THEME_HG_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_HG_PROMPT_DIRTY="%{$fg_bold[red]%}*"
+ZSH_THEME_HG_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,
@@ -45,5 +49,5 @@ prompt_venv() {
   fi
 }
 
-PROMPT='$(prompt_context):$(prompt_dir)$(git_prompt_info)$(prompt_venv)
+PROMPT='$(prompt_context):$(prompt_dir)$(git_prompt_info)$(hg_prompt_info)$(prompt_venv)
 $(prompt_char)'
