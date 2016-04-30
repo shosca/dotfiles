@@ -45,5 +45,5 @@ prompt_venv() {
   fi
 }
 
-PROMPT='$(prompt_context):$(prompt_dir)$(git_prompt_info)$(prompt_venv)
+PROMPT='$(prompt_context):$(prompt_dir)$(git_prompt_info)$(hg_prompt_info)$(prompt_venv)
 $(prompt_char)'
