@@ -155,9 +155,14 @@ if [[ -f /usr/bin/keychain ]]; then
 fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
-export EDITOR=vim
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 unset GREP_OPTIONS
+
+export EDITOR=vim
+if [[ -f /usr/bin/nvim ]]; then
+    export EDITOR=nvim
+    alias vim=nvim
+fi
 
 BASE16_SHELL="$HOME/dotfiles/base16-turkishcoffee.dark.sh"
 [[ -f $BASE16_SHELL  ]] && source $BASE16_SHELL
