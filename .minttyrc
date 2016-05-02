@@ -1,5 +1,5 @@
 BoldAsFont=yes
-FontHeight=10
+FontHeight=9
 Term=xterm-256color
 FontSmoothing=full
 Locale=en_US
