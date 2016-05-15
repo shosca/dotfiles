@@ -39,86 +39,121 @@
 
 " }
 
-" NeoBundle Start {
+"Load Dein {
 
-    " Required:
-    set runtimepath^=~/.vim/bundle/neobundle.vim/
+let $CACHE = expand('~/.cache')
 
-    call neobundle#begin(expand('~/.vim/bundle/'))
+if !isdirectory(expand($CACHE))
+  call mkdir(expand($CACHE), 'p')
+endif
+
+let s:dein_dir = finddir('dein.vim', '.;')
+if s:dein_dir != '' || &runtimepath !~ '/dein.vim'
+    if s:dein_dir == '' && &runtimepath !~ '/dein.vim'
+        let s:dein_dir = expand('$CACHE/dein')
+            \. '/repos/github.com/Shougo/dein.vim'
+        if !isdirectory(s:dein_dir)
+             execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
+        endif
+    endif
+
+    execute ' set runtimepath^=' . substitute(
+     \ fnamemodify(s:dein_dir, ':p') , '/$', '', '')
+endif
+let s:dein_dir = expand('$CACHE/dein')
+
+call dein#begin(expand(s:dein_dir))
+call dein#add(expand(s:dein_dir))
 
 " }
 
-" Bundles and their config here: {
+" Plugins {
 
-    " NeoBundle {
+    " Themes {
 
-        NeoBundleFetch 'Shougo/neobundle.vim'
+    call dein#add('chriskempson/base16-vim')
+    call dein#add('vim-airline/vim-airline')
+    call dein#add('vim-airline/vim-airline-themes') "{
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline_powerline_fonts=1
+        let g:airline_theme='base16_default'
+        " }
+    " }
+"
+    " Writing {
 
-        NeoBundle 'Shougo/vimproc.vim', {
-        \ 'build': {
-        \       'linux': 'make',
-        \       'cygwin': 'make -f make_cygwin.mak',
-        \       'unix': 'gmake',
-        \       'mac': 'make',
-        \       'windows': 'tools\\update-dll-mingw',
-        \   },
-        \ }
+    call dein#add('reedes/vim-litecorrect')
+    call dein#add('kana/vim-textobj-user')
+    call dein#add('reedes/vim-textobj-sentence')
+    call dein#add('reedes/vim-textobj-quote') " {
+        augroup textobj_sentence
+          autocmd!
+          autocmd FileType markdown call textobj#sentence#init()
+          autocmd FileType textile call textobj#sentence#init()
+          autocmd FileType text call textobj#sentence#init()
+        augroup END
 
+        augroup textobj_quote
+            autocmd!
+            autocmd FileType markdown call textobj#quote#init()
+            autocmd FileType textile call textobj#quote#init()
+            autocmd FileType text call textobj#quote#init({'educate': 0})
+        augroup END
+        " }
+    call dein#add('reedes/vim-wordy')
+    " }
+
+    " Snippets & AutoComplete {
+
+    call dein#add('garbas/vim-snipmate') "{
+        " Setting the author var
+        let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
+    " }
+    call dein#add('MarcWeber/vim-addon-mw-utils')
+    call dein#add('tomtom/tlib_vim')
+    call dein#add('SirVer/ultisnips') "{
+        " For snippet_complete marker.
+        if has('conceal')
+            set conceallevel=2 concealcursor=i
+        endif
+        " remap Ultisnips for compatibility for YCM
+        let g:UltiSnipsExpandTrigger = '<C-j>'
+        let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+        let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+    " }
+    call dein#add('Shougo/Deoplete.nvim') " {
+        let g:deoplete#enable_at_startup = 1
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+        au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+        " Automatically open and close the popup menu / preview window
+        set completeopt=menu,preview,longest
+        " deoplete tab-complete
+        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
+    " } 
+    call dein#add('honza/vim-snippets')
     " }
 
     " General {
 
-        NeoBundle 'Shougo/unite.vim' " {
-            NeoBundle 'k0kubun/unite-git-files'
-            NeoBundle 'Shougo/neoyank.vim'
-            NeoBundle 'Shougo/unite-build'
-            NeoBundle 'tsukkee/unite-tag'
-            NeoBundle 'thinca/vim-unite-history'
-            NeoBundle 'Shougo/neomru.vim'
-
-            let g:unite_source_history_yank_enable = 1
-            let g:unite_source_history_yank_linut = 10000
-            let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
-            let g:unite_marked_icon = '✓'
-
-
-            if executable('ag')
-                let g:unite_source_rec_aync_command = [ 'ag', '-l', '-g', '', '--nocolor'  ]
-                let g:unite_source_grep_command = 'ag'
-                let g:unite_source_grep_default_opts =
-                    \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
-                    \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-                let g:unite_source_grep_recursive_opt = ''
-            endif
-
-        " }
-
-        NeoBundle 'Shougo/vimfiler.vim' " {
-            let g:vimfiler_as_default_explorer = 1
-            let g:vimfiler_safe_mode_by_default = 0
-            let g:vimfiler_tree_leaf_icon = " "
-            let g:vimfiler_tree_opened_icon = '▾'
-            let g:vimfiler_tree_closed_icon = '▸'
-            let g:vimfiler_file_icon = '-'
-            let g:vimfiler_marked_file_icon = '✓'
-            let g:vimfiler_readonly_file_icon = '✗'
-            let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-            let g:vimfiler_expand_jump_to_first_child = 0
-        " }
-
-        NeoBundle 'tpope/vim-markdown'
-
-        NeoBundle 'epeli/slimux'
-
-        NeoBundle 'Konfekt/FastFold'
-
-        NeoBundle 'tpope/vim-markdown'
-
-        NeoBundle 'easymotion/vim-easymotion'
-
-        NeoBundle 'vim-scripts/sessionman.vim' " {
-            set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-        " }
+        call dein#add('Shougo/unite.vim')
+        call dein#add('k0kubun/unite-git-files')
+        call dein#add('Shougo/neoyank.vim')
+        call dein#add('Shougo/unite-build')
+        call dein#add('tsukkee/unite-tag')
+        call dein#add('thinca/vim-unite-history')
+        call dein#add('Shougo/neomru.vim')
+        call dein#add('Shougo/vimfiler.vim')
+        call dein#add('tpope/vim-markdown')
+        call dein#add('epeli/slimux')
+        call dein#add('Konfekt/FastFold')
+        call dein#add('tpope/vim-markdown')
+        call dein#add('easymotion/vim-easymotion')
+        call dein#add('vim-scripts/sessionman.vim')
 
     " }
 
@@ -126,119 +161,96 @@
 
         " General {
 
-            NeoBundle 'scrooloose/syntastic' " {
-                " Pick one of the checksyntax, jslint, or syntastic
-                if isdirectory(expand("~/.vim/bundle/syntastic"))
-                    let g:syntastic_error_symbol = '✗'
-                    let g:syntastic_style_error_symbol = '✠'
-                    let g:syntastic_warning_symbol = '∆'
-                    let g:syntastic_style_warning_symbol = '≈'
-                    let g:syntastic_always_populate_loc_list = 1
-                    let g:syntastic_aggregate_errors = 1
-                    let g:syntastic_python_checkers = ['flake8']
-                    let g:syntastic_javascript_checkers = ['eslint']
-                    let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-                    let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-                    let g:syntastic_javascript_checkers = ['jsxhint']
-                    let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
-                endif
+             call dein#add('neomake/neomake') "{
+                let g:neomake_warning_sign = {
+                  \ 'text': '∆',
+                  \ 'texthl': 'WarningMsg',
+                  \ }
+                let g:neomake_error_sign = {
+                  \ 'text': '✗',
+                  \ 'texthl': 'ErrorMsg',
+                  \ }
+                let g:neomake_style_error_symbol = '✠'
+                let g:neomake_style_warning_symbol = '≈'
+
+                autocmd! BufWritePost * Neomake
+                let g:neomake_open_list = 2
             " }
-
-            NeoBundle 'tpope/vim-fugitive'
-
-            NeoBundle 'airblade/vim-gitgutter' " {
-                if isdirectory(expand("~/.vim/bundle/vim-gitgutter"))
-                    let g:gitgutter_enabled = 1
-                    let g:gitgutter_eager = 0
-                    let g:gitgutter_map_keys = 0
-                endif
+            call dein#add('tpope/vim-fugitive')
+            call dein#add('airblade/vim-gitgutter') " {
+                let g:gitgutter_enabled = 1
+                let g:gitgutter_eager = 0
+                let g:gitgutter_map_keys = 0
             " }
-
-            NeoBundle 'scrooloose/nerdcommenter'
-
-            NeoBundle 'godlygeek/tabular'
-
-            NeoBundle 'luochen1990/rainbow' " {
-                if isdirectory(expand("~/.vim/bundle/rainbow"))
-                    let g:rainbow_active=1
-                    let g:rainbow_load_separately = [
-                        \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-                        \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
-                        \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-                        \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
-                    \ ]
-                    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
-                    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
-                endif
+            call dein#add('scrooloose/nerdcommenter')
+            call dein#add('godlygeek/tabular')
+            call dein#add('luochen1990/rainbow') " {
+                let g:rainbow_active=1
+                let g:rainbow_load_separately = [
+                    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                    \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
+                    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
+                \ ]
+                let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+                let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
             " }
-
-            NeoBundle 'majutsushi/tagbar' "{
-                if isdirectory(expand("~/.vim/bundle/tagbar"))
-                    set tags=./tags;/,~/.vimtags
-                    " Make tags placed in .git/tags file available in all levels of a repository
-                    let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-                    if gitroot != ''
-                        let &tags = &tags . ',' . gitroot . '/.git/tags'
-                    endif
+            call dein#add('majutsushi/tagbar') "{
+                set tags=~/.cache/vim/tags
+                " Make tags placed in .git/tags file available in all levels of a repository
+                let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+                if gitroot != ''
+                    let &tags = &tags . ',' . gitroot . '/.git/tags'
                 endif
             "}
-
-            NeoBundle 'matchit.zip'
-
-            NeoBundle 'xolox/vim-misc'
-
-            NeoBundle 'xolox/vim-easytags' " {
+            call dein#add('matchit.zip')
+            call dein#add('xolox/vim-misc')
+            call dein#add('xolox/vim-easytags') " {
                 let g:easytags_async = 1
-                let g:easytags_file = '~/.vim/tags'
-                let g:easytags_by_filetype = '~/.vim/ftags/'
+                let g:easytags_file = expand('$CACHE/vim/tags')
+                let g:easytags_by_filetype = expand('$CACHE/vim/ftags/')
                 let g:easytags_events = ['BufWritePost']
 
                 autocmd FileType python let b:easytags_auto_highlight = 0
             " }
-
-            NeoBundle 'tpope/vim-surround'
-
-            NeoBundle 'jiangmiao/auto-pairs'
-
-            NeoBundle 'Chiel92/vim-autoformat'
+            call dein#add('tpope/vim-surround')
+            call dein#add('jiangmiao/auto-pairs')
+            call dein#add('Chiel92/vim-autoformat')
 
         " }
 
         " SQL {
 
-            NeoBundle 'vim-scripts/dbext.vim'
+         call dein#add('vim-scripts/dbext.vim')
 
         " }
 
         " Python {
 
-            NeoBundle 'davidhalter/jedi-vim' " {
-                if isdirectory(expand("~/.vim/bundle/jedi-vim"))
-                    let g:jedi#use_tabs_not_buffers = 1
-                    let g:jedi#popup_on_dot = 0
-                    let g:jedi#popup_select_first = 0
-                    let g:jedi#completions_enabled = 0
-                    let g:jedi#auto_vim_configuration = 0
-                    let g:jedi#goto_command = "<leader>d"
-                    let g:jedi#goto_assignments_command = "<leader>g"
-                    let g:jedi#goto_definitions_command = ""
-                    let g:jedi#documentation_command = "K"
-                    let g:jedi#usages_command = "<leader>n"
-                    let g:jedi#completions_command = "<C-Space>"
-                    let g:jedi#rename_command = "<leader>r"
-                endif
+            call dein#add('davidhalter/jedi-vim')
+            " {
+                let g:jedi#use_tabs_not_buffers = 1
+                let g:jedi#popup_on_dot = 0
+                let g:jedi#popup_select_first = 0
+                let g:jedi#completions_enabled = 0
+                let g:jedi#auto_vim_configuration = 0
+                let g:jedi#goto_command = "<leader>d"
+                let g:jedi#goto_assignments_command = "<leader>g"
+                let g:jedi#goto_definitions_command = ""
+                let g:jedi#documentation_command = "K"
+                let g:jedi#usages_command = "<leader>n"
+                let g:jedi#completions_command = "<C-Space>"
+                let g:jedi#rename_command = "<leader>r"
             " }
-
-            NeoBundle 'tmhedberg/SimpylFold' " {
-                if isdirectory(expand("~/.vim/bundle/SimpylFold"))
-                    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-                    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
-                endif
+            call dein#add('zchee/deoplete-jedi')
+            call dein#add('tmhedberg/SimpylFold')
+            " {
+                autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+                autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
             " }
-
-            NeoBundle 'hynek/vim-python-pep8-indent'
-
-            NeoBundle 'hdima/python-syntax' " {
+            call dein#add('hynek/vim-python-pep8-indent')
+            call dein#add('hdima/python-syntax')
+            " {
                 let python_highlight_all = 1
             " }
 
@@ -246,206 +258,79 @@
 
         " Ruby {
 
-            NeoBundle 'tpope/vim-rails'
+            call dein#add('tpope/vim-rails')
 
         " }
 
         " Javascript {
 
-            NeoBundle 'elzr/vim-json' " {
-                if isdirectory(expand("~/.vim/bundle/vim-json"))
-                    let g:vim_json_syntax_conceal = 0
-                endif
+            call dein#add('elzr/vim-json')
+            " {
+                let g:vim_json_syntax_conceal = 0
             " }
-
-            NeoBundle 'groenewege/vim-less'
-
-            NeoBundle 'pangloss/vim-javascript'
-
-            NeoBundle 'briancollins/vim-jst'
-
-            NeoBundle 'kchmck/vim-coffee-script'
-
-            NeoBundle 'mxw/vim-jsx'
-
-            NeoBundle 'ternjs/tern_for_vim'
+            call dein#add('groenewege/vim-less')
+            call dein#add('pangloss/vim-javascript')
+            call dein#add('briancollins/vim-jst')
+            call dein#add('kchmck/vim-coffee-script')
+            call dein#add('mxw/vim-jsx')
+            call dein#add('ternjs/tern_for_vim', { 'build': 'npm install' })
+            " {
+                autocmd FileType javascript setlocal omnifunc=tern#Complete
+            " }
 
         " }
 
         " HTML {
 
-            NeoBundle 'amirh/HTML-AutoCloseTag' " {
-                if isdirectory(expand("~/.vim/bundle/HTML-AutoCloseTag"))
-                    " Make it so AutoCloseTag works for xml and xhtml files as well
-                    au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-                endif
+            call dein#add('amirh/HTML-AutoCloseTag') " {
+                " Make it so AutoCloseTag works for xml and xhtml files as well
+                au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
             " }
-
-            NeoBundle 'hail2u/vim-css3-syntax'
-
-            NeoBundle 'tpope/vim-haml'
-
-            NeoBundle 'mattn/emmet-vim'
+            call dein#add('hail2u/vim-css3-syntax')
+            call dein#add('tpope/vim-haml')
+            call dein#add('mattn/emmet-vim')
 
         " }
 
         " Puppet {
 
-            NeoBundle 'rodjek/vim-puppet'
+            call dein#add('rodjek/vim-puppet')
 
         " }
 
         " Go Lang {
 
-            NeoBundle 'fatih/vim-go' " {
-                if isdirectory(expand("~/.vim/bundle/vim-go"))
-                    let g:go_highlight_functions = 1
-                    let g:go_highlight_methods = 1
-                    let g:go_highlight_structs = 1
-                    let g:go_highlight_operators = 1
-                    let g:go_highlight_build_constraints = 1
-                    let g:go_fmt_command = "goimports"
-                    au FileType go nmap <Leader>s <Plug>(go-implements)
-                    au FileType go nmap <Leader>i <Plug>(go-info)
-                    au FileType go nmap <Leader>e <Plug>(go-rename)
-                    au FileType go nmap <leader>r <Plug>(go-run)
-                    au FileType go nmap <leader>b <Plug>(go-build)
-                    au FileType go nmap <leader>t <Plug>(go-test)
-                    au FileType go nmap <Leader>gd <Plug>(go-doc)
-                    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-                    au FileType go nmap <leader>co <Plug>(go-coverage)
-                endif
+            call dein#add('fatih/vim-go') " {
+                let g:go_highlight_functions = 1
+                let g:go_highlight_methods = 1
+                let g:go_highlight_structs = 1
+                let g:go_highlight_operators = 1
+                let g:go_highlight_build_constraints = 1
+                let g:go_fmt_command = "goimports"
+                au FileType go nmap <Leader>s <Plug>(go-implements)
+                au FileType go nmap <Leader>i <Plug>(go-info)
+                au FileType go nmap <Leader>e <Plug>(go-rename)
+                au FileType go nmap <leader>r <Plug>(go-run)
+                au FileType go nmap <leader>b <Plug>(go-build)
+                au FileType go nmap <leader>t <Plug>(go-test)
+                au FileType go nmap <Leader>gd <Plug>(go-doc)
+                au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+                au FileType go nmap <leader>co <Plug>(go-coverage)
             "}
 
         " }
 
     " }
 
-    " Theme and Visual {
-
-        NeoBundle 'chriskempson/base16-vim'
-
-        NeoBundle 'vim-airline/vim-airline' " {
-            NeoBundle 'vim-airline/vim-airline-themes'
-            if isdirectory(expand("~/.vim/bundle/vim-airline"))
-                let g:airline#extensions#tabline#enabled = 1
-                let g:airline_powerline_fonts=1
-                let g:airline_theme='base16_default'
-            endif
-        " }
-
-    " }
-
-    " Snippets & AutoComplete {
-
-        NeoBundle 'garbas/vim-snipmate' "{
-            " Setting the author var
-            let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
-        " }
-
-        NeoBundle 'MarcWeber/vim-addon-mw-utils'
-
-        NeoBundle 'SirVer/ultisnips' "{
-            " For snippet_complete marker.
-            if has('conceal')
-                set conceallevel=2 concealcursor=i
-            endif
-            " remap Ultisnips for compatibility for YCM
-            let g:UltiSnipsExpandTrigger = '<C-j>'
-            let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-            let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-        " }
-
-        NeoBundle 'Valloric/YouCompleteMe', {
-        \ 'build': {
-        \       'linux': 'python2 install.py',
-        \       'cygwin': 'python2 install.py',
-        \       'unix': 'python2 install.py',
-        \       'mac': 'python2 install.py',
-        \       'windows': 'python2 install.py',
-        \   },
-        \ } " {
-            if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
-                let g:acp_enableAtStartup = 0
-
-                " enable completion from tags
-                let g:ycm_collect_identifiers_from_tags_files = 1
-
-                if has("autocmd") && exists("+omnifunc")
-                    autocmd Filetype *
-                        \if &omnifunc == "" |
-                        \setlocal omnifunc=syntaxcomplete#Complete |
-                        \endif
-                endif
-
-
-                " Automatically open and close the popup menu / preview window
-                au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-                set completeopt=menu,preview,longest
-
-                " Enable omni completion.
-                autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-                autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-                autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-                autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-                autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-                autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-                autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-                if has('conceal')
-                    set conceallevel=2 concealcursor=i
-                endif
-
-                " Disable the preview candidate window
-                " When enabled, there can be too much visual noise
-                " especially when splits are used.
-                set completeopt-=preview
-            endif
-        " }
-
-        NeoBundle 'honza/vim-snippets'
-
-    " }
-
-    " Writing {
-
-        NeoBundle 'reedes/vim-litecorrect'
-
-        NeoBundle 'kana/vim-textobj-user'
-
-        NeoBundle 'reedes/vim-textobj-sentence'
-
-        NeoBundle 'reedes/vim-textobj-quote' " {
-            augroup textobj_sentence
-              autocmd!
-              autocmd FileType markdown call textobj#sentence#init()
-              autocmd FileType textile call textobj#sentence#init()
-              autocmd FileType text call textobj#sentence#init()
-            augroup END
-
-            augroup textobj_quote
-                autocmd!
-                autocmd FileType markdown call textobj#quote#init()
-                autocmd FileType textile call textobj#quote#init()
-                autocmd FileType text call textobj#quote#init({'educate': 0})
-            augroup END
-        " }
-
-        NeoBundle 'reedes/vim-wordy'
-
-    " }
-
 " }
 
-" NeoBundle End {
+" Dein End {
 
-    call neobundle#end()
+call dein#end()
 
-    filetype plugin indent on
-
-    " If there are uninstalled bundles found on startup,
-    " this will conveniently prompt you to install them.
-    NeoBundleCheck
+if dein#check_install()
+    call dein#install()
+endif
 
 " }
 
@@ -869,7 +754,7 @@
     " }
 
     " VimFiler {
-        nnoremap <silent> <c-e> :<C-u>VimFiler -parent -toggle<CR>
+        nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
     " }
 
 " }
@@ -899,8 +784,6 @@
 " Functions {
 
     function! InitializeDirectories() " {
-        let parent = $HOME
-        let prefix = 'vim'
         let dir_list = {
                     \ 'backup': 'backupdir',
                     \ 'views': 'viewdir',
@@ -910,21 +793,17 @@
             let dir_list['undo'] = 'undodir'
         endif
 
-        let common_dir = parent . '/.vim/' . prefix
-
         for [dirname, settingname] in items(dir_list)
-            let directory = common_dir . dirname . '/'
-            if exists("*mkdir")
-                if !isdirectory(directory)
-                    call mkdir(directory)
-                endif
+            let s:dir = expand('$CACHE/vim/' . dirname)
+            if !isdirectory(s:dir)
+                call mkdir(s:dir, 'p')
             endif
-            if !isdirectory(directory)
+            if !isdirectory(s:dir)
                 echo "Warning: Unable to create backup directory: " . directory
-                echo "Try: mkdir -p " . directory
+                echo "Try: mkdir -p " . s:dir
             else
-                let directory = substitute(directory, " ", "\\\\ ", "g")
-                exec "set " . settingname . "=" . directory
+                let s:dir = substitute(s:dir, " ", "\\\\ ", "g")
+                exec "set " . settingname . "=" . s:dir
             endif
         endfor
     endfunction
@@ -944,36 +823,60 @@
     endfunction
     " }
 
-
 " }
 
 " Other plugin settings {
 
-    if isdirectory(expand("~/.vim/bundle/unite.vim")) " {
+    " unite {
+        let g:unite_source_history_yank_enable = 1
+        let g:unite_source_history_yank_linut = 10000
+        let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
+        let g:unite_marked_icon = '✓'
+
+        if executable('ag')
+            let g:unite_source_rec_aync_command = [ 'ag', '-l', '-g', '', '--nocolor'  ]
+            let g:unite_source_grep_command = 'ag'
+            let g:unite_source_grep_default_opts =
+                \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
+                \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+            let g:unite_source_grep_recursive_opt = ''
+        endif
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
         call unite#filters#sorter_default#use(['sorter_reverse'])
         call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
           \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
-    endif
     " }
 
-    if isdirectory(expand("~/.vim/bundle/vim-textobj-user")) " {
-        if isdirectory(expand("~/.vim/bundle/vim-textobj-sentence")) " {
-            augroup textobj_sentence
-              autocmd!
-              autocmd FileType markdown call textobj#sentence#init()
-              autocmd FileType textile call textobj#sentence#init()
-              autocmd FileType text call textobj#sentence#init()
-            augroup END
-        endif " }
+    " vim-textobj {
+        augroup textobj_sentence
+          autocmd!
+          autocmd FileType markdown call textobj#sentence#init()
+          autocmd FileType textile call textobj#sentence#init()
+          autocmd FileType text call textobj#sentence#init()
+        augroup END
 
-        if isdirectory(expand("~/.vim/bundle/vim-textobj-quote")) " {
-            augroup textobj_quote
-                autocmd!
-                autocmd FileType markdown call textobj#quote#init()
-                autocmd FileType textile call textobj#quote#init()
-                autocmd FileType text call textobj#quote#init({'educate': 0})
-            augroup END
-        endif " }
-    endif " }
+        augroup textobj_quote
+            autocmd!
+            autocmd FileType markdown call textobj#quote#init()
+            autocmd FileType textile call textobj#quote#init()
+            autocmd FileType text call textobj#quote#init({'educate': 0})
+        augroup END
+    " }
+
+    " vimfiler {
+        let g:vimfiler_as_default_explorer = 1
+        let g:vimfiler_safe_mode_by_default = 0
+        let g:vimfiler_tree_leaf_icon = " "
+        let g:vimfiler_tree_opened_icon = '▾'
+        let g:vimfiler_tree_closed_icon = '▸'
+        let g:vimfiler_file_icon = '-'
+        let g:vimfiler_marked_file_icon = '✓'
+        let g:vimfiler_readonly_file_icon = '✗'
+        let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+        let g:vimfiler_expand_jump_to_first_child = 0
+    " }
+
+    " vimfiler {
+        set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+    " }
 " }
