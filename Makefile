@@ -38,23 +38,10 @@ install-zsh: ## Sets up zsh
 	fi
 
 install-vim: ## Sets up vim
-	mkdir -p ~/.vim/bundle ; \
-	mkdir -p ~/.config/; \
-	ln -sf ~/.vim ~/.config/nvim ; \
+	mkdir -p ~/.config/nvim; \
+	ln -sf ~/.config/nvim ~/.vim ; \
 	ln -sf $(PWD)/vim/vimrc ~/.vim/vimrc ; \
 	ln -sf $(PWD)/vim/vimrc ~/.config/nvim/init.vim; \
-	if [[ ! -d ~/.vim/bundle/neobundle.vim ]] ; then \
-		git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim ; \
-	fi ; \
-	if [[ ! -d ~/.vim/bundle/vimproc.vim ]] ; then \
-		git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim ; \
-		make -C ~/.vim/bundle/vimproc.vim/ && \
-		vim -N -u ~/.vim/vimrc -c "try | NeoBundleInstall | finally | qall! | endtry" \
-			-U NONE -i NONE -V1 -e -s ; \
-	else \
-		vim -N -u ~/.vim/vimrc -c "try | NeoBundleUpdate | finally | qall! | endtry" \
-			-U NONE -i NONE -V1 -e -s ; \
-	fi ; \
 
 install-symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \

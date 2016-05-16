@@ -63,9 +63,9 @@ endif
 let s:dein_dir = expand('$CACHE/dein')
 
 call dein#begin(expand(s:dein_dir))
-call dein#add(expand(s:dein_dir))
+call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 
-" }
+call dein#add(expand(s:dein_dir))
 
 " Plugins {
 
