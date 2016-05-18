@@ -504,6 +504,7 @@ endif
     autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
 
     autocmd FileType json nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+    autocmd FileType xml,xsl,xslt nmap <leader>jt <Esc>:silent %!xmllint --format --recover - 2>/dev/null<CR>
 
 " }
 
