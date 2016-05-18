@@ -67,6 +67,8 @@ call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 
 call dein#add(expand(s:dein_dir))
 
+" }
+
 " Plugins {
 
     " Themes {
