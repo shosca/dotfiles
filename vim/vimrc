@@ -42,6 +42,7 @@
 "Load Dein {
 
 let $CACHE = expand('~/.cache')
+let $TAGS = expand('$CACHE/vim/tags')
 
 if !isdirectory(expand($CACHE))
   call mkdir(expand($CACHE), 'p')
@@ -198,22 +199,10 @@ call dein#add(expand(s:dein_dir))
                 let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
             " }
             call dein#add('majutsushi/tagbar') "{
-                set tags=~/.cache/vim/tags
-                " Make tags placed in .git/tags file available in all levels of a repository
-                let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-                if gitroot != ''
-                    let &tags = &tags . ',' . gitroot . '/.git/tags'
-                endif
             "}
             call dein#add('matchit.zip')
-            call dein#add('xolox/vim-misc')
-            call dein#add('xolox/vim-easytags') " {
-                let g:easytags_async = 1
-                let g:easytags_file = expand('$CACHE/vim/tags')
-                let g:easytags_by_filetype = expand('$CACHE/vim/ftags/')
-                let g:easytags_events = ['BufWritePost']
-
-                autocmd FileType python let b:easytags_auto_highlight = 0
+            call dein#add('ludovicchabant/vim-gutentags') " {
+                let g:gutentags_cache_dir = expand('$CACHE/vim/ptags/')
             " }
             call dein#add('tpope/vim-surround')
             call dein#add('jiangmiao/auto-pairs')
@@ -456,6 +445,8 @@ endif
     endif
     let g:pymode_indent=0
 
+    set tags=$TAGS
+
 " }
 
 " Formatting {
@@ -680,8 +671,7 @@ endif
     " }
 
     " Tagbar {
-        nnoremap <c-t> :TagbarToggle<CR>
-        nnoremap <leader>t :TagbarToggle<CR>
+        nnoremap <leader>tt :TagbarToggle<CR>
     " }
 
     " Sessionman {
