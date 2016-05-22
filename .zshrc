@@ -132,8 +132,8 @@ if [[ -d "/usr/lib/distcc/bin" ]]; then
   DISTCC_HOSTS="@buttercup.local/4"
 fi
 
+export GOPATH=$HOME/go
 if [[ -d "$HOME/go/bin" ]]; then
-  export GOPATH=$HOME/go
   PATH="${HOME}/go/bin:${PATH}"
 fi
 
