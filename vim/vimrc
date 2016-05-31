@@ -456,7 +456,7 @@ endif
     hi MatchParen cterm=bold term=bold
 
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,xsl,xslt,html,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
     autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
@@ -486,6 +486,7 @@ endif
 
     autocmd FileType json nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
     autocmd FileType xml,xsl,xslt nmap <leader>jt <Esc>:silent %!xmllint --format --recover - 2>/dev/null<CR>
+    autocmd FileType python nnoremap <leader>jt <Esc>:silent %!yapf<Cr>
 
 " }
 
