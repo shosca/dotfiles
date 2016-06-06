@@ -1,7 +1,11 @@
-import pprint
-import pdb
-import traceback
-import inspect
+import inspect, pdb, pprint, rlcompleter, sys, termios, traceback
+
+pdb.Pdb.complete = rlcompleter.Completer(locals()).complete
+
+termios_fd = sys.stdin.fileno()
+termios_echo = termios.tcgetattr(termios_fd)
+termios_echo[3] = termios_echo[3] | termios.ECHO
+termios_result = termios.tcsetattr(termios_fd, termios.TCSADRAIN, termios_echo)
 
 # Print contents of an object's class (including bases).
 alias pc for k,v in sorted({k:v for cls in reversed(%1.__class__.__mro__) for k,v in cls.__dict__.items() if cls is not object}.items()): print("%s%-20s= %-80.80s" % ("%1.",k,repr(v)))
@@ -11,6 +15,8 @@ alias pi import inspect; inspect.getmembers(%1, lambda x: not callable(x))
 
 # Pretty print
 alias pp import pprint; pprint.pprint(%1)
+alias ppd import pprint; pprint.pprint(dict(%1))
+alias ppi import pprint; pprint.pprint(%1.__dict__)
 
 # fast exc_info
 alias exc_info !import sys; sys.exc_info()
