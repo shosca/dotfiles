@@ -25,7 +25,8 @@ SYMLINKS= \
 	.rspec \
 	.rvmrc \
 	.tmux.conf \
-	.yaourtrc
+	.yaourtrc \
+	.pdbrc.py
 
 install: install-vim install-zsh install-symlinks ## Installs all
 
