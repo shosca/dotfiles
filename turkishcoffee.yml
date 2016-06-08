@@ -1,0 +1,20 @@
+# Turkish Coffee scheme for the Base16 Builder (https://github.com/chriskempson/base16-builder)
+scheme: "Turkish Coffee"
+author: "Serkan Hosca"
+base00: "0a0102" # ----
+base01: "140200" # ---
+base02: "4a2a15" # --
+base03: "6f3712" # -
+base04: "915025" # +
+base05: "c17038" # ++
+base06: "ecd1be" # +++
+base07: "fdfbfa" # ++++
+base08: "9a2c38" # dark red
+base09: "2c6f9a" # orange
+base0A: "9a8e2c" # yellow
+base0B: "389a2c" # green
+base0C: "26867c" # turquoise
+base0D: "2c9a8e" # aqua
+base0E: "8e2c9a" # purple
+base0F: "572c9a" # violet
+

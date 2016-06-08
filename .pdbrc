@@ -9,7 +9,9 @@ alias pi import inspect; inspect.getmembers(%1, lambda x: not callable(x))
 # Pretty print
 alias pp import pprint; pprint.pprint(%1)
 alias ppd import pprint; pprint.pprint(dict(%1))
-alias ppi import pprint; pprint.pprint(%1.__dict__)
+
+# Code interact
+alias cd import code; code.interact(local=vars())
 
 # fast exc_info
 alias exc_info !import sys; sys.exc_info()
