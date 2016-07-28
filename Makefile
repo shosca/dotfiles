@@ -28,7 +28,13 @@ SYMLINKS= \
 	.yaourtrc \
 	.pdbrc.py
 
-install: install-vim install-zsh install-symlinks ## Installs all
+install: install-vim install-zsh install-symlinks install-tmux ## Installs all
+
+install-tmux:
+	mkdir -p ~/.tmux/plugins ; \
+	if [[ ! -e ~/.tmux/plugins/tpm ]]; then \
+		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm ; \
+	fi
 
 install-zsh: ## Sets up zsh
 	ln -sf $(PWD)/.zshrc ~/.zshrc ; \
