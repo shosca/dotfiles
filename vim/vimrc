@@ -497,6 +497,8 @@ endif
 
     " In normal mode, jj escapes
     inoremap jj <Esc>
+    inoremap <Tab> <Esc>
+    noremap <Tab> <Esc>
 
     " Disable Ex mode
     :map Q <Nop>
