@@ -804,8 +804,8 @@ endif
 
     " Unite {
         nnoremap <silent> <C-p> :Unite -start-insert file_rec/async<CR>
-        nnoremap <silent> <C-i> :Unite -start-insert file_rec/git<CR>
         nnoremap <silent> <C-o> :Unite buffer<CR>
+        "nnoremap <silent> <C-i> :Unite -start-insert file_rec/git<CR>
         nnoremap <silent> <C-k> :Unite change jump<CR>
         nnoremap <silent> <C-f> :Unite grep -no-empty -no-quit -resume<CR>
         nnoremap <silent> <C-y> :Unite -default-action=append register history/yank<CR>
