@@ -490,6 +490,128 @@ endif
 
 " }
 
+" GUI Settings {
+
+    " GVIM- (here instead of .gvimrc)
+    if has('gui_running')
+        set guioptions-=T           " Remove the toolbar
+        set lines=40                " 40 lines of text instead of 24
+        if LINUX() && has("gui_running")
+            set guifont=Hack\ 9
+        elseif OSX() && has("gui_running")
+            set guifont=Hack\ 9
+        elseif WINDOWS() && has("gui_running")
+            set guifont=Hack:h10
+        endif
+    else
+        if &term == 'xterm' || &term == 'screen'
+            set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+        endif
+        "set term=builtin_ansi       " Make arrow and other keys work
+    endif
+
+" }
+
+" Functions {
+
+    function! InitializeDirectories() " {
+        let dir_list = {
+                    \ 'backup': 'backupdir',
+                    \ 'views': 'viewdir',
+                    \ 'swap': 'directory' }
+
+        if has('persistent_undo')
+            let dir_list['undo'] = 'undodir'
+        endif
+
+        for [dirname, settingname] in items(dir_list)
+            let s:dir = expand('$CACHE/vim/' . dirname)
+            if !isdirectory(s:dir)
+                call mkdir(s:dir, 'p')
+            endif
+            if !isdirectory(s:dir)
+                echo "Warning: Unable to create backup directory: " . directory
+                echo "Try: mkdir -p " . s:dir
+            else
+                let s:dir = substitute(s:dir, " ", "\\\\ ", "g")
+                exec "set " . settingname . "=" . s:dir
+            endif
+        endfor
+    endfunction
+    call InitializeDirectories()
+    " }
+
+    function! StripTrailingWhitespace() " {
+        " Preparation: save last search, and cursor position.
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        " do the business:
+        %s/\s\+$//e
+        " clean up: restore previous search history, and cursor position
+        let @/=_s
+        call cursor(l, c)
+    endfunction
+    " }
+
+" }
+
+" Other plugin settings {
+
+    " unite {
+        let g:unite_source_history_yank_enable = 1
+        let g:unite_source_history_yank_linut = 10000
+        let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
+        let g:unite_marked_icon = '✓'
+
+        if executable('ag')
+            let g:unite_source_rec_aync_command = [ 'ag', '-l', '-g', '', '--nocolor'  ]
+            let g:unite_source_grep_command = 'ag'
+            let g:unite_source_grep_default_opts =
+                \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
+                \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+            let g:unite_source_grep_recursive_opt = ''
+        endif
+        call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        call unite#filters#sorter_default#use(['sorter_reverse'])
+        call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
+          \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
+    " }
+
+    " vim-textobj {
+        augroup textobj_sentence
+          autocmd!
+          autocmd FileType markdown call textobj#sentence#init()
+          autocmd FileType textile call textobj#sentence#init()
+          autocmd FileType text call textobj#sentence#init()
+        augroup END
+
+        augroup textobj_quote
+            autocmd!
+            autocmd FileType markdown call textobj#quote#init()
+            autocmd FileType textile call textobj#quote#init()
+            autocmd FileType text call textobj#quote#init({'educate': 0})
+        augroup END
+    " }
+
+    " vimfiler {
+        let g:vimfiler_as_default_explorer = 1
+        let g:vimfiler_safe_mode_by_default = 0
+        let g:vimfiler_tree_leaf_icon = " "
+        let g:vimfiler_tree_opened_icon = '▾'
+        let g:vimfiler_tree_closed_icon = '▸'
+        let g:vimfiler_file_icon = '-'
+        let g:vimfiler_marked_file_icon = '✓'
+        let g:vimfiler_readonly_file_icon = '✗'
+        let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+        let g:vimfiler_expand_jump_to_first_child = 0
+    " }
+
+    " vimfiler {
+        set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+    " }
+" }
+
 " Key Mappings {
     " The default leader is '\', but many people prefer ',' as it's in a standard
     " location.
@@ -497,8 +619,6 @@ endif
 
     " In normal mode, jj escapes
     inoremap jj <Esc>
-    inoremap <Tab> <Esc>
-    noremap <Tab> <Esc>
 
     " Disable Ex mode
     :map Q <Nop>
@@ -743,126 +863,4 @@ endif
         nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
     " }
 
-" }
-
-" GUI Settings {
-
-    " GVIM- (here instead of .gvimrc)
-    if has('gui_running')
-        set guioptions-=T           " Remove the toolbar
-        set lines=40                " 40 lines of text instead of 24
-        if LINUX() && has("gui_running")
-            set guifont=Hack\ 9
-        elseif OSX() && has("gui_running")
-            set guifont=Hack\ 9
-        elseif WINDOWS() && has("gui_running")
-            set guifont=Hack:h10
-        endif
-    else
-        if &term == 'xterm' || &term == 'screen'
-            set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-        endif
-        "set term=builtin_ansi       " Make arrow and other keys work
-    endif
-
-" }
-
-" Functions {
-
-    function! InitializeDirectories() " {
-        let dir_list = {
-                    \ 'backup': 'backupdir',
-                    \ 'views': 'viewdir',
-                    \ 'swap': 'directory' }
-
-        if has('persistent_undo')
-            let dir_list['undo'] = 'undodir'
-        endif
-
-        for [dirname, settingname] in items(dir_list)
-            let s:dir = expand('$CACHE/vim/' . dirname)
-            if !isdirectory(s:dir)
-                call mkdir(s:dir, 'p')
-            endif
-            if !isdirectory(s:dir)
-                echo "Warning: Unable to create backup directory: " . directory
-                echo "Try: mkdir -p " . s:dir
-            else
-                let s:dir = substitute(s:dir, " ", "\\\\ ", "g")
-                exec "set " . settingname . "=" . s:dir
-            endif
-        endfor
-    endfunction
-    call InitializeDirectories()
-    " }
-
-    function! StripTrailingWhitespace() " {
-        " Preparation: save last search, and cursor position.
-        let _s=@/
-        let l = line(".")
-        let c = col(".")
-        " do the business:
-        %s/\s\+$//e
-        " clean up: restore previous search history, and cursor position
-        let @/=_s
-        call cursor(l, c)
-    endfunction
-    " }
-
-" }
-
-" Other plugin settings {
-
-    " unite {
-        let g:unite_source_history_yank_enable = 1
-        let g:unite_source_history_yank_linut = 10000
-        let g:unite_source_history_yank_file = '~/.vim/yank_history.txt'
-        let g:unite_marked_icon = '✓'
-
-        if executable('ag')
-            let g:unite_source_rec_aync_command = [ 'ag', '-l', '-g', '', '--nocolor'  ]
-            let g:unite_source_grep_command = 'ag'
-            let g:unite_source_grep_default_opts =
-                \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
-                \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-            let g:unite_source_grep_recursive_opt = ''
-        endif
-        call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        call unite#filters#sorter_default#use(['sorter_reverse'])
-        call unite#custom#source('file_mru,file_rec,file_rec/async,grep,locate',
-          \ 'ignore_pattern', join(['\.git/', 'tmp/', 'bundle/'], '\|'))
-    " }
-
-    " vim-textobj {
-        augroup textobj_sentence
-          autocmd!
-          autocmd FileType markdown call textobj#sentence#init()
-          autocmd FileType textile call textobj#sentence#init()
-          autocmd FileType text call textobj#sentence#init()
-        augroup END
-
-        augroup textobj_quote
-            autocmd!
-            autocmd FileType markdown call textobj#quote#init()
-            autocmd FileType textile call textobj#quote#init()
-            autocmd FileType text call textobj#quote#init({'educate': 0})
-        augroup END
-    " }
-
-    " vimfiler {
-        let g:vimfiler_as_default_explorer = 1
-        let g:vimfiler_safe_mode_by_default = 0
-        let g:vimfiler_tree_leaf_icon = " "
-        let g:vimfiler_tree_opened_icon = '▾'
-        let g:vimfiler_tree_closed_icon = '▸'
-        let g:vimfiler_file_icon = '-'
-        let g:vimfiler_marked_file_icon = '✓'
-        let g:vimfiler_readonly_file_icon = '✗'
-        let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-        let g:vimfiler_expand_jump_to_first_child = 0
-    " }
-
-    " vimfiler {
-        set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-    " }
 " }
