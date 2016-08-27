@@ -147,6 +147,8 @@ call dein#add(expand(s:dein_dir))
         call dein#add('tpope/vim-markdown')
         call dein#add('easymotion/vim-easymotion')
         call dein#add('vim-scripts/sessionman.vim')
+        call dein#add('Shougo/neoinclude.vim')
+        call dein#add('Shougo/context_filetype.vim')
 
     " }
 
@@ -166,7 +168,9 @@ call dein#add(expand(s:dein_dir))
                 let g:neomake_style_error_symbol = '✠'
                 let g:neomake_style_warning_symbol = '≈'
 
-                autocmd! BufWritePost * Neomake
+                autocmd! BufReadPost,BufWritePost * Neomake
+                let g:neomake_serialize = 1
+                let g:neomake_serialize_abort_on_error = 1
                 let g:neomake_open_list = 2
             " }
             call dein#add('tpope/vim-fugitive')
@@ -239,6 +243,7 @@ call dein#add(expand(s:dein_dir))
 
         " Ruby {
 
+            call dein#add('fishbullet/deoplete-ruby')
             call dein#add('tpope/vim-rails')
 
         " }
@@ -254,10 +259,7 @@ call dein#add(expand(s:dein_dir))
             call dein#add('briancollins/vim-jst')
             call dein#add('kchmck/vim-coffee-script')
             call dein#add('mxw/vim-jsx')
-            call dein#add('ternjs/tern_for_vim', { 'build': 'npm install' })
-            " {
-                autocmd FileType javascript setlocal omnifunc=tern#Complete
-            " }
+            call dein#add('carlitux/deoplete-ternjs')
 
         " }
 
@@ -279,8 +281,15 @@ call dein#add(expand(s:dein_dir))
 
         " }
 
+        " Rust {
+
+            call dein#add('racer-rust/vim-racer')
+
+        " }
+
         " Go Lang {
 
+            call dein#add('zchee/deoplete-go')
             call dein#add('fatih/vim-go') " {
                 let g:go_highlight_functions = 1
                 let g:go_highlight_methods = 1
