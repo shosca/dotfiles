@@ -386,7 +386,7 @@ endif
 
 " General {
 
-    set colorcolumn=80
+    set colorcolumn=120
     syntax on                   " Syntax highlighting
     set mouse=a                 " Automatically enable mouse usage
     "set ttymouse=sgr            " Stick to SGR 1006 mouse mode
