@@ -108,27 +108,36 @@ call dein#add(expand(s:dein_dir))
 
     " Snippets & AutoComplete {
 
-    call dein#add('garbas/vim-snipmate') "{
-        " Setting the author var
-        let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
-    " }
-    call dein#add('MarcWeber/vim-addon-mw-utils')
-    call dein#add('tomtom/tlib_vim')
-    call dein#add('Shougo/Deoplete.nvim') " {
-        let g:deoplete#enable_at_startup = 1
-        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-        " Automatically open and close the popup menu / preview window
-        set completeopt=menu,preview,longest
-        " deoplete tab-complete
-        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
-    " } 
-    call dein#add('honza/vim-snippets')
+        call dein#add('garbas/vim-snipmate') "{
+            " Setting the author var
+            let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
+        " }
+        call dein#add('MarcWeber/vim-addon-mw-utils')
+        call dein#add('tomtom/tlib_vim')
+        call dein#add('Shougo/Deoplete.nvim') " {
+            let g:deoplete#enable_at_startup = 1
+            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+            " Automatically open and close the popup menu / preview window
+            set completeopt=menu,preview,longest
+            " deoplete tab-complete
+            imap <silent><expr> <TAB> 
+                        \ pumvisible() ? "\<C-n>" : 
+                        \ <SID>check_back_space() ? "\<TAB>" : 
+                        \ deoplete#mappings#manual_complete()
+            function! s:check_back_space() abort "{{{
+                let col = col('.') - 1
+                return !col || getline('.')[col-1] =~ '\s'
+            endfunction "}}}
+        " } 
+        call dein#add('honza/vim-snippets')
+        call dein#add('wellle/tmux-complete.vim')
+
     " }
 
     " General {
@@ -259,7 +268,7 @@ call dein#add(expand(s:dein_dir))
             call dein#add('briancollins/vim-jst')
             call dein#add('kchmck/vim-coffee-script')
             call dein#add('mxw/vim-jsx')
-            call dein#add('carlitux/deoplete-ternjs')
+            call dein#add('carlitux/deoplete-ternjs'), {'on_ft': 'javascript'}
 
         " }
 
