@@ -268,7 +268,7 @@ call dein#add(expand(s:dein_dir))
             call dein#add('briancollins/vim-jst')
             call dein#add('kchmck/vim-coffee-script')
             call dein#add('mxw/vim-jsx')
-            call dein#add('carlitux/deoplete-ternjs'), {'on_ft': 'javascript'}
+            call dein#add('carlitux/deoplete-ternjs', {'on_ft': 'javascript'})
 
         " }
 
