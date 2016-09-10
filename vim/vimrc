@@ -183,7 +183,10 @@ call dein#add(expand(s:dein_dir))
                     \   'map <Leader>sk :SlimuxSendKeysLast<CR>',
                     \ ], "\n")
                     \ })
-        call dein#add('Konfekt/FastFold')
+        call dein#add('Konfekt/FastFold', {
+                    \ 'on_event': 'BufEnter',
+                    \ 'hook_post_source': 'FastFoldUpdate'
+                    \ })
         call dein#add('tpope/vim-markdown')
         call dein#add('easymotion/vim-easymotion')
         call dein#add('vim-scripts/sessionman.vim', {
