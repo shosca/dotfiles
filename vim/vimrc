@@ -264,7 +264,7 @@ call dein#add(expand(s:dein_dir))
                         \ })
             call dein#add('matchit.zip')
             call dein#add('ludovicchabant/vim-gutentags', {
-                        \ 'hook_source': 'let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")'
+                        \ 'hook_add': 'let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")'
                         \ })
             call dein#add('tpope/vim-surround')
             call dein#add('jiangmiao/auto-pairs')
