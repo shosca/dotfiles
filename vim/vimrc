@@ -263,9 +263,9 @@ call dein#add(expand(s:dein_dir))
                         \ 'hook_add': 'nnoremap <leader>tt :TagbarToggle<CR>'
                         \ })
             call dein#add('matchit.zip')
-            call dein#add('ludovicchabant/vim-gutentags', {
-                        \ 'hook_add': 'let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")'
-                        \ })
+            call dein#add('ludovicchabant/vim-gutentags') " {
+                let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")
+            " }
             call dein#add('tpope/vim-surround')
             call dein#add('jiangmiao/auto-pairs')
             call dein#add('Chiel92/vim-autoformat')
