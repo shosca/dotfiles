@@ -20,6 +20,8 @@
 
         set nocompatible
         filetype plugin indent on   " Automatically detect file types.
+        let g:python_host_prog = '/usr/bin/python2'
+        let g:python3_host_prog = '/usr/bin/python3'
 
     " }
 
@@ -108,35 +110,42 @@ call dein#add(expand(s:dein_dir))
 
     " Snippets & AutoComplete {
 
-        call dein#add('garbas/vim-snipmate') "{
-            " Setting the author var
-            let g:snips_author = 'Serkan Hosca <serkan@hosca.com>'
-        " }
-        call dein#add('MarcWeber/vim-addon-mw-utils')
-        call dein#add('tomtom/tlib_vim')
-        call dein#add('Shougo/Deoplete.nvim') " {
-            let g:deoplete#enable_at_startup = 1
-            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-            au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-            " Automatically open and close the popup menu / preview window
-            set completeopt=menu,preview,longest
-            " deoplete tab-complete
-            imap <silent><expr> <TAB> 
-                        \ pumvisible() ? "\<C-n>" : 
-                        \ <SID>check_back_space() ? "\<TAB>" : 
-                        \ deoplete#mappings#manual_complete()
-            function! s:check_back_space() abort "{{{
-                let col = col('.') - 1
-                return !col || getline('.')[col-1] =~ '\s'
-            endfunction "}}}
-        " } 
-        call dein#add('honza/vim-snippets')
-        call dein#add('wellle/tmux-complete.vim')
+    call dein#add('Shougo/neosnippet.vim', {
+                \ 'hook_source': join([
+                \   "let g:neosnippet#enable_snipmate_compatibility = 1",
+                \   "let g:neosnippet#enable_complete_done = 1",
+                \   "let g:neosnippet#expand_word_boundary = 1",
+                \   "let g:neosnippet#snippets_directory = '~/dotfiles/vim/snippets'",
+                \ ], "\n"),
+                \ 'hook_add': join([
+                \   "imap <C-k> <Plug>(neosnippet_expand_or_jump)",
+                \   "smap <C-k> <Plug>(neosnippet_expand_or_jump)",
+                \ ], "\n")
+                \ })
+    call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('tomtom/tlib_vim')
+    call dein#add('Shougo/Deoplete.nvim') " {
+        let g:deoplete#enable_at_startup = 1
+        "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        "autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+        "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+        "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+        au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+        " Automatically open and close the popup menu / preview window
+        set completeopt=menu,preview,longest
+        " deoplete tab-complete
+        imap <silent><expr> <TAB> 
+                    \ pumvisible() ? "\<C-n>" : 
+                    \ <SID>check_back_space() ? "\<TAB>" : 
+                    \ deoplete#mappings#manual_complete()
+        function! s:check_back_space() abort "{{{
+            let col = col('.') - 1
+            return !col || getline('.')[col-1] =~ '\s'
+        endfunction "}}}
+    " } 
+    call dein#add('wellle/tmux-complete.vim')
 
     " }
 
