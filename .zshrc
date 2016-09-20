@@ -149,7 +149,7 @@ if [[ -f /usr/bin/virtualenvwrapper.sh ]]; then
 fi
 
 if [[ -f /usr/bin/keychain ]]; then
-    /usr/bin/keychain ~/.ssh/id_rsa
+    /usr/bin/keychain ~/.ssh/id_*
     [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
     [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
 fi
