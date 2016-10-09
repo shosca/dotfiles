@@ -55,15 +55,17 @@ plugins=(
     django
     git
     git-flow
+    github
     go
     golang
     history-substring-search
+    hub
     mercurial
     pip
     python
     rbenv
-    rvm
     ruby
+    rvm
     systemd
     virtualenv
  )
