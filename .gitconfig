@@ -41,7 +41,7 @@
 [credential]
     helper = cache --timeout=3600
 [push]
-	default = matching
+	default = current
 [url "https://github.com/"]
 	insteadOf = git://github.com/
 [diff]
