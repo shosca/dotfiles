@@ -860,7 +860,7 @@ endif
     " Easier formatting
     nnoremap <silent> <leader>q gwip
 
-    au FileType python nnoremap <leader>p oimport ipdb;ipdb.set_trace()  # flake8: noqa<Esc>
+    au FileType python nnoremap <leader>p oimport pdb;pdb.set_trace()  # flake8: noqa<Esc>
 
     " edit the vimrc file
     nmap <silent> <Leader>ev :e $MYVIMRC<CR>
