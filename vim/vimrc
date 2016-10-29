@@ -212,6 +212,7 @@ call dein#add(expand(s:dein_dir))
 
         " General {
 
+            call dein#add('joonty/vdebug')
              call dein#add('neomake/neomake') "{
                 let g:neomake_warning_sign = {
                   \ 'text': '∆',

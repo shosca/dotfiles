@@ -2,7 +2,6 @@ import atexit
 import os
 import pdb
 import readline
-import rlcompleter
 import sys
 import termios
 
@@ -36,9 +35,6 @@ atexit.register(readline.write_history_file, histfile)
 del histfile
 readline.set_history_length(20000)
 
-# Autocomplete.
-pdb.Pdb.complete = rlcompleter.Completer(locals()).complete
-
 
 # Sometimes when you do something funky, you may lose your terminal echo. This
 # should restore it when spanwning new pdb.
@@ -52,6 +48,7 @@ termios_result = termios.tcsetattr(termios_fd, termios.TCSADRAIN, termios_echo)
 class Config(pdb.DefaultConfig):
     sticky_by_default = True
     current_line_color = 7
+    editor = 'nvim'
 
     if HAS_PYGMENTS:
         # Fix up the comment color for dark background
