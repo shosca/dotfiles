@@ -1,16 +1,25 @@
-import bdb
+import traceback
 import sys
 
+# set these environment variables
+# $ export PYTHONUSERBASE=~/.python
+# $ export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
+#
+# and drop this file in
+# # ./config/python/
 
-def info(type, value, tb):
-    if (hasattr(sys, 'ps1') or not sys.stdin.isatty() or not sys.stdout.isatty() or not sys.stderr.isattry() or
-        issubclass(type, bdb.BdbQuit) or issubclass(type, SyntaxError)):
 
-        sys.__excepthook__(type, value, tb)
-    else:
-        import traceback, pdb
+try:
+    import pudb as debugger
+except ImportError:
+    import pdb as debugger
 
-        traceback.print_exception(type, value, tb)
-        pdb.pm()
 
-sys.excepthook = info
+def drop_debugger(type, value, tb):
+    traceback.print_exception(type, value, tb)
+    debugger.pm()
+
+sys.excepthook = drop_debugger
+
+__builtins__['debugger'] = debugger
+__builtins__['st'] = debugger.set_trace
