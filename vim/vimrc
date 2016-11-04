@@ -5,30 +5,28 @@
 " Environment {
 
     " Identify platform {
-        silent function! OSX()
-            return has('macunix')
-        endfunction
-        silent function! LINUX()
-            return has('unix') && !has('macunix') && !has('win32unix')
-        endfunction
-        silent function! WINDOWS()
-            return  (has('win32') || has('win64'))
-        endfunction
+    silent function! OSX()
+        return has('macunix')
+    endfunction
+    silent function! LINUX()
+        return has('unix') && !has('macunix') && !has('win32unix')
+    endfunction
+    silent function! WINDOWS()
+        return  (has('win32') || has('win64'))
+    endfunction
     " }
 
     " Basics {
-
-        set nocompatible
-        filetype plugin indent on   " Automatically detect file types.
-
+    set nocompatible
+    filetype plugin indent on   " Automatically detect file types.
     " }
 
     " Windows Compatible {
-        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-        " across (heterogeneous) systems easier.
-        if WINDOWS()
-          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-        endif
+    " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+    " across (heterogeneous) systems easier.
+    if WINDOWS()
+      set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+    endif
     " }
 
     " Arrow Key Fix {
@@ -71,9 +69,7 @@ call dein#add(expand(s:dein_dir))
 " }
 
 " Plugins {
-
     " Themes {
-
     call dein#add('chriskempson/base16-vim')
     call dein#add('vim-airline/vim-airline')
     call dein#add('vim-airline/vim-airline-themes') "{
@@ -82,11 +78,11 @@ call dein#add(expand(s:dein_dir))
         let g:airline_theme='base16_default'
         " }
     " }
-"
-    " Writing {
 
+    " Writing {
     call dein#add('reedes/vim-litecorrect')
     call dein#add('kana/vim-textobj-user')
+    call dein#add('tpope/vim-markdown')
     call dein#add('reedes/vim-textobj-sentence')
     call dein#add('reedes/vim-textobj-quote') " {
         augroup textobj_sentence
@@ -107,7 +103,6 @@ call dein#add(expand(s:dein_dir))
     " }
 
     " Snippets & AutoComplete {
-
     call dein#add('Shougo/neosnippet.vim', {
                 \ 'hook_source': join([
                 \   "let g:neosnippet#enable_snipmate_compatibility = 1",
@@ -142,262 +137,248 @@ call dein#add(expand(s:dein_dir))
             let col = col('.') - 1
             return !col || getline('.')[col-1] =~ '\s'
         endfunction "}}}
-    " } 
+        " }
     call dein#add('wellle/tmux-complete.vim')
+    " }
 
+    " Unite {
+    call dein#add('Shougo/unite.vim', {
+        \ 'hook_add': join([
+        \   'function! s:unite_settings() "{',
+        \       'nmap <buffer> <ESC> <Plug>(unite_exit)',
+        \       'imap <buffer> <C-j>   <Plug>(unite_select_next_line)',
+        \       'imap <buffer> <C-k>   <Plug>(unite_select_previous_line)',
+        \       'nmap <buffer> <C-j> j',
+        \       'nmap <buffer> <C-k> k',
+        \       'imap <buffer><expr> <C-s> unite#do_action("split")',
+        \       'imap <buffer><expr> <C-v> unite#do_action("vsplit")',
+        \       'imap <buffer><expr> <C-t> unite#do_action("tabopen")',
+        \   'endfunction',
+        \   '',
+        \   'autocmd FileType unite call s:unite_settings()',
+        \   '',
+        \   'nnoremap <silent> <C-p> :Unite -start-insert file_rec/async<CR>',
+        \   'nnoremap <silent> <C-o> :Unite buffer<CR>',
+        \   'nnoremap <silent> <C-k> :Unite change jump<CR>',
+        \   'nnoremap <silent> <C-f> :Unite grep -no-empty -no-quit -resume<CR>',
+        \   'nnoremap <silent> <C-y> :Unite -default-action=append register history/yank<CR>',
+        \   'nnoremap <silent> <C-l> :Unite -start-insert command history/command<CR>',
+        \ ], "\n")
+        \ }) " }
+    call dein#add('k0kubun/unite-git-files')
+    call dein#add('Shougo/neoyank.vim')
+    call dein#add('Shougo/unite-build')
+    call dein#add('tsukkee/unite-tag')
+    call dein#add('thinca/vim-unite-history')
+    call dein#add('Shougo/neomru.vim')
     " }
 
     " General {
-
-    call dein#add('Shougo/unite.vim', {
-                \ 'hook_add': join([
-                \   'function! s:unite_settings() "{',
-                \       'nmap <buffer> <ESC> <Plug>(unite_exit)',
-                \       'imap <buffer> <C-j>   <Plug>(unite_select_next_line)',
-                \       'imap <buffer> <C-k>   <Plug>(unite_select_previous_line)',
-                \       'nmap <buffer> <C-j> j',
-                \       'nmap <buffer> <C-k> k',
-                \       'imap <buffer><expr> <C-s> unite#do_action("split")',
-                \       'imap <buffer><expr> <C-v> unite#do_action("vsplit")',
-                \       'imap <buffer><expr> <C-t> unite#do_action("tabopen")',
-                \   'endfunction',
-                \   '',
-                \   'autocmd FileType unite call s:unite_settings()',
-                \   '',
-                \   'nnoremap <silent> <C-p> :Unite -start-insert file_rec/async<CR>',
-                \   'nnoremap <silent> <C-o> :Unite buffer<CR>',
-                \   'nnoremap <silent> <C-k> :Unite change jump<CR>',
-                \   'nnoremap <silent> <C-f> :Unite grep -no-empty -no-quit -resume<CR>',
-                \   'nnoremap <silent> <C-y> :Unite -default-action=append register history/yank<CR>',
-                \   'nnoremap <silent> <C-l> :Unite -start-insert command history/command<CR>',
-                \ ], "\n")
-                \ })
-        call dein#add('k0kubun/unite-git-files')
-        call dein#add('Shougo/neoyank.vim')
-        call dein#add('Shougo/unite-build')
-        call dein#add('tsukkee/unite-tag')
-        call dein#add('thinca/vim-unite-history')
-        call dein#add('Shougo/neomru.vim')
-        call dein#add('Shougo/vimfiler.vim')
-        call dein#add('tpope/vim-markdown')
-        call dein#add('epeli/slimux', {
-                    \ 'hook_add': join([
-                    \   'map <C-c><C-c> :SlimuxREPLSendLine<CR>',
-                    \   'vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>',
-                    \   'map <Leader>s :SlimuxREPLSendLine<CR>',
-                    \   'vmap <Leader>s :SlimuxREPLSendSelection<CR>',
-                    \   'map <Leader>sa :SlimuxShellLast<CR>',
-                    \   'map <Leader>sk :SlimuxSendKeysLast<CR>',
-                    \ ], "\n")
-                    \ })
-        call dein#add('Konfekt/FastFold', {
-                    \ 'on_event': 'BufEnter',
-                    \ 'hook_post_source': 'FastFoldUpdate'
-                    \ })
-        call dein#add('tpope/vim-markdown')
-        call dein#add('easymotion/vim-easymotion')
-        call dein#add('vim-scripts/sessionman.vim', {
-                    \ 'hook_add': join([
-                    \   'nmap <leader>sl :SessionList<CR>',
-                    \   'nmap <leader>ss :SessionSave<CR>',
-                    \   'nmap <leader>sc :SessionClose<CR>',
-                    \ ], "\n")
-                    \ })
-        call dein#add('Shougo/neoinclude.vim')
-        call dein#add('Shougo/context_filetype.vim')
-
+    call dein#add('Shougo/vimfiler.vim')
+    call dein#add('epeli/slimux', {
+        \ 'hook_add': join([
+        \   'map <C-c><C-c> :SlimuxREPLSendLine<CR>',
+        \   'vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>',
+        \   'map <Leader>s :SlimuxREPLSendLine<CR>',
+        \   'vmap <Leader>s :SlimuxREPLSendSelection<CR>',
+        \   'map <Leader>sa :SlimuxShellLast<CR>',
+        \   'map <Leader>sk :SlimuxSendKeysLast<CR>',
+        \ ], "\n")
+        \ })
+    call dein#add('Konfekt/FastFold', {
+        \ 'on_event': 'BufEnter',
+        \ 'hook_post_source': 'FastFoldUpdate'
+        \ })
+    call dein#add('easymotion/vim-easymotion')
+    call dein#add('vim-scripts/sessionman.vim', {
+        \ 'hook_add': join([
+        \   'nmap <leader>sl :SessionList<CR>',
+        \   'nmap <leader>ss :SessionSave<CR>',
+        \   'nmap <leader>sc :SessionClose<CR>',
+        \ ], "\n")
+        \ })
+    call dein#add('Shougo/neoinclude.vim')
+    call dein#add('Shougo/context_filetype.vim')
     " }
 
     " Programming {
 
         " General {
+        call dein#add('Chiel92/vim-autoformat', {
+            \ 'hook_add': join([
+            \   'nnoremap <Leader>jt :Autoformat<CR>',
+            \ ], "\n")
+            \ })
+        call dein#add('joonty/vdebug')
+        call dein#add('neomake/neomake') "{
+            let g:neomake_warning_sign = {
+              \ 'text': '∆',
+              \ 'texthl': 'WarningMsg',
+              \ }
+            let g:neomake_error_sign = {
+              \ 'text': '✗',
+              \ 'texthl': 'ErrorMsg',
+              \ }
+            let g:neomake_style_error_symbol = '✠'
+            let g:neomake_style_warning_symbol = '≈'
 
-            call dein#add('joonty/vdebug')
-             call dein#add('neomake/neomake') "{
-                let g:neomake_warning_sign = {
-                  \ 'text': '∆',
-                  \ 'texthl': 'WarningMsg',
-                  \ }
-                let g:neomake_error_sign = {
-                  \ 'text': '✗',
-                  \ 'texthl': 'ErrorMsg',
-                  \ }
-                let g:neomake_style_error_symbol = '✠'
-                let g:neomake_style_warning_symbol = '≈'
-
-                autocmd! BufReadPost,BufWritePost * Neomake
-                let g:neomake_serialize = 1
-                let g:neomake_serialize_abort_on_error = 1
-                let g:neomake_open_list = 2
+            autocmd! BufReadPost,BufWritePost * Neomake
+            let g:neomake_serialize = 1
+            let g:neomake_serialize_abort_on_error = 1
+            let g:neomake_open_list = 2
             " }
-            call dein#add('airblade/vim-gitgutter') " {
-                let g:gitgutter_enabled = 1
-                let g:gitgutter_eager = 0
-                let g:gitgutter_map_keys = 0
+        call dein#add('airblade/vim-gitgutter') " {
+            let g:gitgutter_enabled = 1
+            let g:gitgutter_eager = 0
+            let g:gitgutter_map_keys = 0
             " }
-            call dein#add('scrooloose/nerdcommenter')
-            call dein#add('godlygeek/tabular', {
-                        \ 'hook_add': join([
-                        \   'nmap <Leader>a& :Tabularize /&<CR>',
-                        \   'vmap <Leader>a& :Tabularize /&<CR>',
-                        \   'nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>',
-                        \   'vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>',
-                        \   'nmap <Leader>a=> :Tabularize /=><CR>',
-                        \   'vmap <Leader>a=> :Tabularize /=><CR>',
-                        \   'nmap <Leader>a: :Tabularize /:<CR>',
-                        \   'vmap <Leader>a: :Tabularize /:<CR>',
-                        \   'nmap <Leader>a:: :Tabularize /:\zs<CR>',
-                        \   'vmap <Leader>a:: :Tabularize /:\zs<CR>',
-                        \   'nmap <Leader>a, :Tabularize /,<CR>',
-                        \   'vmap <Leader>a, :Tabularize /,<CR>',
-                        \   'nmap <Leader>a,, :Tabularize /,\zs<CR>',
-                        \   'vmap <Leader>a,, :Tabularize /,\zs<CR>',
-                        \   'nmap <Leader>a<Bar> :Tabularize /<Bar><CR>',
-                        \   'vmap <Leader>a<Bar> :Tabularize /<Bar><CR>',
-                        \ ], "\n")
-                        \ })
-            call dein#add('luochen1990/rainbow') " {
-                let g:rainbow_active=1
-                let g:rainbow_load_separately = [
-                    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-                    \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
-                    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-                    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
-                \ ]
-                let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
-                let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+        call dein#add('scrooloose/nerdcommenter')
+        call dein#add('godlygeek/tabular', {
+            \ 'hook_add': join([
+            \   'nmap <Leader>a& :Tabularize /&<CR>',
+            \   'vmap <Leader>a& :Tabularize /&<CR>',
+            \   'nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>',
+            \   'vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>',
+            \   'nmap <Leader>a=> :Tabularize /=><CR>',
+            \   'vmap <Leader>a=> :Tabularize /=><CR>',
+            \   'nmap <Leader>a: :Tabularize /:<CR>',
+            \   'vmap <Leader>a: :Tabularize /:<CR>',
+            \   'nmap <Leader>a:: :Tabularize /:\zs<CR>',
+            \   'vmap <Leader>a:: :Tabularize /:\zs<CR>',
+            \   'nmap <Leader>a, :Tabularize /,<CR>',
+            \   'vmap <Leader>a, :Tabularize /,<CR>',
+            \   'nmap <Leader>a,, :Tabularize /,\zs<CR>',
+            \   'vmap <Leader>a,, :Tabularize /,\zs<CR>',
+            \   'nmap <Leader>a<Bar> :Tabularize /<Bar><CR>',
+            \   'vmap <Leader>a<Bar> :Tabularize /<Bar><CR>',
+            \ ], "\n")
+            \ })
+        call dein#add('luochen1990/rainbow') " {
+            let g:rainbow_active=1
+            let g:rainbow_load_separately = [
+                \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
+                \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+                \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
+            \ ]
+            let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+            let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
             " }
-            call dein#add('majutsushi/tagbar', {
-                        \ 'hook_add': 'nnoremap <leader>tt :TagbarToggle<CR>'
-                        \ })
-            call dein#add('matchit.zip')
-            call dein#add('ludovicchabant/vim-gutentags') " {
-                let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")
+        call dein#add('majutsushi/tagbar', {
+            \ 'hook_add': 'nnoremap <leader>tt :TagbarToggle<CR>'
+            \ })
+        call dein#add('matchit.zip')
+        call dein#add('ludovicchabant/vim-gutentags') " {
+            let g:gutentags_cache_dir = expand("$CACHE/vim/ptags/")
             " }
-            call dein#add('tpope/vim-surround')
-            call dein#add('jiangmiao/auto-pairs')
-            call dein#add('Chiel92/vim-autoformat')
-
+        call dein#add('tpope/vim-surround')
+        call dein#add('jiangmiao/auto-pairs')
         " }
 
         " SQL {
-
          call dein#add('vim-scripts/dbext.vim')
-
         " }
 
         " Python {
+        call dein#add('davidhalter/jedi-vim', {
+            \ 'on_ft': 'python',
+            \ 'hook_source': join([
+            \   'let g:jedi#popup_on_dot = 0',
+            \   'let g:jedi#popup_select_first = 0',
+            \   'let g:jedi#completions_enabled = 0',
+            \   'let g:jedi#auto_vim_configuration = 0',
+            \   'let g:jedi#goto_command = "<leader>d"',
+            \   'let g:jedi#goto_assignments_command = "<leader>g"',
+            \   'let g:jedi#goto_definitions_command = ""',
+            \   'let g:jedi#documentation_command = "K"',
+            \   'let g:jedi#usages_command = "<leader>n"',
+            \   'let g:jedi#completions_command = "<C-Space>"',
+            \   'let g:jedi#rename_command = "<leader>r"',
+            \ ], " \n ")
+            \ })
+        call dein#add('zchee/deoplete-jedi', {'on_ft': 'python'})
+        call dein#add('tmhedberg/SimpylFold', {
+            \ 'on_ft': 'python',
+            \ 'hook_source': join([
+            \   'autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr',
+            \   'autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<',
+            \ ], " \n ")
+            \ })
 
-            call dein#add('davidhalter/jedi-vim', {
-                        \ 'on_ft': 'python',
-                        \ 'hook_source': join([
-                        \   'let g:jedi#popup_on_dot = 0',
-                        \   'let g:jedi#popup_select_first = 0',
-                        \   'let g:jedi#completions_enabled = 0',
-                        \   'let g:jedi#auto_vim_configuration = 0',
-                        \   'let g:jedi#goto_command = "<leader>d"',
-                        \   'let g:jedi#goto_assignments_command = "<leader>g"',
-                        \   'let g:jedi#goto_definitions_command = ""',
-                        \   'let g:jedi#documentation_command = "K"',
-                        \   'let g:jedi#usages_command = "<leader>n"',
-                        \   'let g:jedi#completions_command = "<C-Space>"',
-                        \   'let g:jedi#rename_command = "<leader>r"',
-                        \ ], " \n ")
-                        \ })
-            call dein#add('zchee/deoplete-jedi', {'on_ft': 'python'})
-            call dein#add('tmhedberg/SimpylFold', {
-                        \ 'on_ft': 'python',
-                        \ 'hook_source': join([
-                        \   'autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr',
-                        \   'autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<',
-                        \ ], " \n ")
-                        \ })
-
-            call dein#add('hynek/vim-python-pep8-indent', {'on_ft': 'python'})
-            call dein#add('hdima/python-syntax', {
-                        \ 'on_ft': 'python',
-                        \ 'hook_source': 'let python_highlight_all = 1'
-                        \ })
-
+        call dein#add('hynek/vim-python-pep8-indent', {'on_ft': 'python'})
+        call dein#add('hdima/python-syntax', {
+            \ 'on_ft': 'python',
+            \ 'hook_source': 'let python_highlight_all = 1'
+            \ })
         " }
 
         " Ruby {
-
-            call dein#add('fishbullet/deoplete-ruby', {'on_ft': 'ruby'})
-            call dein#add('tpope/vim-rails', {'on_ft': 'ruby'})
-
+        call dein#add('fishbullet/deoplete-ruby', {'on_ft': 'ruby'})
+        call dein#add('tpope/vim-rails', {'on_ft': 'ruby'})
         " }
 
         " Javascript {
 
-            call dein#add('elzr/vim-json', {
-                        \ 'on_ft': 'json',
-                        \ 'hook_source': 'let g:vim_json_syntax_conceal = 0'
-                        \ })
-            call dein#add('groenewege/vim-less')
-            call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})
-            call dein#add('briancollins/vim-jst')
-            call dein#add('kchmck/vim-coffee-script', {'on_ft': 'coffee'})
-            call dein#add('mxw/vim-jsx')
-            call dein#add('carlitux/deoplete-ternjs', {'on_ft': 'javascript'})
-
+        call dein#add('elzr/vim-json', {
+            \ 'on_ft': 'json',
+            \ 'hook_source': 'let g:vim_json_syntax_conceal = 0'
+            \ })
+        call dein#add('groenewege/vim-less')
+        call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})
+        call dein#add('briancollins/vim-jst')
+        call dein#add('kchmck/vim-coffee-script', {'on_ft': 'coffee'})
+        call dein#add('mxw/vim-jsx')
+        call dein#add('carlitux/deoplete-ternjs', {'on_ft': 'javascript'})
         " }
 
         " HTML {
 
-            call dein#add('amirh/HTML-AutoCloseTag', {
-                        \ 'hook_source': join([
-                        \   'au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim',
-                        \   'nmap <Leader>ac <Plug>ToggleAutoCloseMappings',
-                        \ ], "\n")
-                        \ })
+        call dein#add('amirh/HTML-AutoCloseTag', {
+            \ 'hook_source': join([
+            \   'au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim',
+            \   'nmap <Leader>ac <Plug>ToggleAutoCloseMappings',
+            \ ], "\n")
+            \ })
             " {
-                " Make it so AutoCloseTag works for xml and xhtml files as well
+            " Make it so AutoCloseTag works for xml and xhtml files as well
             " }
-            call dein#add('hail2u/vim-css3-syntax')
-            call dein#add('tpope/vim-haml')
-            call dein#add('mattn/emmet-vim')
-
+        call dein#add('hail2u/vim-css3-syntax')
+        call dein#add('tpope/vim-haml')
+        call dein#add('mattn/emmet-vim')
         " }
 
         " Puppet {
-
-            call dein#add('rodjek/vim-puppet')
-
+        call dein#add('rodjek/vim-puppet')
         " }
 
         " Rust {
-
-            call dein#add('racer-rust/vim-racer')
-
+        call dein#add('racer-rust/vim-racer')
         " }
 
         " Go Lang {
-
-            call dein#add('zchee/deoplete-go', {'on_ft': 'go'})
-            call dein#add('fatih/vim-go', {
-                        \ 'on_ft': 'go',
-                        \ 'hook_source': join([
-                        \   'let g:go_highlight_functions = 1',
-                        \   'let g:go_highlight_methods = 1',
-                        \   'let g:go_highlight_structs = 1',
-                        \   'let g:go_highlight_operators = 1',
-                        \   'let g:go_highlight_build_constraints = 1',
-                        \   'let g:go_fmt_command = "goimports"',
-                        \ ], " \n "),
-                        \ 'hook_add': join([
-                        \   'au FileType go nmap <Leader>s <Plug>(go-implements)',
-                        \   'au FileType go nmap <Leader>i <Plug>(go-info)',
-                        \   'au FileType go nmap <Leader>e <Plug>(go-rename)',
-                        \   'au FileType go nmap <leader>r <Plug>(go-run)',
-                        \   'au FileType go nmap <leader>b <Plug>(go-build)',
-                        \   'au FileType go nmap <leader>t <Plug>(go-test)',
-                        \   'au FileType go nmap <Leader>gd <Plug>(go-doc)',
-                        \   'au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)',
-                        \   'au FileType go nmap <leader>co <Plug>(go-coverage)',
-                        \ ], " \n ")
-                        \ })
-
+        call dein#add('zchee/deoplete-go', {'on_ft': 'go'})
+        call dein#add('fatih/vim-go', {
+            \ 'on_ft': 'go',
+            \ 'hook_source': join([
+            \   'let g:go_highlight_functions = 1',
+            \   'let g:go_highlight_methods = 1',
+            \   'let g:go_highlight_structs = 1',
+            \   'let g:go_highlight_operators = 1',
+            \   'let g:go_highlight_build_constraints = 1',
+            \   'let g:go_fmt_command = "goimports"',
+            \ ], " \n "),
+            \ 'hook_add': join([
+            \   'au FileType go nmap <Leader>s <Plug>(go-implements)',
+            \   'au FileType go nmap <Leader>i <Plug>(go-info)',
+            \   'au FileType go nmap <Leader>e <Plug>(go-rename)',
+            \   'au FileType go nmap <leader>r <Plug>(go-run)',
+            \   'au FileType go nmap <leader>b <Plug>(go-build)',
+            \   'au FileType go nmap <leader>t <Plug>(go-test)',
+            \   'au FileType go nmap <Leader>gd <Plug>(go-doc)',
+            \   'au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)',
+            \   'au FileType go nmap <leader>co <Plug>(go-coverage)',
+            \ ], " \n ")
+            \ })
         " }
 
     " }
@@ -582,11 +563,6 @@ endif
     augroup END
 
     autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
-
-    autocmd FileType json nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-    autocmd FileType xml,xsl,xslt nmap <leader>jt <Esc>:silent %!xmllint --format --recover - 2>/dev/null<CR>
-    autocmd FileType python nnoremap <leader>jt <Esc>:silent %!yapf<Cr>
-
 " }
 
 " GUI Settings {
@@ -653,6 +629,22 @@ endif
     endfunction
     " }
 
+    function! Yapf(style)
+        " Determine range to format.
+        let l:line_ranges = a:firstline . '-' . a:lastline
+        let l:s = 'yapf --style ' . a:style . ' --lines=' . l:line_ranges
+        let l:cmd = l:s
+        " Call YAPF with the current buffer
+        let l:formatted_text = system(l:cmd, join(getline(1, '$'), "\n") . "\n")
+
+        " Update the buffer.
+        execute '1,' . string(line('$')) . 'delete'
+        call setline(1, split(l:formatted_text, "\n"))
+
+        " Reset cursor to first line of the formatted range.
+        call cursor(a:firstline, 1)
+    endfunction
+    " }
 " }
 
 " Other plugin settings {
