@@ -53,6 +53,8 @@ plugins=(
     archlinux
     autojump
     django
+    docker
+    docker-compose
     git
     git-flow
     github
