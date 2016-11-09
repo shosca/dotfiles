@@ -8,11 +8,7 @@ import sys
 # and drop this file in
 # # ./config/python/
 
-
-try:
-    import pudb as debugger
-except ImportError:
-    import pdb as debugger
+import pdb as debugger
 
 
 def drop_debugger(type, value, tb):
