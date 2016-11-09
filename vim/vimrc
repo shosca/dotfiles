@@ -205,6 +205,9 @@ call dein#add(expand(s:dein_dir))
 
         " General {
         call dein#add('Chiel92/vim-autoformat', {
+            \ 'hook_source': join([
+            \   'let g:formatters_python = ["yapf"]',
+            \ ], "\n"),
             \ 'hook_add': join([
             \   'nnoremap <Leader>jt :Autoformat<CR>',
             \ ], "\n")
@@ -876,4 +879,10 @@ endif
         nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
     " }
 
+" }
+
+" { Local config
+if filereadable(expand("~/.config/nvim/init.local.vim"))
+    source ~/.config/nvim/init.local.vim
+endif
 " }
