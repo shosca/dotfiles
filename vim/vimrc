@@ -204,6 +204,7 @@ call dein#add(expand(s:dein_dir))
     " Programming {
 
         " General {
+        call dein#add('vim-scripts/vim-pipe')
         call dein#add('Chiel92/vim-autoformat', {
             \ 'hook_source': join([
             \   'let g:formatters_python = ["yapf"]',
@@ -648,7 +649,6 @@ endif
         call cursor(a:firstline, 1)
     endfunction
     " }
-" }
 
 " Other plugin settings {
 
