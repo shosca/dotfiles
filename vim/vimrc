@@ -204,6 +204,7 @@ call dein#add(expand(s:dein_dir))
     " Programming {
 
         " General {
+        call dein#add('tpope/vim-fugitive')
         call dein#add('vim-scripts/vim-pipe')
         call dein#add('Chiel92/vim-autoformat', {
             \ 'hook_source': join([
@@ -429,9 +430,7 @@ endif
         set statusline=%<%f\                     " Filename
         set statusline+=%w%h%m%r                 " Options
 
-        if isdirectory(expand("~/.vim/bundle/vim-fugitive")) " {
         set statusline+=%{fugitive#statusline()} " Git Hotness
-        endif " }
 
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
