@@ -281,7 +281,8 @@ call dein#add(expand(s:dein_dir))
         " }
 
         " SQL {
-         call dein#add('vim-scripts/dbext.vim')
+         call dein#add('vim-scripts/dbext.vim', {'on_ft': 'sql'})
+         call dein#add('vim-scripts/SQLUtilities', {'on_ft': 'sql'})
         " }
 
         " Python {
