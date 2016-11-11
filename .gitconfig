@@ -25,6 +25,7 @@
     rh2 = reset HEAD^^ --hard
     news = log -p HEAD@{1}..HEAD@{0}
     branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
+	d = difftool
 [user]
     name = Serkan Hosca
     email = serkan@hosca.com
@@ -44,5 +45,11 @@
 	default = current
 [url "https://github.com/"]
 	insteadOf = git://github.com/
+[pager]
+	show = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
+[difftool]
+	prompt = false
 [diff]
-    tool = nvimdiff
+	tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
