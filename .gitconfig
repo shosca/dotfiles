@@ -1,31 +1,31 @@
 [alias]
-    st = status -s
+    br = branch
+    branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
     ci = commit
     co = checkout
-    br = branch
-    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    filelog = log -u
-    fl = log -u
+    d = difftool
+    diffr  = "!f() { git diff "$1"^.."$1"; }; f"
     dl = "!git ll -1"
     dlc = diff --cached HEAD^
     dr  = "!f() { git diff "$1"^.."$1"; }; f"
-    lc  = "!f() { git ll "$1"^.."$1"; }; f"
-    diffr  = "!f() { git diff "$1"^.."$1"; }; f"
     f = "!git ls-files | grep -i"
-    grep = grep -Ii
+    filelog = log -u
+    fl = log -u
     gr = grep -Ii
     gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+    grep = grep -Ii
+    lc  = "!f() { git ll "$1"^.."$1"; }; f"
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    news = log -p HEAD@{1}..HEAD@{0}
     r = reset
     r1 = reset HEAD^
     r2 = reset HEAD^^
     rh = reset --hard
     rh1 = reset HEAD^ --hard
     rh2 = reset HEAD^^ --hard
-    news = log -p HEAD@{1}..HEAD@{0}
-    branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
-	d = difftool
+    st = status -s
 [user]
     name = Serkan Hosca
     email = serkan@hosca.com
@@ -36,20 +36,21 @@
     status = auto
 [core]
     fileMode = false
-	autocrlf = false
+    autocrlf = false
 [merge]
     stat = true
 [credential]
     helper = cache --timeout=3600
 [push]
-	default = current
+    default = current
 [url "https://github.com/"]
-	insteadOf = git://github.com/
+    insteadOf = git://github.com/
 [pager]
-	show = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
+    show = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
+    diff = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
 [difftool]
-	prompt = false
+    prompt = false
 [diff]
-	tool = nvimdiff
+    tool = nvimdiff
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
