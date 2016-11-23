@@ -215,23 +215,11 @@ call dein#add(expand(s:dein_dir))
             \ ], "\n")
             \ })
         call dein#add('joonty/vdebug')
-        call dein#add('neomake/neomake') "{
-            let g:neomake_warning_sign = {
-              \ 'text': '∆',
-              \ 'texthl': 'WarningMsg',
-              \ }
-            let g:neomake_error_sign = {
-              \ 'text': '✗',
-              \ 'texthl': 'ErrorMsg',
-              \ }
-            let g:neomake_style_error_symbol = '✠'
-            let g:neomake_style_warning_symbol = '≈'
-
-            autocmd! BufReadPost,BufWritePost * Neomake
-            let g:neomake_serialize = 1
-            let g:neomake_serialize_abort_on_error = 1
-            let g:neomake_open_list = 2
-            " }
+        call dein#add('w0rp/ale') "{
+            let g:ale_sign_warning = '∆'
+            let g:ale_sign_error = '✗'
+            let g:ale_sign_column_always = 1
+        " }
         call dein#add('airblade/vim-gitgutter') " {
             let g:gitgutter_enabled = 1
             let g:gitgutter_eager = 0
@@ -433,6 +421,7 @@ endif
         set statusline+=%w%h%m%r                 " Options
 
         set statusline+=%{fugitive#statusline()} " Git Hotness
+        set statusline+=%{ALEGetStatusLine()}    " Ale Hotness
 
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
@@ -746,8 +735,8 @@ endif
     nnoremap td :tabclose<CR>
 
     " navigate errors
-    nmap ej :lnext<CR>
-    nmap ek :lprevious<CR>
+    nmap <silent> ej <Plug>(ale_next_wrap)
+    nmap <silent> ek <Plug>(ale_previous_wrap)
 
     " End/Start of line motion keys act relative to row/wrap width in the
     " presence of `:set wrap`, and relative to line for `:set nowrap`.
