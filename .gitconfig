@@ -46,11 +46,14 @@
 [url "https://github.com/"]
     insteadOf = git://github.com/
 [pager]
-    show = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
-    diff = nvim -c '%sm/\\e.\\{-}m//g' -c 'set ft=diff' +1 -
+    show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+    diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
 [difftool]
     prompt = false
 [diff]
     tool = nvimdiff
-[difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+[merge]
+    tool = nvimdiff
+    conflictstyle = diff3
+[mergetool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"

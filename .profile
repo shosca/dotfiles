@@ -48,7 +48,7 @@ PATH="${HOME}/go/bin:${PATH}"
 mkdir -p ${HOME}/node/bin
 PATH="${HOME}/node/bin:${PATH}"
 
-if type virtualenvwrapper.sh > /dev/null ; then
+if [[ -f /usr/bin/virtualenvwrapper.sh ]] ; then
   export WORKON_HOME=~/.virtualenvs
   export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
   source /usr/bin/virtualenvwrapper.sh
