@@ -174,6 +174,9 @@ call dein#add(expand(s:dein_dir))
     " }
 
     " General {
+    call dein#add('mhinz/vim-startify') "{
+        let g:startify_session_dir = $XDG_DATA_HOME . '/nvim/session'
+    " }
     call dein#add('Shougo/vimfiler.vim')
     call dein#add('epeli/slimux', {
         \ 'hook_add': join([
@@ -204,6 +207,7 @@ call dein#add(expand(s:dein_dir))
     " Programming {
 
         " General {
+        call dein#add('romainl/vim-qf')
         call dein#add('tpope/vim-fugitive')
         call dein#add('vim-scripts/vim-pipe')
         call dein#add('Chiel92/vim-autoformat', {
@@ -217,27 +221,14 @@ call dein#add(expand(s:dein_dir))
         call dein#add('joonty/vdebug')
         call dein#add('w0rp/ale') "{
             let g:airline#extensions#ale#enabled = 1
-            let g:ale_sign_warning = '∆'
-            let g:ale_sign_error = '✗'
-            let g:ale_sign_column_always = 1
+            let g:ale_lint_delay = 100
+            let g:ale_lint_on_enter = 1
             let g:ale_lint_on_save = 1
-        " }
-        call dein#add('neomake/neomake') "{
-            let g:neomake_warning_sign = {
-              \ 'text': '∆',
-              \ 'texthl': 'WarningMsg',
-              \ }
-            let g:neomake_error_sign = {
-              \ 'text': '✗',
-              \ 'texthl': 'ErrorMsg',
-              \ }
-            let g:neomake_style_error_symbol = '✠'
-            let g:neomake_style_warning_symbol = '≈'
-
-            autocmd! BufReadPost,BufWritePost * Neomake
-            let g:neomake_serialize = 1
-            let g:neomake_serialize_abort_on_error = 1
-            let g:neomake_open_list = 2
+            let g:ale_lint_on_text_changed = 1
+            let g:ale_sign_error = '✗'
+            let g:ale_sign_warning = '∆'
+            let g:ale_echo_msg_format = '[%linter%] %s'
+            let g:ale_statusline_format = ['E:%s', 'W:%s', '']
         " }
         call dein#add('airblade/vim-gitgutter') " {
             let g:gitgutter_enabled = 1
