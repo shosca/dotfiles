@@ -33,13 +33,13 @@ install: install-vim install-zsh install-symlinks install-tmux ## Installs all
 
 install-tmux:
 	mkdir -p ~/.tmux/plugins ; \
-	if [[ ! -e ~/.tmux/plugins/tpm ]]; then \
+	if [ ! -e ~/.tmux/plugins/tpm ]; then \
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm ; \
 	fi
 
 install-zsh: ## Sets up zsh
 	ln -sf $(PWD)/.zshrc ~/.zshrc ; \
-	if [[ ! -e ~/$(OHMYZSH) ]]; then \
+	if [ ! -e ~/$(OHMYZSH) ]; then \
 		git clone https://github.com/robbyrussell/oh-my-zsh.git ~/$(OHMYZSH) ; \
 	else \
 		cd ~/$(OHMYZSH) && git pull ; \
@@ -54,7 +54,8 @@ install-vim: ## Sets up vim
 install-symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \
 		ln -sf $(PWD)/$$f ~/$$f ; \
-	done
+	done ; \
+	mkdir -p ~/.config/ssh
 
 clean: clean-symlinks clean-vim clean-zsh ## Cleans all configs
 
