@@ -70,6 +70,7 @@ plugins=(
     rvm
     systemd
     virtualenv
+    virtualenvwrapper
  )
 
 source $ZSH/oh-my-zsh.sh
