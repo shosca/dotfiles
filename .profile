@@ -48,13 +48,7 @@ PATH="${HOME}/go/bin:${PATH}"
 mkdir -p ${HOME}/node/bin
 PATH="${HOME}/node/bin:${PATH}"
 
-if [[ -f /usr/bin/virtualenvwrapper.sh ]] ; then
-  export WORKON_HOME=~/.virtualenvs
-  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-  source /usr/bin/virtualenvwrapper.sh
-fi
-
-if type keychain > /dev/null ; then
+if type keychain > /dev/null 2>&1 ; then
   keychain ~/.ssh/id_*.key
   [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
   [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
