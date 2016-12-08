@@ -70,6 +70,7 @@ call dein#add(expand(s:dein_dir))
 
 " Plugins {
     " Themes {
+    call dein#add('morhetz/gruvbox')
     call dein#add('chriskempson/base16-vim')
     call dein#add('vim-airline/vim-airline')
     call dein#add('vim-airline/vim-airline-themes') "{
@@ -402,9 +403,10 @@ endif
 
 " Colors and visuals {
 
+    set termguicolors
     let base16colorspace=256
     set background=dark
-    colorscheme base16-default-dark
+    colorscheme gruvbox
 
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
