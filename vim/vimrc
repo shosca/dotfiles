@@ -406,7 +406,7 @@ endif
     set termguicolors
     let base16colorspace=256
     set background=dark
-    colorscheme base16-default-dark
+    colorscheme gruvbox
 
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
