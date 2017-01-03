@@ -359,6 +359,7 @@ call dein#add(expand(s:dein_dir))
 
         " Rust {
         call dein#add('racer-rust/vim-racer')
+        call dein#add('sebastianmarkow/deoplete-rust')
         " }
 
         " Go Lang {
