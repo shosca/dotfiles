@@ -52,6 +52,7 @@ ZSH_CUSTOM=$HOME/dotfiles
 plugins=(
     archlinux
     autojump
+    cargo
     django
     docker
     docker-compose
@@ -67,6 +68,7 @@ plugins=(
     python
     rbenv
     ruby
+    rust
     rvm
     systemd
     virtualenv
