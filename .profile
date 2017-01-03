@@ -29,24 +29,27 @@ if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_te
 fi
 
 mkdir -p ${HOME}/bin
-PATH="${HOME}/bin:${PATH}"
+export PATH="${HOME}/bin:${PATH}"
 
 mkdir -p ${HOME}/src/bin
-PATH="${HOME}/src/bin:${PATH}"
+export PATH="${HOME}/src/bin:${PATH}"
 
 if [[ -d "/usr/lib/ccache/bin" ]]; then
-  PATH="/usr/lib/ccache/bin:${PATH}"
+  export PATH="/usr/lib/ccache/bin:${PATH}"
 fi
 if [[ -d "/usr/lib/distcc/bin" ]]; then
-  PATH="/usr/lib/distcc/bin:${PATH}"
+  export PATH="/usr/lib/distcc/bin:${PATH}"
   DISTCC_HOSTS="@buttercup.local/4"
 fi
 
 mkdir -p ${HOME}/go/bin
-PATH="${HOME}/go/bin:${PATH}"
+export PATH="${HOME}/go/bin:${PATH}"
 
 mkdir -p ${HOME}/node/bin
-PATH="${HOME}/node/bin:${PATH}"
+export PATH="${HOME}/node/bin:${PATH}"
+
+mkdir -p ${HOME}/.cargo/bin
+export PATH="${HOME}/.cargo/bin:${PATH}"
 
 if type keychain > /dev/null 2>&1 ; then
   keychain ~/.ssh/id_*.key
