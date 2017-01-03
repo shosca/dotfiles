@@ -357,7 +357,7 @@ call dein#add(expand(s:dein_dir))
         " }
 
         " Rust {
-        call dein#add('rust-lang/rust')
+        call dein#add('rust-lang/rust.vim')
         call dein#add('racer-rust/vim-racer')
         call dein#add('sebastianmarkow/deoplete-rust')
         " }
