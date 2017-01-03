@@ -339,10 +339,9 @@ call dein#add(expand(s:dein_dir))
 
         " HTML {
 
-        call dein#add('amirh/HTML-AutoCloseTag', {
+        call dein#add('alvan/vim-closetag', {
             \ 'hook_source': join([
-            \   'au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim',
-            \   'nmap <Leader>ac <Plug>ToggleAutoCloseMappings',
+            \   'let g:closetag_filenames = "*.html,*.xhtml,*.phtml"',
             \ ], "\n")
             \ })
             " {
