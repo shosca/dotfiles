@@ -338,15 +338,6 @@ call dein#add(expand(s:dein_dir))
         " }
 
         " HTML {
-
-        call dein#add('alvan/vim-closetag', {
-            \ 'hook_source': join([
-            \   'let g:closetag_filenames = "*.html,*.xhtml,*.phtml"',
-            \ ], "\n")
-            \ })
-            " {
-            " Make it so AutoCloseTag works for xml and xhtml files as well
-            " }
         call dein#add('hail2u/vim-css3-syntax')
         call dein#add('tpope/vim-haml')
         call dein#add('mattn/emmet-vim')
