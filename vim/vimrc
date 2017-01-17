@@ -220,16 +220,9 @@ call dein#add(expand(s:dein_dir))
             \ ], "\n")
             \ })
         call dein#add('joonty/vdebug')
-        call dein#add('w0rp/ale') "{
-            let g:airline#extensions#ale#enabled = 1
-            let g:ale_lint_delay = 100
-            let g:ale_lint_on_enter = 1
-            let g:ale_lint_on_save = 1
-            let g:ale_lint_on_text_changed = 1
-            let g:ale_sign_error = '✗'
-            let g:ale_sign_warning = '∆'
-            let g:ale_echo_msg_format = '[%linter%] %s'
-            let g:ale_statusline_format = ['E:%s', 'W:%s', '']
+        call dein#add('neomake/neomake') "{
+            let g:neomake_open_list = 2
+            let g:neomake_verbose = 0
         " }
         call dein#add('airblade/vim-gitgutter') " {
             let g:gitgutter_enabled = 1
@@ -419,7 +412,6 @@ endif
         set statusline+=%w%h%m%r                 " Options
 
         set statusline+=%{fugitive#statusline()} " Git Hotness
-        set statusline+=%{ALEGetStatusLine()}    " Ale Hotness
 
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
