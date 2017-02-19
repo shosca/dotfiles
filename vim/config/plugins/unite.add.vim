@@ -13,12 +13,20 @@ function! s:unite_settings()
    imap <buffer><expr> <C-t> unite#do_action("tabopen")
 endfunction
 autocmd FileType unite call s:unite_settings()
-nnoremap <silent> <C-p> :Unite -start-insert file_rec/async<CR>
-nnoremap <silent> <C-o> :Unite buffer<CR>
-nnoremap <silent> <C-k> :Unite change jump<CR>
-nnoremap <silent> <C-f> :Unite grep -no-empty -no-quit -resume<CR>
-nnoremap <silent> <C-y> :Unite -default-action=append register history/yank<CR>
-nnoremap <silent> <C-l> :Unite -start-insert command history/command<CR>
+
+nnoremap [unite] <Nop>
+exe 'nmap '.g:unite_leader.' [unite]'
+if has('nvim')
+    nnoremap <silent> [unite]p :<C-u>Unite -start-insert file_rec/neovim<CR>
+else
+    nnoremap <silent> [unite]p :<C-u>Unite -start-insert file_rec/async<CR>
+endif
+nnoremap <silent> [unite]o :<C-u>Unite buffer<CR>
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -start-insert -auto-preview -split outline<CR>
+nnoremap <silent> [unite]k :<C-u>Unite change jump<CR>
+nnoremap <silent> [unite]f :<C-u>Unite grep -no-empty -no-quit -resume<CR>
+nnoremap <silent> [unite]y :<C-u>Unite -default-action=append register history/yank<CR>
+nnoremap <silent> [unite]l :<C-u>Unite -start-insert command history/command<CR>
 
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_reverse'])

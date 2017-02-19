@@ -23,6 +23,7 @@
     " location.
     let mapleader = "\<Space>"
     let maplocalleader = ","
+    let g:unite_leader = "f"
 
     " Identify platform {
     silent function! OSX()
