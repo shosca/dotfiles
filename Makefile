@@ -46,10 +46,8 @@ install-zsh: ## Sets up zsh
 	fi
 
 install-vim: ## Sets up vim
-	mkdir -p ~/.config/nvim; \
-	ln -sf ~/.config/nvim ~/.vim ; \
-	ln -sf $(PWD)/vim/vimrc ~/.vim/vimrc ; \
-	ln -sf $(PWD)/vim/vimrc ~/.config/nvim/init.vim; \
+	ln -sf $(PWD)/vim ~/.config/nvim ; \
+	ln -sf $(PWD)/vim ~/.vim ; \
 
 install-symlinks: ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \

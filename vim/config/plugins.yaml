@@ -1,0 +1,212 @@
+# Startup
+
+- repo: Shougo/dein.vim
+
+- repo: Shougo/unite.vim
+  hook_source: source $VIMPATH/config/plugins/unite.source.vim
+  hook_add: source $VIMPATH/config/plugins/unite.add.vim
+
+- repo: Shougo/vimproc.vim
+  build: make
+  on_func: vimproc#
+
+- repo: morhetz/gruvbox
+
+- repo: chriskempson/base16-vim
+
+- repo: vim-airline/vim-airline
+
+- repo: vim-airline/vim-airline-themes
+  hook_source: |
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline_powerline_fonts=1
+    let g:airline_theme='base16_default'
+
+- repo: kana/vim-textobj-user
+  on_func: textobj#user#
+
+- repo: plasticboy/vim-markdown
+  on_ft: markdown
+  hook_source: |
+    let g:vim_markdown_initial_foldlevel = 5
+    let g:vim_markdown_new_list_item_indent = 2
+    let g:vim_markdown_frontmatter = 1
+    let g:vim_markdown_conceal = 0
+
+- repo: majutsushi/tagbar
+  hook_add: |
+    nnoremap <leader>tt :TagbarToggle<CR>
+
+- repo: w0rp/ale.git
+  on_event: TextChanged, TextChangedI
+  hook_add: |
+    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+    nmap <silent> <C-j> <Plug>(ale_next_wrap)
+  hook_source: |
+    let g:ale_set_loclist = 0
+    let g:ale_set_quickfix = 1
+    let g:ale_open_list = 1
+
+- repo: mhinz/vim-startify
+  hook_add: |
+    let g:startify_session_dir = $VARPATH.'/session'
+
+- repo: reedes/vim-wordy
+  on_cmd: NextWordy, PrevWordy
+
+- repo: Shougo/neosnippet-snippets
+
+- repo: Shougo/context_filetype.vim
+  lazy: 1
+
+- repo: Shougo/neosnippet.vim
+  depends: [neosnippet-snippets, context_filetype.vim]
+  on_event: InsertCharPre
+  on_ft: snippet
+  hook_add: |
+    let g:neosnippet#snippets_directory = $VARPATH.'/snippets'
+    imap <C-k> <Plug>(neosnippet_expand_or_jump)
+    smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  hook_source: |
+    let g:neosnippet#enable_snipmate_compatibility = 1
+    let g:neosnippet#enable_complete_done = 1
+    let g:neosnippet#expand_word_boundary = 1
+
+- repo: Shougo/deoplete.nvim
+  if: has('nvim')
+  depends: [context_filetype.vim]
+  on_i: 1
+  hook_source: |
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#auto_complete_delay = 60
+    let g:deoplete#auto_refresh_delay = 1000
+    let g:deoplete#enable_camel_case = 1
+    let g:deoplete#tag#cache_limit_size = 5000000
+    au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+    set completeopt=menu,preview,longest
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col-1] =~ '\s'
+    endfunction
+    imap <silent><expr> <TAB>
+                \ pumvisible() ? "\<C-n>" :
+                \ <SID>check_back_space() ? "\<TAB>" :
+                \ deoplete#mappings#manual_complete()
+
+- repo: Shougo/neocomplete
+  if: ! has('nvim') && has('lua')
+  on_event: InsertEnter
+
+- repo: wellle/tmux-complete.vim
+  depends: [deoplete.nvim]
+  on_event: InsertEnter
+
+- repo: ludovicchabant/vim-gutentags
+  if: executable('ctags')
+  on_path: .*
+  hook_source: |
+    let g:gutentags_cache_dir = $VARPATH.'tags'
+    let g:gutentags_generate_on_missing = 0
+    let g:gutentags_generate_on_new = 0
+    let g:gutentags_modules = ['ctags']
+
+- repo: mattn/emmet-vim
+  on_i: 1
+  on_ft: [css, html, jsx, javascript, javascript.jsx]
+  hook_source: |
+    let g:use_emmet_complete_tag = 0
+    let g:user_emmet_install_global = 0
+    let g:user_emmet_install_command = 0
+    let g:user_emmet_mode = 'i'
+
+- repo: davidhalter/jedi-vim
+  on_ft: python
+  hook_add: |
+    let g:jedi#completions_enabled = 0
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#smart_auto_mappings = 0
+    let g:jedi#show_call_signatures = 1
+  hook_source: |
+    let g:jedi#use_tag_stack = 0
+    let g:jedi#popup_select_first = 0
+    let g:jedi#popup_on_dot = 0
+    let g:jedi#quickfix_window_height = 10
+    let g:jedi#max_doc_height = 100
+
+- repo: zchee/deoplete-jedi
+  if: has('nvim')
+  on_ft: python
+  on_i: 1
+  hook_source: |
+    autocmd FileType python setlocal omnifunc=
+    let g:deoplete#sources#jedi#statement_length = 1
+    let g:deoplete#sources#jedi#show_docstring = 1
+    let g:deoplete#sources#jedi#short_types = 1
+    let g:deoplete#sources#jedi#worker_threads = 2
+
+- repo: tmhedberg/SimpylFold
+  on_ft: python
+  on_i: 1
+  hook_source: |
+    autocmd BufWinEnter python setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr'
+    autocmd BufWinLeave python setlocal foldexpr< foldmethod<'
+
+- repo: hynek/vim-python-pep8-indent
+  on_ft: python
+  on_i: 1
+
+- repo: hdima/python-syntax
+  on_ft: python
+  on_i: 1
+  hook_source: let python_highlight_all = 1
+
+- repo: zchee/deoplete-go
+  if: has('nvim')
+  on_ft: go
+  on_i: 1
+
+- repo: fatih/vim-go
+  on_ft: go
+  hook_source: |
+    let g:go_def_mapping_enabled = 0
+    let g:go_fmt_command = "goimports"
+    let g:go_highlight_build_constraints = 1
+    let g:go_highlight_extra_types = 1
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_structs = 1
+    let g:go_snippet_engine = 'neosnippet'
+
+- repo: vim-scripts/dbext.vim
+  on_ft: sql
+
+- repo: vim-scripts/SQLUtilities
+  on_ft: sql
+
+- repo: vim-scripts/Align
+  on_ft: sql
+
+- repo: Shougo/vimfiler.vim
+  hook_add: |
+    nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
+  hook_source: |
+    let g:vimfiler_as_default_explorer = 1
+    let g:vimfiler_file_icon = '-'
+    let g:vimfiler_marked_file_icon = '✓'
+    let g:vimfiler_readonly_file_icon = '✗'
+    let g:vimfiler_restore_alternate_file = 1
+    let g:vimfiler_safe_mode_by_default = 0
+    let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+    let g:vimfiler_tree_closed_icon = '▸'
+    let g:vimfiler_tree_indentation = 1
+    let g:vimfiler_tree_leaf_icon = ''
+    let g:vimfiler_tree_opened_icon = '▾'
+    let g:vimfiler_ignore_pattern = [
+            \ '^\.git$',
+            \ '^\.DS_Store$',
+            \ '^\.init\.vim-rplugin\~$',
+            \ '^\.netrwhist$',
+            \ '\.class$'
+            \]
+
