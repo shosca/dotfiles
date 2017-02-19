@@ -45,30 +45,11 @@
 
         " General {
 
-            " Git {
-            call dein#add('tpope/vim-fugitive')
-            call dein#add('cohama/agit.vim', {'on_cmd':['Agit', 'AgitFile']})
-            call dein#add('gregsexton/gitv', {'on_cmd':['Gitv']})
-            call dein#add('lambdalisue/vim-gita', {'on_cmd':['Gita']})
-            call dein#add('junegunn/gv.vim', {'on_cmd':['GV']})
-            call dein#add('airblade/vim-gitgutter') " {
-                let g:gitgutter_enabled = 1
-                let g:gitgutter_eager = 0
-                let g:gitgutter_map_keys = 0
-                " }
-            " }
-
         call dein#add('romainl/vim-qf')
         call dein#add('vim-scripts/vim-pipe')
         call dein#add('sbdchd/neoformat.git')
         call dein#add('joonty/vdebug')
 
-        call dein#add('w0rp/ale.git', {
-            \ 'hook_add': join([
-            \   'nmap <silent> <C-k> <Plug>(ale_previous_wrap)',
-            \   'nmap <silent> <C-j> <Plug>(ale_next_wrap)',
-            \ ], "\n")
-            \ })
         call dein#add('scrooloose/nerdcommenter')
         call dein#add('godlygeek/tabular', {
             \ 'hook_add': join([

@@ -17,11 +17,12 @@ autocmd FileType unite call s:unite_settings()
 nnoremap [unite] <Nop>
 exe 'nmap '.g:unite_leader.' [unite]'
 if has('nvim')
-    nnoremap <silent> [unite]p :<C-u>Unite -start-insert file_rec/neovim<CR>
+    nnoremap <silent> [unite]p :<C-u>Unite -start-insert buffer file_rec/neovim<CR>
+    nnoremap <silent> <C-p> :<C-u>Unite -start-insert buffer file_rec/neovim<CR>
 else
-    nnoremap <silent> [unite]p :<C-u>Unite -start-insert file_rec/async<CR>
+    nnoremap <silent> [unite]p :<C-u>Unite -start-insert buffer file_rec/async<CR>
+    nnoremap <silent> <C-p> :<C-u>Unite -start-insert buffer file_rec/async<CR>
 endif
-nnoremap <silent> [unite]o :<C-u>Unite buffer<CR>
 nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -start-insert -auto-preview -split outline<CR>
 nnoremap <silent> [unite]k :<C-u>Unite change jump<CR>
 nnoremap <silent> [unite]f :<C-u>Unite grep -no-empty -no-quit -resume<CR>

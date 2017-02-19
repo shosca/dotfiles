@@ -15,6 +15,29 @@
 - repo: osyo-manga/unite-quickfix
 - repo: Shougo/unite-outline
 
+- repo: tpope/vim-fugitive
+- repo: cohama/agit.vim
+  on_cmd: [Agit, AgitFile]
+
+- repo: gregsexton/gitv
+  on_cmd: [Gitv]
+
+- repo: lambdalisue/vim-gita
+  on_cmd: [Gita]
+
+- repo: junegunn/gv.vim
+  on_cmd: [GV]
+
+- repo: rhysd/committia.vim
+  on_path: COMMIT_EDITMSG
+  hook_source: let g:committia_min_window_width = 70
+
+- repo: airblade/vim-gitgutter
+  hook_source: |
+    let g:gitgutter_enabled = 1
+    let g:gitgutter_eager = 0
+    let g:gitgutter_map_keys = 0
+
 - repo: Shougo/vimproc.vim
   build: make
   on_func: vimproc#
@@ -157,6 +180,32 @@
     let g:deoplete#sources#jedi#show_docstring = 1
     let g:deoplete#sources#jedi#short_types = 1
     let g:deoplete#sources#jedi#worker_threads = 2
+
+- repo: fishbullet/deoplete-ruby
+  if: has('nvim')
+  depends: [deoplete.nvim]
+  on_ft: ruby
+
+- repo: sebastianmarkow/deoplete-rust
+  if: has('nvim')
+  depends: [deoplete.nvim]
+  on_ft: rust
+
+- repo: carlitux/deoplete-ternjs
+  build: npm install -g tern
+  if: executable('npm') && has('nvim')
+  on_i: 1
+  on_ft: javascript
+  hook_source: |
+    let g:tern_request_timeout = 1
+    let g:tern_show_signature_in_pum = '0'
+
+- repo: elzr/vim-json
+  on_ft: json
+  hook_source: let g:vim_json_syntax_conceal = 0
+
+- repo: tpope/vim-rails
+  on_ft: ruby
 
 - repo: tmhedberg/SimpylFold
   on_ft: python
