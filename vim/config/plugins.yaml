@@ -38,7 +38,6 @@
     nnoremap <leader>tt :TagbarToggle<CR>
 
 - repo: w0rp/ale.git
-  on_event: TextChanged, TextChangedI
   hook_add: |
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -75,7 +74,6 @@
 - repo: Shougo/deoplete.nvim
   if: has('nvim')
   depends: [context_filetype.vim]
-  on_i: 1
   hook_source: |
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#auto_complete_delay = 60
@@ -135,6 +133,7 @@
 
 - repo: zchee/deoplete-jedi
   if: has('nvim')
+  depends: [deoplete.nvim]
   on_ft: python
   on_i: 1
   hook_source: |
@@ -162,6 +161,7 @@
 
 - repo: zchee/deoplete-go
   if: has('nvim')
+  depends: [deoplete.nvim]
   on_ft: go
   on_i: 1
 
