@@ -126,9 +126,9 @@ with open(vim.eval('a:filename'), 'r') as f:
     vim.vars['denite_plugins'] = yaml.load(f.read())
 endpython
         for plugin in g:denite_plugins
-            " if has_key(plugin, 'hook_source')
-            "   execute plugin['hook_source']
-            " endif
+            if has_key(plugin, 'hook_always')
+                execute plugin['hook_always']
+            endif
             call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
         endfor
         unlet g:denite_plugins
@@ -262,7 +262,6 @@ call s:source_file('mappings.vim')
     au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
     autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber,sh set ai sw=2 sts=2 et
-    autocmd FileType javascript,python set ai sw=4 sts=4 et
     autocmd FileType make set noexpandtab
     autocmd FileType json,jsonp set foldmethod=syntax
     augroup vagrant

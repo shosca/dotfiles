@@ -1,22 +1,14 @@
 - repo: Shougo/dein.vim
 
-- repo: Shougo/unite.vim
-  hook_source: source $VIMPATH/config/plugins/unite.source.vim
-  hook_add: source $VIMPATH/config/plugins/unite.add.vim
+- repo: Shougo/denite.nvim
+  hook_source: source $VIMPATH/config/plugins/denite.pre.vim
+  hook_add: source $VIMPATH/config/plugins/denite.post.vim
 
 - repo: hecal3/vim-leader-guide
   loadconf: 1
   loadconf_before: 1
   merged' : 0
 
-- repo: k0kubun/unite-git-files
-- repo: Shougo/neoyank.vim
-- repo: Shougo/unite-build
-- repo: tsukkee/unite-tag
-- repo: thinca/vim-unite-history
-- repo: Shougo/neomru.vim
-- repo: osyo-manga/unite-quickfix
-- repo: Shougo/unite-outline
 - repo: idanarye/vim-vebugger
 
 - repo: tpope/vim-fugitive
@@ -24,10 +16,18 @@
   on_cmd: [Agit, AgitFile]
 
 - repo: gregsexton/gitv
-  on_cmd: [Gitv]
+  on_cmd: Gitv
 
 - repo: lambdalisue/vim-gita
-  on_cmd: [Gita]
+  on_cmd: Gita
+  hook_always: |
+    nnoremap <silent> <leader>gs :<C-u>Gita status<CR>
+    nnoremap <silent> <leader>gc :<C-u>Gita commit<CR>
+    nnoremap <silent> <leader>ga :<C-u>Gita commit --amend<CR>
+    nnoremap <silent> <leader>gd :<C-u>Gita diff<CR>
+    nnoremap <silent> <leader>gb :<C-u>Gita browse<CR>
+    nnoremap <silent> <leader>gl :<C-u>Gita blame<CR>
+    nnoremap <silent> <leader>gp :<C-u>Gita push<CR>
 
 - repo: junegunn/gv.vim
   on_cmd: [GV]
@@ -76,14 +76,16 @@
   hook_add: |
     nnoremap <leader>tt :TagbarToggle<CR>
 
-- repo: w0rp/ale.git
-  hook_add: |
-    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-    nmap <silent> <C-j> <Plug>(ale_next_wrap)
+- repo: benekastah/neomake
+  if: has('nvim')
+  on_cmd: Neomake
   hook_source: |
-    let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
-    let g:ale_open_list = 1
+    let g:neomake_open_list = 2
+    let g:neomake_verbose = 0
+    let g:neomake_serialize_abort_on_error = 0
+    let g:airline#extensions#neomake#enabled = 0
+  hook_add: |
+    autocmd! BufWritePost * Neomake
 
 - repo: mhinz/vim-startify
   hook_add: |
@@ -155,6 +157,7 @@
     let g:user_emmet_install_global = 0
     let g:user_emmet_install_command = 0
     let g:user_emmet_mode = 'i'
+    autocmd FileType html,css,jsx,javascript,javascript.jsx EmmetInstall | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
 
 - repo: davidhalter/jedi-vim
   on_ft: python
@@ -175,6 +178,12 @@
     let g:jedi#popup_on_dot = 0
     let g:jedi#quickfix_window_height = 10
     let g:jedi#max_doc_height = 100
+
+- repo: Vimjas/vim-python-pep8-indent
+  on_ft: python
+
+- repo: tmhedberg/SimpylFold
+  on_ft: python
 
 - repo: zchee/deoplete-jedi
   if: has('nvim')
@@ -213,22 +222,6 @@
 
 - repo: tpope/vim-rails
   on_ft: ruby
-
-- repo: tmhedberg/SimpylFold
-  on_ft: python
-  on_i: 1
-  hook_source: |
-    autocmd BufWinEnter python setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr'
-    autocmd BufWinLeave python setlocal foldexpr< foldmethod<'
-
-- repo: hynek/vim-python-pep8-indent
-  on_ft: python
-  on_i: 1
-
-- repo: hdima/python-syntax
-  on_ft: python
-  on_i: 1
-  hook_source: let python_highlight_all = 1
 
 - repo: zchee/deoplete-go
   if: has('nvim')
@@ -286,3 +279,18 @@
 
 - repo: Shougo/neco-syntax
   on_source: [ neocomplete.vim, deoplete.nvim ]
+
+- repo: pangloss/vim-javascript
+  on_ft: javascript
+
+- repo: tpope/vim-commentary
+  on_map: <Plug>Commentary
+  hook_always: |
+    xmap <Leader>v  <Plug>Commentary
+    nmap <Leader>v  <Plug>CommentaryLine
+    xmap gc  <Plug>Commentary
+    nmap gc  <Plug>Commentary
+    omap gc  <Plug>Commentary
+    nmap gcc <Plug>CommentaryLine
+    nmap cgc <Plug>ChangeCommentary
+    nmap gcu <Plug>Commentary<Plug>Commentary
