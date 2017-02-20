@@ -1,10 +1,13 @@
-# Startup
-
 - repo: Shougo/dein.vim
 
 - repo: Shougo/unite.vim
   hook_source: source $VIMPATH/config/plugins/unite.source.vim
   hook_add: source $VIMPATH/config/plugins/unite.add.vim
+
+- repo: hecal3/vim-leader-guide
+  loadconf: 1
+  loadconf_before: 1
+  merged' : 0
 
 - repo: k0kubun/unite-git-files
 - repo: Shougo/neoyank.vim
@@ -14,6 +17,7 @@
 - repo: Shougo/neomru.vim
 - repo: osyo-manga/unite-quickfix
 - repo: Shougo/unite-outline
+- repo: idanarye/vim-vebugger
 
 - repo: tpope/vim-fugitive
 - repo: cohama/agit.vim
@@ -27,6 +31,9 @@
 
 - repo: junegunn/gv.vim
   on_cmd: [GV]
+
+- repo: sbdchd/neoformat
+  on_cmd: Neoformat
 
 - repo: rhysd/committia.vim
   on_path: COMMIT_EDITMSG
@@ -274,3 +281,8 @@
             \ '\.class$'
             \]
 
+- repo: Shougo/neco-vim
+  on_ft: vim
+
+- repo: Shougo/neco-syntax
+  on_source: [ neocomplete.vim, deoplete.nvim ]
