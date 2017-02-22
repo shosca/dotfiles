@@ -185,6 +185,8 @@
 - repo: tmhedberg/SimpylFold
   on_ft: python
 
+- repo: Konfekt/FastFold
+
 - repo: zchee/deoplete-jedi
   if: has('nvim')
   depends: [deoplete.nvim]
