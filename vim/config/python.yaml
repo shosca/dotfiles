@@ -1,0 +1,40 @@
+
+- repo: davidhalter/jedi-vim
+  on_ft: python
+  hook_add: |
+    let g:jedi#completions_enabled = 0
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#smart_auto_mappings = 0
+    let g:jedi#show_call_signatures = 1
+    autocmd FileType python nnoremap <buffer> <leader>d :call jedi#goto()<CR>
+    autocmd FileType python nnoremap <buffer> <leader>g :call jedi#goto_assignments()<CR>
+    autocmd FileType python nnoremap <buffer> <leader>n :call jedi#usages()<CR>
+    autocmd FileType python nnoremap <buffer> <leader>r :call jedi#rename()<CR>
+    autocmd FileType python vnoremap <buffer> <leader>r :call jedi#rename_visual()<CR>
+  hook_source: |
+    let g:jedi#documentation_command = "K"
+    let g:jedi#use_tag_stack = 0
+    let g:jedi#popup_select_first = 0
+    let g:jedi#popup_on_dot = 0
+    let g:jedi#quickfix_window_height = 10
+    let g:jedi#max_doc_height = 100
+
+- repo: Vimjas/vim-python-pep8-indent
+  on_ft: python
+
+- repo: tmhedberg/SimpylFold
+  on_ft: python
+
+- repo: zchee/deoplete-jedi
+  if: has('nvim')
+  depends: [deoplete.nvim]
+  on_ft: python
+  on_i: 1
+  hook_source: |
+    autocmd FileType python setlocal omnifunc=
+    let g:deoplete#sources#jedi#statement_length = 1
+    let g:deoplete#sources#jedi#show_docstring = 1
+    let g:deoplete#sources#jedi#short_types = 1
+    let g:deoplete#sources#jedi#worker_threads = 2
+
+

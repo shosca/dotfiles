@@ -1,0 +1,6 @@
+
+- repo: sebastianmarkow/deoplete-rust
+  if: has('nvim')
+  depends: [deoplete.nvim]
+  on_ft: rust
+

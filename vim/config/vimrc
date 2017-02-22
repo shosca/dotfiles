@@ -148,16 +148,32 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 let s:path = expand('$VARPATH/dein')
-let s:plugins_path = expand('$VIMPATH/config/plugins.yaml')
+let s:plugins_paths = [
+            \ expand('<sfile>'),
+            \ expand('$VIMPATH/config/core.yaml'),
+            \ expand('$VIMPATH/config/autocomplete.yaml'),
+            \ expand('$VIMPATH/config/git.yaml'),
+            \ expand('$VIMPATH/config/go.yaml'),
+            \ expand('$VIMPATH/config/javascript.yaml'),
+            \ expand('$VIMPATH/config/ruby.yaml'),
+            \ expand('$VIMPATH/config/python.yaml'),
+            \ expand('$VIMPATH/config/rust.yaml'),
+            \ expand('$VIMPATH/config/sql.yaml'),
+            \ expand('$VIMPATH/config/themes.yaml'),
+            \ expand('$VIMPATH/config/vim.yaml'),
+            \ ]
 if dein#load_state(s:path)
-    call dein#begin(s:path, [expand('<sfile>'), s:plugins_path])
-    try
-        call s:dein_load_yaml(s:plugins_path)
-    catch /.*/
-        echoerr v:exception
-        echomsg 'Error loading config/plugins.yaml...'
-        echomsg 'Caught: ' v:exception
-    endtry
+    call dein#begin(s:path, s:plugins_paths)
+
+    for plugins_path in s:plugins_paths[1:-1]
+        try
+            call s:dein_load_yaml(plugins_path)
+        catch /.*/
+            echomsg v:exception
+            echomsg 'Error loading config/plugins.yaml...'
+            echomsg 'Caught: ' v:exception
+        endtry
+    endfor
 
     if isdirectory(expand('$VIMPATH/dev'))
         call dein#local(expand('$VIMPATH/dev'), {'frozen': 1, 'merged': 0})

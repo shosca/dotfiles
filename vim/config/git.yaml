@@ -1,0 +1,32 @@
+
+- repo: tpope/vim-fugitive
+- repo: cohama/agit.vim
+  on_cmd: [Agit, AgitFile]
+
+- repo: gregsexton/gitv
+  on_cmd: Gitv
+
+- repo: lambdalisue/vim-gita
+  on_cmd: Gita
+  hook_always: |
+    nnoremap <silent> <leader>gs :<C-u>Gita status<CR>
+    nnoremap <silent> <leader>gc :<C-u>Gita commit<CR>
+    nnoremap <silent> <leader>ga :<C-u>Gita commit --amend<CR>
+    nnoremap <silent> <leader>gd :<C-u>Gita diff<CR>
+    nnoremap <silent> <leader>gb :<C-u>Gita browse<CR>
+    nnoremap <silent> <leader>gl :<C-u>Gita blame<CR>
+    nnoremap <silent> <leader>gp :<C-u>Gita push<CR>
+
+- repo: junegunn/gv.vim
+  on_cmd: [GV]
+
+- repo: airblade/vim-gitgutter
+  hook_source: |
+    let g:gitgutter_enabled = 1
+    let g:gitgutter_eager = 0
+    let g:gitgutter_map_keys = 0
+
+- repo: rhysd/committia.vim
+  on_path: COMMIT_EDITMSG
+  hook_source: let g:committia_min_window_width = 70
+

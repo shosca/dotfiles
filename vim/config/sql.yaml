@@ -1,0 +1,10 @@
+
+- repo: vim-scripts/dbext.vim
+  on_ft: sql
+
+- repo: vim-scripts/SQLUtilities
+  on_ft: sql
+
+- repo: vim-scripts/Align
+  on_ft: sql
+
