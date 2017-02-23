@@ -14,6 +14,7 @@
 
     let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
     let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+    let $PLUGINPATH = expand('$VIMPATH/config/plugins')
 
     if !isdirectory(expand($VARPATH))
       call mkdir(expand($VARPATH), 'p')
@@ -126,10 +127,10 @@ with open(vim.eval('a:filename'), 'r') as f:
     vim.vars['denite_plugins'] = yaml.load(f.read())
 endpython
         for plugin in g:denite_plugins
+            call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
             if has_key(plugin, 'hook_always')
                 execute plugin['hook_always']
             endif
-            call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
         endfor
         unlet g:denite_plugins
     endfunction " }
@@ -150,17 +151,17 @@ endif
 let s:path = expand('$VARPATH/dein')
 let s:plugins_paths = [
             \ expand('<sfile>'),
-            \ expand('$VIMPATH/config/core.yaml'),
-            \ expand('$VIMPATH/config/autocomplete.yaml'),
-            \ expand('$VIMPATH/config/git.yaml'),
-            \ expand('$VIMPATH/config/go.yaml'),
-            \ expand('$VIMPATH/config/javascript.yaml'),
-            \ expand('$VIMPATH/config/ruby.yaml'),
-            \ expand('$VIMPATH/config/python.yaml'),
-            \ expand('$VIMPATH/config/rust.yaml'),
-            \ expand('$VIMPATH/config/sql.yaml'),
-            \ expand('$VIMPATH/config/themes.yaml'),
-            \ expand('$VIMPATH/config/vim.yaml'),
+            \ expand('$PLUGINPATH/core.yaml'),
+            \ expand('$PLUGINPATH/autocomplete.yaml'),
+            \ expand('$PLUGINPATH/git.yaml'),
+            \ expand('$PLUGINPATH/go.yaml'),
+            \ expand('$PLUGINPATH/javascript.yaml'),
+            \ expand('$PLUGINPATH/ruby.yaml'),
+            \ expand('$PLUGINPATH/python.yaml'),
+            \ expand('$PLUGINPATH/rust.yaml'),
+            \ expand('$PLUGINPATH/sql.yaml'),
+            \ expand('$PLUGINPATH/themes.yaml'),
+            \ expand('$PLUGINPATH/vim.yaml'),
             \ ]
 if dein#load_state(s:path)
     call dein#begin(s:path, s:plugins_paths)
