@@ -126,7 +126,16 @@ import vim, yaml
 with open(vim.eval('a:filename'), 'r') as f:
     vim.vars['denite_plugins'] = yaml.load(f.read())
 endpython
+        let a:events = ['add', 'source', 'always']
         for plugin in g:denite_plugins
+            let s:plug_name = split(plugin['repo'], "/")[-1]
+
+            for s:event in a:events
+                let s:plug_name_event = expand('$PLUGINPATH/').s:plug_name.'.'.s:event.'.vim'
+                if filereadable(s:plug_name_event)
+                    let plugin['hook_'.s:event] = 'source '.s:plug_name_event
+                endif
+            endfor
             call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
             if has_key(plugin, 'hook_always')
                 execute plugin['hook_always']

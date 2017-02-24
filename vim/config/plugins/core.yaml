@@ -1,8 +1,9 @@
 - repo: Shougo/dein.vim
 
 - repo: Shougo/denite.nvim
-  hook_source: source $PLUGINPATH/denite.pre.vim
-  hook_add: source $PLUGINPATH/denite.post.vim
+
+- repo: chemzqm/unite-location
+  on_source: denite.nvim
 
 - repo: hecal3/vim-leader-guide
   loadconf: 1
