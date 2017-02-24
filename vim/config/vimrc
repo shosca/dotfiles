@@ -158,22 +158,9 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 let s:path = expand('$VARPATH/dein')
-let s:plugins_paths = [
-            \ expand('<sfile>'),
-            \ expand('$PLUGINPATH/core.yaml'),
-            \ expand('$PLUGINPATH/autocomplete.yaml'),
-            \ expand('$PLUGINPATH/git.yaml'),
-            \ expand('$PLUGINPATH/go.yaml'),
-            \ expand('$PLUGINPATH/javascript.yaml'),
-            \ expand('$PLUGINPATH/ruby.yaml'),
-            \ expand('$PLUGINPATH/python.yaml'),
-            \ expand('$PLUGINPATH/rust.yaml'),
-            \ expand('$PLUGINPATH/sql.yaml'),
-            \ expand('$PLUGINPATH/themes.yaml'),
-            \ expand('$PLUGINPATH/vim.yaml'),
-            \ ]
+let s:plugins_paths = split(globpath(expand('$PLUGINPATH'), '*.yaml'), "\n")
 if dein#load_state(s:path)
-    call dein#begin(s:path, s:plugins_paths)
+    call dein#begin(s:path, s:plugins_paths + [expand('<sfile>')])
 
     for plugins_path in s:plugins_paths[1:-1]
         try
