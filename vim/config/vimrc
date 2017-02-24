@@ -149,7 +149,7 @@ endpython
 " Dein {
 
 if &runtimepath !~# '/dein.vim'
-    let s:dein_dir = expand('$VARPATH/dein').'repos/github.com/Shougo/dein.vim'
+    let s:dein_dir = expand('$VARPATH').'/dein/repos/github.com/Shougo/dein.vim'
     if ! isdirectory(s:dein_dir)
         execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
     endif
@@ -158,11 +158,24 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 let s:path = expand('$VARPATH/dein')
-let s:plugins_paths = split(globpath(expand('$PLUGINPATH'), '*.yaml'), "\n")
+let s:plugins_paths = [
+            \ expand('$PLUGINPATH/core.yaml'),
+            \ expand('$PLUGINPATH/autocomplete.yaml'),
+            \ expand('$PLUGINPATH/git.yaml'),
+            \ expand('$PLUGINPATH/go.yaml'),
+            \ expand('$PLUGINPATH/javascript.yaml'),
+            \ expand('$PLUGINPATH/ruby.yaml'),
+            \ expand('$PLUGINPATH/python.yaml'),
+            \ expand('$PLUGINPATH/cs.yaml'),
+            \ expand('$PLUGINPATH/rust.yaml'),
+            \ expand('$PLUGINPATH/sql.yaml'),
+            \ expand('$PLUGINPATH/themes.yaml'),
+            \ expand('$PLUGINPATH/vim.yaml'),
+            \ ]
 if dein#load_state(s:path)
     call dein#begin(s:path, s:plugins_paths + [expand('<sfile>')])
 
-    for plugins_path in s:plugins_paths[1:-1]
+    for plugins_path in s:plugins_paths
         try
             call s:dein_load_yaml(plugins_path)
         catch /.*/
