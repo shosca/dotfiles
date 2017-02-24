@@ -1,6 +1,7 @@
 - repo: Shougo/dein.vim
 
 - repo: Shougo/denite.nvim
+- repo: Shougo/Unite.vim
 
 - repo: chemzqm/unite-location
   on_source: denite.nvim
