@@ -22,8 +22,6 @@
 - repo: Shougo/context_filetype.vim
   lazy: 1
 
-- repo: Konfekt/FastFold
-
 - repo: Shougo/vimfiler.vim
   hook_add: |
     nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
