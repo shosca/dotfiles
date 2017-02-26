@@ -7,6 +7,9 @@
     let g:vim_markdown_frontmatter = 1
     let g:vim_markdown_conceal = 0
 
+- repo: iamcco/markdown-preview.vim
+  on_ft: markdown
+
 - repo: rhysd/vim-gfm-syntax
   on_ft: markdown
   hook_source: |

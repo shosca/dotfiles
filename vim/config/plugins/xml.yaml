@@ -1,0 +1,7 @@
+
+- repo: Valloric/MatchTagAlways
+  on_ft: [html, xhtml, xml, jinja]
+
+- repo: sukima/xmledit
+  on_ft: [html, xhtml, xml, jinja]
+

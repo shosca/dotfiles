@@ -29,3 +29,24 @@
   hook_add: let g:tern_show_signature_in_pum = 1
   hook_post_source: |
     autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
+
+- repo: pangloss/vim-javascript
+  on_ft: javascript
+
+- repo: othree/yajs.vim
+  on_ft: javascript
+
+- repo: gavocanov/vim-js-indent
+  on_ft: javascript
+
+- repo: othree/jspc.vim
+  on_ft: javascript
+
+- repo: MaxMEllon/vim-jsx-pretty
+  on_ft: javascript
+
+- repo: heavenshell/vim-jsdoc
+  on_ft: javascript
+
+- repo: moll/vim-node
+  on_ft: javascript

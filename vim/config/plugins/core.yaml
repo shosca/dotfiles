@@ -2,6 +2,15 @@
 - repo: Shougo/denite.nvim
 - repo: Shougo/unite.vim
 
+- repo: Shougo/neoyank.vim
+  on_if: 1
+  on_event: TextYankPost
+  on_source: [unite.vim, denite.nvim]
+
+- repo: Shougo/neomru.vim
+  on_if: 1
+  on_source: [unite.vim, denite.nvim]
+
 - repo: mhinz/vim-startify
   hook_add: |
     let g:startify_session_dir = $VARPATH.'/session'
