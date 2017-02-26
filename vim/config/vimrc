@@ -9,6 +9,19 @@
     filetype plugin indent on   " Automatically detect file types.
     " }
 
+    " Set augroup {
+    augroup MyAutoCmd
+        autocmd!
+        autocmd CursorHold *? syntax sync minlines=300
+    augroup END
+    " }
+
+    " Write history on idle {
+    augroup MyAutoCmd
+      autocmd CursorHold * if exists(':rshada') | rshada | wshada | endif
+    augroup END
+    " }
+
     let g:python_host_prog = '/usr/bin/python2'
     let g:python3_host_prog = '/usr/bin/python3'
 
@@ -162,6 +175,7 @@ if dein#load_state(s:dein_path)
     let s:autoplugs = split(globpath('$PLUGINPATH', '*.yaml'), "\n")
 
     call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
+    call dein#add('Shougo/dein.vim')
 
     for autoplug in s:autoplugs
         try
@@ -201,11 +215,11 @@ call dein#call_hook('source')
     set showmode                    " Display the current mode
 
     " this is a performance killer
-    "set cursorline                  " Highlight current line
+    " set cursorline                  " Highlight current line
 
     highlight clear SignColumn      " SignColumn should match background
     highlight clear LineNr          " Current line number row will have same background color in relative mode
-    "highlight clear CursorLineNr    " Remove highlight color from current line number
+    " highlight clear CursorLineNr    " Remove highlight color from current line number
 
     if has('cmdline_info')
         set ruler                   " Show the ruler
@@ -285,7 +299,6 @@ call s:source_file('mappings.vim')
 
     autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
 " }
-
 
 " GUI Settings {
 

@@ -21,3 +21,11 @@
     let g:user_emmet_mode = 'i'
     autocmd FileType html,css,jsx,javascript,javascript.jsx EmmetInstall | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
 
+- repo: ternjs/tern_for_vim
+  build: npm install
+  if: executable('npm') && ! has('nvim') && empty($VIM_MINIMAL)
+  on_i: 1
+  on_ft: javascript
+  hook_add: let g:tern_show_signature_in_pum = 1
+  hook_post_source: |
+    autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete

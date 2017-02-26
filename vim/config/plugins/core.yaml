@@ -1,23 +1,13 @@
-- repo: Shougo/dein.vim
 
 - repo: Shougo/denite.nvim
-- repo: Shougo/Unite.vim
-
-- repo: chemzqm/unite-location
-  on_source: denite.nvim
-
-- repo: hecal3/vim-leader-guide
-  loadconf: 1
-  loadconf_before: 1
-  merged' : 0
-
-- repo: Shougo/vimproc.vim
-  build: make
-  on_func: vimproc#
 
 - repo: mhinz/vim-startify
   hook_add: |
     let g:startify_session_dir = $VARPATH.'/session'
+
+- repo: Shougo/vimproc.vim
+  build: make
+  on_func: vimproc#
 
 - repo: Shougo/context_filetype.vim
   lazy: 1
@@ -50,21 +40,8 @@
   hook_always: |
     nnoremap <leader>tt :TagbarToggle<CR>
 
-- repo: idanarye/vim-vebugger
-
 - repo: sbdchd/neoformat
   on_cmd: Neoformat
-
-- repo: kana/vim-textobj-user
-  on_func: textobj#user#
-
-- repo: plasticboy/vim-markdown
-  on_ft: markdown
-  hook_source: |
-    let g:vim_markdown_initial_foldlevel = 5
-    let g:vim_markdown_new_list_item_indent = 2
-    let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_conceal = 0
 
 - repo: benekastah/neomake
   if: has('nvim')
@@ -77,37 +54,6 @@
   hook_add: |
     autocmd! BufWritePost * Neomake
 
-- repo: reedes/vim-wordy
-  on_cmd: NextWordy, PrevWordy
-
-- repo: Shougo/neosnippet-snippets
-  on_source: neosnippet.vim
-
-- repo: Shougo/neosnippet.vim
-  depends: [neosnippet-snippets, context_filetype.vim]
-  on_event: InsertCharPre
-  on_ft: snippet
-  hook_add: |
-    let g:neosnippet#snippets_directory = $VARPATH.'/snippets'
-    imap <C-k> <Plug>(neosnippet_expand_or_jump)
-    smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  hook_source: |
-    let g:neosnippet#enable_snipmate_compatibility = 1
-    let g:neosnippet#enable_complete_done = 1
-    let g:neosnippet#expand_word_boundary = 1
-
 - repo: elzr/vim-json
   on_ft: json
   hook_source: let g:vim_json_syntax_conceal = 0
-
-- repo: tpope/vim-commentary
-  on_map: <Plug>Commentary
-  hook_always: |
-    xmap <Leader>v  <Plug>Commentary
-    nmap <Leader>v  <Plug>CommentaryLine
-    xmap gc  <Plug>Commentary
-    nmap gc  <Plug>Commentary
-    omap gc  <Plug>Commentary
-    nmap gcc <Plug>CommentaryLine
-    nmap cgc <Plug>ChangeCommentary
-    nmap gcu <Plug>Commentary<Plug>Commentary

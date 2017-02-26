@@ -1,8 +1,6 @@
 
 - repo: morhetz/gruvbox
 
-- repo: chriskempson/base16-vim
-
 - repo: vim-airline/vim-airline
 
 - repo: vim-airline/vim-airline-themes
@@ -10,4 +8,3 @@
     let g:airline#extensions#tabline#enabled = 1
     let g:airline_powerline_fonts=1
     let g:airline_theme='base16_default'
-
