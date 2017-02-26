@@ -1,0 +1,7 @@
+
+- repo: zchee/deoplete-clang
+  if: has('nvim')
+  depends: [deoplete.nvim]
+  on_ft: [c, cpp]
+  on_i: 1
+
