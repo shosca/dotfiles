@@ -1,5 +1,6 @@
 
 - repo: Shougo/denite.nvim
+- repo: Shougo/unite.vim
 
 - repo: mhinz/vim-startify
   hook_add: |
