@@ -38,8 +38,13 @@
 
 - repo: majutsushi/tagbar
   on_cmd: TagbarToggle
+  hook_source: |
+    let g:tagbar_width = 40
+    if executable('jsctags')
+      let g:tagbar_type_javascript = { 'ctagsbin': 'jsctags' }
+    endif
   hook_always: |
-    nnoremap <leader>tt :TagbarToggle<CR>
+    noremap <silent> <F2> :TagbarToggle<CR>
 
 - repo: sbdchd/neoformat
   on_cmd: Neoformat
