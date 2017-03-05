@@ -1,5 +1,6 @@
 
 - repo: tpope/vim-fugitive
+
 - repo: cohama/agit.vim
   on_cmd: [Agit, AgitFile]
 

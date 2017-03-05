@@ -1,0 +1,8 @@
+
+- repo: junegunn/vim-github-dashboard
+  on_cmd: [GHD, GHA, GHActivity, GHDashboard]
+
+- repo: jaxbot/github-issues.vim
+  on_cmd: Gissues
+
+- repo: wsdjeg/GitHub-api.vim

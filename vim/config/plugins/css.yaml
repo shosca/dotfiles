@@ -1,0 +1,13 @@
+
+- repo: groenewege/vim-less
+  on_ft: less
+
+- repo: cakebaker/scss-syntax.vim
+  on_ft: [scss, sass]
+
+- repo: hail2u/vim-css3-syntax
+  on_ft: [css, less, scss, sass]
+
+- repo: ap/vim-css-color
+  on_ft: [css, less, scss, sass]
+

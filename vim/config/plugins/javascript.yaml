@@ -50,3 +50,12 @@
 
 - repo: moll/vim-node
   on_ft: javascript
+
+- repo: kchmck/vim-coffee-script
+  on_ft: coffee
+
+- repo: leafgarland/typescript-vim
+  on_ft: typescript
+
+- repo: leshill/vim-json
+  on_ft: [javascript, json]

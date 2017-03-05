@@ -1,19 +1,7 @@
 
 - repo: Shougo/denite.nvim
-- repo: Shougo/unite.vim
 
-- repo: Shougo/neoyank.vim
-  on_if: 1
-  on_event: TextYankPost
-  on_source: [unite.vim, denite.nvim]
-
-- repo: Shougo/neomru.vim
-  on_if: 1
-  on_source: [unite.vim, denite.nvim]
-
-- repo: mhinz/vim-startify
-  hook_add: |
-    let g:startify_session_dir = $VARPATH.'/session'
+- repo: scrooloose/nerdcommenter
 
 - repo: Shougo/vimproc.vim
   build: make
@@ -56,7 +44,9 @@
     noremap <silent> <F2> :TagbarToggle<CR>
 
 - repo: sbdchd/neoformat
-  on_cmd: Neoformat
+  merged: 0
+  loadconf: 1
+  loadconf_before: 1
 
 - repo: benekastah/neomake
   if: has('nvim')
@@ -69,6 +59,63 @@
   hook_add: |
     autocmd! BufWritePost * Neomake
 
-- repo: elzr/vim-json
-  on_ft: json
-  hook_source: let g:vim_json_syntax_conceal = 0
+- repo: wsdjeg/syntastic
+  if: ! has('nvim')
+  on_event: WinEnter
+  loadconf: 1
+  merged: 0
+
+- repo: tpope/vim-surround
+
+- repo: airblade/vim-rooter
+  hook_source: |
+    let g:rooter_silent_chdir = 1
+
+- repo: benizi/vim-automkdir
+
+- repo: kana/vim-operator-user
+  merged: 0
+
+- repo: haya14busa/vim-operator-flashy
+  merged: 0
+
+- repo: Shougo/deol.nvim
+  if: has('nvim')
+
+- repo: Shougo/vimshell.vim
+  if: ! has('nvim')
+  on_cmd: VimShell
+
+- repo: luochen1990/rainbow
+  hook_source: |
+    let g:rainbow_active=1
+    let g:rainbow_load_separately = [
+        \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+        \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
+        \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
+        \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
+    \ ]
+    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+
+- repo: godlygeek/tabular
+  on_cmd: Tabularize
+  hook_always: |
+    nmap <Leader>a& :Tabularize /&<CR>
+    vmap <Leader>a& :Tabularize /&<CR>
+    nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+    vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+    nmap <Leader>a=> :Tabularize /=><CR>
+    vmap <Leader>a=> :Tabularize /=><CR>
+    nmap <Leader>a: :Tabularize /:<CR>
+    vmap <Leader>a: :Tabularize /:<CR>
+    nmap <Leader>a:: :Tabularize /:\zs<CR>
+    vmap <Leader>a:: :Tabularize /:\zs<CR>
+    nmap <Leader>a, :Tabularize /,<CR>
+    vmap <Leader>a, :Tabularize /,<CR>
+    nmap <Leader>a,, :Tabularize /,\zs<CR>
+    vmap <Leader>a,, :Tabularize /,\zs<CR>
+    nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+    vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+
+- repo: Yggdroot/indentLine
