@@ -130,3 +130,5 @@
     vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 - repo: Yggdroot/indentLine
+
+- repo: embear/vim-localvimrc
