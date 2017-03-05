@@ -131,4 +131,4 @@
 
 - repo: Yggdroot/indentLine
 
-- repo: embear/vim-localvimrc
+- repo: thinca/vim-localrc
