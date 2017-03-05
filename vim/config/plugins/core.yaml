@@ -7,6 +7,17 @@
   build: make
   on_func: vimproc#
 
+- repo: hecal3/vim-leader-guide
+  on_cmd: [LeaderGuide, LeaderGuideVisual]
+  on_map:
+    nv: <Plug>leaderguide-
+  hook_always: |
+    nmap <Leader>ll <Plug>leaderguide-global
+    nmap <Leader>lb <Plug>leaderguide-buffer
+    nnoremap <Leader>l<Space> :<C-u>LeaderGuide ';'<CR>
+
+- repo: krisajenkins/vim-pipe
+
 - repo: Shougo/context_filetype.vim
   lazy: 1
 

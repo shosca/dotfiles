@@ -1,5 +1,7 @@
+XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=$XDG_CACHE_HOME/oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -91,5 +93,5 @@ bindkey '\C-N' history-substring-search-down
 autoload -U compinit
 compinit
 
-emulate sh -c '. ~/.profile'
+emulate sh -c '. ${HOME}/.profile'
 
