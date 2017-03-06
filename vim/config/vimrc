@@ -172,7 +172,7 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 if dein#load_state(s:dein_path)
-    let s:autoplugs = split(globpath('$PLUGINPATH', '*.yaml'), "\n")
+    let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
 
     call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
     call dein#add('Shougo/dein.vim')
