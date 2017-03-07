@@ -208,44 +208,10 @@ call dein#call_hook('post_source')
 call s:source_file('visuals.vim')
 call s:source_file('general.vim')
 call s:source_file('mappings.vim')
-
-" Formatting {
-
-    "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-    hi MatchParen cterm=bold term=bold
-
-    " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,xsl,xslt,html,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-    autocmd FileType go autocmd BufWritePre <buffer> Fmt
-
-    " Instead of reverting the cursor to the last position in the buffer, we
-    " set it to the first line when editing a git commit message
-    au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-
-    autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber,sh set ai sw=2 sts=2 et
-
-    autocmd BufWritePre,BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
-" }
+call s:source_file('autocmds.vim')
 
 " GUI Settings {
 
-    " GVIM- (here instead of .gvimrc)
-    if has('gui_running')
-        set guioptions-=T           " Remove the toolbar
-        set lines=40                " 40 lines of text instead of 24
-        if LINUX() && has("gui_running")
-            set guifont=Hack\ 9
-        elseif OSX() && has("gui_running")
-            set guifont=Hack\ 9
-        elseif WINDOWS() && has("gui_running")
-            set guifont=Hack:h10
-        endif
-    else
-        if &term == 'xterm' || &term == 'screen'
-            set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-        endif
-        "set term=builtin_ansi       " Make arrow and other keys work
-    endif
 
 " }
 

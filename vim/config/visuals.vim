@@ -2,6 +2,8 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 
+hi MatchParen cterm=bold term=bold
+
 set termguicolors
 let base16colorspace=256
 set background=dark
@@ -56,3 +58,18 @@ set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,eol:¬,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
+if has('gui_running')
+    set guioptions-=T           " Remove the toolbar
+    set lines=40                " 40 lines of text instead of 24
+    if LINUX()
+        set guifont=Hack\ 9
+    elseif OSX()
+        set guifont=Hack\ 9
+    elseif WINDOWS()
+        set guifont=Hack:h10
+    endif
+else
+    set t_Co=256                " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+endif
+

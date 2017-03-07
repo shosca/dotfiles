@@ -13,6 +13,8 @@ augroup filetypedetect "{
 
     autocmd BufNewFile,BufRead Tmuxfile,tmux/config  setf tmux
 
-    autocmd BufRead,BufNewFile Vagrantfile setf ruby
+    autocmd BufRead,BufNewFile Vagrantfile           setf ruby
+
+    autocmd BufRead,BufNewFile *.pp                  setf puppet
 
 augroup END " }
