@@ -132,3 +132,6 @@
 - repo: Yggdroot/indentLine
 
 - repo: thinca/vim-localrc
+
+- repo: gioele/vim-autoswap
+
