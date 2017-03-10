@@ -16,6 +16,12 @@
     nmap <Leader>lb <Plug>leaderguide-buffer
     nnoremap <Leader>l<Space> :<C-u>LeaderGuide ';'<CR>
 
+- repo: itchyny/vim-cursorword
+  hook_add: |
+    autocmd MyAutoCmd FileType vimfiler,denite,qf let b:cursorword=0
+    autocmd MyAutoCmd InsertEnter * let b:cursorword=0
+    autocmd MyAutoCmd InsertLeave * let b:cursorword=1
+
 - repo: krisajenkins/vim-pipe
 
 - repo: Shougo/context_filetype.vim
@@ -134,4 +140,34 @@
 - repo: thinca/vim-localrc
 
 - repo: gioele/vim-autoswap
+
+- repo: thinca/vim-prettyprint
+  on_cmd: PP
+  on_func: PP
+
+- repo: rhysd/accelerated-jk
+  on_map:
+    n: <Plug>
+
+- repo: vimwiki/vimwiki
+  if: empty($VIM_MINIMAL)
+  on_map: { n: <Plug> }
+  on_cmd: Vimwiki
+  hook_add: |
+    let g:vimwiki_use_calendar = 1
+    let g:vimwiki_hl_headers = 1
+    let g:vimwiki_hl_cb_checked = 1
+    let g:vimwiki_autowriteall = 0
+  hook_source: |
+    let g:vimwiki_list = [
+    \   { 'diary_header': 'Diary',
+    \     'diary_link_fmt': '%Y-%m/%d',
+    \     'auto_toc': 1,
+    \     'path': '~/docs/wiki/',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' },
+    \   { 'path': '~/docs/blog/',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' }
+    \ ]
 

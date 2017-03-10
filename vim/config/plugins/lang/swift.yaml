@@ -1,0 +1,4 @@
+
+- repo: toyamarinyon/vim-swift
+  on_ft: swift
+

@@ -2,6 +2,36 @@
 - repo: pangloss/vim-javascript
   on_ft: javascript
 
+- repo: othree/jspc.vim
+  on_ft: javascript
+
+- repo: MaxMEllon/vim-jsx-pretty
+  on_ft: javascript
+
+- repo: heavenshell/vim-jsdoc
+  on_ft: javascript
+
+- repo: moll/vim-node
+  on_ft: javascript
+
+- repo: leshill/vim-json
+  on_ft: [javascript, json]
+
+- repo: pangloss/vim-javascript
+  on_ft: javascript
+
+- repo: othree/yajs.vim
+  on_ft: javascript
+
+- repo: gavocanov/vim-js-indent
+  on_ft: javascript
+
+- repo: kchmck/vim-coffee-script
+  on_ft: coffee
+
+- repo: leafgarland/typescript-vim
+  on_ft: typescript
+
 - repo: carlitux/deoplete-ternjs
   build: npm install -g tern
   if: executable('npm') && has('nvim')
@@ -30,32 +60,3 @@
   hook_post_source: |
     autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
 
-- repo: pangloss/vim-javascript
-  on_ft: javascript
-
-- repo: othree/yajs.vim
-  on_ft: javascript
-
-- repo: gavocanov/vim-js-indent
-  on_ft: javascript
-
-- repo: othree/jspc.vim
-  on_ft: javascript
-
-- repo: MaxMEllon/vim-jsx-pretty
-  on_ft: javascript
-
-- repo: heavenshell/vim-jsdoc
-  on_ft: javascript
-
-- repo: moll/vim-node
-  on_ft: javascript
-
-- repo: kchmck/vim-coffee-script
-  on_ft: coffee
-
-- repo: leafgarland/typescript-vim
-  on_ft: typescript
-
-- repo: leshill/vim-json
-  on_ft: [javascript, json]
