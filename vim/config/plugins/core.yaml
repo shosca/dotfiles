@@ -3,6 +3,8 @@
 
 - repo: scrooloose/nerdcommenter
 
+- repo: editorconfig/editorconfig-vim
+
 - repo: Shougo/vimproc.vim
   build: make
   on_func: vimproc#
