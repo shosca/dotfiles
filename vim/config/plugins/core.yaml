@@ -150,7 +150,6 @@
     n: <Plug>
 
 - repo: vimwiki/vimwiki
-  if: empty($VIM_MINIMAL)
   on_map: { n: <Plug> }
   on_cmd: Vimwiki
   hook_add: |
@@ -170,4 +169,13 @@
     \     'syntax': 'markdown',
     \     'ext': '.md' }
     \ ]
+
+- repo: ludovicchabant/vim-gutentags
+  if: executable('ctags')
+  on_path: .*
+  hook_add: |
+    let g:gutentags_cache_dir = $VARPATH.'/tags'
+    let g:gutentags_generate_on_write = 1
+    let g:gutentags_generate_on_missing = 0
+    let g:gutentags_generate_on_new = 0
 

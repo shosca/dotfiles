@@ -155,3 +155,10 @@ inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
 inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+if executable('zeal')
+  autocmd MyAutoCmd FileType ansible,go,php,css,less,html,markdown
+        \ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
+  autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
+        \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
+endif
