@@ -17,4 +17,6 @@ augroup filetypedetect "{
 
     autocmd BufRead,BufNewFile *.pp                  setf puppet
 
+    autocmd BufRead,BufNewFile *.groovy              setf groovy
+
 augroup END " }

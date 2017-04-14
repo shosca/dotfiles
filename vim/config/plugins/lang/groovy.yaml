@@ -1,0 +1,3 @@
+
+- repo: rdolgushin/groovy.vim
+  on_ft: groovy
