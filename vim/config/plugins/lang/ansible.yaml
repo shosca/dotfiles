@@ -1,0 +1,4 @@
+
+ - repo: pearofducks/ansible-vim
+   on_ft: ansible
+
