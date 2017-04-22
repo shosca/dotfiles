@@ -75,6 +75,7 @@ plugins=(
     systemd
     virtualenv
     virtualenvwrapper
+    yarn
  )
 
 source $ZSH/oh-my-zsh.sh
