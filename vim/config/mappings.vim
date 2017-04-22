@@ -162,3 +162,12 @@ if executable('zeal')
   autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
         \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
 endif
+
+augroup gitrebase
+  autocmd FileType gitrebase nnoremap <buffer> <silent> P :Pick<cr>
+  autocmd FileType gitrebase nnoremap <buffer> <silent> R :Reword<cr>
+  autocmd FileType gitrebase nnoremap <buffer> <silent> E :Edit<cr>
+  autocmd FileType gitrebase nnoremap <buffer> <silent> S :Squash<cr>
+  autocmd FileType gitrebase nnoremap <buffer> <silent> F :Fixup<cr>
+  autocmd FileType gitrebase nnoremap <buffer> <silent> C :Cycle<cr>
+augroup END
