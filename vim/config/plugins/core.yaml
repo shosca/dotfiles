@@ -66,6 +66,9 @@
   merged: 0
   loadconf: 1
   loadconf_before: 1
+  hook_source: |
+    let g:neoformat_try_formatprg = 1
+    autocmd BufWritePre *.js Neoformat
 
 - repo: benekastah/neomake
   if: has('nvim')
