@@ -54,19 +54,28 @@ ZSH_CUSTOM=$HOME/dotfiles
 plugins=(
     archlinux
     autojump
+    aws
     cargo
+    cargo
+    celery
+    command-not-found
     django
     docker
     docker-compose
+    dotenv
+    fabric
     git
+    git-extras
     git-flow
     github
     go
     golang
+    gpg-agent
     history-substring-search
     hub
     mercurial
     pip
+    postgres
     python
     rbenv
     ruby
@@ -74,7 +83,6 @@ plugins=(
     rvm
     systemd
     virtualenv
-    virtualenvwrapper
     yarn
  )
 
