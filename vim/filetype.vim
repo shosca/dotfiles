@@ -3,6 +3,7 @@
 " }
 
 augroup filetypedetect "{
+    au!
 
     autocmd BufNewFile,BufReadPost *.feature,*.story setf cucumber
 

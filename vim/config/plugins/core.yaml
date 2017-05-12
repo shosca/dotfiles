@@ -20,9 +20,12 @@
 
 - repo: itchyny/vim-cursorword
   hook_add: |
-    autocmd MyAutoCmd FileType vimfiler,denite,qf let b:cursorword=0
-    autocmd MyAutoCmd InsertEnter * let b:cursorword=0
-    autocmd MyAutoCmd InsertLeave * let b:cursorword=1
+    augroup cursorword
+      au!
+      autocmd FileType vimfiler,denite,qf let b:cursorword=0
+      autocmd InsertEnter * let b:cursorword=0
+      autocmd InsertLeave * let b:cursorword=1
+    augroup END
 
 - repo: krisajenkins/vim-pipe
 

@@ -10,14 +10,15 @@
     " }
 
     " Set augroup {
-    augroup MyAutoCmd
-        autocmd!
+    augroup syntax_sync
+        au!
         autocmd CursorHold *? syntax sync minlines=300
     augroup END
     " }
 
     " Write history on idle {
-    augroup MyAutoCmd
+    augroup idle_history
+      au!
       autocmd CursorHold * if exists(':rshada') | rshada | wshada | endif
     augroup END
     " }

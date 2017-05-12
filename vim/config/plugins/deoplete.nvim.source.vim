@@ -3,7 +3,10 @@
 " }
 
 " General Settings {
-autocmd MyAutoCmd CompleteDone * pclose!
+augroup deoplete
+  au!
+  autocmd CompleteDone * pclose!
+augroup END
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_delay = 60
 let g:deoplete#auto_refresh_delay = 1000

@@ -45,20 +45,6 @@ if has("autocmd")
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-" http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
-" Restore cursor to file position in previous editing session
-function! ResCur()
-    if line("'\"") <= line("$")
-        silent! normal! g`"
-        return 1
-    endif
-endfunction
-
-augroup resCur
-    autocmd!
-    autocmd BufWinEnter * call ResCur()
-augroup END
-
 set backup                  " Backups are nice ...
 set backupcopy=yes
 if has('persistent_undo')
