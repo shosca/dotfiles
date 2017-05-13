@@ -2,6 +2,7 @@ PWD=$(shell pwd)
 XDG_CACHE_HOME ?= $(HOME)/.cache
 XDG_CONFIG_HOME ?= $(HOME)/.config
 OHMYZSH = $(XDG_CACHE_HOME)/oh-my-zsh
+RSYNCOPTS=--progress --recursive --links --times -D --delete -v
 
 SYMLINKS= \
 	ackrc \
@@ -83,3 +84,12 @@ clean-python:  ## Clean python files
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+push:
+	rsync $(RSYNCOPTS) $(OPTS) \
+		$(shell pwd)/ \
+		$(REMOTE):$(shell pwd)/ \
+
+pull:
+	rsync $(RSYNCOPTS) $(OPTS) \
+		$(REMOTE):$(shell pwd)/ \
+		$(shell pwd)/ \
