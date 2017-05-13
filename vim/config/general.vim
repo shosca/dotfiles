@@ -172,7 +172,7 @@ set cmdheight=1         " Height of the command line
 set cmdwinheight=5      " Command-line lines
 set equalalways         " Resize windows on split or close
 set laststatus=2        " Always show a status line
-set colorcolumn=80      " Highlight the 80th character limit
+set colorcolumn=120     " Highlight the 80th character limit
 set display=lastline
 
 " Do not display completion messages
