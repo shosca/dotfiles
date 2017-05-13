@@ -9,6 +9,8 @@ let base16colorspace=256
 set background=dark
 colorscheme gruvbox
 
+autocmd MyAutoCmd ColorScheme * colorscheme gruvbox
+
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
 

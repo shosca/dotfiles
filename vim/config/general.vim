@@ -19,15 +19,11 @@ set mouse=a                   " Automatically enable mouse usage
 "set ttymouse=sgr             " Stick to SGR 1006 mouse mode
 set mousehide                 " Hide the mouse cursor while typing
 scriptencoding utf-8
-if has('clipboard')
-    if has('unnamedplus')
-        " When possible use + register for copy-paste
-        set clipboard=unnamed,unnamedplus
-    else
-        " On mac and Windows, use * register for copy-paste
-        set clipboard=unnamed
-    endif
+
+if ( ! has('nvim') || $DISPLAY !=? '') && has('clipboard')
+    set clipboard& clipboard+=unnamedplus
 endif
+
 set shortmess+=filmnrxoOtT    " Abbrev. of messages (avoids 'hit enter')
 set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
 set virtualedit=onemore       " Allow for cursor beyond last character
