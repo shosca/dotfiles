@@ -17,7 +17,7 @@ augroup MyAutoCmd " {
     autocmd SwapExists * nested let v:swapchoice = 'o'
 
     " Check if file changed when its window is focus, more eager than 'autoread'
-    autocmd WinEnter,FocusGained * checktime
+    "autocmd WinEnter,FocusGained * checktime
 
     autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
 
