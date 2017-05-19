@@ -2,10 +2,10 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 
-" Reload vim config automatically {{{
+" Reload vim config automatically {
 execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
 	\ .' source $MYVIMRC | redraw | silent doautocmd ColorScheme'
-" }}}
+" }
 
 augroup MyAutoCmd " {
 
@@ -22,14 +22,14 @@ augroup MyAutoCmd " {
     autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
 
     " Update filetype on save if empty
-    autocmd BufWritePost * nested 
-                \ if &l:filetype ==# '' || exists('b:ftdetect') 
-                \ |   unlet! b:ftdetect 
-                \ |   filetype detect 
+    autocmd BufWritePost * nested
+                \ if &l:filetype ==# '' || exists('b:ftdetect')
+                \ |   unlet! b:ftdetect
+                \ |   filetype detect
                 \ | endif
 
     " Reload Vim script automatically if setlocal autoread
-    autocmd BufWritePost,FileWritePost *.vim nested 
+    autocmd BufWritePost,FileWritePost *.vim nested
                 \ if &l:autoread > 0 | source <afile> |
                 \   echo 'source '.bufname('%') |
                 \ endif
@@ -42,13 +42,13 @@ augroup MyAutoCmd " {
                 \ | endif
 
     " Disable paste and/or update diff when leaving insert mode
-    autocmd InsertLeave * 
+    autocmd InsertLeave *
                 \ if &paste | setlocal nopaste mouse=a | echo 'nopaste' | endif |
                 \ if &l:diff | diffupdate | endif
 
     autocmd TabLeave * let g:lasttab = tabpagenr()
 
-    autocmd FileType help 
+    autocmd FileType help
                 \ setlocal iskeyword+=: | setlocal iskeyword+=# | setlocal iskeyword+=-
 
     autocmd FileType crontab setlocal nobackup nowritebackup
@@ -81,7 +81,4 @@ augroup MyAutoCmd " {
     autocmd FileType qf   if &l:buftype ==# 'quickfix'
                 \ | wincmd J | endif
 
-    " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,ruby,javascript,puppet,python,rust,twig,xml,xsl,xslt,html,yaml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 augroup END " }
-
