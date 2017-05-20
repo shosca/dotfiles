@@ -1,6 +1,13 @@
-" Mappings {
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-" }
+
+" Fix keybind name for Ctrl+Spacebar
+map <Nul> <C-Space>
+map! <Nul> <C-Space>
+
+" Switch history search pairs, matching my bash shell
+cnoremap <C-p>  <Up>
+cnoremap <C-n>  <Down>
+cnoremap <Up>   <C-p>
+cnoremap <Down> <C-n>
 
 " In normal mode, jj escapes
 inoremap jj <Esc>
@@ -16,14 +23,15 @@ noremap k gk
 " split management {
 nnoremap sj <C-W>w<CR>
 nnoremap sk <C-W>W<CR>
-nnoremap su :resize +5<CR>
-nnoremap si :resize -5<CR>
-nnoremap sh :vertical resize +5<CR>
-nnoremap sl :vertical resize -5<CR>
 nnoremap sd :hide<CR>
 nnoremap so :<CR>
 nnoremap ss :split<Space>
 nnoremap sv :vsplit<Space>
+
+nnoremap <Up>    :resize +2<CR>
+nnoremap <Down>  :resize -2<CR>
+nnoremap <Left>  :vertical resize +2<CR>
+nnoremap <Right> :vertical resize -2<CR>
 " }
 
 " tab management {
@@ -39,22 +47,35 @@ nnoremap td :tabclose<CR>
 
 " Stupid shift key fixes " {
 if has("user_commands")
-    command! -bang -nargs=* -complete=file E e<bang> <args>
-    command! -bang -nargs=* -complete=file W w<bang> <args>
-    command! -bang -nargs=* -complete=file Wq wq<bang> <args>
-    command! -bang -nargs=* -complete=file WQ wq<bang> <args>
-    command! -bang Wa wa<bang>
-    command! -bang WA wa<bang>
-    command! -bang Q q<bang>
-    command! -bang QA qa<bang>
-    command! -bang Qa qa<bang>
+  command! -bang -nargs=* -complete=file E e<bang> <args>
+  command! -bang -nargs=* -complete=file W w<bang> <args>
+  command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+  command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+  command! -bang Wa wa<bang>
+  command! -bang WA wa<bang>
+  command! -bang Q q<bang>
+  command! -bang QA qa<bang>
+  command! -bang Qa qa<bang>
 endif
 " }
+
+" Improve scroll, credits: https://github.com/Shougo
+nnoremap <expr> zz (winline() == (winheight(0)+1) / 2) ?
+  \ 'zt' : (winline() == 1) ? 'zb' : 'zz'
+noremap <expr> <C-f> max([winheight(0) - 2, 1])
+  \ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
+noremap <expr> <C-b> max([winheight(0) - 2, 1])
+  \ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
+noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
+noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
 cmap Tabe tabe
 
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
+
+" Select last paste
+nnoremap <expr> gp '`['.strpart(getregtype(), 0, 1).'`]'
 
 " Code folding options {
 nmap <leader>f0 :set foldlevel=0<CR>
@@ -68,6 +89,12 @@ nmap <leader>f7 :set foldlevel=7<CR>
 nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 " }
+"
+" Toggle fold
+nnoremap <CR> za
+
+" Focus the current fold by closing all others
+nnoremap <S-CR> zMza
 
 " Most prefer to toggle search highlighting rather than clear the current
 " search results. To clear search highlighting rather than toggle it on
@@ -79,9 +106,15 @@ nmap <silent> <leader>/ :set invhlsearch<CR>
 cmap cwd lcd %:p:h
 cmap cd. lcd %:p:h
 
-" Visual shifting (does not exit Visual mode)
-vnoremap < <gv
-vnoremap > >gv
+" Select blocks after indenting
+xnoremap < <gv
+xnoremap > >gv|
+
+" Use tab for indenting in visual mode
+vnoremap <Tab> >gv|
+vnoremap <S-Tab> <gv
+nnoremap > >>_
+nnoremap < <<_
 
 " Allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
@@ -121,16 +154,6 @@ inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
 inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-if executable('zeal')
-  augroup zeal
-    au!
-    autocmd FileType ansible,go,php,css,less,html,markdown
-          \ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
-    autocmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
-          \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
-  augroup END
-endif
 
 augroup gitrebase
   au!

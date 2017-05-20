@@ -1,6 +1,3 @@
-" Modeline and Notes {
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-" }
 
 if &compatible
 	set nocompatible
@@ -24,94 +21,88 @@ with open(vim.eval('a:filename'), 'r') as f:
 endpython
 
   let a:events = ['add', 'source', 'always']
-	for plugin in g:plugins
-		let s:plug_name = split(plugin['repo'], "/")[-1]
+  for plugin in g:plugins
+    let s:plug_name = split(plugin['repo'], "/")[-1]
 
-		for s:event in a:events
-			let s:plug_name_event = expand('$PLUGINPATH/').s:plug_name.'.'.s:event.'.vim'
-			if filereadable(s:plug_name_event)
-				let plugin['hook_'.s:event] = 'source '.s:plug_name_event
-			endif
-		endfor
-		call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
-		if has_key(plugin, 'hook_always')
-			execute plugin['hook_always']
-		endif
-	endfor
-	unlet g:plugins
+    for s:event in a:events
+      let s:plug_name_event = expand('$PLUGINPATH/').s:plug_name.'.'.s:event.'.vim'
+      if filereadable(s:plug_name_event)
+        let plugin['hook_'.s:event] = 'source '.s:plug_name_event
+      endif
+    endfor
+    call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
+    if has_key(plugin, 'hook_always')
+      execute plugin['hook_always']
+    endif
+  endfor
+  unlet g:plugins
 endfunction " }
 
 function! s:source_file(path, ...) abort "{
-		let use_global = get(a:000, 0, ! has('vim_starting'))
-		let abspath = resolve(expand($VIMPATH.'/config/'.a:path))
-		if ! use_global
-				execute 'source' fnameescape(abspath)
-				return
-		endif
+  let use_global = get(a:000, 0, ! has('vim_starting'))
+  let abspath = resolve(expand($VIMPATH.'/config/'.a:path))
+  if ! use_global
+    execute 'source' fnameescape(abspath)
+    return
+  endif
 
-		let content = map(readfile(abspath),
-				\ "substitute(v:val, '^\\W*\\zsset\\ze\\W', 'setglobal', '')")
-		let tempfile = tempname()
-		try
-				call writefile(content, tempfile)
-				execute printf('source %s', fnameescape(tempfile))
-		finally
-				if filereadable(tempfile)
-						call delete(tempfile)
-				endif
-		endtry
+  let content = map(readfile(abspath),
+        \ "substitute(v:val, '^\\W*\\zsset\\ze\\W', 'setglobal', '')")
+  let tempfile = tempname()
+  try
+    call writefile(content, tempfile)
+    execute printf('source %s', fnameescape(tempfile))
+  finally
+    if filereadable(tempfile)
+      call delete(tempfile)
+    endif
+  endtry
+endfunction " }
 
-endfunction
+augroup MyAutoCmd " { Set augroup
+  autocmd!
+  autocmd CursorHold *? syntax sync minlines=300
+augroup END " }
 
+if has('vim_starting') " { Initialize base requirements
+  call s:source_file('init.vim')
+  if has('nvim')
+    call s:source_file('neovim.vim')
+  endif
+endif " }
 
-" Set augroup
-augroup MyAutoCmd
-	autocmd!
-	autocmd CursorHold *? syntax sync minlines=300
-augroup END
-
-
-" Initialize base requirements
-if has('vim_starting')
-	call s:source_file('init.vim')
-	if has('nvim')
-		call s:source_file('neovim.vim')
-	endif
-endif
-
-
-" Initialize dein.vim (package manager)
+" Initialize dein.vim (package manager) {
 
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
 if dein#load_state(s:dein_path)
-    let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
+  let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
 
-    call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
-    call dein#add('Shougo/dein.vim')
+  call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
+  call dein#add('Shougo/dein.vim')
 
-    for autoplug in s:autoplugs
-        try
-            call s:dein_load_yaml(autoplug)
-        catch /.*/
-            echomsg v:exception
-            echomsg 'Error loading '.autoplug.' ...'
-            echomsg 'Caught: ' v:exception
-        endtry
-    endfor
+  for autoplug in s:autoplugs
+    try
+      call s:dein_load_yaml(autoplug)
+    catch /.*/
+      echomsg v:exception
+      echomsg 'Error loading '.autoplug.' ...'
+      echomsg 'Caught: ' v:exception
+    endtry
+  endfor
 
-    if isdirectory(expand('$VIMPATH/dev'))
-        call dein#local(expand('$VIMPATH/dev'), {'frozen': 1, 'merged': 0})
+  if isdirectory(expand('$VIMPATH/dev'))
+    call dein#local(expand('$VIMPATH/dev'), {'frozen': 1, 'merged': 0})
+  endif
+  call dein#end()
+  call dein#save_state()
+
+  if dein#check_install()
+    if ! has('nvim')
+      set nomore
     endif
-    call dein#end()
-    call dein#save_state()
-
-    if dein#check_install()
-        if ! has('nvim')
-            set nomore
-        endif
-        call dein#install()
-    endif
+    call dein#install()
+  endif
 endif
 
 filetype plugin indent on
@@ -119,13 +110,13 @@ syntax enable
 
 call dein#call_hook('source')
 call dein#call_hook('post_source')
+" }
 
-" Loading configuration modules
+" Loading configuration modules {
 call s:source_file('theme.vim')
 call s:source_file('general.vim')
 call s:source_file('terminal.vim')
 call s:source_file('filetype.vim')
 call s:source_file('mappings.vim')
 set secure
-
-" vim: set ts=2 sw=2 tw=80 noet :
+" }

@@ -16,12 +16,12 @@ set synmaxcol=1000           " Don't syntax highlight long lines
 set formatoptions+=1         " Don't break lines after a one-letter word
 set formatoptions-=t         " Don't auto-wrap text
 if has('patch-7.3.541')
-	set formatoptions+=j       " Remove comment leader when joining lines
+  set formatoptions+=j       " Remove comment leader when joining lines
 endif
 
 if has('vim_starting')
-	set encoding=utf-8
-	scriptencoding utf-8
+  set encoding=utf-8
+  scriptencoding utf-8
 endif
 
 " What to save for views:
@@ -38,21 +38,21 @@ set sessionoptions-=buffers
 set sessionoptions+=tabpages
 
 " if ( ! has('nvim') || $DISPLAY !=? '') && has('clipboard')
-"  	set clipboard& clipboard+=unnamedplus
+"  set clipboard& clipboard+=unnamedplus
 " endif
 
 " }}}
 " Wildmenu {{{
 " --------
 if has('wildmenu')
-	set nowildmenu
-	set wildmode=list:longest,full
-	set wildoptions=tagfile
-	set wildignorecase
-	set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
-	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
-	set wildignore+=__pycache__,*.egg-info
+  set nowildmenu
+  set wildmode=list:longest,full
+  set wildoptions=tagfile
+  set wildignorecase
+  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+  set wildignore+=__pycache__,*.egg-info
 endif
 
 " }}}
@@ -68,15 +68,15 @@ set nospell spellfile=$VIMPATH/spell/en.utf-8.add
 " History saving
 set history=2000
 if has('nvim')
-	"  ShaDa/viminfo:
-	"   ' - Maximum number of previously edited files marks
-	"   < - Maximum number of lines saved for each register
-	"   @ - Maximum number of items in the input-line history to be
-	"   s - Maximum size of an item contents in KiB
-	"   h - Disable the effect of 'hlsearch' when loading the shada
-	set shada='300,<10,@50,s100,h
+  "  ShaDa/viminfo:
+  "   ' - Maximum number of previously edited files marks
+  "   < - Maximum number of lines saved for each register
+  "   @ - Maximum number of items in the input-line history to be
+  "   s - Maximum size of an item contents in KiB
+  "   h - Disable the effect of 'hlsearch' when loading the shada
+  set shada='300,<10,@50,s100,h
 else
-	set viminfo='300,<10,@50,h,n$VARPATH/viminfo
+  set viminfo='300,<10,@50,h,n$VARPATH/viminfo
 endif
 
 " }}}
@@ -101,10 +101,10 @@ set updatetime=1000 " Idle time to write swap and trigger CursorHold
 
 " Time out on key codes
 if has('nvim')
-	" https://github.com/neovim/neovim/issues/2017
-	set ttimeoutlen=-1
+  " https://github.com/neovim/neovim/issues/2017
+  set ttimeoutlen=-1
 else
-	set ttimeoutlen=250
+  set ttimeoutlen=250
 endif
 
 " }}}
@@ -139,11 +139,11 @@ set complete=.                  " No wins, buffs, tags, include scanning
 set completeopt=menuone         " Show menu even for one item
 set completeopt+=noselect       " Do not select a match in the menu
 if has('patch-7.4.775')
-	set completeopt+=noinsert
+  set completeopt+=noinsert
 endif
 
 if exists('+inccommand')
-	set inccommand=nosplit
+  set inccommand=nosplit
 endif
 
 " }}}
@@ -178,52 +178,51 @@ set display=lastline
 " Do not display completion messages
 " Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
 if has('patch-7.4.314')
-	set shortmess+=c
+  set shortmess+=c
 endif
 
 " Do not display message when editing files
 if has('patch-7.4.1570')
-	set shortmess+=F
+  set shortmess+=F
 endif
 
 " For snippet_complete marker
 if has('conceal') && v:version >= 703
-	set conceallevel=2 concealcursor=niv
+  set conceallevel=2 concealcursor=niv
 endif
 
 " }}}
 " Folds {{{
 " -----
 if has('folding')
-	set foldenable
-	set foldmethod=syntax
-	set foldlevelstart=99
-	set foldtext=FoldText()
+  set foldenable
+  set foldmethod=syntax
+  set foldlevelstart=99
+  set foldtext=FoldText()
 endif
 
 " Improved Vim fold-text
 " See: http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
 function! FoldText()
-	" Get first non-blank line
-	let fs = v:foldstart
-	while getline(fs) =~? '^\s*$' | let fs = nextnonblank(fs + 1)
-	endwhile
-	if fs > v:foldend
-		let line = getline(v:foldstart)
-	else
-		let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-	endif
+  " Get first non-blank line
+  let fs = v:foldstart
+  while getline(fs) =~? '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+  if fs > v:foldend
+    let line = getline(v:foldstart)
+  else
+    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
 
-	let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-	let foldSize = 1 + v:foldend - v:foldstart
-	let foldSizeStr = ' ' . foldSize . ' lines '
-	let foldLevelStr = repeat('+--', v:foldlevel)
-	let lineCount = line('$')
-	let foldPercentage = printf('[%.1f', (foldSize*1.0)/lineCount*100) . '%] '
-	let expansionString = repeat('.', w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-	return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let foldSize = 1 + v:foldend - v:foldstart
+  let foldSizeStr = ' ' . foldSize . ' lines '
+  let foldLevelStr = repeat('+--', v:foldlevel)
+  let lineCount = line('$')
+  let foldPercentage = printf('[%.1f', (foldSize*1.0)/lineCount*100) . '%] '
+  let expansionString = repeat('.', w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+  return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
 endfunction
 
 " }}}
 
-" vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :

@@ -18,3 +18,12 @@ setlocal suffixesadd=.vim
 setlocal includeexpr=fnamemodify(substitute(v:fname,'#','/','g'),':h')
 
 let &cpoptions = s:save_cpo
+
+setlocal expandtab
+setlocal foldlevel=0
+setlocal foldmarker={,}
+setlocal foldmethod=marker
+setlocal shiftwidth=2
+setlocal spell
+setlocal tabstop=2
+setlocal textwidth=120
