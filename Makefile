@@ -47,8 +47,9 @@ zsh: oh-my-zsh ## Sets up zsh
 	ln -sf $(PWD)/zshrc $(HOME)/.zshrc ; \
 
 vim: ## Sets up vim
-	ln -s vim $(XDG_CONFIG_HOME)/nvim || true ; \
-	ln -s vim $(HOME)/.vim || true ; \
+	rm -rf $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
+	ln -s $(PWD)/vim $(XDG_CONFIG_HOME)/nvim || true ; \
+	ln -s $(PWD)/vim $(HOME)/.vim || true ; \
 
 symlinks:  ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \

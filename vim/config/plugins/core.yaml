@@ -182,3 +182,6 @@
     let g:gutentags_generate_on_missing = 0
     let g:gutentags_generate_on_new = 0
 
+- repo: matze/vim-move
+  hook_source: |
+    let g:move_key_modifier = 'C'
