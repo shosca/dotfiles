@@ -36,7 +36,7 @@
   if: has('nvim')
   depends: [deoplete.nvim]
   on_ft: python
-  on_i: 1
+  on_event: InsertEnter
   hook_source: |
     autocmd FileType python setlocal omnifunc=
     let g:deoplete#sources#jedi#statement_length = 1

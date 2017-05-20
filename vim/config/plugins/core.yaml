@@ -58,14 +58,11 @@
 
 - repo: sbdchd/neoformat
   merged: 0
-  loadconf: 1
-  loadconf_before: 1
   hook_source: |
     let g:neoformat_try_formatprg = 1
     autocmd BufWritePre *.js Neoformat
 
 - repo: w0rp/ale
-  loadconf_before: 1
   hook_source: |
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
     let g:ale_lint_on_text_changed = 'normal'
@@ -78,12 +75,6 @@
     let g:ale_linters = {'python': ['isort', 'yapf']}
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-- repo: wsdjeg/syntastic
-  if: ! has('nvim')
-  on_event: WinEnter
-  loadconf: 1
-  merged: 0
 
 - repo: tpope/vim-surround
 

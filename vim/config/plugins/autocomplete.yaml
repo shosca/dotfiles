@@ -11,6 +11,6 @@
 
 - repo: wellle/tmux-complete.vim
   if: has('nvim')
-  on_i: 1
+  on_event: InsertEnter
   hook_add: let g:tmuxcomplete#trigger = ''
 

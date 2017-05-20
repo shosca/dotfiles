@@ -3,10 +3,10 @@
   if: has('nvim')
   depends: [deoplete.nvim]
   on_ft: [c, cpp]
-  on_i: 1
+  on_event: InsertEnter
 
 - repo: Rip-Rip/clang_complete
   if: ! has('nvim')
   on_ft: [c, cpp]
-  on_i: 1
+  on_event: InsertEnter
 
