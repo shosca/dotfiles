@@ -85,11 +85,11 @@ for m in normal_mode_mappings
 endfor
 
 
-nnoremap [unite] <Nop>
-exe 'nmap '.g:unite_leader.' [unite]'
+nnoremap [denite] <Nop>
+exe 'nmap '.g:denite_leader.' [denite]'
 
-nnoremap <silent> [unite]r  :<C-u>Denite -resume<CR>
-nnoremap <silent> [unite]p  :<C-u>Denite buffer file_rec<CR>
+nnoremap <silent> [denite]r  :<C-u>Denite -resume<CR>
+nnoremap <silent> [denite]p  :<C-u>Denite buffer file_rec<CR>
 nnoremap <silent> <C-p>     :<C-u>Denite buffer file_rec<CR>
-nnoremap <silent> [unite]n  :<C-u>Denite dein -no-quit<CR>
-nnoremap <silent> [unite]f  :<C-u>Denite grep -buffer-name=grep<CR>
+nnoremap <silent> [denite]n  :<C-u>Denite dein -no-quit<CR>
+nnoremap <silent> [denite]f  :<C-u>Denite grep -buffer-name=grep<CR>

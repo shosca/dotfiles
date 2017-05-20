@@ -1,5 +1,6 @@
 
 - repo: Shougo/denite.nvim
+  hook_post_source: source $VIMPATH/config/menus.vim
 
 - repo: scrooloose/nerdcommenter
 
@@ -23,28 +24,26 @@
 - repo: Shougo/context_filetype.vim
   lazy: 1
 
-- repo: Shougo/vimfiler.vim
-  hook_add: |
-    nnoremap <silent> <Leader>e :<C-u>VimFiler -parent -toggle<CR>
+- repo: scrooloose/nerdtree
+  depends: nerdtree-git-plugin
+  on_map: { n: <Plug> }
+  on_cmd: NERDTree
   hook_source: |
-    let g:vimfiler_as_default_explorer = 1
-    let g:vimfiler_file_icon = '-'
-    let g:vimfiler_marked_file_icon = '✓'
-    let g:vimfiler_readonly_file_icon = '✗'
-    let g:vimfiler_restore_alternate_file = 1
-    let g:vimfiler_safe_mode_by_default = 0
-    let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-    let g:vimfiler_tree_closed_icon = '▸'
-    let g:vimfiler_tree_indentation = 1
-    let g:vimfiler_tree_leaf_icon = ''
-    let g:vimfiler_tree_opened_icon = '▾'
-    let g:vimfiler_ignore_pattern = [
-            \ '^\.git$',
-            \ '^\.DS_Store$',
-            \ '^\.init\.vim-rplugin\~$',
-            \ '^\.netrwhist$',
-            \ '\.class$'
-            \]
+    let g:NERDTreeMapOpenSplit = 'sv'
+    let g:NERDTreeMapOpenVSplit = 'sg'
+    let g:NERDTreeMapOpenInTab = 'st'
+    let g:NERDTreeMapOpenInTabSilent = 'sT'
+    let g:NERDTreeMapUpdirKeepOpen = '<BS>'
+    let g:NERDTreeMapOpenRecursively = 't'
+    let g:NERDTreeMapCloseChildren = 'T'
+    let g:NERDTreeMapToggleHidden = '.'
+  hook_always: |
+    nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
+    nnoremap <silent> <Leader>a :<C-u>NERDTreeFind<CR>
+  hook_post_source: source $VIMPATH/config/plugins/nerdtree.vim
+
+- repo: Xuyuanp/nerdtree-git-plugin
+  on_source: nerdtree
 
 - repo: majutsushi/tagbar
   on_cmd: TagbarToggle

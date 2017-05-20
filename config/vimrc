@@ -7,19 +7,23 @@ endif
 " location.
 let mapleader = "\<Space>"
 let maplocalleader = ","
-let g:unite_leader = "f"
+let g:denite_leader = "f"
 
 " Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 
-function! s:dein_load_yaml(filename) abort " {
+function! LoadYaml(filename) abort " {
 python3 << endpython
 import vim, yaml
 with open(vim.eval('a:filename'), 'r') as f:
-    vim.vars['plugins'] = yaml.load(f.read())
+    vim.vars['yaml_file'] = yaml.load(f.read())
 endpython
+  return g:yaml_file
+endfunction " }
 
+function! s:dein_load_yaml(filename) abort " {
+  let g:plugins = LoadYaml(a:filename)
   let a:events = ['add', 'source', 'always']
   for plugin in g:plugins
     let s:plug_name = split(plugin['repo'], "/")[-1]
