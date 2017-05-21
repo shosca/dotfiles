@@ -1,6 +1,5 @@
 
 - repo: Shougo/denite.nvim
-  hook_post_source: source $VIMPATH/config/menus.vim
 
 - repo: scrooloose/nerdcommenter
 
@@ -27,16 +26,8 @@
 - repo: scrooloose/nerdtree
   depends: nerdtree-git-plugin
   on_map: { n: <Plug> }
-  on_cmd: NERDTree
+  on_cmd: NERDTreeToggle
   hook_source: |
-    let g:NERDTreeMapOpenSplit = 'sv'
-    let g:NERDTreeMapOpenVSplit = 'sg'
-    let g:NERDTreeMapOpenInTab = 'st'
-    let g:NERDTreeMapOpenInTabSilent = 'sT'
-    let g:NERDTreeMapUpdirKeepOpen = '<BS>'
-    let g:NERDTreeMapOpenRecursively = 't'
-    let g:NERDTreeMapCloseChildren = 'T'
-    let g:NERDTreeMapToggleHidden = '.'
   hook_always: |
     nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
     nnoremap <silent> <Leader>a :<C-u>NERDTreeFind<CR>
@@ -44,6 +35,9 @@
 
 - repo: Xuyuanp/nerdtree-git-plugin
   on_source: nerdtree
+  hook_always: |
+    let g:NERDTreeDirArrowExpandable = '▷'
+    let g:NERDTreeDirArrowCollapsible = '▼'
 
 - repo: majutsushi/tagbar
   on_cmd: TagbarToggle
@@ -54,6 +48,7 @@
     endif
   hook_always: |
     noremap <silent> <F2> :TagbarToggle<CR>
+    let g:tagbar_iconchars = ['▷', '◢']
 
 - repo: sbdchd/neoformat
   merged: 0
@@ -69,8 +64,11 @@
     let g:ale_open_list = 1
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
-    let g:ale_sign_error = '⨉'
-    let g:ale_sign_warning = '⚠'
+    let g:ale_sign_error = '◤'
+    let g:ale_sign_style_error = '◤'
+    let g:ale_sign_warning = '◸'
+    let g:ale_sign_style_warning = '◸'
+    let g:ale_sign_info = '▷'
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
@@ -174,3 +172,8 @@
 - repo: matze/vim-move
   hook_source: |
     let g:move_key_modifier = 'C'
+
+- repo: rafi/vim-badge
+
+- repo: morhetz/gruvbox
+
