@@ -1,4 +1,4 @@
-
+---
 - repo: junegunn/vim-github-dashboard
   on_cmd: [GHD, GHA, GHActivity, GHDashboard]
 

@@ -1,4 +1,4 @@
-
+---
 - repo: plasticboy/vim-markdown
   on_ft: markdown
   hook_source: |
@@ -15,4 +15,3 @@
   hook_source: |
     let g:gfm_syntax_enable_always = 0
     let g:gfm_syntax_enable_filetypes = ['markdown']
-

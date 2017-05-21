@@ -1,4 +1,4 @@
-
+---
 - repo: Valloric/MatchTagAlways
   on_ft: [html, xhtml, xml, jinja]
 
@@ -12,5 +12,4 @@
   on_ft: html
 
 - repo: mitsuhiko/vim-jinja
-  on_ft: [ htmljinja, jinja ]
-
+  on_ft: [htmljinja, jinja]

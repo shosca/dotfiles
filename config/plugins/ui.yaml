@@ -1,5 +1,4 @@
-
+---
 - repo: mhinz/vim-startify
   hook_add: |
     let g:startify_session_dir = $VARPATH.'/session'
-

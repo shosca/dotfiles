@@ -1,4 +1,4 @@
-
+---
 - repo: tpope/vim-fugitive
 
 - repo: cohama/agit.vim
@@ -35,4 +35,3 @@
 - repo: rhysd/committia.vim
   on_path: COMMIT_EDITMSG
   hook_source: let g:committia_min_window_width = 70
-

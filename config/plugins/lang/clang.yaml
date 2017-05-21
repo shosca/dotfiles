@@ -1,12 +1,13 @@
-
-- repo: tweekmonster/deoplete-clang2
+---
+-
+  repo: tweekmonster/deoplete-clang2
   if: has('nvim')
   depends: [deoplete.nvim]
   on_ft: [c, cpp]
   on_event: InsertEnter
 
-- repo: Rip-Rip/clang_complete
+-
+  repo: Rip-Rip/clang_complete
   if: ! has('nvim')
   on_ft: [c, cpp]
   on_event: InsertEnter
-

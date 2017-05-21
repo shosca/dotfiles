@@ -1,4 +1,4 @@
-
+---
 - repo: sebastianmarkow/deoplete-rust
   if: has('nvim')
   depends: [deoplete.nvim]

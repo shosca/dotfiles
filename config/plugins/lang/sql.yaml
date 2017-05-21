@@ -1,4 +1,4 @@
-
+---
 - repo: vim-scripts/dbext.vim
   on_ft: sql
 
@@ -10,4 +10,3 @@
 
 - repo: exu/pgsql.vim
   on_ft: [sql, pgsql]
-

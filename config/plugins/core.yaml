@@ -1,4 +1,4 @@
-
+---
 - repo: Shougo/denite.nvim
 
 - repo: scrooloose/nerdcommenter
@@ -25,7 +25,7 @@
 
 - repo: scrooloose/nerdtree
   depends: nerdtree-git-plugin
-  on_map: { n: <Plug> }
+  on_map: {n: <Plug>}
   on_cmd: NERDTreeToggle
   hook_source: |
   hook_always: |
@@ -140,7 +140,7 @@
     n: <Plug>
 
 - repo: vimwiki/vimwiki
-  on_map: { n: <Plug> }
+  on_map: {n: <Plug>}
   on_cmd: Vimwiki
   hook_add: |
     let g:vimwiki_use_calendar = 1
@@ -176,4 +176,3 @@
 - repo: rafi/vim-badge
 
 - repo: morhetz/gruvbox
-

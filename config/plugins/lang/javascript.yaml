@@ -1,4 +1,4 @@
-
+---
 - repo: pangloss/vim-javascript
   on_ft: javascript
 
@@ -51,7 +51,8 @@
     let g:user_emmet_mode = 'i'
     augroup emmetinstall
       au!
-      autocmd FileType html,css,jsx,javascript,javascript.jsx EmmetInstall | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
+      autocmd FileType html,css,jsx,javascript,javascript.jsx EmmetInstall
+                          \ | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
     augroup END
 
 - repo: ternjs/tern_for_vim
@@ -65,4 +66,3 @@
       au!
       autocmd FileType javascript setlocal omnifunc=tern#Complete
     augroup END
-
