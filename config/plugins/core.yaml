@@ -24,14 +24,11 @@
   lazy: 1
 
 - repo: scrooloose/nerdtree
-  depends: nerdtree-git-plugin
-  on_map: {n: <Plug>}
   on_cmd: NERDTreeToggle
   hook_source: |
-  hook_always: |
-    nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
-    nnoremap <silent> <Leader>a :<C-u>NERDTreeFind<CR>
   hook_post_source: source $VIMPATH/config/plugins/nerdtree.vim
+  hook_always: |
+    noremap <silent> <F3> :NERDTreeToggle<CR>
 
 - repo: Xuyuanp/nerdtree-git-plugin
   on_source: nerdtree
@@ -71,6 +68,8 @@
     let g:ale_sign_info = '▷'
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
+    highlight link ALEErrorSign GruvboxRedSign
+    highlight link ALEWarningSign GruvboxYellowSign
 
 - repo: tpope/vim-surround
 
@@ -100,10 +99,13 @@
         \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
         \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
         \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-        \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
+        \ [ '*.{html,htm}' , [['(', ')'],
+        \   ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
     \ ]
-    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
-    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3',
+        \ 'DarkOrchid3', 'FireBrick']
+    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen',
+        \ 'yellow', 'red', 'magenta']
 
 - repo: godlygeek/tabular
   on_cmd: Tabularize
@@ -173,6 +175,8 @@
   hook_source: |
     let g:move_key_modifier = 'C'
 
-- repo: rafi/vim-badge
-
 - repo: morhetz/gruvbox
+
+- repo: vim-airline/vim-airline
+
+- repo: vim-airline/vim-airline-themes

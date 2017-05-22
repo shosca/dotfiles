@@ -1,6 +1,6 @@
 
 if &compatible
-	set nocompatible
+  set nocompatible
 endif
 
 " The default leader is '\', but many people prefer ',' as it's in a standard
