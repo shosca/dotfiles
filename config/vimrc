@@ -12,6 +12,7 @@ let g:denite_leader = "f"
 " Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+let hook_immediate = []
 
 function! LoadYaml(filename) abort " {
 python3 << endpython
@@ -36,7 +37,7 @@ function! s:dein_load_yaml(filename) abort " {
     endfor
     call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
     if has_key(plugin, 'hook_always')
-      execute plugin['hook_always']
+      call add(g:hook_immediate, plugin['hook_always'])
     endif
   endfor
   unlet g:plugins
@@ -76,7 +77,6 @@ if has('vim_starting') " { Initialize base requirements
 endif " }
 
 " Initialize dein.vim (package manager) {
-
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
 if dein#load_state(s:dein_path)
@@ -114,6 +114,10 @@ syntax enable
 
 call dein#call_hook('source')
 call dein#call_hook('post_source')
+for immediate in g:hook_immediate
+  execute immediate
+endfor
+unlet g:hook_immediate
 " }
 
 " Loading configuration modules {
