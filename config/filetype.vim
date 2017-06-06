@@ -5,10 +5,7 @@ execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
 " }
 
 augroup MyAutoCmd " {
-
-  " Highlight current line only on focused window
-  autocmd WinEnter,InsertLeave * set cursorline
-  autocmd WinLeave,InsertEnter * set nocursorline
+  au!
 
   " Automatically set read-only for files being edited elsewhere
   autocmd SwapExists * nested let v:swapchoice = 'o'

@@ -1,8 +1,3 @@
-" Denite {
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-" }
-
-
 " denite.nvim
 " -----------
 
@@ -84,12 +79,35 @@ for m in normal_mode_mappings
   call denite#custom#map('normal', m[0], m[1], m[2])
 endfor
 
+nnoremap <silent><LocalLeader>r :<C-u>Denite -resume<CR>
+nnoremap <silent><LocalLeader>f :<C-u>Denite file_rec<CR>
+nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_old -default-action=switch<CR>
+nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
+nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
+nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
+nnoremap <silent><LocalLeader>n :<C-u>Denite dein -no-quit<CR>
+nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>
+nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file_point<CR>
+nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
+nnoremap <silent><LocalLeader>s :<C-u>Denite session<CR>
+nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
+nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
+nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
+nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
+nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
 
-nnoremap [denite] <Nop>
-exe 'nmap '.g:denite_leader.' [denite]'
+" chemzqm/denite-git
+nnoremap <silent> <Leader>gl :<C-u>Denite gitlog<CR>
+nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus<CR>
 
-nnoremap <silent> [denite]r  :<C-u>Denite -resume<CR>
-nnoremap <silent> [denite]p  :<C-u>Denite buffer file_rec<CR>
-nnoremap <silent> <C-p>     :<C-u>Denite buffer file_rec<CR>
-nnoremap <silent> [denite]n  :<C-u>Denite dein -no-quit<CR>
-nnoremap <silent> [denite]f  :<C-u>Denite grep -buffer-name=grep<CR>
+" Open Denite with word under cursor or selection
+nnoremap <silent> <Leader>gf :DeniteCursorWord file_rec<CR>
+nnoremap <silent> <Leader>gg :DeniteCursorWord grep<CR>
+vnoremap <silent> <Leader>gg :<C-u>call <SID>get_selection('/')<CR> :execute 'Denite grep:::'.@/<CR><CR>
+
+function! s:get_selection(cmdtype)
+  let temp = @s
+  normal! gv"sy
+  let @/ = substitute(escape(@s, '\'.a:cmdtype), '\n', '\\n', 'g')
+  let @s = temp
+endfunction

@@ -16,10 +16,6 @@ autocmd MyAutoCmd ColorScheme * colorscheme gruvbox
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
 
-" this is a performance killer
-" set cursorline                  " Highlight current line
-
-
 if has('cmdline_info')
   set ruler                   " Show the ruler
   set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids

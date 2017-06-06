@@ -1,6 +1,14 @@
 ---
 - repo: Shougo/denite.nvim
 
+- repo: chemzqm/unite-location
+
+- repo: chemzqm/denite-git
+
+- repo: rafi/vim-denite-z
+
+- repo: rafi/vim-denite-session
+
 - repo: scrooloose/nerdcommenter
 
 - repo: editorconfig/editorconfig-vim
@@ -70,6 +78,27 @@
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
     highlight link ALEErrorSign GruvboxRedSign
     highlight link ALEWarningSign GruvboxYellowSign
+
+#- repo: benekastah/neomake
+  #if: has('nvim')
+  #hook_source: |
+    #let g:neomake_open_list = 0
+    #let g:neomake_error_sign = {'text': '◤', 'texthl': 'GruvboxRedSign'}
+    #let g:neomake_warning_sign = {'text': '◸', 'texthl': 'GruvboxYellowSign'}
+    #let g:neomake_message_sign = {'text': '◸'}
+    #let g:neomake_info_sign = {'text': '▷'}
+  #hook_add: |
+    #let g:lint_filetypes = [
+      #\  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
+      #\  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
+      #\  'markdown', 'html', 'yaml'
+      #\ ]
+    #autocmd MyAutoCmd BufWritePost,BufReadPost *
+      #\ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
+      #\|   Neomake
+      #\| elseif &filetype =~ 'html'
+      #\|   Neomake tidy
+      #\| endif
 
 - repo: tpope/vim-surround
 

@@ -13,6 +13,7 @@ let g:denite_leader = "f"
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 let hook_immediate = []
+let plugs = []
 
 function! LoadYaml(filename) abort " {
 python3 << endpython
@@ -23,10 +24,9 @@ endpython
   return g:yaml_file
 endfunction " }
 
-function! s:dein_load_yaml(filename) abort " {
-  let g:plugins = LoadYaml(a:filename)
+function! s:dein_load_yaml(plug) abort " {
   let a:events = ['add', 'source', 'always']
-  for plugin in g:plugins
+  for plugin in g:plug
     let s:plug_name = split(plugin['repo'], "/")[-1]
 
     for s:event in a:events
@@ -36,11 +36,7 @@ function! s:dein_load_yaml(filename) abort " {
       endif
     endfor
     call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
-    if has_key(plugin, 'hook_always')
-      call add(g:hook_immediate, plugin['hook_always'])
-    endif
   endfor
-  unlet g:plugins
 endfunction " }
 
 function! s:source_file(path, ...) abort "{
@@ -79,20 +75,25 @@ endif " }
 " Initialize dein.vim (package manager) {
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
+let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
+
+for autoplug in s:autoplugs
+  try
+    call add(g:plugs, LoadYaml(autoplug))
+  catch /.*/
+    echomsg v:exception
+    echomsg 'Error loading '.autoplug.' ...'
+    echomsg 'Caught: ' v:exception
+  endtry
+endfor
+
 if dein#load_state(s:dein_path)
-  let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
 
   call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
   call dein#add('Shougo/dein.vim')
 
-  for autoplug in s:autoplugs
-    try
-      call s:dein_load_yaml(autoplug)
-    catch /.*/
-      echomsg v:exception
-      echomsg 'Error loading '.autoplug.' ...'
-      echomsg 'Caught: ' v:exception
-    endtry
+  for plug in g:plugs
+    call s:dein_load_yaml(plug)
   endfor
 
   if isdirectory(expand('$VIMPATH/dev'))
@@ -114,10 +115,14 @@ syntax enable
 
 call dein#call_hook('source')
 call dein#call_hook('post_source')
-for immediate in g:hook_immediate
-  execute immediate
+for plug in g:plugs
+  for plugin in plug
+    if has_key(plugin, 'hook_always')
+      execute plugin['hook_always']
+    endif
+  endfor
 endfor
-unlet g:hook_immediate
+unlet g:plugs
 " }
 
 " Loading configuration modules {
