@@ -20,13 +20,26 @@ inoremap jj <Esc>
 noremap j gj
 noremap k gk
 
+" buffers {
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+" }
+
 " split management {
 nnoremap sj <C-W>w<CR>
 nnoremap sk <C-W>W<CR>
-nnoremap sd :hide<CR>
-nnoremap so :<CR>
+nnoremap <silent> sd :hide<CR>
+nnoremap <silent> so :<C-u>call <SID>BufferEmpty()<CR>
 nnoremap ss :split<Space>
 nnoremap sv :vsplit<Space>
+
+function! s:BufferEmpty() " {
+  let l:current = bufnr('%')
+  if ! getbufvar(l:current, '&modified')
+    enew
+    silent! execute 'bdelete '.l:current
+  endif
+endfunction " }
 
 nnoremap <Up>    :resize +2<CR>
 nnoremap <Down>  :resize -2<CR>
