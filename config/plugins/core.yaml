@@ -66,7 +66,6 @@
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
     let g:ale_lint_on_insert_leave = 1
     let g:ale_lint_delay = 300
-    let g:ale_open_list = 1
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
     let g:ale_sign_error = '◤'
@@ -78,27 +77,6 @@
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
     highlight link ALEErrorSign GruvboxRedSign
     highlight link ALEWarningSign GruvboxYellowSign
-
-#- repo: benekastah/neomake
-  #if: has('nvim')
-  #hook_source: |
-    #let g:neomake_open_list = 0
-    #let g:neomake_error_sign = {'text': '◤', 'texthl': 'GruvboxRedSign'}
-    #let g:neomake_warning_sign = {'text': '◸', 'texthl': 'GruvboxYellowSign'}
-    #let g:neomake_message_sign = {'text': '◸'}
-    #let g:neomake_info_sign = {'text': '▷'}
-  #hook_add: |
-    #let g:lint_filetypes = [
-      #\  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
-      #\  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
-      #\  'markdown', 'html', 'yaml'
-      #\ ]
-    #autocmd MyAutoCmd BufWritePost,BufReadPost *
-      #\ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
-      #\|   Neomake
-      #\| elseif &filetype =~ 'html'
-      #\|   Neomake tidy
-      #\| endif
 
 - repo: tpope/vim-surround
 
