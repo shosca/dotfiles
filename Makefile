@@ -46,8 +46,18 @@ oh-my-zsh:
 zsh: oh-my-zsh ## Sets up zsh
 	ln -sf $(PWD)/zshrc $(HOME)/.zshrc ; \
 
-vim: ## Sets up vim
-	rm -rf $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
+VIMENV=$(XDG_CACHE_HOME)/vim/venv
+VIMENV2=$(VIMENV)/neovim2
+VIMENV3=$(VIMENV)/neovim3
+vimenv:  ## Sets python env for vim
+	mkdir -p $(VIMENV)
+	python -m virtualenv -p python2.7 $(VIMENV2)
+	python -m virtualenv -p python3 $(VIMENV3)
+	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim
+	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim
+
+vim: vimenv  ## Sets up vim
+	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
 	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
 	ln -s $(PWD) $(HOME)/.vim || true ; \
 

@@ -149,8 +149,6 @@
     n: <Plug>
 
 - repo: vimwiki/vimwiki
-  on_map: {n: <Plug>}
-  on_cmd: Vimwiki
   hook_add: |
     let g:vimwiki_use_calendar = 1
     let g:vimwiki_hl_headers = 1
