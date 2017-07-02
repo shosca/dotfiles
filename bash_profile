@@ -20,13 +20,13 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 if [[ -f $HOME/dotfiles/git-prompt.sh ]]; then
-    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n\$ '
+	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n\$ '
 else
-    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(__git_ps1 " (%s)") \n\$ '
+	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(__git_ps1 " (%s)") \n\$ '
 fi
 
 PROMPT_COMMAND='history -a; history -n'
@@ -42,13 +42,13 @@ alias resrc='source ~/.bashrc'
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+	. /usr/share/bash-completion/bash_completion
 fi
 
 if [[ -d "$HOME/.local/share/bash-completion" ]]; then
-  for f in $HOME/.local/share/bash-completion/* ; do
-    source $f
-  done
+	for f in $HOME/.local/share/bash-completion/*; do
+		source $f
+	done
 fi
 
 source ~/.profile

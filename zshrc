@@ -7,7 +7,6 @@ export ZSH=$XDG_CACHE_HOME/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-#ZSH_THEME="gentoo2"
 ZSH_THEME="gentoo2"
 
 # Example aliases
@@ -52,39 +51,39 @@ ZSH_CUSTOM=$HOME/dotfiles/zsh
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(
-    archlinux
-    autojump
-    aws
-    cargo
-    cargo
-    celery
-    command-not-found
-    django
-    docker
-    docker-compose
-    dotenv
-    fabric
-    git
-    git-extras
-    git-flow
-    github
-    go
-    golang
-    gpg-agent
-    history-substring-search
-    hub
-    mercurial
-    pip
-    postgres
-    python
-    rbenv
-    ruby
-    rust
-    rvm
-    systemd
-    virtualenv
-    yarn
- )
+	archlinux
+	autojump
+	aws
+	cargo
+	cargo
+	celery
+	command-not-found
+	django
+	docker
+	docker-compose
+	dotenv
+	fabric
+	git
+	git-extras
+	git-flow
+	github
+	go
+	golang
+	gpg-agent
+	history-substring-search
+	hub
+	mercurial
+	pip
+	postgres
+	python
+	rbenv
+	ruby
+	rust
+	rvm
+	systemd
+	virtualenv
+	yarn
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,5 +101,4 @@ bindkey '\C-N' history-substring-search-down
 autoload -U compinit
 compinit
 
-emulate sh -c '. ${HOME}/.profile'
-
+source ~/.profile
