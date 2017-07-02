@@ -185,3 +185,5 @@
 - repo: vim-airline/vim-airline
 
 - repo: vim-airline/vim-airline-themes
+
+- repo: tpope/vim-scriptease

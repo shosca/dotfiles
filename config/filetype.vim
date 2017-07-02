@@ -42,9 +42,6 @@ augroup MyAutoCmd " {
 
   autocmd TabLeave * let g:lasttab = tabpagenr()
 
-  autocmd FileType help
-        \ setlocal iskeyword+=: | setlocal iskeyword+=# | setlocal iskeyword+=-
-
   autocmd FileType crontab setlocal nobackup nowritebackup
 
   autocmd FileType gitcommit setlocal spell
@@ -68,11 +65,5 @@ augroup MyAutoCmd " {
 
   autocmd FileType go highlight default link goErr WarningMsg |
         \ match goErr /\<err\>/
-
-  " Fix window position of help/quickfix
-  autocmd FileType help if &l:buftype ==# 'help'
-        \ | wincmd L | endif
-  autocmd FileType qf   if &l:buftype ==# 'quickfix'
-        \ | wincmd J | endif
 
 augroup END " }

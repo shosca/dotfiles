@@ -12,6 +12,10 @@ let g:denite_leader = "f"
 " Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+let g:dein#install_max_processes = 16
+let g:dein#install_progress_type = 'echo'
+let g:dein#enable_notification = 0
+let g:dein#install_log_filename = $VARPATH.'/dein.log'
 let hook_immediate = []
 let plugs = []
 
@@ -87,6 +91,14 @@ for autoplug in s:autoplugs
   endtry
 endfor
 
+for plug in g:plugs
+  for plugin in plug
+    if has_key(plugin, 'hook_always')
+      execute plugin['hook_always']
+    endif
+  endfor
+endfor
+
 if dein#load_state(s:dein_path)
 
   call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
@@ -101,7 +113,6 @@ if dein#load_state(s:dein_path)
   endif
   call dein#end()
   call dein#save_state()
-
   if dein#check_install()
     if ! has('nvim')
       set nomore
@@ -115,13 +126,6 @@ syntax enable
 
 call dein#call_hook('source')
 call dein#call_hook('post_source')
-for plug in g:plugs
-  for plugin in plug
-    if has_key(plugin, 'hook_always')
-      execute plugin['hook_always']
-    endif
-  endfor
-endfor
 unlet g:plugs
 " }
 
