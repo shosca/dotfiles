@@ -92,18 +92,24 @@ clean-python:  ## Clean python files
 	rm -rf $(HOME)/.pdbrc.py
 	rm -rf $(HOME)/.config/python/sitecustomize.py
 
+GNOME_BACKUP_KEYS=\
+									terminal \
+									desktop \
+									shell \
+									mutter \
+									nautilus \
+									gnome-session
+
 gnome-backup:
-	dconf dump /org/gnome/terminal/ > gnome/terminal
-	dconf dump /org/gnome/desktop/ > gnome/desktop
-	dconf dump /org/gnome/shell/ > gnome/shell
+	for g in $(GNOME_BACKUP_KEYS); do \
+		dconf dump /org/gnome/$$g/ > gnome/$$g ; \
+	done
 
 gnome-restore:
-	dconf reset -f /org/gnome/terminal/
-	dconf load /org/gnome/terminal/ < gnome/terminal
-	dconf reset -f /org/gnome/desktop/
-	dconf load /org/gnome/desktop/ < gnome/desktop
-	dconf reset -f /org/gnome/shell/
-	dconf load /org/gnome/shell/ < gnome/shell
+	for g in $(GNOME_BACKUP_KEYS); do \
+		dconf reset -f /org/gnome/$$g/ ; \
+		dconf load /org/gnome/$$g/ < gnome/$$g ; \
+	done
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
