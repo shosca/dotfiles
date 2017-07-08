@@ -68,8 +68,8 @@ fi
 export PYTHONUSERBASE=~/.config/python
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 
-BASE16_SHELL="$HOME/dotfiles/base16-gruvbox.dark.sh"
-[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
+#BASE16_SHELL="$HOME/dotfiles/base16-gruvbox.dark.sh"
+#[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
 
 [[ -f $HOME/dotfiles/aliases ]] && source $HOME/dotfiles/aliases
 [[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local

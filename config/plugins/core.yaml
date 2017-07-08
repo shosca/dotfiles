@@ -180,7 +180,7 @@
   hook_source: |
     let g:move_key_modifier = 'C'
 
-- repo: morhetz/gruvbox
+- repo: rafi/awesome-vim-colorschemes
 
 - repo: vim-airline/vim-airline
 

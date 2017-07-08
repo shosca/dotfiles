@@ -1,0 +1,57 @@
+[screensaver]
+picture-uri='file:///home/serkan/Pictures/W_2013_200.jpg'
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+lock-enabled=false
+secondary-color='#000000000000'
+
+[notifications]
+application-children=['org-gnome-nautilus', 'gnome-tweak-tool', 'discord', 'org-gnome-chromegnomeshell']
+
+[notifications/application/discordcanary]
+application-id='DiscordCanary.desktop'
+
+[notifications/application/firefox]
+application-id='firefox.desktop'
+
+[notifications/application/firefox-nightly]
+application-id='firefox-nightly.desktop'
+
+[notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[notifications/application/org-gnome-chromegnomeshell]
+application-id='org.gnome.ChromeGnomeShell.desktop'
+
+[notifications/application/gnome-tweak-tool]
+application-id='gnome-tweak-tool.desktop'
+
+[notifications/application/discord]
+application-id='Discord.desktop'
+
+[background]
+picture-uri='file:///home/serkan/Pictures/alena-aenami-over-the-city1k.jpg'
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+secondary-color='#000000000000'
+
+[input-sources]
+show-all-sources=false
+current=uint32 0
+xkb-options=['caps:ctrl_modifier']
+
+[wm/preferences]
+titlebar-font='Noto Sans 11'
+
+[interface]
+font-name='Noto Sans 11'
+document-font-name='Noto Sans 11'
+toolkit-accessibility=false
+gtk-im-module='gtk-im-context-simple'
+cursor-theme='Capitaine'
+icon-theme='EvoPop'
+monospace-font-name='Hack 10'
+cursor-blink=false
+gtk-theme='EvoPop'

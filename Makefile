@@ -92,6 +92,16 @@ clean-python:  ## Clean python files
 	rm -rf $(HOME)/.pdbrc.py
 	rm -rf $(HOME)/.config/python/sitecustomize.py
 
+gnome-backup:
+	dconf dump /org/gnome/terminal/ > gnome/terminal
+	dconf dump /org/gnome/desktop/ > gnome/desktop
+	dconf dump /org/gnome/shell/ > gnome/shell
+
+gnome-restore:
+	dconf load /org/gnome/terminal/ < gnome/terminal
+	dconf load /org/gnome/desktop/ < gnome/desktop
+	dconf load /org/gnome/shell/ < gnome/shell
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 

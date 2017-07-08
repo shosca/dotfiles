@@ -38,8 +38,7 @@
 - repo: zchee/deoplete-jedi
   if: has('nvim')
   depends: [deoplete.nvim]
-  #on_ft: python
-  hook_source: autocmd FileType python setlocal omnifunc=
+  on_ft: python
 
 - repo: raimon49/requirements.txt.vim
   on_ft: requirements
