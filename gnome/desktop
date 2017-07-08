@@ -6,16 +6,23 @@ gtk-im-module='gtk-im-context-simple'
 cursor-theme='Capitaine'
 icon-theme='EvoPop'
 monospace-font-name='Hack 9'
+cursor-blink=false
 gtk-theme='EvoPop'
 
 [notifications]
-application-children=['evolution', 'gnome-tweak-tool', 'org-gnome-software', 'org-gnome-nautilus', 'gnome-network-panel', 'discord', 'org-gnome-chromegnomeshell']
+application-children=['evolution', 'gnome-tweak-tool', 'slack', 'org-gnome-software', 'org-gnome-nautilus', 'firefox', 'gnome-network-panel', 'discord', 'org-gnome-chromegnomeshell']
 
-[notifications/application/org-gnome-nautilus]
-application-id='org.gnome.Nautilus.desktop'
+[notifications/application/discordcanary]
+application-id='DiscordCanary.desktop'
 
 [notifications/application/firefox]
 application-id='firefox.desktop'
+
+[notifications/application/firefox-nightly]
+application-id='firefox-nightly.desktop'
+
+[notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
 
 [notifications/application/gnome-network-panel]
 application-id='gnome-network-panel.desktop'
@@ -34,6 +41,9 @@ application-id='Discord.desktop'
 
 [notifications/application/evolution]
 application-id='evolution.desktop'
+
+[notifications/application/slack]
+application-id='slack.desktop'
 
 [app-folders]
 folder-children=['Utilities', 'Sundry']
@@ -55,6 +65,7 @@ picture-uri='file:///home/serkan/Pictures/alena-aenami-over-the-city1k.jpg'
 color-shading-type='solid'
 primary-color='#000000000000'
 picture-options='zoom'
+lock-enabled=false
 secondary-color='#000000000000'
 
 [peripherals/touchpad]
@@ -78,5 +89,7 @@ picture-options='zoom'
 secondary-color='#000000000000'
 
 [input-sources]
+show-all-sources=false
+current=uint32 0
 sources=@a(ss) []
 xkb-options=['caps:ctrl_modifier']

@@ -1,6 +1,123 @@
-[legacy/profiles:/:535f48be-9ee8-4c19-b10c-53c4c7730415]
-foreground-color='#4a4a45454343'
-visible-name='3024 Day'
+[legacy/profiles:/:88476d5f-056d-4ed2-ab84-32e361784bac]
+foreground-color='#ffffffffffff'
+visible-name='Vibrant Ink'
+login-shell=true
+palette=['#878787878787', '#ffff66660000', '#ccccffff0404', '#ffffcccc0000', '#4444b4b4cccc', '#99993333cccc', '#4444b4b4cccc', '#f5f5f5f5f5f5', '#555555555555', '#ffff00000000', '#0000ffff0000', '#ffffffff0000', '#00000000ffff', '#ffff0000ffff', '#0000ffffffff', '#e5e5e5e5e5e5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f5f5f5f5f5f5'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:1f1a9820-b539-4fc5-a07f-552e72614ad3]
+foreground-color='#3131d0d07b7b'
+visible-name='Toy Chest'
+login-shell=true
+palette=['#2c2c3f3f5858', '#bebe2d2d2626', '#1a1a91917272', '#dbdb8e8e2727', '#32325d5d9696', '#8a8a5e5edcdc', '#3535a0a08f8f', '#2323d1d18383', '#333368688989', '#dddd59594444', '#3131d0d07b7b', '#e7e7d8d84b4b', '#3434a6a6dada', '#aeae6b6bdcdc', '#4242c3c3aeae', '#d5d5d5d5d5d5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#2323d1d18383'
+background-color='#242436364b4b'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b5a46101-1284-429a-92e8-3e8220f5d18c]
+foreground-color='#ffffffffffff'
+visible-name='Cobalt2'
+login-shell=true
+palette=['#000000000000', '#ffff00000000', '#3838dede2121', '#ffffe5e50a0a', '#14146060d2d2', '#ffff00005d5d', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#f4f40e0e1717', '#3b3bd0d01d1d', '#ededc8c80909', '#55555555ffff', '#ffff5555ffff', '#6a6ae3e3fafa', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#131327273838'
+scrollbar-policy='never'
+
+[legacy/profiles:/:7f70a493-d71f-4325-bd3b-e93cab37fc4e]
+foreground-color='#b3b3b3b3b3b3'
+visible-name='Wez'
+login-shell=true
+palette=['#000000000000', '#cccc55555555', '#5555cccc5555', '#cdcdcdcd5555', '#55555555cccc', '#cccc5555cccc', '#7a7acacacaca', '#cccccccccccc', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#cccccccccccc'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:53aa7a1e-4a67-446b-97fc-17ecfb5ac044]
+foreground-color='#ffffffffffff'
+visible-name='Red Alert'
+login-shell=true
+palette=['#000000000000', '#d6d62e2e4e4e', '#7171bebe6b6b', '#bebeb8b86b6b', '#48489b9beeee', '#e9e97979d7d7', '#6b6bbebeb8b8', '#d6d6d6d6d6d6', '#262626262626', '#e0e025255353', '#afaff0f08c8c', '#dfdfddddb7b7', '#6565aaaaf1f1', '#ddddb7b7dfdf', '#b7b7dfdfdddd', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d6d6d6d6d6d6'
+background-color='#767624242323'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0d9d1ffb-4933-444c-9b65-05a30d4b5e56]
+foreground-color='#f2f2f2f2f2f2'
+visible-name='Paul Millr'
+login-shell=true
+palette=['#2a2a2a2a2a2a', '#ffff00000000', '#7979ffff0f0f', '#d3d3bfbf0000', '#39396b6bd7d7', '#b4b44949bebe', '#6666ccccffff', '#bbbbbbbbbbbb', '#666666666666', '#ffff00008080', '#6666ffff6666', '#f3f3d6d64e4e', '#70709a9aeded', '#dbdb6767e6e6', '#7a7adfdff2f2', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:8758e207-e799-44f1-990c-24d7db430d31]
+foreground-color='#f7f7f7f7f7f7'
+visible-name='Kibble'
+login-shell=true
+palette=['#4d4d4d4d4d4d', '#c7c700003131', '#2929cfcf1313', '#d8d8e3e30e0e', '#34344949d1d1', '#84840000ffff', '#07079898abab', '#e2e2d1d1e3e3', '#5a5a5a5a5a5a', '#f0f015157878', '#6c6ce0e05c5c', '#f3f3f7f79e9e', '#9797a4a4f7f7', '#c4c49595f0f0', '#6868f2f2e0e0', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e2e2d1d1e3e3'
+background-color='#0e0e10100a0a'
+scrollbar-policy='never'
+
+[legacy/profiles:/:3f4463ef-2c19-463e-8899-1295229b2a3b]
+foreground-color='#86868A8A8C8C'
+visible-name='Terminix Dark'
+login-shell=true
+palette=['#28282a2a2e2e', '#a5a542424242', '#a1a1b5b56c6c', '#dede93935f5f', '#222255555555', '#858567678f8f', '#5e5e8d8d8787', '#777777777777', '#37373b3b4141', '#c6c635353535', '#606083836060', '#fafa80805a5a', '#44449d9da1a1', '#baba8b8bafaf', '#8686c1c1b9b9', '#c5c5c8c8c6c6']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#777777777777'
+background-color='#090911111616'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b9bbc4c8-7b27-4f6a-8ac0-9fc073630c07]
+foreground-color='#ffffffffffff'
+visible-name='Dark Pastel'
+login-shell=true
+palette=['#000000000000', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0589a0de-d99f-4b4d-9d96-7ac037ef91c7]
+foreground-color='#a5a5a2a2a2a2'
+visible-name='3024 Night'
 login-shell=true
 palette=['#090903030000', '#dbdb2d2d2020', '#0101a2a25252', '#fdfdeded0202', '#0101a0a0e4e4', '#a1a16a6a9494', '#b5b5e4e4f4f4', '#a5a5a2a2a2a2', '#5c5c58585555', '#e8e8bbbbd0d0', '#3a3a34343232', '#4a4a45454343', '#80807d7d7c7c', '#d6d6d5d5d4d4', '#cdcdabab5353', '#f7f7f7f7f7f7']
 use-theme-colors=false
@@ -8,20 +125,239 @@ scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#a5a5a2a2a2a2'
-background-color='#f7f7f7f7f7f7'
+background-color='#090903030000'
 scrollbar-policy='never'
 
-[legacy/profiles:/:0f9e9e07-7642-4a6b-8c9b-2f3b618dd28c]
-foreground-color='#ffffffffffff'
-visible-name='Espresso'
+[legacy/profiles:/:a0810400-de78-4dcd-9559-7a76ed769de1]
+foreground-color='#f7f7d6d66a6a'
+visible-name='Mona Lisa'
 login-shell=true
-palette=['#353535353535', '#d2d252525252', '#a5a5c2c26161', '#ffffc6c66d6d', '#6c6c9999bbbb', '#d1d19797d9d9', '#bebed6d6ffff', '#eeeeeeeeecec', '#535353535353', '#f0f00c0c0c0c', '#c2c2e0e07575', '#e1e1e4e48b8b', '#8a8ab7b7d9d9', '#efefb5b5f7f7', '#dcdcf4f4ffff', '#ffffffffffff']
+palette=['#35351b1b0e0e', '#9b9b29291c1c', '#636362623232', '#c3c36e6e2828', '#51515c5c5d5d', '#9b9b1d1d2929', '#585880805656', '#f7f7d7d75c5c', '#878742422828', '#ffff43433131', '#b4b4b2b26464', '#ffff95956666', '#9e9eb2b2b4b4', '#ffff5b5b6a6a', '#8a8acdcd8f8f', '#ffffe5e59898']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#eeeeeeeeecec'
-background-color='#323232323232'
+bold-color='#f7f7d7d75c5c'
+background-color='#12120b0b0d0d'
+scrollbar-policy='never'
+
+[legacy/profiles:/:17970e11-fdc0-4070-b84b-0be1d4438a20]
+foreground-color='#edededededed'
+visible-name='Highway'
+login-shell=true
+palette=['#000000000000', '#d0d00e0e1818', '#131380803434', '#ffffcbcb3e3e', '#00006b6bb3b3', '#6b6b27277575', '#383845456464', '#edededededed', '#5d5d50504a4a', '#f0f07e7e1818', '#b1b1d1d13030', '#fffff1f12020', '#4f4fc2c2fdfd', '#dede00007171', '#5d5d50504a4a', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#edededededed'
+background-color='#222222222525'
+scrollbar-policy='never'
+
+[legacy/profiles:/:4650da21-39c4-4c5b-b9c6-998b4ca1894e]
+foreground-color='#f7f7f6f6ecec'
+visible-name='Japanesque'
+login-shell=true
+palette=['#343439393535', '#cfcf3f3f6161', '#7b7bb7b75b5b', '#e9e9b3b32a2a', '#4c4c9a9ad4d4', '#a5a57f7fc4c4', '#38389a9aadad', '#fafafafaf6f6', '#59595b5b5959', '#d1d18f8fa6a6', '#76767f7f2c2c', '#787859592f2f', '#131359597979', '#606042429191', '#7676bbbbcaca', '#b2b2b5b5aeae']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#fafafafaf6f6'
+background-color='#1e1e1e1e1e1e'
+scrollbar-policy='never'
+
+[legacy/profiles:/:891848bb-809b-4b4a-861d-6eac3cdb782f]
+foreground-color='#fffff0f0a5a5'
+visible-name='Grass'
+login-shell=true
+palette=['#000000000000', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00000000a3a3', '#959500006262', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00000000bbbb', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#131377773d3d'
+scrollbar-policy='never'
+
+[legacy/profiles:/:f03c4b2f-0502-416b-956b-c6a13bf8992c]
+foreground-color='#bbbbbbbbbbbb'
+visible-name='Nightlion V1'
+login-shell=true
+palette=['#4c4c4c4c4c4c', '#bbbb00000000', '#5f5fdede8f8f', '#f3f3f1f16767', '#27276b6bd8d8', '#bbbb0000bbbb', '#0000dadadfdf', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:9cd55c82-7958-49b3-9c74-05776b8fa6ad]
+foreground-color='#d9d9efefd3d3'
+visible-name='IC Green PPL'
+login-shell=true
+palette=['#1f1f1f1f1f1f', '#fbfb00002a2a', '#33339c9c2424', '#65659b9b2525', '#14149b9b4545', '#5353b8b82c2c', '#2c2cb8b86868', '#e0e0ffffefef', '#030327271010', '#a7a7ffff3f3f', '#9f9fffff6d6d', '#d2d2ffff6d6d', '#7272ffffb5b5', '#5050ffff3e3e', '#2222ffff7171', '#dadaefefd0d0']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e0e0ffffefef'
+background-color='#3a3a3d3d3f3f'
+scrollbar-policy='never'
+
+[legacy/profiles:/:3268ea72-8352-4957-8e3d-695c3c9ed8cd]
+foreground-color='#c5c5c8c8c6c6'
+visible-name='Atom'
+login-shell=true
+palette=['#000000000000', '#fdfd5f5ff1f1', '#8787c3c38a8a', '#ffffd7d7b1b1', '#8585bebefdfd', '#b9b9b6b6fcfc', '#8585bebefdfd', '#e0e0e0e0e0e0', '#000000000000', '#fdfd5f5ff1f1', '#9494fafa3636', '#f5f5ffffa8a8', '#9696cbcbfefe', '#b9b9b6b6fcfc', '#8585bebefdfd', '#e0e0e0e0e0e0']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e0e0e0e0e0e0'
+background-color='#161617171919'
+scrollbar-policy='never'
+
+[legacy/profiles:/:80a7e1a6-e9fc-4d11-9ea6-65ca01b64029]
+foreground-color='#ececf0f0fefe'
+visible-name='Fishtank'
+login-shell=true
+palette=['#030307073c3c', '#c6c600004a4a', '#acacf1f15757', '#fefecdcd5e5e', '#52525f5fb8b8', '#98986f6f8282', '#969687876363', '#ececf0f0fcfc', '#6c6c5b5b3030', '#dada4b4b8a8a', '#dbdbffffa9a9', '#fefee6e6a9a9', '#b2b2bebefafa', '#fdfda5a5cdcd', '#a5a5bdbd8686', '#f6f6ffffecec']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ececf0f0fcfc'
+background-color='#232325253737'
+scrollbar-policy='never'
+
+[legacy/profiles:/:2f3a1a42-85a5-4e6d-b831-bb2e87d2a0be]
+foreground-color='#3535b1b1d2d2'
+visible-name='Slate'
+login-shell=true
+palette=['#222222222222', '#e2e2a8a8bfbf', '#8181d7d77878', '#c4c4c9c9c0c0', '#26264b4b4949', '#a4a48181d3d3', '#1515abab9c9c', '#0202c5c5e0e0', '#ffffffffffff', '#ffffcdcdd9d9', '#bebeffffa8a8', '#d0d0cccccaca', '#7a7ab0b0d2d2', '#c5c5a7a7d9d9', '#8c8cdfdfe0e0', '#e0e0e0e0e0e0']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#0202c5c5e0e0'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:5dedd5ad-8ea9-4603-96be-b54ef2246125]
+foreground-color='#c9c9c9c9c9c9'
+visible-name='Sundried'
+login-shell=true
+palette=['#30302b2b2a2a', '#a7a746463d3d', '#585877774444', '#9d9d60602a2a', '#48485b5b9898', '#868646465151', '#9c9c81814f4f', '#c9c9c9c9c9c9', '#4d4d4e4e4848', '#aaaa00000c0c', '#12128c8c2121', '#fcfc6a6a2121', '#79799999f7f7', '#fdfd8a8aa1a1', '#fafad4d48484', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#c9c9c9c9c9c9'
+background-color='#1a1a18181818'
+scrollbar-policy='never'
+
+[legacy/profiles:/:f2491dfb-bfaa-44e3-85e6-f89cdf243c71]
+foreground-color='#3b3b23232222'
+visible-name='Novel'
+login-shell=true
+palette=['#000000000000', '#cccc00000000', '#000096960000', '#d0d06b6b0000', '#00000000cccc', '#cccc0000cccc', '#00008787cccc', '#cccccccccccc', '#808080808080', '#cccc00000000', '#000096960000', '#d0d06b6b0000', '#00000000cccc', '#cccc0000cccc', '#00008787cccc', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#cccccccccccc'
+background-color='#dfdfdbdbc3c3'
+scrollbar-policy='never'
+
+[legacy/profiles:/:248de555-c705-451c-8980-0de48f4b53a0]
+foreground-color='#78786b6b5353'
+visible-name='Treehouse'
+login-shell=true
+palette=['#323213130000', '#b2b227270e0e', '#4444a9a90000', '#aaaa82820c0c', '#585885859a9a', '#979736363d3d', '#b2b25a5a1e1e', '#78786b6b5353', '#434336362626', '#eded5d5d2020', '#5555f2f23838', '#f2f2b7b73232', '#8585cfcfeded', '#e1e14c4c5a5a', '#f0f07d7d1414', '#ffffc8c80000']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#78786b6b5353'
+background-color='#191919191919'
+scrollbar-policy='never'
+
+[legacy/profiles:/:5039dfeb-6018-432a-a39c-81cd6909353a]
+foreground-color='#babababababa'
+visible-name='Darkside'
+login-shell=true
+palette=['#000000000000', '#e8e834341c1c', '#6868c2c25656', '#f2f2d4d42c2c', '#1c1c9898e8e8', '#8e8e6969c9c9', '#1c1c9898e8e8', '#babababababa', '#000000000000', '#e0e05a5a4f4f', '#7777b8b86969', '#efefd6d64b4b', '#38387c7cd3d3', '#95957b7bbebe', '#3d3d9797e2e2', '#babababababa']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#babababababa'
+background-color='#222223232424'
+scrollbar-policy='never'
+
+[legacy/profiles:/:69470ad0-4181-439a-97c4-1d9619a03eca]
+foreground-color='#c9c9c6c6bcbc'
+visible-name='SpaceGray Eighties Dull'
+login-shell=true
+palette=['#151517171c1c', '#b2b24a4a5656', '#9292b4b47777', '#c6c673735a5a', '#7c7c8f8fa5a5', '#a5a578789e9e', '#8080cdcdcbcb', '#b3b3b8b8c3c3', '#555555555555', '#ecec5f5f6767', '#8989e9e98686', '#fefec2c25454', '#54548686c0c0', '#bfbf8383c1c1', '#5858c2c2c1c1', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#b3b3b8b8c3c3'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:39ddadec-7c4b-43ae-96d7-1c5466b77116]
+foreground-color='#dedeb8b88d8d'
+visible-name='Sea Shells'
+login-shell=true
+palette=['#171738384c4c', '#d1d151512323', '#02027c7c9b9b', '#fcfca0a02f2f', '#1e1e49495050', '#6868d4d4f1f1', '#5050a3a3b5b5', '#dedeb8b88d8d', '#43434b4b5353', '#d4d486867878', '#62628d8d9898', '#fdfdd3d39f9f', '#1b1bbcbcdddd', '#bbbbe3e3eeee', '#8787acacb4b4', '#fefee4e4cece']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#dedeb8b88d8d'
+background-color='#090914141b1b'
+scrollbar-policy='never'
+
+[legacy/profiles:/:8cdcad59-d012-4bcb-bd7a-ff4be34ad9a4]
+foreground-color='#f8f8f8f8f8f8'
+visible-name='Thayer Bright'
+login-shell=true
+palette=['#1b1b1d1d1e1e', '#f9f926267272', '#4d4df8f84040', '#f4f4fdfd2222', '#27275757d6d6', '#8c8c5454fefe', '#3838c8c8b5b5', '#ccccccccc6c6', '#505053535454', '#ffff59599595', '#b6b6e3e35454', '#fefeeded6c6c', '#3f3f7878ffff', '#9e9e6f6ffefe', '#2323cfcfd5d5', '#f8f8f8f8f2f2']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ccccccccc6c6'
+background-color='#1b1b1d1d1e1e'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ced094a4-5a2b-4184-b243-bbfa116fe227]
+foreground-color='#fffffafaf4f4'
+visible-name='Argonaut'
+login-shell=true
+palette=['#232323232323', '#ffff00000f0f', '#8c8ce1e10b0b', '#ffffb9b90000', '#00008d8df8f8', '#6d6d4343a6a6', '#0000d8d8ebeb', '#ffffffffffff', '#444444444444', '#ffff27274040', '#ababe1e15b5b', '#ffffd2d24242', '#00009292ffff', '#9a9a5f5febeb', '#6767fffff0f0', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
+background-color='#0e0e10101919'
+scrollbar-policy='never'
+
+[legacy/profiles:/:fad2303b-8f4e-45aa-aa4c-8663bb57e3b5]
+foreground-color='#ebdbb2'
+visible-name='terminal.sexy'
+palette=['#282828', '#cc241d', '#98971a', '#d79921', '#458588', '#b16286', '#689d6a', '#a89984', '#a89984', '#fb4934', '#b8bb26', '#fadb2f', '#83a598', '#d3869b', '#8ec07c', '#ebdbb2']
+use-theme-colors=false
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ebdbb2'
+background-color='#1d2021'
 scrollbar-policy='never'
 
 [legacy/profiles:/:4e1f7e8e-b092-4fef-a867-9cf5651e7a7b]
@@ -34,6 +370,123 @@ scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#ffffffffffff'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:98ccdb0e-4c6e-40ea-ac35-d47461665613]
+foreground-color='#d0d0d0d0d0d0'
+visible-name='Pnevma'
+login-shell=true
+palette=['#2f2f2e2e2d2d', '#a3a366666666', '#9090a5a57d7d', '#d7d7afaf8787', '#7f7fa5a5bdbd', '#c7c79e9ec4c4', '#8a8adbdbb4b4', '#d0d0d0d0d0d0', '#4a4a48484545', '#d7d787878787', '#afafbebea2a2', '#e4e4c9c9afaf', '#a1a1bdbdcece', '#d7d7bebedada', '#b1b1e7e7dddd', '#efefefefefef']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d0d0d0d0d0d0'
+background-color='#1c1c1c1c1c1c'
+scrollbar-policy='never'
+
+[legacy/profiles:/:036970ef-422e-4f27-980f-3913128a6b79]
+foreground-color='#e5e5c7c7a9a9'
+visible-name='Earthsong'
+login-shell=true
+palette=['#121214141818', '#c9c942423434', '#8585c5c54c4c', '#f5f5aeae2e2e', '#13139898b9b9', '#d0d063633d3d', '#505095955252', '#e5e5c6c6aaaa', '#67675f5f5454', '#ffff64645a5a', '#9898e0e03636', '#e0e0d5d56161', '#5f5fdadaffff', '#ffff92926969', '#8484f0f08888', '#f6f6f7f7ecec']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e5e5c6c6aaaa'
+background-color='#292925252020'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0d110098-c259-4339-b51b-e79b66b7921d]
+foreground-color='#b8b8a8a89898'
+visible-name='Espresso Libre'
+login-shell=true
+palette=['#000000000000', '#cccc00000000', '#1a1a92921c1c', '#f0f0e5e53a3a', '#00006666ffff', '#c5c565656b6b', '#060698989a9a', '#d3d3d7d7cfcf', '#555557575353', '#efef29292929', '#9a9affff8787', '#fffffbfb5c5c', '#4343a8a8eded', '#ffff81818a8a', '#3434e2e2e2e2', '#eeeeeeeeecec']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d3d3d7d7cfcf'
+background-color='#2a2a21211c1c'
+scrollbar-policy='never'
+
+[legacy/profiles:/:69be2386-b7e8-41aa-ad06-d6fe54dd5acb]
+foreground-color='#3e3e3e3e3e3e'
+visible-name='Github'
+login-shell=true
+palette=['#3e3e3e3e3e3e', '#97970b0b1616', '#070796962a2a', '#f8f8eeeec7c7', '#00003e3e8a8a', '#e9e946469191', '#8989d1d1ecec', '#ffffffffffff', '#666666666666', '#dede00000000', '#8787d5d5a2a2', '#f1f1d0d00707', '#2e2e6c6cbaba', '#ffffa2a29f9f', '#1c1cfafafefe', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
+background-color='#f4f4f4f4f4f4'
+scrollbar-policy='never'
+
+[legacy/profiles:/:11791ecf-b67d-4f85-b29a-b40e40097c28]
+foreground-color='#d6d6dbdbe5e5'
+visible-name='Brogrammer'
+login-shell=true
+palette=['#1f1f1f1f1f1f', '#f8f811111818', '#2d2dc5c55e5e', '#ececbaba0f0f', '#2a2a8484d2d2', '#4e4e5a5ab7b7', '#10108181d6d6', '#d6d6dbdbe5e5', '#d6d6dbdbe5e5', '#dede35352e2e', '#1d1dd3d36161', '#f3f3bdbd0909', '#10108181d6d6', '#53535050b9b9', '#0f0f7d7ddbdb', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d6d6dbdbe5e5'
+background-color='#131313131313'
+scrollbar-policy='never'
+
+[legacy/profiles:/:2e547556-5d81-4cc4-aa02-b1bac5d4962c]
+foreground-color='#424242424242'
+visible-name='Pencil Light'
+login-shell=true
+palette=['#212121212121', '#c3c307077171', '#1010a7a77878', '#a8a89c9c1414', '#00008e8ec4c4', '#52523c3c7979', '#2020a5a5baba', '#d9d9d9d9d9d9', '#424242424242', '#fbfb00007a7a', '#5f5fd7d7afaf', '#f3f3e4e43030', '#2020bbbbfcfc', '#68685555dede', '#4f4fb8b8cccc', '#f1f1f1f1f1f1']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d9d9d9d9d9d9'
+background-color='#f1f1f1f1f1f1'
+scrollbar-policy='never'
+
+[legacy/profiles:/:8148d713-322f-4baa-b96b-6b3c008b85f5]
+foreground-color='#cacac2c29696'
+visible-name='Medallion'
+login-shell=true
+palette=['#000000000000', '#b6b64c4c0000', '#7c7c8b8b1616', '#d3d3bdbd2626', '#61616b6bb0b0', '#8c8c5a5a9090', '#91916c6c2525', '#cacac2c29a9a', '#5e5e52521919', '#ffff91914949', '#b2b2caca3b3b', '#ffffe5e54a4a', '#acacb8b8ffff', '#ffffa0a0ffff', '#ffffbcbc5151', '#fefed6d69898']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#cacac2c29a9a'
+background-color='#1d1d19190808'
+scrollbar-policy='never'
+
+[legacy/profiles:/:3bf6d039-c6e9-412c-844e-3d9d0fde46a5]
+foreground-color='#515149496868'
+visible-name='Royal'
+login-shell=true
+palette=['#24241f1f2b2b', '#919128284c4c', '#232380801c1c', '#b4b49d9d2727', '#65658080b0b0', '#67674d4d9696', '#8a8aaaaabebe', '#525249496666', '#31312d2d3d3d', '#d5d535356c6c', '#2c2cd9d94646', '#fdfde8e83b3b', '#9090babaf9f9', '#a4a47979e3e3', '#acacd4d4ebeb', '#9e9e8c8cbdbd']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#525249496666'
+background-color='#101008081515'
+scrollbar-policy='never'
+
+[legacy/profiles:/:edd1c5a3-b134-466f-8f71-59c00a09de52]
+foreground-color='#bbbbbbbbbbbb'
+visible-name='Mathias'
+login-shell=true
+palette=['#000000000000', '#e5e522222222', '#a6a6e3e32d2d', '#fcfc95951e1e', '#c4c48d8dffff', '#fafa25257373', '#6767d9d9f0f0', '#f2f2f2f2f2f2', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f2f2f2f2f2f2'
 background-color='#000000000000'
 scrollbar-policy='never'
 
@@ -50,346 +503,17 @@ bold-color='#d9d9d9d9d9d9'
 background-color='#0d0d19192626'
 scrollbar-policy='never'
 
-[legacy/profiles:/:f2491dfb-bfaa-44e3-85e6-f89cdf243c71]
-foreground-color='#3b3b23232222'
-visible-name='Novel'
+[legacy/profiles:/:49339a6b-40cf-471c-842c-497c53ea10b8]
+foreground-color='#cdcdcdcdcdcd'
+visible-name='Obsidian'
 login-shell=true
-palette=['#000000000000', '#cccc00000000', '#000096960000', '#d0d06b6b0000', '#00000000cccc', '#cccc0000cccc', '#00008787cccc', '#cccccccccccc', '#808080808080', '#cccc00000000', '#000096960000', '#d0d06b6b0000', '#00000000cccc', '#cccc0000cccc', '#00008787cccc', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#cccccccccccc'
-background-color='#dfdfdbdbc3c3'
-scrollbar-policy='never'
-
-[legacy/profiles:/:c8aa4977-f7a6-4e7d-a67b-7976c97e93ac]
-foreground-color='#a0a0a0a0a0a0'
-visible-name='Hardcore'
-login-shell=true
-palette=['#1b1b1d1d1e1e', '#f9f926267272', '#a6a6e2e22e2e', '#fdfd97971f1f', '#6666d9d9efef', '#9e9e6f6ffefe', '#5e5e71717575', '#ccccccccc6c6', '#505053535454', '#ffff66669d9d', '#bebeeded5f5f', '#e6e6dbdb7474', '#6666d9d9efef', '#9e9e6f6ffefe', '#a3a3bababfbf', '#f8f8f8f8f2f2']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ccccccccc6c6'
-background-color='#121212121212'
-scrollbar-policy='never'
-
-[legacy/profiles:/:8cdcad59-d012-4bcb-bd7a-ff4be34ad9a4]
-foreground-color='#f8f8f8f8f8f8'
-visible-name='Thayer Bright'
-login-shell=true
-palette=['#1b1b1d1d1e1e', '#f9f926267272', '#4d4df8f84040', '#f4f4fdfd2222', '#27275757d6d6', '#8c8c5454fefe', '#3838c8c8b5b5', '#ccccccccc6c6', '#505053535454', '#ffff59599595', '#b6b6e3e35454', '#fefeeded6c6c', '#3f3f7878ffff', '#9e9e6f6ffefe', '#2323cfcfd5d5', '#f8f8f8f8f2f2']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ccccccccc6c6'
-background-color='#1b1b1d1d1e1e'
-scrollbar-policy='never'
-
-[legacy/profiles:/:248de555-c705-451c-8980-0de48f4b53a0]
-foreground-color='#78786b6b5353'
-visible-name='Treehouse'
-login-shell=true
-palette=['#323213130000', '#b2b227270e0e', '#4444a9a90000', '#aaaa82820c0c', '#585885859a9a', '#979736363d3d', '#b2b25a5a1e1e', '#78786b6b5353', '#434336362626', '#eded5d5d2020', '#5555f2f23838', '#f2f2b7b73232', '#8585cfcfeded', '#e1e14c4c5a5a', '#f0f07d7d1414', '#ffffc8c80000']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#78786b6b5353'
-background-color='#191919191919'
-scrollbar-policy='never'
-
-[legacy/profiles:/:27b6e5bf-ee7d-40df-913c-f15b3023c4d0]
-foreground-color='#80807a7a7474'
-visible-name='Elemental'
-login-shell=true
-palette=['#3c3c3c3c3030', '#989829290f0f', '#47479a9a4343', '#7f7f71711111', '#49497f7f7d7d', '#7f7f4e4e2f2f', '#38387f7f5858', '#808079797474', '#555554544545', '#e0e050502a2a', '#6161e0e07070', '#d6d699992727', '#7979d9d9d9d9', '#cdcd7c7c5454', '#5959d5d59999', '#fffff1f1e9e9']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#808079797474'
-background-color='#222221211d1d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0ad8eb27-e2e9-4b97-9919-7824e576d2c7]
-foreground-color='#e6e6e8e8efef'
-visible-name='Neutron'
-login-shell=true
-palette=['#232325252b2b', '#b5b540403636', '#5a5ab9b97777', '#dedeb5b56666', '#6a6a7c7c9393', '#a4a479799d9d', '#3f3f9494a8a8', '#e6e6e8e8efef', '#232325252b2b', '#b5b540403636', '#5a5ab9b97777', '#dedeb5b56666', '#6a6a7c7c9393', '#a4a479799d9d', '#3f3f9494a8a8', '#ebebededf2f2']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e6e6e8e8efef'
-background-color='#1c1c1e1e2222'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0d7f47bf-1616-44ec-8aa7-f3e0337c1585]
-foreground-color='#d4d4e7e7d4d4'
-visible-name='Seafoam Pastel'
-login-shell=true
-palette=['#757575757575', '#82825d5d4d4d', '#72728c8c6262', '#adada1a16d6d', '#4d4d7b7b8282', '#8a8a72726767', '#727294949494', '#e0e0e0e0e0e0', '#8a8a8a8a8a8a', '#cfcf93937a7a', '#9898d9d9aaaa', '#fafae7e79d9d', '#7a7ac3c3cfcf', '#d6d6b2b2a1a1', '#adade0e0e0e0', '#e0e0e0e0e0e0']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e0e0e0e0e0e0'
-background-color='#242434343535'
-scrollbar-policy='never'
-
-[legacy/profiles:/:46f18adf-a671-42fd-9b64-5eaff0afb93f]
-foreground-color='#b9b9bcbcbaba'
-visible-name='Dimmed Monokai'
-login-shell=true
-palette=['#3a3a3d3d4343', '#bebe3f3f4848', '#87879a9a3b3b', '#c5c5a6a63535', '#4f4f7676a1a1', '#85855c5c8d8d', '#57578f8fa4a4', '#b9b9bcbcbaba', '#888889898787', '#fbfb00001f1f', '#0f0f72722f2f', '#c4c470703333', '#18186d6de3e3', '#fbfb00006767', '#2e2e70706d6d', '#fdfdffffb9b9']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#b9b9bcbcbaba'
-background-color='#1f1f1f1f1f1f'
-scrollbar-policy='never'
-
-[legacy/profiles:/:11791ecf-b67d-4f85-b29a-b40e40097c28]
-foreground-color='#d6d6dbdbe5e5'
-visible-name='Brogrammer'
-login-shell=true
-palette=['#1f1f1f1f1f1f', '#f8f811111818', '#2d2dc5c55e5e', '#ececbaba0f0f', '#2a2a8484d2d2', '#4e4e5a5ab7b7', '#10108181d6d6', '#d6d6dbdbe5e5', '#d6d6dbdbe5e5', '#dede35352e2e', '#1d1dd3d36161', '#f3f3bdbd0909', '#10108181d6d6', '#53535050b9b9', '#0f0f7d7ddbdb', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d6d6dbdbe5e5'
-background-color='#131313131313'
-scrollbar-policy='never'
-
-[legacy/profiles:/:24fd2edf-c24d-4c19-a749-c07bd7c0f964]
-foreground-color='#a8a8a4a49d9d'
-visible-name='Harper'
-login-shell=true
-palette=['#010101010101', '#f8f8b6b63f3f', '#7f7fb5b5e1e1', '#d6d6dada2525', '#48489e9e4848', '#b2b29696c6c6', '#f5f5bfbfd7d7', '#a8a8a4a49d9d', '#72726e6e6a6a', '#f8f8b6b63f3f', '#7f7fb5b5e1e1', '#d6d6dada2525', '#48489e9e4848', '#b2b29696c6c6', '#f5f5bfbfd7d7', '#fefefbfbeaea']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#a8a8a4a49d9d'
-background-color='#010101010101'
-scrollbar-policy='never'
-
-[legacy/profiles:/:e3a909b3-77b1-462d-9b37-e326c41eae11]
-foreground-color='#BBBBBBBBBBBB'
-visible-name='Molokai'
-login-shell=true
-palette=['#121212121212', '#73732525FAFA', '#2323E2E29898', '#6060D4D4DFDF', '#D0D080801010', '#FFFF00008787', '#D0D0A8A84343', '#BBBBBBBBBBBB', '#555555555555', '#9D9D6666F6F6', '#5F5FE0E0B1B1', '#6D6DF2F2FFFF', '#FFFFAFAF0000', '#FFFF8787AFAF', '#FFFFCECE5151', '#FFFFFFFFFFFF']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#BBBBBBBBBBBB'
-background-color='#121212121212'
-scrollbar-policy='never'
-
-[legacy/profiles:/:98ccdb0e-4c6e-40ea-ac35-d47461665613]
-foreground-color='#d0d0d0d0d0d0'
-visible-name='Pnevma'
-login-shell=true
-palette=['#2f2f2e2e2d2d', '#a3a366666666', '#9090a5a57d7d', '#d7d7afaf8787', '#7f7fa5a5bdbd', '#c7c79e9ec4c4', '#8a8adbdbb4b4', '#d0d0d0d0d0d0', '#4a4a48484545', '#d7d787878787', '#afafbebea2a2', '#e4e4c9c9afaf', '#a1a1bdbdcece', '#d7d7bebedada', '#b1b1e7e7dddd', '#efefefefefef']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d0d0d0d0d0d0'
-background-color='#1c1c1c1c1c1c'
-scrollbar-policy='never'
-
-[legacy/profiles:/:21c92f9b-0cbe-4b3b-9ebd-880018021aa2]
-foreground-color='#d0d0d0d0d0d0'
-visible-name='Afterglow'
-login-shell=true
-palette=['#151515151515', '#a5a53c3c2323', '#7b7b92924646', '#d3d3a0a04d4d', '#6c6c9999bbbb', '#9f9f4e4e8585', '#7d7dd6d6cfcf', '#d0d0d0d0d0d0', '#505050505050', '#a5a53c3c2323', '#7b7b92924646', '#d3d3a0a04d4d', '#54547c7c9999', '#9f9f4e4e8585', '#7d7dd6d6cfcf', '#f5f5f5f5f5f5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d0d0d0d0d0d0'
-background-color='#222222222222'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ced094a4-5a2b-4184-b243-bbfa116fe227]
-foreground-color='#fffffafaf4f4'
-visible-name='Argonaut'
-login-shell=true
-palette=['#232323232323', '#ffff00000f0f', '#8c8ce1e10b0b', '#ffffb9b90000', '#00008d8df8f8', '#6d6d4343a6a6', '#0000d8d8ebeb', '#ffffffffffff', '#444444444444', '#ffff27274040', '#ababe1e15b5b', '#ffffd2d24242', '#00009292ffff', '#9a9a5f5febeb', '#6767fffff0f0', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#0e0e10101919'
-scrollbar-policy='never'
-
-[legacy/profiles:]
-default='6e110849-e6b7-48a0-8890-460fdc5519aa'
-list=['6e110849-e6b7-48a0-8890-460fdc5519aa', '535f48be-9ee8-4c19-b10c-53c4c7730415', '0589a0de-d99f-4b4d-9d96-7ac037ef91c7', 'e86eb610-eb52-4ae9-9c05-f69b123a755b', '21c92f9b-0cbe-4b3b-9ebd-880018021aa2', '147ce06e-e821-4678-895c-0ce6be48a800', 'ced094a4-5a2b-4184-b243-bbfa116fe227', 'b35733d5-6ed5-4ff4-b42b-8bcd8650f390', '3268ea72-8352-4957-8e3d-695c3c9ed8cd', '333dd56d-6b62-42f0-bae0-330b52693d4f', 'a808782f-c417-4dd6-8c57-5b20e11ac036', '7c08fe0f-a590-43b4-a514-76dae7121ecd', 'dc43af0e-7a84-4395-8d62-0b8972134a8c', 'b11f53e8-4356-44e9-9b64-1aad4fff3a85', '444e59bd-33c8-49dd-96e1-801f324e8acb', '11791ecf-b67d-4f85-b29a-b40e40097c28', 'd8c1c79d-5234-4f5f-8d2a-d9988e2d9a1c', '59dfaf98-049a-4eac-a274-19e058b6b26d', '38db042c-d347-4b4a-9af1-872e6eff0dfe', 'c8e49f66-0d2e-4392-ac98-9ed683d80d22', 'b5a46101-1284-429a-92e8-3e8220f5d18c', 'b344f5e3-0153-4b99-9d3b-007c0749c956', 'ecdde642-c2d2-499a-a727-732ae5ba4c9e', 'b9bbc4c8-7b27-4f6a-8ac0-9fc073630c07', '5039dfeb-6018-432a-a39c-81cd6909353a', '007368a2-62b4-4522-8247-4304eaa221d8', '46f18adf-a671-42fd-9b64-5eaff0afb93f', '036970ef-422e-4f27-980f-3913128a6b79', '27b6e5bf-ee7d-40df-913c-f15b3023c4d0', '0d110098-c259-4339-b51b-e79b66b7921d', '0f9e9e07-7642-4a6b-8c9b-2f3b618dd28c', '80a7e1a6-e9fc-4d11-9ea6-65ca01b64029', '487664df-d395-49f6-b4f7-630cde5dec47', 'fe083e5a-109c-4b8d-8993-a16635c2b4a7', '579fb4e5-3ce6-425f-ae48-f6960421d9e4', '2bafaaab-316b-42dc-b2ba-e594772b0206', '69be2386-b7e8-41aa-ad06-d6fe54dd5acb', '051e5f2b-8519-4561-8ab8-f813be5e07db', '891848bb-809b-4b4a-861d-6eac3cdb782f', 'b898e6ac-4621-4eb6-814a-213564af737d', 'c8aa4977-f7a6-4e7d-a67b-7976c97e93ac', '24fd2edf-c24d-4c19-a749-c07bd7c0f964', '17970e11-fdc0-4070-b84b-0be1d4438a20', '782d8e0a-06b2-46da-873a-0c5d017f2eeb', '4b447e1d-448b-42bf-91ac-d47030a2f91e', '77e4ac0b-bf37-4608-aa71-cb4e3fdd2e75', '9cd55c82-7958-49b3-9c74-05776b8fa6ad', '9592108c-8aad-493f-b7ab-0a3670a9781b', '03e4cbe1-b163-4eec-8ff1-c7630039db7b', '645de6ee-1f31-49f5-8c5b-6daaa9fbe47d', '4650da21-39c4-4c5b-b9c6-998b4ca1894e', '0d2c6937-e191-4045-a3c6-37cd25f13651', '8758e207-e799-44f1-990c-24d7db430d31', '06e4ed4d-f83c-44cf-a411-4ccbb024c37d', '09afbbed-cf5a-480b-a7dc-580c56697b48', 'decc1613-0c1c-4291-b992-110f92c92e4e', 'd60426bc-16e8-4163-b58a-391779c2003f', 'e40ecd94-f9ed-426c-920d-12b8d121ab41', 'edd1c5a3-b134-466f-8f71-59c00a09de52', '8148d713-322f-4baa-b96b-6b3c008b85f5', '3da4db82-e7da-4361-bbf9-d5c0079a45b5', 'e3a909b3-77b1-462d-9b37-e326c41eae11', 'a0810400-de78-4dcd-9559-7a76ed769de1', 'b586d808-0fe7-4ba9-a233-73a68cc6d2a5', '58a7fcec-b2f9-43e3-b4e0-3b1ccf233f09', 'c2767223-eba8-4056-b319-df409d254b17', '0ad8eb27-e2e9-4b97-9919-7824e576d2c7', 'f03c4b2f-0502-416b-956b-c6a13bf8992c', '1404e299-1d01-4a4b-abe0-f41901c64fb8', 'f2491dfb-bfaa-44e3-85e6-f89cdf243c71', '49339a6b-40cf-471c-842c-497c53ea10b8', '1c63081a-8933-4633-8ed5-cd9394d5fa30', 'c496dacb-f44f-4004-92a0-f2c3941a163e', '22206336-461b-42fd-9f68-acfc84cb55f9', 'be56e827-8e58-42df-aff0-c5d5239fcfdb', '0d9d1ffb-4933-444c-9b65-05a30d4b5e56', '782a2e77-8c7d-407e-8e25-268ecf5829ff', '2e547556-5d81-4cc4-aa02-b1bac5d4962c', '98ccdb0e-4c6e-40ea-ac35-d47461665613', 'f11332af-dd5c-43fd-9464-885d3b0d756c', '53aa7a1e-4a67-446b-97fc-17ecfb5ac044', '30084e5c-3efc-4950-ac48-d668c3b708dc', '8294ff2e-6c3a-4b9e-b6d8-976eeaef8afb', '3bf6d039-c6e9-412c-844e-3d9d0fde46a5', '0d7f47bf-1616-44ec-8aa7-f3e0337c1585', '39ddadec-7c4b-43ae-96d7-1c5466b77116', '437c17b2-3654-45dd-8d4b-027faf9bfadc', 'ca5edd14-775b-4770-96df-1fccd4b7d308', '2f3a1a42-85a5-4e6d-b831-bb2e87d2a0be', '1319f54d-a72a-41c7-a13b-ae1614f4b94b', 'a6dcffed-52fb-47b0-a61c-289605f86556', '0770b0a5-5b36-47a8-903f-a131e29b2f06', 'fd7d9aef-28bd-439b-9032-f10c870d6ca1', '69470ad0-4181-439a-97c4-1d9619a03eca', 'ad0277ee-a417-4d69-8c46-6ea84d1de4e0', 'f4f40375-c539-43a6-ae55-bd80e547a2b0', '54dc96a1-2c67-40e7-9fdb-f14ce10e4381', 'b1cb0f25-1ccd-4635-b27c-acdd39a64d68', '5dedd5ad-8ea9-4603-96be-b54ef2246125', '4e1f7e8e-b092-4fef-a867-9cf5651e7a7b', 'e7adae78-5780-49ca-aec3-925f4c58b97b', '85c91560-1414-4a18-b3fd-740980be106c', '3f4463ef-2c19-463e-8899-1295229b2a3b', '8cdcad59-d012-4bcb-bd7a-ff4be34ad9a4', '7d9e1a98-efb1-46dc-a9ee-9f89eefd4ed5', '1f1a9820-b539-4fc5-a07f-552e72614ad3', '248de555-c705-451c-8980-0de48f4b53a0', '290c95cf-5530-4e3e-beba-bdac8517f750', '62517180-e079-4554-afbf-8a634b68bbe1', 'ba2ca365-b250-43d2-b071-558d50258d97', '88476d5f-056d-4ed2-ab84-32e361784bac', 'ed23cde7-da7d-43c3-8085-bb10366c488e', '7f70a493-d71f-4325-bd3b-e93cab37fc4e', 'ef8d2d80-591e-4d49-9e3f-bbc4836f98ea', '57236d81-01f8-4163-bbf3-6105d62ef0f7', 'f84d8f19-e377-46da-af9e-af87f22868f0', '4e2a1fb3-99ab-416a-947c-9b9f2ad8a696']
-
-[legacy/profiles:/:782d8e0a-06b2-46da-873a-0c5d017f2eeb]
-foreground-color='#8484c1c13838'
-visible-name='Hipster Green'
-login-shell=true
-palette=['#000000000000', '#b6b621214a4a', '#0000a6a60000', '#bfbfbfbf0000', '#24246e6eb2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#8686a9a93e3e', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bfbfbfbfbfbf'
-background-color='#10100b0b0505'
-scrollbar-policy='never'
-
-[legacy/profiles:/:7d9e1a98-efb1-46dc-a9ee-9f89eefd4ed5]
-foreground-color='#c5c5c8c8c6c6'
-visible-name='Tommorow Night'
-login-shell=true
-palette=['#000000000000', '#cccc66666666', '#b5b5bdbd6868', '#f0f0c6c67474', '#8181a2a2bebe', '#b2b29494bbbb', '#8a8abebeb7b7', '#ffffffffffff', '#000000000000', '#cccc66666666', '#b5b5bdbd6868', '#f0f0c6c67474', '#8181a2a2bebe', '#b2b29494bbbb', '#8a8abebeb7b7', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#1d1d1f1f2121'
-scrollbar-policy='never'
-
-[legacy/profiles:/:8148d713-322f-4baa-b96b-6b3c008b85f5]
-foreground-color='#cacac2c29696'
-visible-name='Medallion'
-login-shell=true
-palette=['#000000000000', '#b6b64c4c0000', '#7c7c8b8b1616', '#d3d3bdbd2626', '#61616b6bb0b0', '#8c8c5a5a9090', '#91916c6c2525', '#cacac2c29a9a', '#5e5e52521919', '#ffff91914949', '#b2b2caca3b3b', '#ffffe5e54a4a', '#acacb8b8ffff', '#ffffa0a0ffff', '#ffffbcbc5151', '#fefed6d69898']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#cacac2c29a9a'
-background-color='#1d1d19190808'
-scrollbar-policy='never'
-
-[legacy/profiles:/:4650da21-39c4-4c5b-b9c6-998b4ca1894e]
-foreground-color='#f7f7f6f6ecec'
-visible-name='Japanesque'
-login-shell=true
-palette=['#343439393535', '#cfcf3f3f6161', '#7b7bb7b75b5b', '#e9e9b3b32a2a', '#4c4c9a9ad4d4', '#a5a57f7fc4c4', '#38389a9aadad', '#fafafafaf6f6', '#59595b5b5959', '#d1d18f8fa6a6', '#76767f7f2c2c', '#787859592f2f', '#131359597979', '#606042429191', '#7676bbbbcaca', '#b2b2b5b5aeae']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#fafafafaf6f6'
-background-color='#1e1e1e1e1e1e'
-scrollbar-policy='never'
-
-[legacy/profiles:/:fd7d9aef-28bd-439b-9032-f10c870d6ca1]
-foreground-color='#ececf0f0c1c1'
-visible-name='Spacedust'
-login-shell=true
-palette=['#6e6e53534646', '#e3e35b5b0000', '#5c5cabab9696', '#e3e3cdcd7b7b', '#0f0f54548b8b', '#e3e35b5b0000', '#0606afafc7c7', '#f0f0f1f1cece', '#68684c4c3131', '#ffff8a8a3a3a', '#aeaecacab8b8', '#ffffc8c87878', '#6767a0a0cece', '#ffff8a8a3a3a', '#8383a7a7b4b4', '#fefefffff1f1']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#f0f0f1f1cece'
-background-color='#0a0a1e1e2424'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ef8d2d80-591e-4d49-9e3f-bbc4836f98ea]
-foreground-color='#dadafafaffff'
-visible-name='Wild Cherry'
-login-shell=true
-palette=['#000005050707', '#d9d940408585', '#2a2ab2b25050', '#ffffd1d16f6f', '#88883c3cdcdc', '#ecececececec', '#c1c1b8b8b7b7', '#fffff8f8dede', '#00009c9cc9c9', '#dada6b6bacac', '#f4f4dcdca5a5', '#eaeac0c06666', '#30308c8cbaba', '#aeae63636b6b', '#ffff91919d9d', '#e4e483838d8d']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#fffff8f8dede'
-background-color='#1f1f17172626'
-scrollbar-policy='never'
-
-[legacy/profiles:/:1f1a9820-b539-4fc5-a07f-552e72614ad3]
-foreground-color='#3131d0d07b7b'
-visible-name='Toy Chest'
-login-shell=true
-palette=['#2c2c3f3f5858', '#bebe2d2d2626', '#1a1a91917272', '#dbdb8e8e2727', '#32325d5d9696', '#8a8a5e5edcdc', '#3535a0a08f8f', '#2323d1d18383', '#333368688989', '#dddd59594444', '#3131d0d07b7b', '#e7e7d8d84b4b', '#3434a6a6dada', '#aeae6b6bdcdc', '#4242c3c3aeae', '#d5d5d5d5d5d5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#2323d1d18383'
-background-color='#242436364b4b'
-scrollbar-policy='never'
-
-[legacy/profiles:/:09afbbed-cf5a-480b-a7dc-580c56697b48]
-foreground-color='#73736e6e7d7d'
-visible-name='Lavandula'
-login-shell=true
-palette=['#232300004646', '#7d7d16162525', '#33337e7e6f6f', '#7f7f6f6f4949', '#4f4f4a4a7f7f', '#5a5a3f3f7f7f', '#585877777f7f', '#73736e6e7d7d', '#37372d2d4646', '#e0e051516767', '#5252e0e0c4c4', '#e0e0c3c38686', '#8e8e8787e0e0', '#a7a77676e0e0', '#9a9ad4d4e0e0', '#8c8c9191fafa']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#73736e6e7d7d'
-background-color='#050500001414'
-scrollbar-policy='never'
-
-[legacy/profiles:/:03e4cbe1-b163-4eec-8ff1-c7630039db7b]
-foreground-color='#ffffffffffff'
-visible-name='Idle Toes'
-login-shell=true
-palette=['#323232323232', '#d2d252525252', '#7f7fe1e17373', '#ffffc6c66d6d', '#40409999ffff', '#f6f68080ffff', '#bebed6d6ffff', '#eeeeeeeeecec', '#535353535353', '#f0f070707070', '#9d9dffff9191', '#ffffe4e48b8b', '#5e5eb7b7f7f7', '#ffff9d9dffff', '#dcdcf4f4ffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#eeeeeeeeecec'
-background-color='#323232323232'
-scrollbar-policy='never'
-
-[legacy/profiles:/:f03c4b2f-0502-416b-956b-c6a13bf8992c]
-foreground-color='#bbbbbbbbbbbb'
-visible-name='Nightlion V1'
-login-shell=true
-palette=['#4c4c4c4c4c4c', '#bbbb00000000', '#5f5fdede8f8f', '#f3f3f1f16767', '#27276b6bd8d8', '#bbbb0000bbbb', '#0000dadadfdf', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+palette=['#000000000000', '#a6a600000101', '#0000bbbb0000', '#fefecdcd2222', '#3a3a9b9bdbdb', '#bbbb0000bbbb', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#ffff00000303', '#9393c8c86363', '#fefef8f87474', '#a1a1d7d7ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#bbbbbbbbbbbb'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:69470ad0-4181-439a-97c4-1d9619a03eca]
-foreground-color='#c9c9c6c6bcbc'
-visible-name='SpaceGray Eighties Dull'
-login-shell=true
-palette=['#151517171c1c', '#b2b24a4a5656', '#9292b4b47777', '#c6c673735a5a', '#7c7c8f8fa5a5', '#a5a578789e9e', '#8080cdcdcbcb', '#b3b3b8b8c3c3', '#555555555555', '#ecec5f5f6767', '#8989e9e98686', '#fefec2c25454', '#54548686c0c0', '#bfbf8383c1c1', '#5858c2c2c1c1', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#b3b3b8b8c3c3'
-background-color='#222222222222'
-scrollbar-policy='never'
-
-[legacy/profiles:/:2f3a1a42-85a5-4e6d-b831-bb2e87d2a0be]
-foreground-color='#3535b1b1d2d2'
-visible-name='Slate'
-login-shell=true
-palette=['#222222222222', '#e2e2a8a8bfbf', '#8181d7d77878', '#c4c4c9c9c0c0', '#26264b4b4949', '#a4a48181d3d3', '#1515abab9c9c', '#0202c5c5e0e0', '#ffffffffffff', '#ffffcdcdd9d9', '#bebeffffa8a8', '#d0d0cccccaca', '#7a7ab0b0d2d2', '#c5c5a7a7d9d9', '#8c8cdfdfe0e0', '#e0e0e0e0e0e0']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#0202c5c5e0e0'
-background-color='#222222222222'
+background-color='#282830303333'
 scrollbar-policy='never'
 
 [legacy/profiles:/:e7adae78-5780-49ca-aec3-925f4c58b97b]
@@ -405,292 +529,6 @@ bold-color='#d0d0d0d0d0d0'
 background-color='#262626262626'
 scrollbar-policy='never'
 
-[legacy/profiles:/:051e5f2b-8519-4561-8ab8-f813be5e07db]
-foreground-color='#9f9f9f9fa1a1'
-visible-name='Grape'
-login-shell=true
-palette=['#2d2d28283f3f', '#eded22226161', '#1f1fa9a91b1b', '#8d8ddcdc2020', '#48487d7df4f4', '#8d8d3535c9c9', '#3b3bdedeeded', '#9e9e9e9ea0a0', '#595951516a6a', '#f0f072729a9a', '#5353aaaa5e5e', '#b2b2dcdc8787', '#a9a9bcbcecec', '#adad8181c2c2', '#9d9de3e3ebeb', '#a2a28888f7f7']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#9e9e9e9ea0a0'
-background-color='#171714142323'
-scrollbar-policy='never'
-
-[legacy/profiles:/:38db042c-d347-4b4a-9af1-872e6eff0dfe]
-foreground-color='#aeaea4a47a7a'
-visible-name='Ciapre'
-login-shell=true
-palette=['#181818181818', '#818100000909', '#484851513b3b', '#cccc8b8b3f3f', '#57576d6d8c8c', '#72724d4d7c7c', '#5c5c4f4f4b4b', '#aeaea4a47f7f', '#555555555555', '#acac38383535', '#a6a6a7a75d5d', '#dcdcdfdf7c7c', '#30309797c6c6', '#d3d330306161', '#f3f3dbdbb2b2', '#f4f4f4f4f4f4']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#aeaea4a47f7f'
-background-color='#19191c1c2727'
-scrollbar-policy='never'
-
-[legacy/profiles:/:4e2a1fb3-99ab-416a-947c-9b9f2ad8a696]
-foreground-color='#dcdcdcdccccc'
-visible-name='Zenburn'
-login-shell=true
-palette=['#4d4d4d4d4d4d', '#707050505050', '#6060b4b48a8a', '#f0f0dfdfafaf', '#505060607070', '#dcdc8c8cc3c3', '#8c8cd0d0d3d3', '#dcdcdcdccccc', '#707090908080', '#dcdca3a3a3a3', '#c3c3bfbf9f9f', '#e0e0cfcf9f9f', '#9494bfbff3f3', '#ecec9393d3d3', '#9393e0e0e3e3', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#dcdcdcdccccc'
-background-color='#3f3f3f3f3f3f'
-scrollbar-policy='never'
-
-[legacy/profiles:/:3da4db82-e7da-4361-bbf9-d5c0079a45b5]
-foreground-color='#e1e1e1e1e0e0'
-visible-name='Misterioso'
-login-shell=true
-palette=['#000000000000', '#ffff42424242', '#7474afaf6868', '#ffffadad2929', '#33338f8f8686', '#94941414e6e6', '#2323d7d7d7d7', '#e1e1e1e1e0e0', '#555555555555', '#ffff32324242', '#7474cdcd6868', '#ffffb9b92929', '#2323d7d7d7d7', '#ffff3737ffff', '#0000edede1e1', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e1e1e1e1e0e0'
-background-color='#2d2d37374343'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ecdde642-c2d2-499a-a727-732ae5ba4c9e]
-foreground-color='#686852525a5a'
-visible-name='Crayon Pony Fish'
-login-shell=true
-palette=['#2b2b1b1b1d1d', '#919100002b2b', '#575795952424', '#abab31311b1b', '#8c8c8787b0b0', '#69692f2f5050', '#e8e8a8a86666', '#686852525a5a', '#3d3d2b2b2e2e', '#c5c525255d5d', '#8d8dffff5757', '#c8c838381d1d', '#cfcfc9c9ffff', '#fcfc6c6cbaba', '#ffffceceafaf', '#b0b094949d9d']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#686852525a5a'
-background-color='#151507070707'
-scrollbar-policy='never'
-
-[legacy/profiles:/:437c17b2-3654-45dd-8d4b-027faf9bfadc]
-foreground-color='#cacacececdcd'
-visible-name='Seti'
-login-shell=true
-palette=['#323232323232', '#c2c228283232', '#8e8ec4c43d3d', '#e0e0c6c64f4f', '#4343a5a5d5d5', '#8b8b5757b5b5', '#8e8ec4c43d3d', '#eeeeeeeeeeee', '#323232323232', '#c2c228283232', '#8e8ec4c43d3d', '#e0e0c6c64f4f', '#4343a5a5d5d5', '#8b8b5757b5b5', '#8e8ec4c43d3d', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#eeeeeeeeeeee'
-background-color='#111112121313'
-scrollbar-policy='never'
-
-[legacy/profiles:/:7c08fe0f-a590-43b4-a514-76dae7121ecd]
-foreground-color='#e0e0dbdbb7b7'
-visible-name='BirdsOfParadise'
-login-shell=true
-palette=['#57573d3d2626', '#bebe2d2d2626', '#6b6ba1a18a8a', '#e9e99d9d2a2a', '#5a5a8686adad', '#acac8080a6a6', '#7474a6a6adad', '#e0e0dbdbb7b7', '#9b9b6c6c4a4a', '#e8e846462727', '#9595d8d8baba', '#d0d0d1d15050', '#b8b8d3d3eded', '#d1d19e9ecbcb', '#9393cfcfd7d7', '#fffff9f9d5d5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e0e0dbdbb7b7'
-background-color='#2a2a1f1f1d1d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:b5a46101-1284-429a-92e8-3e8220f5d18c]
-foreground-color='#ffffffffffff'
-visible-name='Cobalt2'
-login-shell=true
-palette=['#000000000000', '#ffff00000000', '#3838dede2121', '#ffffe5e50a0a', '#14146060d2d2', '#ffff00005d5d', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#f4f40e0e1717', '#3b3bd0d01d1d', '#ededc8c80909', '#55555555ffff', '#ffff5555ffff', '#6a6ae3e3fafa', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#131327273838'
-scrollbar-policy='never'
-
-[legacy/profiles:/:a808782f-c417-4dd6-8c57-5b20e11ac036]
-foreground-color='#96968c8c8383'
-visible-name='Belafonte Night'
-login-shell=true
-palette=['#202011111b1b', '#bebe10100e0e', '#858581816262', '#eaeaa5a54949', '#42426a6a7979', '#979752522c2c', '#98989a9a9c9c', '#96968c8c8383', '#5e5e52525252', '#bebe10100e0e', '#858581816262', '#eaeaa5a54949', '#42426a6a7979', '#979752522c2c', '#98989a9a9c9c', '#d5d5ccccbaba']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#96968c8c8383'
-background-color='#202011111b1b'
-scrollbar-policy='never'
-
-[legacy/profiles:/:c8e49f66-0d2e-4392-ac98-9ed683d80d22]
-foreground-color='#262626262626'
-visible-name='CLRS'
-login-shell=true
-palette=['#000000000000', '#f8f828282a2a', '#32328a8a5d5d', '#fafa70701d1d', '#13135c5cd0d0', '#9f9f0000bdbd', '#3333c3c3c1c1', '#b3b3b3b3b3b3', '#555557575353', '#fbfb04041616', '#2c2cc6c63131', '#fdfdd7d72727', '#16167070ffff', '#e9e90000b0b0', '#3a3ad5d5cece', '#eeeeeeeeecec']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#b3b3b3b3b3b3'
-background-color='#ffffffffffff'
-scrollbar-policy='never'
-
-[legacy/profiles:/:2bafaaab-316b-42dc-b2ba-e594772b0206]
-foreground-color='#ffffffffffff'
-visible-name='Frontend Galaxy'
-login-shell=true
-palette=['#000000000000', '#f9f955555f5f', '#2121b0b08989', '#fefef0f02a2a', '#58589d9df6f6', '#94944d4d9595', '#1f1f9e9ee7e7', '#bbbbbbbbbbbb', '#555555555555', '#fafa8c8c8f8f', '#3535bbbb9a9a', '#ffffffff5555', '#58589d9df6f6', '#e7e756569999', '#39397979bcbc', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#1d1d28283737'
-scrollbar-policy='never'
-
-[legacy/profiles:/:f84d8f19-e377-46da-af9e-af87f22868f0]
-foreground-color='#999999999393'
-visible-name='Wryan'
-login-shell=true
-palette=['#333333333333', '#8c8c46466565', '#282873737373', '#7c7c7c7c9999', '#393955557373', '#5e5e46468c8c', '#313165658c8c', '#89899c9ca1a1', '#3d3d3d3d3d3d', '#bfbf4d4d8080', '#5353a6a6a6a6', '#9e9e9e9ecbcb', '#47477a7ab3b3', '#7e7e6262b3b3', '#60609696bfbf', '#c0c0c0c0c0c0']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#89899c9ca1a1'
-background-color='#101010101010'
-scrollbar-policy='never'
-
-[legacy/profiles:/:1319f54d-a72a-41c7-a13b-ae1614f4b94b]
-foreground-color='#9999a3a3a2a2'
-visible-name='Soft Server'
-login-shell=true
-palette=['#000000000000', '#a2a268686a6a', '#9a9aa5a56a6a', '#a3a390906a6a', '#6b6b8f8fa3a3', '#6a6a7171a3a3', '#6b6ba5a58f8f', '#9999a3a3a2a2', '#66666c6c6c6c', '#dddd5c5c6060', '#bfbfdfdf5555', '#dedeb3b36060', '#6262b1b1dfdf', '#60606e6edfdf', '#6464e3e39c9c', '#d2d2e0e0dede']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#9999a3a3a2a2'
-background-color='#242426262626'
-scrollbar-policy='never'
-
-[legacy/profiles:/:036970ef-422e-4f27-980f-3913128a6b79]
-foreground-color='#e5e5c7c7a9a9'
-visible-name='Earthsong'
-login-shell=true
-palette=['#121214141818', '#c9c942423434', '#8585c5c54c4c', '#f5f5aeae2e2e', '#13139898b9b9', '#d0d063633d3d', '#505095955252', '#e5e5c6c6aaaa', '#67675f5f5454', '#ffff64645a5a', '#9898e0e03636', '#e0e0d5d56161', '#5f5fdadaffff', '#ffff92926969', '#8484f0f08888', '#f6f6f7f7ecec']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e5e5c6c6aaaa'
-background-color='#292925252020'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ca5edd14-775b-4770-96df-1fccd4b7d308]
-foreground-color='#404055555555'
-visible-name='Shaman'
-login-shell=true
-palette=['#010120202626', '#b2b230302d2d', '#0000a9a94141', '#5e5e8b8baaaa', '#44449a9a8686', '#000059599d9d', '#5d5d7e7e1919', '#404055555555', '#383844445151', '#ffff42424242', '#2a2aeaea5e5e', '#8e8ed4d4fdfd', '#6161d5d5baba', '#12129898ffff', '#9898d0d02828', '#5858fbfbd6d6']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#404055555555'
-background-color='#000010101515'
-scrollbar-policy='never'
-
-[legacy/profiles:/:007368a2-62b4-4522-8247-4304eaa221d8]
-foreground-color='#ffffffffffff'
-visible-name='Desert'
-login-shell=true
-palette=['#4d4d4d4d4d4d', '#ffff2b2b2b2b', '#9898fbfb9898', '#f0f0e6e68c8c', '#cdcd85853f3f', '#ffffdedeadad', '#ffffa0a0a0a0', '#f5f5dedeb3b3', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#8787ceceffff', '#ffff5555ffff', '#ffffd7d70000', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#f5f5dedeb3b3'
-background-color='#333333333333'
-scrollbar-policy='never'
-
-[legacy/profiles:/:f4f40375-c539-43a6-ae55-bd80e547a2b0]
-foreground-color='#b3b3b8b8c3c3'
-visible-name='SpaceGray'
-login-shell=true
-palette=['#000000000000', '#b0b04b4b5757', '#8787b3b37979', '#e5e5c1c17979', '#7d7d8f8fa4a4', '#a4a479799696', '#8585a7a7a5a5', '#b3b3b8b8c3c3', '#000000000000', '#b0b04b4b5757', '#8787b3b37979', '#e5e5c1c17979', '#7d7d8f8fa4a4', '#a4a479799696', '#8585a7a7a5a5', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#b3b3b8b8c3c3'
-background-color='#202024242d2d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:b344f5e3-0153-4b99-9d3b-007c0749c956]
-foreground-color='#8f8ff5f58686'
-visible-name='Cobalt Neon'
-login-shell=true
-palette=['#141426263131', '#ffff23232020', '#3b3ba5a5ffff', '#e9e9e7e75c5c', '#8f8ff5f58686', '#78781a1aa0a0', '#8f8ff5f58686', '#baba4646b2b2', '#fffff6f68888', '#d4d431312e2e', '#8f8ff5f58686', '#e9e9f0f06d6d', '#3c3c7d7dd2d2', '#82823030a7a7', '#6c6cbcbc6767', '#8f8ff5f58686']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#baba4646b2b2'
-background-color='#141428283838'
-scrollbar-policy='never'
-
-[legacy/profiles:/:39ddadec-7c4b-43ae-96d7-1c5466b77116]
-foreground-color='#dedeb8b88d8d'
-visible-name='Sea Shells'
-login-shell=true
-palette=['#171738384c4c', '#d1d151512323', '#02027c7c9b9b', '#fcfca0a02f2f', '#1e1e49495050', '#6868d4d4f1f1', '#5050a3a3b5b5', '#dedeb8b88d8d', '#43434b4b5353', '#d4d486867878', '#62628d8d9898', '#fdfdd3d39f9f', '#1b1bbcbcdddd', '#bbbbe3e3eeee', '#8787acacb4b4', '#fefee4e4cece']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#dedeb8b88d8d'
-background-color='#090914141b1b'
-scrollbar-policy='never'
-
-[legacy/profiles:/:579fb4e5-3ce6-425f-ae48-f6960421d9e4]
-foreground-color='#dedec1c16565'
-visible-name='Frontend Fun Forrest'
-login-shell=true
-palette=['#000000000000', '#d6d626262b2b', '#91919c9c0000', '#bebe8a8a1313', '#46469999a3a3', '#8d8d43433131', '#dada82821313', '#ddddc2c26565', '#7f7f6a6a5555', '#e5e55a5a1c1c', '#bfbfc6c65a5a', '#ffffcbcb1b1b', '#7c7cc9c9cfcf', '#d2d263634949', '#e6e6a9a96b6b', '#ffffeaeaa3a3']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ddddc2c26565'
-background-color='#252512120000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:22206336-461b-42fd-9f68-acfc84cb55f9]
-foreground-color='#8a8a8d8daeae'
-visible-name='Ollie'
-login-shell=true
-palette=['#000000000000', '#acac2e2e3131', '#3131acac6161', '#acac43430000', '#2d2d5757acac', '#b0b085852828', '#1f1fa6a6acac', '#8a8a8e8eacac', '#5b5b37372525', '#ffff3d3d4848', '#3b3bffff9999', '#ffff5e5e1e1e', '#44448888ffff', '#ffffc2c21d1d', '#1f1ffafaffff', '#5b5b6e6ea7a7']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#8a8a8e8eacac'
-background-color='#222221212525'
-scrollbar-policy='never'
-
-[legacy/profiles:/:be56e827-8e58-42df-aff0-c5d5239fcfdb]
-foreground-color='#a3a39e9e9b9b'
-visible-name='Paraiso Dark'
-login-shell=true
-palette=['#2f2f1e1e2e2e', '#efef61615555', '#4848b6b68585', '#fefec4c41818', '#0606b6b6efef', '#81815b5ba4a4', '#5b5bc4c4bfbf', '#a3a39e9e9b9b', '#77776e6e7171', '#efef61615555', '#4848b6b68585', '#fefec4c41818', '#0606b6b6efef', '#81815b5ba4a4', '#5b5bc4c4bfbf', '#e7e7e9e9dbdb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#a3a39e9e9b9b'
-background-color='#2f2f1e1e2e2e'
-scrollbar-policy='never'
-
 [legacy/profiles:/:333dd56d-6b62-42f0-bae0-330b52693d4f]
 foreground-color='#454537373c3c'
 visible-name='Belafonte Day'
@@ -702,266 +540,6 @@ use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#96968c8c8383'
 background-color='#d5d5ccccbaba'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ba2ca365-b250-43d2-b071-558d50258d97]
-foreground-color='#dcdcdcdccccc'
-visible-name='Vaughn'
-login-shell=true
-palette=['#252523234f4f', '#707050505050', '#6060b4b48a8a', '#dfdfafaf8f8f', '#55555555ffff', '#f0f08c8cc3c3', '#8c8cd0d0d3d3', '#707090908080', '#707090908080', '#dcdca3a3a3a3', '#6060b4b48a8a', '#f0f0dfdfafaf', '#55555555ffff', '#ecec9393d3d3', '#9393e0e0e3e3', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#707090908080'
-background-color='#252523234f4f'
-scrollbar-policy='never'
-
-[legacy/profiles:/:d8c1c79d-5234-4f5f-8d2a-d9988e2d9a1c]
-foreground-color='#78786969c4c4'
-visible-name='C64'
-login-shell=true
-palette=['#090903030000', '#888839393232', '#5555a0a04949', '#bfbfcece7272', '#404031318d8d', '#8b8b3f3f9696', '#6767b6b6bdbd', '#ffffffffffff', '#000000000000', '#888839393232', '#5555a0a04949', '#bfbfcece7272', '#404031318d8d', '#8b8b3f3f9696', '#6767b6b6bdbd', '#f7f7f7f7f7f7']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#404031318d8d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:891848bb-809b-4b4a-861d-6eac3cdb782f]
-foreground-color='#fffff0f0a5a5'
-visible-name='Grass'
-login-shell=true
-palette=['#000000000000', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00000000a3a3', '#959500006262', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00000000bbbb', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#131377773d3d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:c496dacb-f44f-4004-92a0-f2c3941a163e]
-foreground-color='#ffffffffffff'
-visible-name='Ocean'
-login-shell=true
-palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bfbfbfbfbfbf'
-background-color='#22224f4fbcbc'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0d9d1ffb-4933-444c-9b65-05a30d4b5e56]
-foreground-color='#f2f2f2f2f2f2'
-visible-name='Paul Millr'
-login-shell=true
-palette=['#2a2a2a2a2a2a', '#ffff00000000', '#7979ffff0f0f', '#d3d3bfbf0000', '#39396b6bd7d7', '#b4b44949bebe', '#6666ccccffff', '#bbbbbbbbbbbb', '#666666666666', '#ffff00008080', '#6666ffff6666', '#f3f3d6d64e4e', '#70709a9aeded', '#dbdb6767e6e6', '#7a7adfdff2f2', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:8294ff2e-6c3a-4b9e-b6d8-976eeaef8afb]
-foreground-color='#ffffffffffff'
-visible-name='Rippedcasts'
-login-shell=true
-palette=['#000000000000', '#cdcdafaf9595', '#a8a8ffff6060', '#bfbfbbbb1f1f', '#7575a5a5b0b0', '#ffff7373fdfd', '#5a5a64647e7e', '#bfbfbfbfbfbf', '#666666666666', '#eeeecbcbadad', '#bcbceeee6868', '#e5e5e5e50000', '#8686bdbdc9c9', '#e5e50000e5e5', '#8c8c9b9bc4c4', '#e5e5e5e5e5e5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bfbfbfbfbfbf'
-background-color='#2b2b2b2b2b2b'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ad0277ee-a417-4d69-8c46-6ea84d1de4e0]
-foreground-color='#bdbdbabaaeae'
-visible-name='SpaceGray Eighties'
-login-shell=true
-palette=['#151517171c1c', '#ecec5f5f6767', '#8181a7a76464', '#fefec2c25454', '#54548686c0c0', '#bfbf8383c1c1', '#5757c2c2c1c1', '#efefecece7e7', '#555555555555', '#ffff69697373', '#9393d4d49393', '#ffffd2d25656', '#4d4d8484d1d1', '#ffff5555ffff', '#8383e9e9e4e4', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#efefecece7e7'
-background-color='#222222222222'
-scrollbar-policy='never'
-
-[legacy/profiles:/:b9bbc4c8-7b27-4f6a-8ac0-9fc073630c07]
-foreground-color='#ffffffffffff'
-visible-name='Dark Pastel'
-login-shell=true
-palette=['#000000000000', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:1404e299-1d01-4a4b-abe0-f41901c64fb8]
-foreground-color='#bbbbbbbbbbbb'
-visible-name='Nightlion V2'
-login-shell=true
-palette=['#4c4c4c4c4c4c', '#bbbb00000000', '#0404f6f62323', '#f3f3f1f16767', '#6464d0d0f0f0', '#cece6f6fdbdb', '#0000dadadfdf', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#7d7df7f71d1d', '#ffffffff5555', '#6262cbcbe8e8', '#ffff9b9bf5f5', '#0000ccccd8d8', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#171717171717'
-scrollbar-policy='never'
-
-[legacy/profiles:/:88476d5f-056d-4ed2-ab84-32e361784bac]
-foreground-color='#ffffffffffff'
-visible-name='Vibrant Ink'
-login-shell=true
-palette=['#878787878787', '#ffff66660000', '#ccccffff0404', '#ffffcccc0000', '#4444b4b4cccc', '#99993333cccc', '#4444b4b4cccc', '#f5f5f5f5f5f5', '#555555555555', '#ffff00000000', '#0000ffff0000', '#ffffffff0000', '#00000000ffff', '#ffff0000ffff', '#0000ffffffff', '#e5e5e5e5e5e5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#f5f5f5f5f5f5'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0d2c6937-e191-4045-a3c6-37cd25f13651]
-foreground-color='#dededededede'
-visible-name='Jellybeans'
-login-shell=true
-palette=['#929292929292', '#e2e273737373', '#9494b9b97979', '#ffffbaba7b7b', '#9797bebedcdc', '#e1e1c0c0fafa', '#000098988e8e', '#dededededede', '#bdbdbdbdbdbd', '#ffffa1a1a1a1', '#bdbddedeabab', '#ffffdcdca0a0', '#b1b1d8d8f6f6', '#fbfbdadaffff', '#1a1ab2b2a8a8', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#dededededede'
-background-color='#121212121212'
-scrollbar-policy='never'
-
-[legacy/profiles:/:1c63081a-8933-4633-8ed5-cd9394d5fa30]
-foreground-color='#b3b3b8b8c3c3'
-visible-name='Oceanic-Next'
-login-shell=true
-palette=['#12121C1C2121', '#E4E447475454', '#8989BDBD8282', '#F7F7BDBD5151', '#54548686C0C0', '#B7B77E7EB8B8', '#5050A5A5A4A4', '#FFFFFFFFFFFF', '#525260606B6B', '#E4E447475454', '#8989BDBD8282', '#F7F7BDBD5151', '#54548686C0C0', '#B7B77E7EB8B8', '#5050A5A5A4A4', '#FFFFFFFFFFFF']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#FFFFFFFFFFFF'
-background-color='#12121b1b2121'
-scrollbar-policy='never'
-
-[legacy/profiles:/:7f70a493-d71f-4325-bd3b-e93cab37fc4e]
-foreground-color='#b3b3b3b3b3b3'
-visible-name='Wez'
-login-shell=true
-palette=['#000000000000', '#cccc55555555', '#5555cccc5555', '#cdcdcdcd5555', '#55555555cccc', '#cccc5555cccc', '#7a7acacacaca', '#cccccccccccc', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#cccccccccccc'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:59dfaf98-049a-4eac-a274-19e058b6b26d]
-foreground-color='#d9d9e6e6f2f2'
-visible-name='Chalkboard'
-login-shell=true
-palette=['#000000000000', '#c3c373737272', '#7272c3c37373', '#c2c2c3c37272', '#73737272c3c3', '#c3c37272c2c2', '#7272c2c2c3c3', '#d9d9d9d9d9d9', '#323232323232', '#dbdbaaaaaaaa', '#aaaadbdbaaaa', '#dadadbdbaaaa', '#aaaaaaaadbdb', '#dbdbaaaadada', '#aaaadadadbdb', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d9d9d9d9d9d9'
-background-color='#292926262f2f'
-scrollbar-policy='never'
-
-[legacy/profiles:/:e86eb610-eb52-4ae9-9c05-f69b123a755b]
-foreground-color='#f8f8dcdcc0c0'
-visible-name='AdventureTime'
-login-shell=true
-palette=['#050504040404', '#bdbd00001313', '#4a4ab1b11818', '#e7e774741e1e', '#0f0f4a4ac6c6', '#666659599393', '#7070a5a59898', '#f8f8dcdcc0c0', '#4e4e7c7cbfbf', '#fcfc5f5f5a5a', '#9e9effff6e6e', '#efefc1c11a1a', '#19199797c6c6', '#9b9b59595353', '#c8c8fafaf4f4', '#f6f6f5f5fbfb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#f8f8dcdcc0c0'
-background-color='#1f1f1d1d4545'
-scrollbar-policy='never'
-
-[legacy/profiles:/:9cd55c82-7958-49b3-9c74-05776b8fa6ad]
-foreground-color='#d9d9efefd3d3'
-visible-name='IC Green PPL'
-login-shell=true
-palette=['#1f1f1f1f1f1f', '#fbfb00002a2a', '#33339c9c2424', '#65659b9b2525', '#14149b9b4545', '#5353b8b82c2c', '#2c2cb8b86868', '#e0e0ffffefef', '#030327271010', '#a7a7ffff3f3f', '#9f9fffff6d6d', '#d2d2ffff6d6d', '#7272ffffb5b5', '#5050ffff3e3e', '#2222ffff7171', '#dadaefefd0d0']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e0e0ffffefef'
-background-color='#3a3a3d3d3f3f'
-scrollbar-policy='never'
-
-[legacy/profiles:/:49339a6b-40cf-471c-842c-497c53ea10b8]
-foreground-color='#cdcdcdcdcdcd'
-visible-name='Obsidian'
-login-shell=true
-palette=['#000000000000', '#a6a600000101', '#0000bbbb0000', '#fefecdcd2222', '#3a3a9b9bdbdb', '#bbbb0000bbbb', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#ffff00000303', '#9393c8c86363', '#fefef8f87474', '#a1a1d7d7ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#282830303333'
-scrollbar-policy='never'
-
-[legacy/profiles:/:3bf6d039-c6e9-412c-844e-3d9d0fde46a5]
-foreground-color='#515149496868'
-visible-name='Royal'
-login-shell=true
-palette=['#24241f1f2b2b', '#919128284c4c', '#232380801c1c', '#b4b49d9d2727', '#65658080b0b0', '#67674d4d9696', '#8a8aaaaabebe', '#525249496666', '#31312d2d3d3d', '#d5d535356c6c', '#2c2cd9d94646', '#fdfde8e83b3b', '#9090babaf9f9', '#a4a47979e3e3', '#acacd4d4ebeb', '#9e9e8c8cbdbd']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#525249496666'
-background-color='#101008081515'
-scrollbar-policy='never'
-
-[legacy/profiles:/:487664df-d395-49f6-b4f7-630cde5dec47]
-foreground-color='#b8b8dbdbefef'
-visible-name='Flatland'
-login-shell=true
-palette=['#1d1d1d1d1919', '#f1f183833939', '#9f9fd3d36464', '#f4f4efef6d6d', '#50509696bebe', '#69695a5abcbc', '#d6d638386565', '#ffffffffffff', '#1d1d1d1d1919', '#d2d22a2a2424', '#a7a7d4d42c2c', '#ffff89894949', '#6161b9b9d0d0', '#69695a5abcbc', '#d6d638386565', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#1d1d1f1f2121'
-scrollbar-policy='never'
-
-[legacy/profiles:/:62517180-e079-4554-afbf-8a634b68bbe1]
-foreground-color='#87877a7a9b9b'
-visible-name='Urple'
-login-shell=true
-palette=['#000000000000', '#b0b042425b5b', '#3737a4a41515', '#adad5c5c4242', '#56564d4d9b9b', '#6c6c3c3ca1a1', '#808080808080', '#878779799c9c', '#5d5d32322525', '#ffff63638888', '#2929e6e62020', '#f0f081816161', '#86867a7aeded', '#a0a05e5eeeee', '#eaeaeaeaeaea', '#bfbfa3a3ffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#878779799c9c'
-background-color='#1b1b1b1b2323'
 scrollbar-policy='never'
 
 [legacy/profiles:/:85c91560-1414-4a18-b3fd-740980be106c]
@@ -977,6 +555,289 @@ bold-color='#bfbfbfbfbfbf'
 background-color='#ffffffffffff'
 scrollbar-policy='never'
 
+[legacy/profiles:/:3da4db82-e7da-4361-bbf9-d5c0079a45b5]
+foreground-color='#e1e1e1e1e0e0'
+visible-name='Misterioso'
+login-shell=true
+palette=['#000000000000', '#ffff42424242', '#7474afaf6868', '#ffffadad2929', '#33338f8f8686', '#94941414e6e6', '#2323d7d7d7d7', '#e1e1e1e1e0e0', '#555555555555', '#ffff32324242', '#7474cdcd6868', '#ffffb9b92929', '#2323d7d7d7d7', '#ffff3737ffff', '#0000edede1e1', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e1e1e1e1e0e0'
+background-color='#2d2d37374343'
+scrollbar-policy='never'
+
+[legacy/profiles:/:be56e827-8e58-42df-aff0-c5d5239fcfdb]
+foreground-color='#a3a39e9e9b9b'
+visible-name='Paraiso Dark'
+login-shell=true
+palette=['#2f2f1e1e2e2e', '#efef61615555', '#4848b6b68585', '#fefec4c41818', '#0606b6b6efef', '#81815b5ba4a4', '#5b5bc4c4bfbf', '#a3a39e9e9b9b', '#77776e6e7171', '#efef61615555', '#4848b6b68585', '#fefec4c41818', '#0606b6b6efef', '#81815b5ba4a4', '#5b5bc4c4bfbf', '#e7e7e9e9dbdb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#a3a39e9e9b9b'
+background-color='#2f2f1e1e2e2e'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b1cb0f25-1ccd-4635-b27c-acdd39a64d68]
+foreground-color='#1a1a1a1a1a1a'
+visible-name='Square'
+login-shell=true
+palette=['#050505050505', '#e9e989897c7c', '#b6b637377d7d', '#ececebebbebe', '#a9a9cdcdebeb', '#757550507b7b', '#c9c9cacaecec', '#f2f2f2f2f2f2', '#141414141414', '#f9f992928686', '#c3c3f7f78686', '#fcfcfbfbcccc', '#b6b6dedefbfb', '#adad7f7fa8a8', '#d7d7d9d9fcfc', '#e2e2e2e2e2e2']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f2f2f2f2f2f2'
+background-color='#0a0a1e1e2424'
+scrollbar-policy='never'
+
+[legacy/profiles:/:21c92f9b-0cbe-4b3b-9ebd-880018021aa2]
+foreground-color='#d0d0d0d0d0d0'
+visible-name='Afterglow'
+login-shell=true
+palette=['#151515151515', '#a5a53c3c2323', '#7b7b92924646', '#d3d3a0a04d4d', '#6c6c9999bbbb', '#9f9f4e4e8585', '#7d7dd6d6cfcf', '#d0d0d0d0d0d0', '#505050505050', '#a5a53c3c2323', '#7b7b92924646', '#d3d3a0a04d4d', '#54547c7c9999', '#9f9f4e4e8585', '#7d7dd6d6cfcf', '#f5f5f5f5f5f5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d0d0d0d0d0d0'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:06e4ed4d-f83c-44cf-a411-4ccbb024c37d]
+foreground-color='#959595959595'
+visible-name='Later This Evening'
+login-shell=true
+palette=['#2b2b2b2b2b2b', '#d4d45a5a6060', '#afafbaba6767', '#e5e5d2d28989', '#a0a0babad6d6', '#c0c09292d6d6', '#9191bfbfb7b7', '#3c3c3d3d3d3d', '#454547474747', '#d3d323232f2f', '#aaaabbbb3939', '#e5e5bebe3939', '#66669999d6d6', '#abab5353d6d6', '#5f5fc0c0aeae', '#c1c1c2c2c2c2']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#3c3c3d3d3d3d'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:7d9e1a98-efb1-46dc-a9ee-9f89eefd4ed5]
+foreground-color='#c5c5c8c8c6c6'
+visible-name='Tommorow Night'
+login-shell=true
+palette=['#000000000000', '#cccc66666666', '#b5b5bdbd6868', '#f0f0c6c67474', '#8181a2a2bebe', '#b2b29494bbbb', '#8a8abebeb7b7', '#ffffffffffff', '#000000000000', '#cccc66666666', '#b5b5bdbd6868', '#f0f0c6c67474', '#8181a2a2bebe', '#b2b29494bbbb', '#8a8abebeb7b7', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
+background-color='#1d1d1f1f2121'
+scrollbar-policy='never'
+
+[legacy/profiles:/:24fd2edf-c24d-4c19-a749-c07bd7c0f964]
+foreground-color='#a8a8a4a49d9d'
+visible-name='Harper'
+login-shell=true
+palette=['#010101010101', '#f8f8b6b63f3f', '#7f7fb5b5e1e1', '#d6d6dada2525', '#48489e9e4848', '#b2b29696c6c6', '#f5f5bfbfd7d7', '#a8a8a4a49d9d', '#72726e6e6a6a', '#f8f8b6b63f3f', '#7f7fb5b5e1e1', '#d6d6dada2525', '#48489e9e4848', '#b2b29696c6c6', '#f5f5bfbfd7d7', '#fefefbfbeaea']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#a8a8a4a49d9d'
+background-color='#010101010101'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ed23cde7-da7d-43c3-8085-bb10366c488e]
+foreground-color='#afafdadab6b6'
+visible-name='Warm Neon'
+login-shell=true
+palette=['#000000000000', '#e2e243434646', '#3939b1b13a3a', '#dadae1e14545', '#42426161c5c5', '#f9f92020fbfb', '#2a2abbbbd4d4', '#d0d0b8b8a3a3', '#fefefcfcfcfc', '#e9e970707171', '#9c9cc0c09090', '#dddddada7a7a', '#7b7b9191d6d6', '#f6f67474baba', '#5e5ed1d1e5e5', '#d8d8c8c8bbbb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d0d0b8b8a3a3'
+background-color='#404040404040'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(0,43,54)'
+use-theme-colors=false
+palette=['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)', 'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)', 'rgb(147,161,161)', 'rgb(253,246,227)']
+foreground-color='rgb(131,148,150)'
+visible-name='Default'
+
+[legacy/profiles:/:a808782f-c417-4dd6-8c57-5b20e11ac036]
+foreground-color='#96968c8c8383'
+visible-name='Belafonte Night'
+login-shell=true
+palette=['#202011111b1b', '#bebe10100e0e', '#858581816262', '#eaeaa5a54949', '#42426a6a7979', '#979752522c2c', '#98989a9a9c9c', '#96968c8c8383', '#5e5e52525252', '#bebe10100e0e', '#858581816262', '#eaeaa5a54949', '#42426a6a7979', '#979752522c2c', '#98989a9a9c9c', '#d5d5ccccbaba']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#96968c8c8383'
+background-color='#202011111b1b'
+scrollbar-policy='never'
+
+[legacy/profiles:/:1319f54d-a72a-41c7-a13b-ae1614f4b94b]
+foreground-color='#9999a3a3a2a2'
+visible-name='Soft Server'
+login-shell=true
+palette=['#000000000000', '#a2a268686a6a', '#9a9aa5a56a6a', '#a3a390906a6a', '#6b6b8f8fa3a3', '#6a6a7171a3a3', '#6b6ba5a58f8f', '#9999a3a3a2a2', '#66666c6c6c6c', '#dddd5c5c6060', '#bfbfdfdf5555', '#dedeb3b36060', '#6262b1b1dfdf', '#60606e6edfdf', '#6464e3e39c9c', '#d2d2e0e0dede']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#9999a3a3a2a2'
+background-color='#242426262626'
+scrollbar-policy='never'
+
+[legacy/profiles:/:7c08fe0f-a590-43b4-a514-76dae7121ecd]
+foreground-color='#e0e0dbdbb7b7'
+visible-name='BirdsOfParadise'
+login-shell=true
+palette=['#57573d3d2626', '#bebe2d2d2626', '#6b6ba1a18a8a', '#e9e99d9d2a2a', '#5a5a8686adad', '#acac8080a6a6', '#7474a6a6adad', '#e0e0dbdbb7b7', '#9b9b6c6c4a4a', '#e8e846462727', '#9595d8d8baba', '#d0d0d1d15050', '#b8b8d3d3eded', '#d1d19e9ecbcb', '#9393cfcfd7d7', '#fffff9f9d5d5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e0e0dbdbb7b7'
+background-color='#2a2a1f1f1d1d'
+scrollbar-policy='never'
+
+[legacy/profiles:/:57236d81-01f8-4163-bbf3-6105d62ef0f7]
+foreground-color='#dededadacfcf'
+visible-name='Wombat'
+login-shell=true
+palette=['#000000000000', '#ffff61615a5a', '#b1b1e9e96969', '#ebebd9d99c9c', '#5d5da9a9f6f6', '#e8e86a6affff', '#8282fffff7f7', '#dededadacfcf', '#313131313131', '#f5f58c8c8080', '#ddddf8f88f8f', '#eeeee5e5b2b2', '#a5a5c7c7ffff', '#ddddaaaaffff', '#b7b7fffff9f9', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#dededadacfcf'
+background-color='#171717171717'
+scrollbar-policy='never'
+
+[legacy/profiles:/:46f18adf-a671-42fd-9b64-5eaff0afb93f]
+foreground-color='#b9b9bcbcbaba'
+visible-name='Dimmed Monokai'
+login-shell=true
+palette=['#3a3a3d3d4343', '#bebe3f3f4848', '#87879a9a3b3b', '#c5c5a6a63535', '#4f4f7676a1a1', '#85855c5c8d8d', '#57578f8fa4a4', '#b9b9bcbcbaba', '#888889898787', '#fbfb00001f1f', '#0f0f72722f2f', '#c4c470703333', '#18186d6de3e3', '#fbfb00006767', '#2e2e70706d6d', '#fdfdffffb9b9']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#b9b9bcbcbaba'
+background-color='#1f1f1f1f1f1f'
+scrollbar-policy='never'
+
+[legacy/profiles:/:a6dcffed-52fb-47b0-a61c-289605f86556]
+foreground-color='#d2d2d8d8d9d9'
+visible-name='Solarized Darcula'
+login-shell=true
+palette=['#252529292a2a', '#f2f248484040', '#626296965555', '#b6b688880000', '#20207575c7c7', '#79797f7fd4d4', '#151596968d8d', '#d2d2d8d8d9d9', '#252529292a2a', '#f2f248484040', '#626296965555', '#b6b688880000', '#20207575c7c7', '#79797f7fd4d4', '#151596968d8d', '#d2d2d8d8d9d9']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d2d2d8d8d9d9'
+background-color='#3d3d3f3f4141'
+scrollbar-policy='never'
+
+[legacy/profiles:]
+default='6e110849-e6b7-48a0-8890-460fdc5519aa'
+list=['6e110849-e6b7-48a0-8890-460fdc5519aa', '535f48be-9ee8-4c19-b10c-53c4c7730415', '0589a0de-d99f-4b4d-9d96-7ac037ef91c7', 'e86eb610-eb52-4ae9-9c05-f69b123a755b', '21c92f9b-0cbe-4b3b-9ebd-880018021aa2', '147ce06e-e821-4678-895c-0ce6be48a800', 'ced094a4-5a2b-4184-b243-bbfa116fe227', 'b35733d5-6ed5-4ff4-b42b-8bcd8650f390', '3268ea72-8352-4957-8e3d-695c3c9ed8cd', '333dd56d-6b62-42f0-bae0-330b52693d4f', 'a808782f-c417-4dd6-8c57-5b20e11ac036', '7c08fe0f-a590-43b4-a514-76dae7121ecd', 'dc43af0e-7a84-4395-8d62-0b8972134a8c', 'b11f53e8-4356-44e9-9b64-1aad4fff3a85', '444e59bd-33c8-49dd-96e1-801f324e8acb', '11791ecf-b67d-4f85-b29a-b40e40097c28', 'd8c1c79d-5234-4f5f-8d2a-d9988e2d9a1c', '59dfaf98-049a-4eac-a274-19e058b6b26d', '38db042c-d347-4b4a-9af1-872e6eff0dfe', 'c8e49f66-0d2e-4392-ac98-9ed683d80d22', 'b5a46101-1284-429a-92e8-3e8220f5d18c', 'b344f5e3-0153-4b99-9d3b-007c0749c956', 'ecdde642-c2d2-499a-a727-732ae5ba4c9e', 'b9bbc4c8-7b27-4f6a-8ac0-9fc073630c07', '5039dfeb-6018-432a-a39c-81cd6909353a', '007368a2-62b4-4522-8247-4304eaa221d8', '46f18adf-a671-42fd-9b64-5eaff0afb93f', '036970ef-422e-4f27-980f-3913128a6b79', '27b6e5bf-ee7d-40df-913c-f15b3023c4d0', '0d110098-c259-4339-b51b-e79b66b7921d', '0f9e9e07-7642-4a6b-8c9b-2f3b618dd28c', '80a7e1a6-e9fc-4d11-9ea6-65ca01b64029', '487664df-d395-49f6-b4f7-630cde5dec47', 'fe083e5a-109c-4b8d-8993-a16635c2b4a7', '579fb4e5-3ce6-425f-ae48-f6960421d9e4', '2bafaaab-316b-42dc-b2ba-e594772b0206', '69be2386-b7e8-41aa-ad06-d6fe54dd5acb', '051e5f2b-8519-4561-8ab8-f813be5e07db', '891848bb-809b-4b4a-861d-6eac3cdb782f', 'b898e6ac-4621-4eb6-814a-213564af737d', 'c8aa4977-f7a6-4e7d-a67b-7976c97e93ac', '24fd2edf-c24d-4c19-a749-c07bd7c0f964', '17970e11-fdc0-4070-b84b-0be1d4438a20', '782d8e0a-06b2-46da-873a-0c5d017f2eeb', '4b447e1d-448b-42bf-91ac-d47030a2f91e', '77e4ac0b-bf37-4608-aa71-cb4e3fdd2e75', '9cd55c82-7958-49b3-9c74-05776b8fa6ad', '9592108c-8aad-493f-b7ab-0a3670a9781b', '03e4cbe1-b163-4eec-8ff1-c7630039db7b', '645de6ee-1f31-49f5-8c5b-6daaa9fbe47d', '4650da21-39c4-4c5b-b9c6-998b4ca1894e', '0d2c6937-e191-4045-a3c6-37cd25f13651', '8758e207-e799-44f1-990c-24d7db430d31', '06e4ed4d-f83c-44cf-a411-4ccbb024c37d', '09afbbed-cf5a-480b-a7dc-580c56697b48', 'decc1613-0c1c-4291-b992-110f92c92e4e', 'd60426bc-16e8-4163-b58a-391779c2003f', 'e40ecd94-f9ed-426c-920d-12b8d121ab41', 'edd1c5a3-b134-466f-8f71-59c00a09de52', '8148d713-322f-4baa-b96b-6b3c008b85f5', '3da4db82-e7da-4361-bbf9-d5c0079a45b5', 'e3a909b3-77b1-462d-9b37-e326c41eae11', 'a0810400-de78-4dcd-9559-7a76ed769de1', 'b586d808-0fe7-4ba9-a233-73a68cc6d2a5', '58a7fcec-b2f9-43e3-b4e0-3b1ccf233f09', 'c2767223-eba8-4056-b319-df409d254b17', '0ad8eb27-e2e9-4b97-9919-7824e576d2c7', 'f03c4b2f-0502-416b-956b-c6a13bf8992c', '1404e299-1d01-4a4b-abe0-f41901c64fb8', 'f2491dfb-bfaa-44e3-85e6-f89cdf243c71', '49339a6b-40cf-471c-842c-497c53ea10b8', '1c63081a-8933-4633-8ed5-cd9394d5fa30', 'c496dacb-f44f-4004-92a0-f2c3941a163e', '22206336-461b-42fd-9f68-acfc84cb55f9', 'be56e827-8e58-42df-aff0-c5d5239fcfdb', '0d9d1ffb-4933-444c-9b65-05a30d4b5e56', '782a2e77-8c7d-407e-8e25-268ecf5829ff', '2e547556-5d81-4cc4-aa02-b1bac5d4962c', '98ccdb0e-4c6e-40ea-ac35-d47461665613', 'f11332af-dd5c-43fd-9464-885d3b0d756c', '53aa7a1e-4a67-446b-97fc-17ecfb5ac044', '30084e5c-3efc-4950-ac48-d668c3b708dc', '8294ff2e-6c3a-4b9e-b6d8-976eeaef8afb', '3bf6d039-c6e9-412c-844e-3d9d0fde46a5', '0d7f47bf-1616-44ec-8aa7-f3e0337c1585', '39ddadec-7c4b-43ae-96d7-1c5466b77116', '437c17b2-3654-45dd-8d4b-027faf9bfadc', 'ca5edd14-775b-4770-96df-1fccd4b7d308', '2f3a1a42-85a5-4e6d-b831-bb2e87d2a0be', '1319f54d-a72a-41c7-a13b-ae1614f4b94b', 'a6dcffed-52fb-47b0-a61c-289605f86556', '0770b0a5-5b36-47a8-903f-a131e29b2f06', 'fd7d9aef-28bd-439b-9032-f10c870d6ca1', '69470ad0-4181-439a-97c4-1d9619a03eca', 'ad0277ee-a417-4d69-8c46-6ea84d1de4e0', 'f4f40375-c539-43a6-ae55-bd80e547a2b0', '54dc96a1-2c67-40e7-9fdb-f14ce10e4381', 'b1cb0f25-1ccd-4635-b27c-acdd39a64d68', '5dedd5ad-8ea9-4603-96be-b54ef2246125', '4e1f7e8e-b092-4fef-a867-9cf5651e7a7b', 'e7adae78-5780-49ca-aec3-925f4c58b97b', '85c91560-1414-4a18-b3fd-740980be106c', '3f4463ef-2c19-463e-8899-1295229b2a3b', '8cdcad59-d012-4bcb-bd7a-ff4be34ad9a4', '7d9e1a98-efb1-46dc-a9ee-9f89eefd4ed5', '1f1a9820-b539-4fc5-a07f-552e72614ad3', '248de555-c705-451c-8980-0de48f4b53a0', '290c95cf-5530-4e3e-beba-bdac8517f750', '62517180-e079-4554-afbf-8a634b68bbe1', 'ba2ca365-b250-43d2-b071-558d50258d97', '88476d5f-056d-4ed2-ab84-32e361784bac', 'ed23cde7-da7d-43c3-8085-bb10366c488e', '7f70a493-d71f-4325-bd3b-e93cab37fc4e', 'ef8d2d80-591e-4d49-9e3f-bbc4836f98ea', '57236d81-01f8-4163-bbf3-6105d62ef0f7', 'f84d8f19-e377-46da-af9e-af87f22868f0', '4e2a1fb3-99ab-416a-947c-9b9f2ad8a696']
+
+[legacy/profiles:/:290c95cf-5530-4e3e-beba-bdac8517f750]
+foreground-color='#ffffffffd4d4'
+visible-name='Twilight'
+login-shell=true
+palette=['#141414141414', '#c0c06d6d4444', '#afafb9b97a7a', '#c2c2a8a86c6c', '#444447474a4a', '#b4b4bebe7c7c', '#777783838585', '#ffffffffd4d4', '#262626262626', '#dede7c7c4c4c', '#ccccd8d88c8c', '#e2e2c4c47e7e', '#5a5a5e5e6262', '#d0d0dcdc8e8e', '#8a8a98989b9b', '#ffffffffd4d4']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffd4d4'
+background-color='#141414141414'
+scrollbar-policy='never'
+
+[legacy/profiles:/:e3a909b3-77b1-462d-9b37-e326c41eae11]
+foreground-color='#BBBBBBBBBBBB'
+visible-name='Molokai'
+login-shell=true
+palette=['#121212121212', '#73732525FAFA', '#2323E2E29898', '#6060D4D4DFDF', '#D0D080801010', '#FFFF00008787', '#D0D0A8A84343', '#BBBBBBBBBBBB', '#555555555555', '#9D9D6666F6F6', '#5F5FE0E0B1B1', '#6D6DF2F2FFFF', '#FFFFAFAF0000', '#FFFF8787AFAF', '#FFFFCECE5151', '#FFFFFFFFFFFF']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#BBBBBBBBBBBB'
+background-color='#121212121212'
+scrollbar-policy='never'
+
+[legacy/profiles:/:59dfaf98-049a-4eac-a274-19e058b6b26d]
+foreground-color='#d9d9e6e6f2f2'
+visible-name='Chalkboard'
+login-shell=true
+palette=['#000000000000', '#c3c373737272', '#7272c3c37373', '#c2c2c3c37272', '#73737272c3c3', '#c3c37272c2c2', '#7272c2c2c3c3', '#d9d9d9d9d9d9', '#323232323232', '#dbdbaaaaaaaa', '#aaaadbdbaaaa', '#dadadbdbaaaa', '#aaaaaaaadbdb', '#dbdbaaaadada', '#aaaadadadbdb', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d9d9d9d9d9d9'
+background-color='#292926262f2f'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0d7f47bf-1616-44ec-8aa7-f3e0337c1585]
+foreground-color='#d4d4e7e7d4d4'
+visible-name='Seafoam Pastel'
+login-shell=true
+palette=['#757575757575', '#82825d5d4d4d', '#72728c8c6262', '#adada1a16d6d', '#4d4d7b7b8282', '#8a8a72726767', '#727294949494', '#e0e0e0e0e0e0', '#8a8a8a8a8a8a', '#cfcf93937a7a', '#9898d9d9aaaa', '#fafae7e79d9d', '#7a7ac3c3cfcf', '#d6d6b2b2a1a1', '#adade0e0e0e0', '#e0e0e0e0e0e0']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e0e0e0e0e0e0'
+background-color='#242434343535'
+scrollbar-policy='never'
+
+[legacy/profiles:/:c496dacb-f44f-4004-92a0-f2c3941a163e]
+foreground-color='#ffffffffffff'
+visible-name='Ocean'
+login-shell=true
+palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bfbfbfbfbfbf'
+background-color='#22224f4fbcbc'
+scrollbar-policy='never'
+
+[legacy/profiles:/:6e110849-e6b7-48a0-8890-460fdc5519aa]
+foreground-color=''
+visible-name='Default'
+login-shell=true
+palette=['#070736364242', '#DCDC32322F2F', '#858599990000', '#B5B589890000', '#26268B8BD2D2', '#D3D336368282', '#2A2AA1A19898', '#EEEEE8E8D5D5', '#00002B2B3636', '#CBCB4B4B1616', '#58586E6E7575', '#65657B7B8383', '#838394949696', '#6C6C7171C4C4', '#9393A1A1A1A1', '#FDFDF6F6E3E3']
+use-theme-colors=false
+scrollback-unlimited=true
+bold-color-same-as-fg=false
+bold-color=''
+background-color=''
+scrollbar-policy='never'
+
+[legacy/profiles:/:d60426bc-16e8-4163-b58a-391779c2003f]
+foreground-color='#afafc2c2c2c2'
+visible-name='Liquid Carbon Transparent'
+login-shell=true
+palette=['#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc', '#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bcbccccccccc'
+background-color='#000000000000'
+scrollbar-policy='never'
+
 [legacy/profiles:/:645de6ee-1f31-49f5-8c5b-6daaa9fbe47d]
 foreground-color='#ffffcccc2f2f'
 visible-name='Jackie Brown'
@@ -988,58 +849,6 @@ use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#bfbfbfbfbfbf'
 background-color='#2c2c1d1d1616'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0d110098-c259-4339-b51b-e79b66b7921d]
-foreground-color='#b8b8a8a89898'
-visible-name='Espresso Libre'
-login-shell=true
-palette=['#000000000000', '#cccc00000000', '#1a1a92921c1c', '#f0f0e5e53a3a', '#00006666ffff', '#c5c565656b6b', '#060698989a9a', '#d3d3d7d7cfcf', '#555557575353', '#efef29292929', '#9a9affff8787', '#fffffbfb5c5c', '#4343a8a8eded', '#ffff81818a8a', '#3434e2e2e2e2', '#eeeeeeeeecec']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d3d3d7d7cfcf'
-background-color='#2a2a21211c1c'
-scrollbar-policy='never'
-
-[legacy/profiles:/:3268ea72-8352-4957-8e3d-695c3c9ed8cd]
-foreground-color='#c5c5c8c8c6c6'
-visible-name='Atom'
-login-shell=true
-palette=['#000000000000', '#fdfd5f5ff1f1', '#8787c3c38a8a', '#ffffd7d7b1b1', '#8585bebefdfd', '#b9b9b6b6fcfc', '#8585bebefdfd', '#e0e0e0e0e0e0', '#000000000000', '#fdfd5f5ff1f1', '#9494fafa3636', '#f5f5ffffa8a8', '#9696cbcbfefe', '#b9b9b6b6fcfc', '#8585bebefdfd', '#e0e0e0e0e0e0']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#e0e0e0e0e0e0'
-background-color='#161617171919'
-scrollbar-policy='never'
-
-[legacy/profiles:/:77e4ac0b-bf37-4608-aa71-cb4e3fdd2e75]
-foreground-color='#dbdbdbdbdbdb'
-visible-name='Hurtado'
-login-shell=true
-palette=['#575757575757', '#ffff1b1b0000', '#a5a5e0e05555', '#fbfbe7e74a4a', '#494964648787', '#fdfd5f5ff1f1', '#8686e9e9fefe', '#cbcbcccccbcb', '#262626262626', '#d5d51d1d0000', '#a5a5dfdf5555', '#fbfbe8e84a4a', '#8989bebeffff', '#c0c00101c1c1', '#8686eaeafefe', '#dbdbdbdbdbdb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#cbcbcccccbcb'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:54dc96a1-2c67-40e7-9fdb-f14ce10e4381]
-foreground-color='#ececf0f0c1c1'
-visible-name='Spring'
-login-shell=true
-palette=['#000000000000', '#ffff4d4d8383', '#1f1f8c8c3b3b', '#1f1fc9c95b5b', '#1d1dd3d3eeee', '#89895959a8a8', '#3e3e99999f9f', '#ffffffffffff', '#000000000000', '#ffff00002121', '#1f1fc2c23131', '#d5d5b8b80707', '#1515a9a9fdfd', '#89895959a8a8', '#3e3e99999f9f', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#0a0a1e1e2424'
 scrollbar-policy='never'
 
 [legacy/profiles:/:b898e6ac-4621-4eb6-814a-213564af737d]
@@ -1055,37 +864,89 @@ bold-color='#a8a899998484'
 background-color='#282828282828'
 scrollbar-policy='never'
 
-[legacy/profiles:/:8758e207-e799-44f1-990c-24d7db430d31]
-foreground-color='#f7f7f7f7f7f7'
-visible-name='Kibble'
+[legacy/profiles:/:f4f40375-c539-43a6-ae55-bd80e547a2b0]
+foreground-color='#b3b3b8b8c3c3'
+visible-name='SpaceGray'
 login-shell=true
-palette=['#4d4d4d4d4d4d', '#c7c700003131', '#2929cfcf1313', '#d8d8e3e30e0e', '#34344949d1d1', '#84840000ffff', '#07079898abab', '#e2e2d1d1e3e3', '#5a5a5a5a5a5a', '#f0f015157878', '#6c6ce0e05c5c', '#f3f3f7f79e9e', '#9797a4a4f7f7', '#c4c49595f0f0', '#6868f2f2e0e0', '#ffffffffffff']
+palette=['#000000000000', '#b0b04b4b5757', '#8787b3b37979', '#e5e5c1c17979', '#7d7d8f8fa4a4', '#a4a479799696', '#8585a7a7a5a5', '#b3b3b8b8c3c3', '#000000000000', '#b0b04b4b5757', '#8787b3b37979', '#e5e5c1c17979', '#7d7d8f8fa4a4', '#a4a479799696', '#8585a7a7a5a5', '#ffffffffffff']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#e2e2d1d1e3e3'
-background-color='#0e0e10100a0a'
+bold-color='#b3b3b8b8c3c3'
+background-color='#202024242d2d'
 scrollbar-policy='never'
 
-[legacy/profiles:/:edd1c5a3-b134-466f-8f71-59c00a09de52]
-foreground-color='#bbbbbbbbbbbb'
-visible-name='Mathias'
+[legacy/profiles:/:d8c1c79d-5234-4f5f-8d2a-d9988e2d9a1c]
+foreground-color='#78786969c4c4'
+visible-name='C64'
 login-shell=true
-palette=['#000000000000', '#e5e522222222', '#a6a6e3e32d2d', '#fcfc95951e1e', '#c4c48d8dffff', '#fafa25257373', '#6767d9d9f0f0', '#f2f2f2f2f2f2', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#55555555ffff', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+palette=['#090903030000', '#888839393232', '#5555a0a04949', '#bfbfcece7272', '#404031318d8d', '#8b8b3f3f9696', '#6767b6b6bdbd', '#ffffffffffff', '#000000000000', '#888839393232', '#5555a0a04949', '#bfbfcece7272', '#404031318d8d', '#8b8b3f3f9696', '#6767b6b6bdbd', '#f7f7f7f7f7f7']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#f2f2f2f2f2f2'
-background-color='#000000000000'
+bold-color='#ffffffffffff'
+background-color='#404031318d8d'
 scrollbar-policy='never'
 
-[legacy/profiles:/:4b447e1d-448b-42bf-91ac-d47030a2f91e]
-foreground-color='#0000ffff0000'
-visible-name='Homebrew'
+[legacy/profiles:/:782d8e0a-06b2-46da-873a-0c5d017f2eeb]
+foreground-color='#8484c1c13838'
+visible-name='Hipster Green'
 login-shell=true
-palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
+palette=['#000000000000', '#b6b621214a4a', '#0000a6a60000', '#bfbfbfbf0000', '#24246e6eb2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#8686a9a93e3e', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bfbfbfbfbfbf'
+background-color='#10100b0b0505'
+scrollbar-policy='never'
+
+[legacy/profiles:/:58a7fcec-b2f9-43e3-b4e0-3b1ccf233f09]
+foreground-color='#a0a0a0a0a0a0'
+visible-name='N0tch2k'
+login-shell=true
+palette=['#383838383838', '#a9a955555151', '#666666666666', '#a9a980805151', '#65657d7d3e3e', '#767676767676', '#c9c9c9c9c9c9', '#d0d0b8b8a3a3', '#474747474747', '#a9a977777575', '#8c8c8c8c8c8c', '#a9a991917575', '#9898bdbd5e5e', '#a3a3a3a3a3a3', '#dcdcdcdcdcdc', '#d8d8c8c8bbbb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#d0d0b8b8a3a3'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:f84d8f19-e377-46da-af9e-af87f22868f0]
+foreground-color='#999999999393'
+visible-name='Wryan'
+login-shell=true
+palette=['#333333333333', '#8c8c46466565', '#282873737373', '#7c7c7c7c9999', '#393955557373', '#5e5e46468c8c', '#313165658c8c', '#89899c9ca1a1', '#3d3d3d3d3d3d', '#bfbf4d4d8080', '#5353a6a6a6a6', '#9e9e9e9ecbcb', '#47477a7ab3b3', '#7e7e6262b3b3', '#60609696bfbf', '#c0c0c0c0c0c0']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#89899c9ca1a1'
+background-color='#101010101010'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0f9e9e07-7642-4a6b-8c9b-2f3b618dd28c]
+foreground-color='#ffffffffffff'
+visible-name='Espresso'
+login-shell=true
+palette=['#353535353535', '#d2d252525252', '#a5a5c2c26161', '#ffffc6c66d6d', '#6c6c9999bbbb', '#d1d19797d9d9', '#bebed6d6ffff', '#eeeeeeeeecec', '#535353535353', '#f0f00c0c0c0c', '#c2c2e0e07575', '#e1e1e4e48b8b', '#8a8ab7b7d9d9', '#efefb5b5f7f7', '#dcdcf4f4ffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#eeeeeeeeecec'
+background-color='#323232323232'
+scrollbar-policy='never'
+
+[legacy/profiles:/:f11332af-dd5c-43fd-9464-885d3b0d756c]
+foreground-color='#f2f2f2f2f2f2'
+visible-name='Pro'
+login-shell=true
+palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#20200909dbdb', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
@@ -1094,16 +955,237 @@ bold-color='#bfbfbfbfbfbf'
 background-color='#000000000000'
 scrollbar-policy='never'
 
-[legacy/profiles:/:b1cb0f25-1ccd-4635-b27c-acdd39a64d68]
-foreground-color='#1a1a1a1a1a1a'
-visible-name='Square'
+[legacy/profiles:/:2bafaaab-316b-42dc-b2ba-e594772b0206]
+foreground-color='#ffffffffffff'
+visible-name='Frontend Galaxy'
 login-shell=true
-palette=['#050505050505', '#e9e989897c7c', '#b6b637377d7d', '#ececebebbebe', '#a9a9cdcdebeb', '#757550507b7b', '#c9c9cacaecec', '#f2f2f2f2f2f2', '#141414141414', '#f9f992928686', '#c3c3f7f78686', '#fcfcfbfbcccc', '#b6b6dedefbfb', '#adad7f7fa8a8', '#d7d7d9d9fcfc', '#e2e2e2e2e2e2']
+palette=['#000000000000', '#f9f955555f5f', '#2121b0b08989', '#fefef0f02a2a', '#58589d9df6f6', '#94944d4d9595', '#1f1f9e9ee7e7', '#bbbbbbbbbbbb', '#555555555555', '#fafa8c8c8f8f', '#3535bbbb9a9a', '#ffffffff5555', '#58589d9df6f6', '#e7e756569999', '#39397979bcbc', '#ffffffffffff']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#f2f2f2f2f2f2'
+bold-color='#bbbbbbbbbbbb'
+background-color='#1d1d28283737'
+scrollbar-policy='never'
+
+[legacy/profiles:/:03e4cbe1-b163-4eec-8ff1-c7630039db7b]
+foreground-color='#ffffffffffff'
+visible-name='Idle Toes'
+login-shell=true
+palette=['#323232323232', '#d2d252525252', '#7f7fe1e17373', '#ffffc6c66d6d', '#40409999ffff', '#f6f68080ffff', '#bebed6d6ffff', '#eeeeeeeeecec', '#535353535353', '#f0f070707070', '#9d9dffff9191', '#ffffe4e48b8b', '#5e5eb7b7f7f7', '#ffff9d9dffff', '#dcdcf4f4ffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#eeeeeeeeecec'
+background-color='#323232323232'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ef8d2d80-591e-4d49-9e3f-bbc4836f98ea]
+foreground-color='#dadafafaffff'
+visible-name='Wild Cherry'
+login-shell=true
+palette=['#000005050707', '#d9d940408585', '#2a2ab2b25050', '#ffffd1d16f6f', '#88883c3cdcdc', '#ecececececec', '#c1c1b8b8b7b7', '#fffff8f8dede', '#00009c9cc9c9', '#dada6b6bacac', '#f4f4dcdca5a5', '#eaeac0c06666', '#30308c8cbaba', '#aeae63636b6b', '#ffff91919d9d', '#e4e483838d8d']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#fffff8f8dede'
+background-color='#1f1f17172626'
+scrollbar-policy='never'
+
+[legacy/profiles:/:e86eb610-eb52-4ae9-9c05-f69b123a755b]
+foreground-color='#f8f8dcdcc0c0'
+visible-name='AdventureTime'
+login-shell=true
+palette=['#050504040404', '#bdbd00001313', '#4a4ab1b11818', '#e7e774741e1e', '#0f0f4a4ac6c6', '#666659599393', '#7070a5a59898', '#f8f8dcdcc0c0', '#4e4e7c7cbfbf', '#fcfc5f5f5a5a', '#9e9effff6e6e', '#efefc1c11a1a', '#19199797c6c6', '#9b9b59595353', '#c8c8fafaf4f4', '#f6f6f5f5fbfb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f8f8dcdcc0c0'
+background-color='#1f1f1d1d4545'
+scrollbar-policy='never'
+
+[legacy/profiles:/:487664df-d395-49f6-b4f7-630cde5dec47]
+foreground-color='#b8b8dbdbefef'
+visible-name='Flatland'
+login-shell=true
+palette=['#1d1d1d1d1919', '#f1f183833939', '#9f9fd3d36464', '#f4f4efef6d6d', '#50509696bebe', '#69695a5abcbc', '#d6d638386565', '#ffffffffffff', '#1d1d1d1d1919', '#d2d22a2a2424', '#a7a7d4d42c2c', '#ffff89894949', '#6161b9b9d0d0', '#69695a5abcbc', '#d6d638386565', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
+background-color='#1d1d1f1f2121'
+scrollbar-policy='never'
+
+[legacy/profiles:/:decc1613-0c1c-4291-b992-110f92c92e4e]
+foreground-color='#afafc2c2c2c2'
+visible-name='Liquid Carbon'
+login-shell=true
+palette=['#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc', '#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bcbccccccccc'
+background-color='#303030303030'
+scrollbar-policy='never'
+
+[legacy/profiles:/:8294ff2e-6c3a-4b9e-b6d8-976eeaef8afb]
+foreground-color='#ffffffffffff'
+visible-name='Rippedcasts'
+login-shell=true
+palette=['#000000000000', '#cdcdafaf9595', '#a8a8ffff6060', '#bfbfbbbb1f1f', '#7575a5a5b0b0', '#ffff7373fdfd', '#5a5a64647e7e', '#bfbfbfbfbfbf', '#666666666666', '#eeeecbcbadad', '#bcbceeee6868', '#e5e5e5e50000', '#8686bdbdc9c9', '#e5e50000e5e5', '#8c8c9b9bc4c4', '#e5e5e5e5e5e5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bfbfbfbfbfbf'
+background-color='#2b2b2b2b2b2b'
+scrollbar-policy='never'
+
+[legacy/profiles:/:1404e299-1d01-4a4b-abe0-f41901c64fb8]
+foreground-color='#bbbbbbbbbbbb'
+visible-name='Nightlion V2'
+login-shell=true
+palette=['#4c4c4c4c4c4c', '#bbbb00000000', '#0404f6f62323', '#f3f3f1f16767', '#6464d0d0f0f0', '#cece6f6fdbdb', '#0000dadadfdf', '#bbbbbbbbbbbb', '#555555555555', '#ffff55555555', '#7d7df7f71d1d', '#ffffffff5555', '#6262cbcbe8e8', '#ffff9b9bf5f5', '#0000ccccd8d8', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#171717171717'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0ad8eb27-e2e9-4b97-9919-7824e576d2c7]
+foreground-color='#e6e6e8e8efef'
+visible-name='Neutron'
+login-shell=true
+palette=['#232325252b2b', '#b5b540403636', '#5a5ab9b97777', '#dedeb5b56666', '#6a6a7c7c9393', '#a4a479799d9d', '#3f3f9494a8a8', '#e6e6e8e8efef', '#232325252b2b', '#b5b540403636', '#5a5ab9b97777', '#dedeb5b56666', '#6a6a7c7c9393', '#a4a479799d9d', '#3f3f9494a8a8', '#ebebededf2f2']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#e6e6e8e8efef'
+background-color='#1c1c1e1e2222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b11f53e8-4356-44e9-9b64-1aad4fff3a85]
+foreground-color='#ffffffff4e4e'
+visible-name='Borland'
+login-shell=true
+palette=['#4f4f4f4f4f4f', '#ffff6c6c6060', '#a8a8ffff6060', '#ffffffffb6b6', '#9696cbcbfefe', '#ffff7373fdfd', '#c6c6c5c5fefe', '#eeeeeeeeeeee', '#7c7c7c7c7c7c', '#ffffb6b6b0b0', '#ceceffffacac', '#ffffffffcccc', '#b5b5dcdcffff', '#ffff9c9cfefe', '#dfdfdfdffefe', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#eeeeeeeeeeee'
+background-color='#00000000a4a4'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ba2ca365-b250-43d2-b071-558d50258d97]
+foreground-color='#dcdcdcdccccc'
+visible-name='Vaughn'
+login-shell=true
+palette=['#252523234f4f', '#707050505050', '#6060b4b48a8a', '#dfdfafaf8f8f', '#55555555ffff', '#f0f08c8cc3c3', '#8c8cd0d0d3d3', '#707090908080', '#707090908080', '#dcdca3a3a3a3', '#6060b4b48a8a', '#f0f0dfdfafaf', '#55555555ffff', '#ecec9393d3d3', '#9393e0e0e3e3', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#707090908080'
+background-color='#252523234f4f'
+scrollbar-policy='never'
+
+[legacy/profiles:/:0d2c6937-e191-4045-a3c6-37cd25f13651]
+foreground-color='#dededededede'
+visible-name='Jellybeans'
+login-shell=true
+palette=['#929292929292', '#e2e273737373', '#9494b9b97979', '#ffffbaba7b7b', '#9797bebedcdc', '#e1e1c0c0fafa', '#000098988e8e', '#dededededede', '#bdbdbdbdbdbd', '#ffffa1a1a1a1', '#bdbddedeabab', '#ffffdcdca0a0', '#b1b1d8d8f6f6', '#fbfbdadaffff', '#1a1ab2b2a8a8', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#dededededede'
+background-color='#121212121212'
+scrollbar-policy='never'
+
+[legacy/profiles:/:c8aa4977-f7a6-4e7d-a67b-7976c97e93ac]
+foreground-color='#a0a0a0a0a0a0'
+visible-name='Hardcore'
+login-shell=true
+palette=['#1b1b1d1d1e1e', '#f9f926267272', '#a6a6e2e22e2e', '#fdfd97971f1f', '#6666d9d9efef', '#9e9e6f6ffefe', '#5e5e71717575', '#ccccccccc6c6', '#505053535454', '#ffff66669d9d', '#bebeeded5f5f', '#e6e6dbdb7474', '#6666d9d9efef', '#9e9e6f6ffefe', '#a3a3bababfbf', '#f8f8f8f8f2f2']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ccccccccc6c6'
+background-color='#121212121212'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ca5edd14-775b-4770-96df-1fccd4b7d308]
+foreground-color='#404055555555'
+visible-name='Shaman'
+login-shell=true
+palette=['#010120202626', '#b2b230302d2d', '#0000a9a94141', '#5e5e8b8baaaa', '#44449a9a8686', '#000059599d9d', '#5d5d7e7e1919', '#404055555555', '#383844445151', '#ffff42424242', '#2a2aeaea5e5e', '#8e8ed4d4fdfd', '#6161d5d5baba', '#12129898ffff', '#9898d0d02828', '#5858fbfbd6d6']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#404055555555'
+background-color='#000010101515'
+scrollbar-policy='never'
+
+[legacy/profiles:/:1c63081a-8933-4633-8ed5-cd9394d5fa30]
+foreground-color='#b3b3b8b8c3c3'
+visible-name='Oceanic-Next'
+login-shell=true
+palette=['#12121C1C2121', '#E4E447475454', '#8989BDBD8282', '#F7F7BDBD5151', '#54548686C0C0', '#B7B77E7EB8B8', '#5050A5A5A4A4', '#FFFFFFFFFFFF', '#525260606B6B', '#E4E447475454', '#8989BDBD8282', '#F7F7BDBD5151', '#54548686C0C0', '#B7B77E7EB8B8', '#5050A5A5A4A4', '#FFFFFFFFFFFF']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#FFFFFFFFFFFF'
+background-color='#12121b1b2121'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b586d808-0fe7-4ba9-a233-73a68cc6d2a5]
+foreground-color='#c4c4c5c5b5b5'
+visible-name='Monokai Soda'
+login-shell=true
+palette=['#1a1a1a1a1a1a', '#f4f400005f5f', '#9898e0e02424', '#fafa84841919', '#9d9d6565ffff', '#f4f400005f5f', '#5858d1d1ebeb', '#c4c4c5c5b5b5', '#62625e5e4c4c', '#f4f400005f5f', '#9898e0e02424', '#e0e0d5d56161', '#9d9d6565ffff', '#f4f400005f5f', '#5858d1d1ebeb', '#f6f6f6f6efef']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#c4c4c5c5b5b5'
+background-color='#1a1a1a1a1a1a'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ad0277ee-a417-4d69-8c46-6ea84d1de4e0]
+foreground-color='#bdbdbabaaeae'
+visible-name='SpaceGray Eighties'
+login-shell=true
+palette=['#151517171c1c', '#ecec5f5f6767', '#8181a7a76464', '#fefec2c25454', '#54548686c0c0', '#bfbf8383c1c1', '#5757c2c2c1c1', '#efefecece7e7', '#555555555555', '#ffff69697373', '#9393d4d49393', '#ffffd2d25656', '#4d4d8484d1d1', '#ffff5555ffff', '#8383e9e9e4e4', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#efefecece7e7'
+background-color='#222222222222'
+scrollbar-policy='never'
+
+[legacy/profiles:/:54dc96a1-2c67-40e7-9fdb-f14ce10e4381]
+foreground-color='#ececf0f0c1c1'
+visible-name='Spring'
+login-shell=true
+palette=['#000000000000', '#ffff4d4d8383', '#1f1f8c8c3b3b', '#1f1fc9c95b5b', '#1d1dd3d3eeee', '#89895959a8a8', '#3e3e99999f9f', '#ffffffffffff', '#000000000000', '#ffff00002121', '#1f1fc2c23131', '#d5d5b8b80707', '#1515a9a9fdfd', '#89895959a8a8', '#3e3e99999f9f', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
 background-color='#0a0a1e1e2424'
 scrollbar-policy='never'
 
@@ -1120,16 +1202,250 @@ bold-color='#f8f8f8f8f8f8'
 background-color='#27271f1f1919'
 scrollbar-policy='never'
 
-[legacy/profiles:/:d60426bc-16e8-4163-b58a-391779c2003f]
-foreground-color='#afafc2c2c2c2'
-visible-name='Liquid Carbon Transparent'
+[legacy/profiles:/:b344f5e3-0153-4b99-9d3b-007c0749c956]
+foreground-color='#8f8ff5f58686'
+visible-name='Cobalt Neon'
 login-shell=true
-palette=['#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc', '#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc']
+palette=['#141426263131', '#ffff23232020', '#3b3ba5a5ffff', '#e9e9e7e75c5c', '#8f8ff5f58686', '#78781a1aa0a0', '#8f8ff5f58686', '#baba4646b2b2', '#fffff6f68888', '#d4d431312e2e', '#8f8ff5f58686', '#e9e9f0f06d6d', '#3c3c7d7dd2d2', '#82823030a7a7', '#6c6cbcbc6767', '#8f8ff5f58686']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#bcbccccccccc'
+bold-color='#baba4646b2b2'
+background-color='#141428283838'
+scrollbar-policy='never'
+
+[legacy/profiles:/:147ce06e-e821-4678-895c-0ce6be48a800]
+foreground-color='#63637d7d7575'
+visible-name='Alien Blood'
+login-shell=true
+palette=['#111126261616', '#7f7f2b2b2727', '#2f2f7e7e2525', '#71717f7f2424', '#2f2f6a6a7f7f', '#474758587f7f', '#32327f7f7777', '#64647d7d7575', '#3c3c48481212', '#e0e080800909', '#1818e0e00000', '#bdbde0e00000', '#0000aaaae0e0', '#00005858e0e0', '#0000e0e0c4c4', '#7373fafa9191']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#64647d7d7575'
+background-color='#0f0f16161010'
+scrollbar-policy='never'
+
+[legacy/profiles:/:38db042c-d347-4b4a-9af1-872e6eff0dfe]
+foreground-color='#aeaea4a47a7a'
+visible-name='Ciapre'
+login-shell=true
+palette=['#181818181818', '#818100000909', '#484851513b3b', '#cccc8b8b3f3f', '#57576d6d8c8c', '#72724d4d7c7c', '#5c5c4f4f4b4b', '#aeaea4a47f7f', '#555555555555', '#acac38383535', '#a6a6a7a75d5d', '#dcdcdfdf7c7c', '#30309797c6c6', '#d3d330306161', '#f3f3dbdbb2b2', '#f4f4f4f4f4f4']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#aeaea4a47f7f'
+background-color='#19191c1c2727'
+scrollbar-policy='never'
+
+[legacy/profiles:/:007368a2-62b4-4522-8247-4304eaa221d8]
+foreground-color='#ffffffffffff'
+visible-name='Desert'
+login-shell=true
+palette=['#4d4d4d4d4d4d', '#ffff2b2b2b2b', '#9898fbfb9898', '#f0f0e6e68c8c', '#cdcd85853f3f', '#ffffdedeadad', '#ffffa0a0a0a0', '#f5f5dedeb3b3', '#555555555555', '#ffff55555555', '#5555ffff5555', '#ffffffff5555', '#8787ceceffff', '#ffff5555ffff', '#ffffd7d70000', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f5f5dedeb3b3'
+background-color='#333333333333'
+scrollbar-policy='never'
+
+[legacy/profiles:/:27b6e5bf-ee7d-40df-913c-f15b3023c4d0]
+foreground-color='#80807a7a7474'
+visible-name='Elemental'
+login-shell=true
+palette=['#3c3c3c3c3030', '#989829290f0f', '#47479a9a4343', '#7f7f71711111', '#49497f7f7d7d', '#7f7f4e4e2f2f', '#38387f7f5858', '#808079797474', '#555554544545', '#e0e050502a2a', '#6161e0e07070', '#d6d699992727', '#7979d9d9d9d9', '#cdcd7c7c5454', '#5959d5d59999', '#fffff1f1e9e9']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#808079797474'
+background-color='#222221211d1d'
+scrollbar-policy='never'
+
+[legacy/profiles:/:22206336-461b-42fd-9f68-acfc84cb55f9]
+foreground-color='#8a8a8d8daeae'
+visible-name='Ollie'
+login-shell=true
+palette=['#000000000000', '#acac2e2e3131', '#3131acac6161', '#acac43430000', '#2d2d5757acac', '#b0b085852828', '#1f1fa6a6acac', '#8a8a8e8eacac', '#5b5b37372525', '#ffff3d3d4848', '#3b3bffff9999', '#ffff5e5e1e1e', '#44448888ffff', '#ffffc2c21d1d', '#1f1ffafaffff', '#5b5b6e6ea7a7']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#8a8a8e8eacac'
+background-color='#222221212525'
+scrollbar-policy='never'
+
+[legacy/profiles:/:30084e5c-3efc-4950-ac48-d668c3b708dc]
+foreground-color='#d7d7c9c9a7a7'
+visible-name='Red Sands'
+login-shell=true
+palette=['#000000000000', '#ffff3f3f0000', '#0000bbbb0000', '#e7e7b0b00000', '#00007272ffff', '#bbbb0000bbbb', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00007272aeae', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbbbbbbbbb'
+background-color='#7a7a25251e1e'
+scrollbar-policy='never'
+
+[legacy/profiles:/:09afbbed-cf5a-480b-a7dc-580c56697b48]
+foreground-color='#73736e6e7d7d'
+visible-name='Lavandula'
+login-shell=true
+palette=['#232300004646', '#7d7d16162525', '#33337e7e6f6f', '#7f7f6f6f4949', '#4f4f4a4a7f7f', '#5a5a3f3f7f7f', '#585877777f7f', '#73736e6e7d7d', '#37372d2d4646', '#e0e051516767', '#5252e0e0c4c4', '#e0e0c3c38686', '#8e8e8787e0e0', '#a7a77676e0e0', '#9a9ad4d4e0e0', '#8c8c9191fafa']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#73736e6e7d7d'
+background-color='#050500001414'
+scrollbar-policy='never'
+
+[legacy/profiles:/:4e2a1fb3-99ab-416a-947c-9b9f2ad8a696]
+foreground-color='#dcdcdcdccccc'
+visible-name='Zenburn'
+login-shell=true
+palette=['#4d4d4d4d4d4d', '#707050505050', '#6060b4b48a8a', '#f0f0dfdfafaf', '#505060607070', '#dcdc8c8cc3c3', '#8c8cd0d0d3d3', '#dcdcdcdccccc', '#707090908080', '#dcdca3a3a3a3', '#c3c3bfbf9f9f', '#e0e0cfcf9f9f', '#9494bfbff3f3', '#ecec9393d3d3', '#9393e0e0e3e3', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#dcdcdcdccccc'
+background-color='#3f3f3f3f3f3f'
+scrollbar-policy='never'
+
+[legacy/profiles:/:77e4ac0b-bf37-4608-aa71-cb4e3fdd2e75]
+foreground-color='#dbdbdbdbdbdb'
+visible-name='Hurtado'
+login-shell=true
+palette=['#575757575757', '#ffff1b1b0000', '#a5a5e0e05555', '#fbfbe7e74a4a', '#494964648787', '#fdfd5f5ff1f1', '#8686e9e9fefe', '#cbcbcccccbcb', '#262626262626', '#d5d51d1d0000', '#a5a5dfdf5555', '#fbfbe8e84a4a', '#8989bebeffff', '#c0c00101c1c1', '#8686eaeafefe', '#dbdbdbdbdbdb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#cbcbcccccbcb'
+background-color='#000000000000'
+scrollbar-policy='never'
+
+[legacy/profiles:/:b35733d5-6ed5-4ff4-b42b-8bcd8650f390]
+foreground-color='#ddddeeeedddd'
+visible-name='Arthur'
+login-shell=true
+palette=['#3d3d35352a2a', '#cdcd5c5c5c5c', '#8686afaf8080', '#e8e8aeae5b5b', '#64649595eded', '#dedeb8b88787', '#b0b0c4c4dede', '#bbbbaaaa9999', '#555544444444', '#cccc55553333', '#8888aaaa2222', '#ffffa7a75d5d', '#8787ceceebeb', '#999966660000', '#b0b0c4c4dede', '#ddddccccbbbb']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bbbbaaaa9999'
+background-color='#1c1c1c1c1c1c'
+scrollbar-policy='never'
+
+[legacy/profiles:/:ecdde642-c2d2-499a-a727-732ae5ba4c9e]
+foreground-color='#686852525a5a'
+visible-name='Crayon Pony Fish'
+login-shell=true
+palette=['#2b2b1b1b1d1d', '#919100002b2b', '#575795952424', '#abab31311b1b', '#8c8c8787b0b0', '#69692f2f5050', '#e8e8a8a86666', '#686852525a5a', '#3d3d2b2b2e2e', '#c5c525255d5d', '#8d8dffff5757', '#c8c838381d1d', '#cfcfc9c9ffff', '#fcfc6c6cbaba', '#ffffceceafaf', '#b0b094949d9d']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#686852525a5a'
+background-color='#151507070707'
+scrollbar-policy='never'
+
+[legacy/profiles:/:fe083e5a-109c-4b8d-8993-a16635c2b4a7]
+foreground-color='#adadadadadad'
+visible-name='Frontend Delight'
+login-shell=true
+palette=['#242425252626', '#f8f851511b1b', '#565657574747', '#fafa77771d1d', '#2c2c7070b7b7', '#f0f02e2e4f4f', '#3c3ca1a1a6a6', '#adadadadadad', '#5f5facac6d6d', '#f7f743431919', '#7474ecec4c4c', '#fdfdc3c32525', '#33339393caca', '#e7e75e5e4f4f', '#4f4fbcbce6e6', '#8c8c73735b5b']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#adadadadadad'
+background-color='#1b1b1c1c1d1d'
+scrollbar-policy='never'
+
+[legacy/profiles:/:fd7d9aef-28bd-439b-9032-f10c870d6ca1]
+foreground-color='#ececf0f0c1c1'
+visible-name='Spacedust'
+login-shell=true
+palette=['#6e6e53534646', '#e3e35b5b0000', '#5c5cabab9696', '#e3e3cdcd7b7b', '#0f0f54548b8b', '#e3e35b5b0000', '#0606afafc7c7', '#f0f0f1f1cece', '#68684c4c3131', '#ffff8a8a3a3a', '#aeaecacab8b8', '#ffffc8c87878', '#6767a0a0cece', '#ffff8a8a3a3a', '#8383a7a7b4b4', '#fefefffff1f1']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#f0f0f1f1cece'
+background-color='#0a0a1e1e2424'
+scrollbar-policy='never'
+
+[legacy/profiles:/:444e59bd-33c8-49dd-96e1-801f324e8acb]
+foreground-color='#e6e6e1e1dcdc'
+visible-name='Broadcast'
+login-shell=true
+palette=['#000000000000', '#dada49493939', '#51519f9f5050', '#ffffd2d24a4a', '#6d6d9c9cbebe', '#d0d0d0d0ffff', '#6e6e9c9cbebe', '#ffffffffffff', '#323232323232', '#ffff7b7b6b6b', '#8383d1d18282', '#ffffffff7c7c', '#9f9fcecef0f0', '#ffffffffffff', '#a0a0cecef0f0', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#ffffffffffff'
+background-color='#2b2b2b2b2b2b'
+scrollbar-policy='never'
+
+[legacy/profiles:/:437c17b2-3654-45dd-8d4b-027faf9bfadc]
+foreground-color='#cacacececdcd'
+visible-name='Seti'
+login-shell=true
+palette=['#323232323232', '#c2c228283232', '#8e8ec4c43d3d', '#e0e0c6c64f4f', '#4343a5a5d5d5', '#8b8b5757b5b5', '#8e8ec4c43d3d', '#eeeeeeeeeeee', '#323232323232', '#c2c228283232', '#8e8ec4c43d3d', '#e0e0c6c64f4f', '#4343a5a5d5d5', '#8b8b5757b5b5', '#8e8ec4c43d3d', '#ffffffffffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#eeeeeeeeeeee'
+background-color='#111112121313'
+scrollbar-policy='never'
+
+[legacy/profiles:/:c8e49f66-0d2e-4392-ac98-9ed683d80d22]
+foreground-color='#262626262626'
+visible-name='CLRS'
+login-shell=true
+palette=['#000000000000', '#f8f828282a2a', '#32328a8a5d5d', '#fafa70701d1d', '#13135c5cd0d0', '#9f9f0000bdbd', '#3333c3c3c1c1', '#b3b3b3b3b3b3', '#555557575353', '#fbfb04041616', '#2c2cc6c63131', '#fdfdd7d72727', '#16167070ffff', '#e9e90000b0b0', '#3a3ad5d5cece', '#eeeeeeeeecec']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#b3b3b3b3b3b3'
+background-color='#ffffffffffff'
+scrollbar-policy='never'
+
+[legacy/profiles:/:62517180-e079-4554-afbf-8a634b68bbe1]
+foreground-color='#87877a7a9b9b'
+visible-name='Urple'
+login-shell=true
+palette=['#000000000000', '#b0b042425b5b', '#3737a4a41515', '#adad5c5c4242', '#56564d4d9b9b', '#6c6c3c3ca1a1', '#808080808080', '#878779799c9c', '#5d5d32322525', '#ffff63638888', '#2929e6e62020', '#f0f081816161', '#86867a7aeded', '#a0a05e5eeeee', '#eaeaeaeaeaea', '#bfbfa3a3ffff']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#878779799c9c'
+background-color='#1b1b1b1b2323'
+scrollbar-policy='never'
+
+[legacy/profiles:/:4b447e1d-448b-42bf-91ac-d47030a2f91e]
+foreground-color='#0000ffff0000'
+visible-name='Homebrew'
+login-shell=true
+palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
+use-theme-colors=false
+scrollback-unlimited=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#bfbfbfbfbfbf'
 background-color='#000000000000'
 scrollbar-policy='never'
 
@@ -1146,177 +1462,9 @@ bold-color='#ffffc8c88a8a'
 background-color='#262626262626'
 scrollbar-policy='never'
 
-[legacy/profiles:/:80a7e1a6-e9fc-4d11-9ea6-65ca01b64029]
-foreground-color='#ececf0f0fefe'
-visible-name='Fishtank'
-login-shell=true
-palette=['#030307073c3c', '#c6c600004a4a', '#acacf1f15757', '#fefecdcd5e5e', '#52525f5fb8b8', '#98986f6f8282', '#969687876363', '#ececf0f0fcfc', '#6c6c5b5b3030', '#dada4b4b8a8a', '#dbdbffffa9a9', '#fefee6e6a9a9', '#b2b2bebefafa', '#fdfda5a5cdcd', '#a5a5bdbd8686', '#f6f6ffffecec']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ececf0f0fcfc'
-background-color='#232325253737'
-scrollbar-policy='never'
-
-[legacy/profiles:/:69be2386-b7e8-41aa-ad06-d6fe54dd5acb]
-foreground-color='#3e3e3e3e3e3e'
-visible-name='Github'
-login-shell=true
-palette=['#3e3e3e3e3e3e', '#97970b0b1616', '#070796962a2a', '#f8f8eeeec7c7', '#00003e3e8a8a', '#e9e946469191', '#8989d1d1ecec', '#ffffffffffff', '#666666666666', '#dede00000000', '#8787d5d5a2a2', '#f1f1d0d00707', '#2e2e6c6cbaba', '#ffffa2a29f9f', '#1c1cfafafefe', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#f4f4f4f4f4f4'
-scrollbar-policy='never'
-
-[legacy/profiles:/:a0810400-de78-4dcd-9559-7a76ed769de1]
-foreground-color='#f7f7d6d66a6a'
-visible-name='Mona Lisa'
-login-shell=true
-palette=['#35351b1b0e0e', '#9b9b29291c1c', '#636362623232', '#c3c36e6e2828', '#51515c5c5d5d', '#9b9b1d1d2929', '#585880805656', '#f7f7d7d75c5c', '#878742422828', '#ffff43433131', '#b4b4b2b26464', '#ffff95956666', '#9e9eb2b2b4b4', '#ffff5b5b6a6a', '#8a8acdcd8f8f', '#ffffe5e59898']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#f7f7d7d75c5c'
-background-color='#12120b0b0d0d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:5dedd5ad-8ea9-4603-96be-b54ef2246125]
-foreground-color='#c9c9c9c9c9c9'
-visible-name='Sundried'
-login-shell=true
-palette=['#30302b2b2a2a', '#a7a746463d3d', '#585877774444', '#9d9d60602a2a', '#48485b5b9898', '#868646465151', '#9c9c81814f4f', '#c9c9c9c9c9c9', '#4d4d4e4e4848', '#aaaa00000c0c', '#12128c8c2121', '#fcfc6a6a2121', '#79799999f7f7', '#fdfd8a8aa1a1', '#fafad4d48484', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#c9c9c9c9c9c9'
-background-color='#1a1a18181818'
-scrollbar-policy='never'
-
-[legacy/profiles:/:3f4463ef-2c19-463e-8899-1295229b2a3b]
-foreground-color='#86868A8A8C8C'
-visible-name='Terminix Dark'
-login-shell=true
-palette=['#28282a2a2e2e', '#a5a542424242', '#a1a1b5b56c6c', '#dede93935f5f', '#222255555555', '#858567678f8f', '#5e5e8d8d8787', '#777777777777', '#37373b3b4141', '#c6c635353535', '#606083836060', '#fafa80805a5a', '#44449d9da1a1', '#baba8b8bafaf', '#8686c1c1b9b9', '#c5c5c8c8c6c6']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#777777777777'
-background-color='#090911111616'
-scrollbar-policy='never'
-
-[legacy/profiles:/:58a7fcec-b2f9-43e3-b4e0-3b1ccf233f09]
-foreground-color='#a0a0a0a0a0a0'
-visible-name='N0tch2k'
-login-shell=true
-palette=['#383838383838', '#a9a955555151', '#666666666666', '#a9a980805151', '#65657d7d3e3e', '#767676767676', '#c9c9c9c9c9c9', '#d0d0b8b8a3a3', '#474747474747', '#a9a977777575', '#8c8c8c8c8c8c', '#a9a991917575', '#9898bdbd5e5e', '#a3a3a3a3a3a3', '#dcdcdcdcdcdc', '#d8d8c8c8bbbb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d0d0b8b8a3a3'
-background-color='#222222222222'
-scrollbar-policy='never'
-
-[legacy/profiles:/:6e110849-e6b7-48a0-8890-460fdc5519aa]
-foreground-color=''
-visible-name='Default'
-login-shell=true
-palette=['#070736364242', '#DCDC32322F2F', '#858599990000', '#B5B589890000', '#26268B8BD2D2', '#D3D336368282', '#2A2AA1A19898', '#EEEEE8E8D5D5', '#00002B2B3636', '#CBCB4B4B1616', '#58586E6E7575', '#65657B7B8383', '#838394949696', '#6C6C7171C4C4', '#9393A1A1A1A1', '#FDFDF6F6E3E3']
-use-theme-colors=false
-scrollback-unlimited=true
-bold-color-same-as-fg=false
-bold-color=''
-background-color=''
-scrollbar-policy='never'
-
-[legacy/profiles:/:b35733d5-6ed5-4ff4-b42b-8bcd8650f390]
-foreground-color='#ddddeeeedddd'
-visible-name='Arthur'
-login-shell=true
-palette=['#3d3d35352a2a', '#cdcd5c5c5c5c', '#8686afaf8080', '#e8e8aeae5b5b', '#64649595eded', '#dedeb8b88787', '#b0b0c4c4dede', '#bbbbaaaa9999', '#555544444444', '#cccc55553333', '#8888aaaa2222', '#ffffa7a75d5d', '#8787ceceebeb', '#999966660000', '#b0b0c4c4dede', '#ddddccccbbbb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbaaaa9999'
-background-color='#1c1c1c1c1c1c'
-scrollbar-policy='never'
-
-[legacy/profiles:/:ed23cde7-da7d-43c3-8085-bb10366c488e]
-foreground-color='#afafdadab6b6'
-visible-name='Warm Neon'
-login-shell=true
-palette=['#000000000000', '#e2e243434646', '#3939b1b13a3a', '#dadae1e14545', '#42426161c5c5', '#f9f92020fbfb', '#2a2abbbbd4d4', '#d0d0b8b8a3a3', '#fefefcfcfcfc', '#e9e970707171', '#9c9cc0c09090', '#dddddada7a7a', '#7b7b9191d6d6', '#f6f67474baba', '#5e5ed1d1e5e5', '#d8d8c8c8bbbb']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d0d0b8b8a3a3'
-background-color='#404040404040'
-scrollbar-policy='never'
-
-[legacy/profiles:/:e40ecd94-f9ed-426c-920d-12b8d121ab41]
-foreground-color='#000000000000'
-visible-name='Man Page'
-login-shell=true
-palette=['#000000000000', '#cccc00000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#cccccccccccc', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#cccccccccccc'
-background-color='#fefef4f49c9c'
-scrollbar-policy='never'
-
-[legacy/profiles:/:b586d808-0fe7-4ba9-a233-73a68cc6d2a5]
-foreground-color='#c4c4c5c5b5b5'
-visible-name='Monokai Soda'
-login-shell=true
-palette=['#1a1a1a1a1a1a', '#f4f400005f5f', '#9898e0e02424', '#fafa84841919', '#9d9d6565ffff', '#f4f400005f5f', '#5858d1d1ebeb', '#c4c4c5c5b5b5', '#62625e5e4c4c', '#f4f400005f5f', '#9898e0e02424', '#e0e0d5d56161', '#9d9d6565ffff', '#f4f400005f5f', '#5858d1d1ebeb', '#f6f6f6f6efef']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#c4c4c5c5b5b5'
-background-color='#1a1a1a1a1a1a'
-scrollbar-policy='never'
-
-[legacy/profiles:/:53aa7a1e-4a67-446b-97fc-17ecfb5ac044]
-foreground-color='#ffffffffffff'
-visible-name='Red Alert'
-login-shell=true
-palette=['#000000000000', '#d6d62e2e4e4e', '#7171bebe6b6b', '#bebeb8b86b6b', '#48489b9beeee', '#e9e97979d7d7', '#6b6bbebeb8b8', '#d6d6d6d6d6d6', '#262626262626', '#e0e025255353', '#afaff0f08c8c', '#dfdfddddb7b7', '#6565aaaaf1f1', '#ddddb7b7dfdf', '#b7b7dfdfdddd', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d6d6d6d6d6d6'
-background-color='#767624242323'
-scrollbar-policy='never'
-
-[legacy/profiles:/:57236d81-01f8-4163-bbf3-6105d62ef0f7]
-foreground-color='#dededadacfcf'
-visible-name='Wombat'
-login-shell=true
-palette=['#000000000000', '#ffff61615a5a', '#b1b1e9e96969', '#ebebd9d99c9c', '#5d5da9a9f6f6', '#e8e86a6affff', '#8282fffff7f7', '#dededadacfcf', '#313131313131', '#f5f58c8c8080', '#ddddf8f88f8f', '#eeeee5e5b2b2', '#a5a5c7c7ffff', '#ddddaaaaffff', '#b7b7fffff9f9', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#dededadacfcf'
-background-color='#171717171717'
-scrollbar-policy='never'
-
-[legacy/profiles:/:0589a0de-d99f-4b4d-9d96-7ac037ef91c7]
-foreground-color='#a5a5a2a2a2a2'
-visible-name='3024 Night'
+[legacy/profiles:/:535f48be-9ee8-4c19-b10c-53c4c7730415]
+foreground-color='#4a4a45454343'
+visible-name='3024 Day'
 login-shell=true
 palette=['#090903030000', '#dbdb2d2d2020', '#0101a2a25252', '#fdfdeded0202', '#0101a0a0e4e4', '#a1a16a6a9494', '#b5b5e4e4f4f4', '#a5a5a2a2a2a2', '#5c5c58585555', '#e8e8bbbbd0d0', '#3a3a34343232', '#4a4a45454343', '#80807d7d7c7c', '#d6d6d5d5d4d4', '#cdcdabab5353', '#f7f7f7f7f7f7']
 use-theme-colors=false
@@ -1324,46 +1472,33 @@ scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#a5a5a2a2a2a2'
-background-color='#090903030000'
+background-color='#f7f7f7f7f7f7'
 scrollbar-policy='never'
 
-[legacy/profiles:/:06e4ed4d-f83c-44cf-a411-4ccbb024c37d]
-foreground-color='#959595959595'
-visible-name='Later This Evening'
+[legacy/profiles:/:051e5f2b-8519-4561-8ab8-f813be5e07db]
+foreground-color='#9f9f9f9fa1a1'
+visible-name='Grape'
 login-shell=true
-palette=['#2b2b2b2b2b2b', '#d4d45a5a6060', '#afafbaba6767', '#e5e5d2d28989', '#a0a0babad6d6', '#c0c09292d6d6', '#9191bfbfb7b7', '#3c3c3d3d3d3d', '#454547474747', '#d3d323232f2f', '#aaaabbbb3939', '#e5e5bebe3939', '#66669999d6d6', '#abab5353d6d6', '#5f5fc0c0aeae', '#c1c1c2c2c2c2']
+palette=['#2d2d28283f3f', '#eded22226161', '#1f1fa9a91b1b', '#8d8ddcdc2020', '#48487d7df4f4', '#8d8d3535c9c9', '#3b3bdedeeded', '#9e9e9e9ea0a0', '#595951516a6a', '#f0f072729a9a', '#5353aaaa5e5e', '#b2b2dcdc8787', '#a9a9bcbcecec', '#adad8181c2c2', '#9d9de3e3ebeb', '#a2a28888f7f7']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#3c3c3d3d3d3d'
-background-color='#222222222222'
+bold-color='#9e9e9e9ea0a0'
+background-color='#171714142323'
 scrollbar-policy='never'
 
-[legacy/profiles:/:f11332af-dd5c-43fd-9464-885d3b0d756c]
-foreground-color='#f2f2f2f2f2f2'
-visible-name='Pro'
+[legacy/profiles:/:579fb4e5-3ce6-425f-ae48-f6960421d9e4]
+foreground-color='#dedec1c16565'
+visible-name='Frontend Fun Forrest'
 login-shell=true
-palette=['#000000000000', '#999900000000', '#0000a6a60000', '#999999990000', '#20200909dbdb', '#b2b20000b2b2', '#0000a6a6b2b2', '#bfbfbfbfbfbf', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
+palette=['#000000000000', '#d6d626262b2b', '#91919c9c0000', '#bebe8a8a1313', '#46469999a3a3', '#8d8d43433131', '#dada82821313', '#ddddc2c26565', '#7f7f6a6a5555', '#e5e55a5a1c1c', '#bfbfc6c65a5a', '#ffffcbcb1b1b', '#7c7cc9c9cfcf', '#d2d263634949', '#e6e6a9a96b6b', '#ffffeaeaa3a3']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#bfbfbfbfbfbf'
-background-color='#000000000000'
-scrollbar-policy='never'
-
-[legacy/profiles:/:decc1613-0c1c-4291-b992-110f92c92e4e]
-foreground-color='#afafc2c2c2c2'
-visible-name='Liquid Carbon'
-login-shell=true
-palette=['#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc', '#000000000000', '#ffff30303030', '#55559a9a7070', '#ccccacac0000', '#00009999cccc', '#cccc6969c8c8', '#7a7ac4c4cccc', '#bcbccccccccc']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bcbccccccccc'
-background-color='#303030303030'
+bold-color='#ddddc2c26565'
+background-color='#252512120000'
 scrollbar-policy='never'
 
 [legacy/profiles:/:782a2e77-8c7d-407e-8e25-268ecf5829ff]
@@ -1379,134 +1514,17 @@ bold-color='#d9d9d9d9d9d9'
 background-color='#212121212121'
 scrollbar-policy='never'
 
-[legacy/profiles:/:147ce06e-e821-4678-895c-0ce6be48a800]
-foreground-color='#63637d7d7575'
-visible-name='Alien Blood'
+[legacy/profiles:/:e40ecd94-f9ed-426c-920d-12b8d121ab41]
+foreground-color='#000000000000'
+visible-name='Man Page'
 login-shell=true
-palette=['#111126261616', '#7f7f2b2b2727', '#2f2f7e7e2525', '#71717f7f2424', '#2f2f6a6a7f7f', '#474758587f7f', '#32327f7f7777', '#64647d7d7575', '#3c3c48481212', '#e0e080800909', '#1818e0e00000', '#bdbde0e00000', '#0000aaaae0e0', '#00005858e0e0', '#0000e0e0c4c4', '#7373fafa9191']
+palette=['#000000000000', '#cccc00000000', '#0000a6a60000', '#999999990000', '#00000000b2b2', '#b2b20000b2b2', '#0000a6a6b2b2', '#cccccccccccc', '#666666666666', '#e5e500000000', '#0000d9d90000', '#e5e5e5e50000', '#00000000ffff', '#e5e50000e5e5', '#0000e5e5e5e5', '#e5e5e5e5e5e5']
 use-theme-colors=false
 scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
-bold-color='#64647d7d7575'
-background-color='#0f0f16161010'
-scrollbar-policy='never'
-
-[legacy/profiles:/:b11f53e8-4356-44e9-9b64-1aad4fff3a85]
-foreground-color='#ffffffff4e4e'
-visible-name='Borland'
-login-shell=true
-palette=['#4f4f4f4f4f4f', '#ffff6c6c6060', '#a8a8ffff6060', '#ffffffffb6b6', '#9696cbcbfefe', '#ffff7373fdfd', '#c6c6c5c5fefe', '#eeeeeeeeeeee', '#7c7c7c7c7c7c', '#ffffb6b6b0b0', '#ceceffffacac', '#ffffffffcccc', '#b5b5dcdcffff', '#ffff9c9cfefe', '#dfdfdfdffefe', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#eeeeeeeeeeee'
-background-color='#00000000a4a4'
-scrollbar-policy='never'
-
-[legacy/profiles:/:fe083e5a-109c-4b8d-8993-a16635c2b4a7]
-foreground-color='#adadadadadad'
-visible-name='Frontend Delight'
-login-shell=true
-palette=['#242425252626', '#f8f851511b1b', '#565657574747', '#fafa77771d1d', '#2c2c7070b7b7', '#f0f02e2e4f4f', '#3c3ca1a1a6a6', '#adadadadadad', '#5f5facac6d6d', '#f7f743431919', '#7474ecec4c4c', '#fdfdc3c32525', '#33339393caca', '#e7e75e5e4f4f', '#4f4fbcbce6e6', '#8c8c73735b5b']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#adadadadadad'
-background-color='#1b1b1c1c1d1d'
-scrollbar-policy='never'
-
-[legacy/profiles:/:30084e5c-3efc-4950-ac48-d668c3b708dc]
-foreground-color='#d7d7c9c9a7a7'
-visible-name='Red Sands'
-login-shell=true
-palette=['#000000000000', '#ffff3f3f0000', '#0000bbbb0000', '#e7e7b0b00000', '#00007272ffff', '#bbbb0000bbbb', '#0000bbbbbbbb', '#bbbbbbbbbbbb', '#555555555555', '#bbbb00000000', '#0000bbbb0000', '#e7e7b0b00000', '#00007272aeae', '#ffff5555ffff', '#5555ffffffff', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#bbbbbbbbbbbb'
-background-color='#7a7a25251e1e'
-scrollbar-policy='never'
-
-[legacy/profiles:/:17970e11-fdc0-4070-b84b-0be1d4438a20]
-foreground-color='#edededededed'
-visible-name='Highway'
-login-shell=true
-palette=['#000000000000', '#d0d00e0e1818', '#131380803434', '#ffffcbcb3e3e', '#00006b6bb3b3', '#6b6b27277575', '#383845456464', '#edededededed', '#5d5d50504a4a', '#f0f07e7e1818', '#b1b1d1d13030', '#fffff1f12020', '#4f4fc2c2fdfd', '#dede00007171', '#5d5d50504a4a', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#edededededed'
-background-color='#222222222525'
-scrollbar-policy='never'
-
-[legacy/profiles:/:a6dcffed-52fb-47b0-a61c-289605f86556]
-foreground-color='#d2d2d8d8d9d9'
-visible-name='Solarized Darcula'
-login-shell=true
-palette=['#252529292a2a', '#f2f248484040', '#626296965555', '#b6b688880000', '#20207575c7c7', '#79797f7fd4d4', '#151596968d8d', '#d2d2d8d8d9d9', '#252529292a2a', '#f2f248484040', '#626296965555', '#b6b688880000', '#20207575c7c7', '#79797f7fd4d4', '#151596968d8d', '#d2d2d8d8d9d9']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d2d2d8d8d9d9'
-background-color='#3d3d3f3f4141'
-scrollbar-policy='never'
-
-[legacy/profiles:/:290c95cf-5530-4e3e-beba-bdac8517f750]
-foreground-color='#ffffffffd4d4'
-visible-name='Twilight'
-login-shell=true
-palette=['#141414141414', '#c0c06d6d4444', '#afafb9b97a7a', '#c2c2a8a86c6c', '#444447474a4a', '#b4b4bebe7c7c', '#777783838585', '#ffffffffd4d4', '#262626262626', '#dede7c7c4c4c', '#ccccd8d88c8c', '#e2e2c4c47e7e', '#5a5a5e5e6262', '#d0d0dcdc8e8e', '#8a8a98989b9b', '#ffffffffd4d4']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffd4d4'
-background-color='#141414141414'
-scrollbar-policy='never'
-
-[legacy/profiles:/:2e547556-5d81-4cc4-aa02-b1bac5d4962c]
-foreground-color='#424242424242'
-visible-name='Pencil Light'
-login-shell=true
-palette=['#212121212121', '#c3c307077171', '#1010a7a77878', '#a8a89c9c1414', '#00008e8ec4c4', '#52523c3c7979', '#2020a5a5baba', '#d9d9d9d9d9d9', '#424242424242', '#fbfb00007a7a', '#5f5fd7d7afaf', '#f3f3e4e43030', '#2020bbbbfcfc', '#68685555dede', '#4f4fb8b8cccc', '#f1f1f1f1f1f1']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#d9d9d9d9d9d9'
-background-color='#f1f1f1f1f1f1'
-scrollbar-policy='never'
-
-[legacy/profiles:/:5039dfeb-6018-432a-a39c-81cd6909353a]
-foreground-color='#babababababa'
-visible-name='Darkside'
-login-shell=true
-palette=['#000000000000', '#e8e834341c1c', '#6868c2c25656', '#f2f2d4d42c2c', '#1c1c9898e8e8', '#8e8e6969c9c9', '#1c1c9898e8e8', '#babababababa', '#000000000000', '#e0e05a5a4f4f', '#7777b8b86969', '#efefd6d64b4b', '#38387c7cd3d3', '#95957b7bbebe', '#3d3d9797e2e2', '#babababababa']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#babababababa'
-background-color='#222223232424'
-scrollbar-policy='never'
-
-[legacy/profiles:/:444e59bd-33c8-49dd-96e1-801f324e8acb]
-foreground-color='#e6e6e1e1dcdc'
-visible-name='Broadcast'
-login-shell=true
-palette=['#000000000000', '#dada49493939', '#51519f9f5050', '#ffffd2d24a4a', '#6d6d9c9cbebe', '#d0d0d0d0ffff', '#6e6e9c9cbebe', '#ffffffffffff', '#323232323232', '#ffff7b7b6b6b', '#8383d1d18282', '#ffffffff7c7c', '#9f9fcecef0f0', '#ffffffffffff', '#a0a0cecef0f0', '#ffffffffffff']
-use-theme-colors=false
-scrollback-unlimited=true
-use-theme-background=false
-bold-color-same-as-fg=true
-bold-color='#ffffffffffff'
-background-color='#2b2b2b2b2b2b'
+bold-color='#cccccccccccc'
+background-color='#fefef4f49c9c'
 scrollbar-policy='never'
 
 [legacy/profiles:/:0770b0a5-5b36-47a8-903f-a131e29b2f06]

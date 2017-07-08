@@ -1,8 +1,8 @@
 [/]
 enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'scroll-workspaces@gfxmonk.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'dynamic-panel-transparency@rockon999.github.io', 'caffeine@patapon.info', 'jenkins-indicator@philipphoffmann.de', 'sound-output-device-chooser@kgshank.net', 'topIcons@adel.gadllah@gmail.com', 'ProxySwitcher@flannaghan.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'multi-monitors-add-on@spin83', 'AdvancedVolumeMixer@harry.karvonen.gmail.com', 'temperature@xtranophilist', 'freon@UshakovVasilii_Github.yahoo.com']
-command-history=['r', 'l', 'lg', 'gedit ~/.zshrc.local', 'gnome-tweak-tool', 'dconf-editor', 'rider-eap', '/opt/pycharm-172.3198.12/bin/pycharm.sh']
+command-history=['r', 'l', 'lg', 'terminix --fullscreen', 'terminix', 'r', 'snapper', 'r', 'gedit ~/.zshrc.local', 'r', '', 'gnome-tweak-tool', 'dconf-editor', '/opt/pycharm-172.3095.4/bin/pycharm', '/opt/pycharm-172.3095.4/bin/pycharm.sh', 'rider-eap', '/opt/pycharm-172.3095.4/bin/pycharm.sh', '/opt/pycharm-172.3198.12/bin/pycharm.sh']
 remember-mount-password=true
-looking-glass-history=[]
+looking-glass-history=['$', 'self', 'this', 'this.getCompletions', 'this', 'windows', 'window', 'window.log', "window.log('test')"]
 app-picker-view=uint32 0
 favorite-apps=['chromium-dev.desktop', 'org.gnome.Terminal.desktop', 'evolution.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'dbeaver.desktop', 'pgadmin3.desktop', 'zeal.desktop', 'Discord.desktop', 'virtualbox.desktop', 'pycharm-professional.desktop']
 
@@ -17,24 +17,8 @@ app-icon-mode='both'
 [extensions/user-theme]
 name='EvoPop'
 
-[extensions/dash-to-dock]
-autohide-in-fullscreen=false
-intellihide-mode='ALL_WINDOWS'
-custom-background-color=false
-apply-custom-theme=true
-custom-theme-running-dots=false
-dock-position='BOTTOM'
-custom-theme-shrink=false
-background-opacity=0.34999999999999998
-opaque-background=true
-background-color='#ef2929'
-shortcut=['<Super>q']
-
-[extensions/net/gfxmonk/scroll-workspaces]
-indicator=false
-
-[extensions/caffeine]
-user-enabled=false
+[extensions/jenkins-indicator]
+settings-json='{"servers":[{"id":1,"name":"Default","jenkins_url":"http://dt2-dev-jenkins.nhp.dt.local/","green_balls_plugin":false,"autorefresh":true,"autorefresh_interval":5,"notification_finished_jobs":true,"stack_notifications":false,"show_running_jobs":true,"show_successful_jobs":true,"show_unstable_jobs":true,"show_failed_jobs":true,"show_neverbuilt_jobs":false,"show_disabled_jobs":false,"show_aborted_jobs":false,"jobs_to_show":"all","use_authentication":false,"auth_user":"","api_token":""}]}'
 
 [extensions/coverflowalttab]
 position='Top'
@@ -46,7 +30,43 @@ icon-style='Overlay'
 offset=0
 current-workspace-only='all-currentfirst'
 
+[extensions/sound-output-device-chooser]
+ports-settings='[]'
+hide-on-single-device=false
+
 [extensions/multi-monitors-add-on]
+show-activities=true
+show-app-menu=true
 available-indicators=@as []
 show-indicator=true
 show-panel=false
+thumbnails-on-left-side=true
+show-thumbnails-slider=true
+
+[extensions/net/gfxmonk/scroll-workspaces]
+indicator=false
+
+[extensions/caffeine]
+user-enabled=false
+
+[extensions/simple-dock]
+background-opacity=0.0
+max-icon-size=32
+show-apps-button=true
+show-method=0
+
+[extensions/dash-to-dock]
+autohide-in-fullscreen=false
+extend-height=false
+intellihide-mode='ALL_WINDOWS'
+custom-background-color=false
+pressure-threshold=0.0
+apply-custom-theme=true
+custom-theme-running-dots=false
+dock-position='BOTTOM'
+custom-theme-shrink=false
+background-opacity=0.34999999999999998
+opaque-background=true
+background-color='#ef2929'
+shortcut=['<Super>q']
+preferred-monitor=0
