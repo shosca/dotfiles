@@ -1,41 +1,52 @@
 [/]
-command-history=['r']
-enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'scroll-workspaces@gfxmonk.net', 'maximus@luis.pabon.auronconsulting.co.uk', 'dash-to-dock@micxgx.gmail.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'shellshape@gfxmonk.net', 'topIcons@adel.gadllah@gmail.com', 'caffeine@patapon.info', 'pixel-saver@deadalnix.me', 'ProxySwitcher@flannaghan.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'multi-monitors-add-on@spin83', 'sound-output-device-chooser@kgshank.net', 'impatience@gfxmonk.net', 'advanced-settings-in-usermenu@nuware.ru', 'freon@UshakovVasilii_Github.yahoo.com']
-favorite-apps=['firefox-nightly.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Epiphany.desktop', 'steam-native.desktop', 'Discord.desktop', 'chromium-dev.desktop']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'scroll-workspaces@gfxmonk.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'dynamic-panel-transparency@rockon999.github.io', 'caffeine@patapon.info', 'jenkins-indicator@philipphoffmann.de', 'sound-output-device-chooser@kgshank.net', 'topIcons@adel.gadllah@gmail.com', 'ProxySwitcher@flannaghan.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'multi-monitors-add-on@spin83', 'AdvancedVolumeMixer@harry.karvonen.gmail.com', 'temperature@xtranophilist', 'freon@UshakovVasilii_Github.yahoo.com']
+command-history=['r', 'l', 'lg', 'gedit ~/.zshrc.local', 'gnome-tweak-tool', 'dconf-editor', 'rider-eap', '/opt/pycharm-172.3198.12/bin/pycharm.sh']
+remember-mount-password=true
+looking-glass-history=[]
+app-picker-view=uint32 0
+favorite-apps=['chromium-dev.desktop', 'org.gnome.Terminal.desktop', 'evolution.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'dbeaver.desktop', 'pgadmin3.desktop', 'zeal.desktop', 'Discord.desktop', 'virtualbox.desktop', 'pycharm-professional.desktop']
 
-[extensions/simple-dock]
-background-opacity=0.0
-max-icon-size=32
-show-apps-button=true
-show-method=0
+[overrides]
+workspaces-only-on-primary=false
+edge-tiling=true
+
+[window-switcher]
+current-workspace-only=true
+app-icon-mode='both'
 
 [extensions/user-theme]
 name='EvoPop'
 
 [extensions/dash-to-dock]
-autohide-in-fullscreen=true
-extend-height=false
+autohide-in-fullscreen=false
 intellihide-mode='ALL_WINDOWS'
-pressure-threshold=0.0
-apply-custom-theme=false
+custom-background-color=false
+apply-custom-theme=true
+custom-theme-running-dots=false
 dock-position='BOTTOM'
-preferred-monitor=0
 custom-theme-shrink=false
+background-opacity=0.34999999999999998
+opaque-background=true
+background-color='#ef2929'
 shortcut=['<Super>q']
 
-[extensions/sound-output-device-chooser]
-ports-settings='[]'
-hide-on-single-device=false
+[extensions/net/gfxmonk/scroll-workspaces]
+indicator=false
+
+[extensions/caffeine]
+user-enabled=false
+
+[extensions/coverflowalttab]
+position='Top'
+switcher-style='Coverflow'
+enforce-primary-monitor=true
+elastic-mode=false
+animation-time=185
+icon-style='Overlay'
+offset=0
+current-workspace-only='all-currentfirst'
 
 [extensions/multi-monitors-add-on]
-show-activities=true
-show-app-menu=true
-available-indicators=['freonMenu']
+available-indicators=@as []
 show-indicator=true
-show-panel=true
-thumbnails-on-left-side=true
-show-thumbnails-slider=true
-
-[overrides]
-workspaces-only-on-primary=false
-edge-tiling=true
+show-panel=false
