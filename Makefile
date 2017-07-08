@@ -98,8 +98,11 @@ gnome-backup:
 	dconf dump /org/gnome/shell/ > gnome/shell
 
 gnome-restore:
+	dconf reset -f /org/gnome/terminal/
 	dconf load /org/gnome/terminal/ < gnome/terminal
+	dconf reset -f /org/gnome/desktop/
 	dconf load /org/gnome/desktop/ < gnome/desktop
+	dconf reset -f /org/gnome/shell/
 	dconf load /org/gnome/shell/ < gnome/shell
 
 help:
