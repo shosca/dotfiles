@@ -92,4 +92,4 @@ secondary-color='#000000000000'
 show-all-sources=false
 current=uint32 0
 sources=@a(ss) []
-xkb-options=['caps:ctrl_modifier']
+xkb-options=['caps:ctrl_modifier', 'shift:both_capslock']
