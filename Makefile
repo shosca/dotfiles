@@ -102,18 +102,28 @@ GNOME_BACKUP_KEYS=\
 									"org/gnome/shell" \
 									"org/gnome/mutter" \
 									"org/gnome/nautilus" \
-									"org/gnome/gnome-session"
+									"org/gnome/gnome-session" \
+									"org/gnome/settings-daemon"
+
+GNOME_BACKUP_PER_MACHINE=\
+												 "org/gnome/shell/favorite-apps"
 
 gnome-backup:
 	for g in $(GNOME_BACKUP_KEYS); do \
 		mkdir -p dconf/$$g ; \
 		dconf dump /$$g/ > dconf/$$g/backup ; \
+	done ; \
+	for g in $(GNOME_BACKUP_PER_MACHINE); do \
+		dconf read /$$g > dconf/$$g.$$HOSTNAME ; \
 	done
 
 gnome-restore:
 	for g in $(GNOME_BACKUP_KEYS); do \
 		dconf reset -f /$$g/ ; \
 		dconf load /$$g/ < dconf/$$g/backup ; \
+	done ; \
+	for g in $(GNOME_BACKUP_PER_MACHINE); do \
+		dconf write /$$g "$$(cat dconf/$$g.$$HOSTNAME)" ; \
 	done
 
 help:

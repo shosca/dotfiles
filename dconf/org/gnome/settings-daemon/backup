@@ -1,0 +1,20 @@
+[plugins/color]
+night-light-schedule-automatic=true
+night-light-enabled=true
+night-light-last-coordinates=(40.722900000000003, -73.842399999999998)
+
+[plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+
+[plugins/media-keys/custom-keybindings/custom0]
+binding='<Primary>BackSpace'
+command='tilix -q'
+name='Tilix Quake'
+
+[plugins/xsettings]
+overrides={'Gtk/ShellShowsAppMenu': <1>, 'Gdk/WindowScalingFactor': <1>}
+antialiasing='rgba'
+hinting='medium'
+
+[peripherals/keyboard]
+numlock-state='off'

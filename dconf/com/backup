@@ -34,12 +34,12 @@ equalizer-lowpass-poles=4
 quake-height-percent=50
 quake-hide-lose-focus=true
 terminal-title-style='none'
-window-state=128
+window-state=132
 theme-variant='dark'
 quake-hide-headerbar=true
 warn-vte-config-issue=false
 terminal-title-show-when-single=false
-window-style='normal'
+window-style='disable-csd-hide-toolbar'
 
 [gexperts/Tilix/profiles]
 list=['2b7c4080-0ddd-46c5-8f23-563fd3ba789d']
