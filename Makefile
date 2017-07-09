@@ -22,7 +22,7 @@ SYMLINKS= \
 	tmux.conf \
 	yaourtrc \
 
-.PHONY: help python vim
+.PHONY: help python vim tilix
 
 install: vim zsh symlinks tmux ## Installs all
 
@@ -60,6 +60,9 @@ vim: vimenv  ## Sets up vim
 	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
 	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
 	ln -s $(PWD) $(HOME)/.vim || true ; \
+
+tilix:
+	ln -s $(PWD)/tilix $(XDG_CONFIG_HOME)/tilix || true
 
 symlinks:  ## Symlinks dotfiles into homedir
 	for f in $(SYMLINKS); do \

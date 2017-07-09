@@ -1,0 +1,25 @@
+{
+  "background-color": "#000000",
+  "comment": "Ported for Terminix Colour Scheme",
+  "foreground-color": "#ffffff",
+  "name": "Dark Pastel",
+  "palette": [
+    "#000000",
+    "#ff5555",
+    "#55ff55",
+    "#ffff55",
+    "#5555ff",
+    "#ff55ff",
+    "#55ffff",
+    "#bbbbbb",
+    "#555555",
+    "#ff5555",
+    "#55ff55",
+    "#ffff55",
+    "#5555ff",
+    "#ff55ff",
+    "#55ffff",
+    "#ffffff"
+  ],
+  "use-theme-colors": false
+}
