@@ -31,19 +31,38 @@ limiter-user=[0.0, 0.0, 1.0]
 equalizer-lowpass-poles=4
 
 [gexperts/Tilix]
+quake-height-percent=50
+quake-hide-lose-focus=true
+terminal-title-style='none'
+window-state=128
+theme-variant='dark'
+quake-hide-headerbar=true
 warn-vte-config-issue=false
 terminal-title-show-when-single=false
-terminal-title-style='none'
-theme-variant='dark'
-window-state=128
 window-style='normal'
 
-[gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
-login-shell=true
-visible-name='Default'
-
 [gexperts/Tilix/profiles]
+list=['2b7c4080-0ddd-46c5-8f23-563fd3ba789d']
 default='2b7c4080-0ddd-46c5-8f23-563fd3ba789d'
+
+[gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+foreground-color='#EBDBB2'
+visible-name='Default'
+dim-color-set=false
+login-shell=true
+palette=['#282828', '#CC241D', '#98971A', '#D79921', '#458588', '#B16286', '#689D6A', '#A89984', '#928374', '#FB4934', '#B8BB26', '#FABD2F', '#83A598', '#D3869B', '#8EC07C', '#EBDBB2']
+badge-color-set=false
+show-scrollbar=true
+use-system-font=false
+cursor-colors-set=false
+highlight-colors-set=false
+use-theme-colors=false
+bold-color-set=false
+font='Hack 9'
+scrollback-unlimited=true
+background-color='#282828'
+background-transparency-percent=0
+dim-transparency-percent=0
 
 [solus-project/budgie-panel]
 migration-level=1
