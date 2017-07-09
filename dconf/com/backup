@@ -1,0 +1,110 @@
+[github/wwmm/pulseeffects]
+equalizer-user=[5.0, 6.0, 5.0, 3.0, 1.0, 0.0, -1.0, -3.0, -5.0, 1.0, 2.0, 3.0, 3.0, 3.0, 1.0]
+show-spectrum=true
+compressor-user=[0.0, 100.0, 400.0, 0.0, 1.0, 3.0, 0.0]
+equalizer-highpass-cutoff=20
+autovolume-state=false
+equalizer-highpass-poles=4
+latency-time=10
+reverb-user=[0.0, 0.0, 0.0, 0.0]
+spectrum-n-points=250
+equalizer-lowpass-cutoff=20000
+buffer-time=100
+equalizer-output-gain=0.0
+equalizer-lowpass-poles=4
+limiter-user=[0.0, 0.0, 1.0]
+
+[github/wwmm/pulseeffects/sinkinputs]
+compressor-user=[0.0, 100.0, 400.0, 0.0, 1.0, 3.0, 0.0]
+equalizer-lowpass-cutoff=20000
+equalizer-highpass-poles=4
+equalizer-highpass-cutoff=20
+limiter-user=[0.0, 0.0, 1.0]
+equalizer-lowpass-poles=4
+
+[github/wwmm/pulseeffects/sourceoutputs]
+compressor-user=[0.0, 100.0, 400.0, 0.0, 1.0, 3.0, 0.0]
+equalizer-lowpass-cutoff=20000
+equalizer-highpass-poles=4
+equalizer-highpass-cutoff=20
+limiter-user=[0.0, 0.0, 1.0]
+equalizer-lowpass-poles=4
+
+[gexperts/Tilix]
+warn-vte-config-issue=false
+terminal-title-show-when-single=false
+terminal-title-style='none'
+theme-variant='dark'
+window-state=128
+window-style='normal'
+
+[gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+login-shell=true
+visible-name='Default'
+
+[gexperts/Tilix/profiles]
+default='2b7c4080-0ddd-46c5-8f23-563fd3ba789d'
+
+[solus-project/budgie-panel]
+migration-level=1
+panels=['8b04fe5c-60fd-11e7-b37c-10c37b6b8003']
+
+[solus-project/budgie-panel/panels/{8b04fe5c-60fd-11e7-b37c-10c37b6b8003}]
+size=39
+enable-shadow=true
+location='top'
+applets=['252fc61a-6126-11e7-8d3c-10c37b6b8003', '972fe52e-6126-11e7-8d3c-10c37b6b8003', 'a7047d30-60fd-11e7-906a-10c37b6b8003', '8b060522-60fd-11e7-b37c-10c37b6b8003', 'a703f7ac-60fd-11e7-906a-10c37b6b8003', '0a709d5e-6126-11e7-8d3c-10c37b6b8003', '8b055776-60fd-11e7-b37c-10c37b6b8003', '3fc48600-6126-11e7-8d3c-10c37b6b8003']
+theme-regions=true
+
+[solus-project/budgie-panel/instance/budgie-menu/{8b055776-60fd-11e7-b37c-10c37b6b8003}]
+app-scores=[('/usr/share/applications/chromium-dev.desktop', 3), ('/usr/share/applications/org.gnome.Terminal.desktop', 2), ('/usr/share/applications/atom.desktop', 1)]
+menu-compact=false
+
+[solus-project/budgie-panel/applets/{0a709d5e-6126-11e7-8d3c-10c37b6b8003}]
+position=0
+alignment='center'
+name='Clock'
+
+[solus-project/budgie-panel/applets/{a7047d30-60fd-11e7-906a-10c37b6b8003}]
+position=3
+alignment='end'
+name='Raven Trigger'
+
+[solus-project/budgie-panel/applets/{8b060522-60fd-11e7-b37c-10c37b6b8003}]
+position=2
+alignment='start'
+name='Spacer'
+
+[solus-project/budgie-panel/applets/{972fe52e-6126-11e7-8d3c-10c37b6b8003}]
+position=0
+alignment='end'
+name='Status Indicator'
+
+[solus-project/budgie-panel/applets/{8b062f84-60fd-11e7-b37c-10c37b6b8003}]
+position=0
+alignment='start'
+name='Icon Task List'
+
+[solus-project/budgie-panel/applets/{252fc61a-6126-11e7-8d3c-10c37b6b8003}]
+position=1
+alignment='start'
+name='Icon Task List'
+
+[solus-project/budgie-panel/applets/{8b055776-60fd-11e7-b37c-10c37b6b8003}]
+position=0
+alignment='start'
+name='Budgie Menu'
+
+[solus-project/budgie-panel/applets/{a703f7ac-60fd-11e7-906a-10c37b6b8003}]
+position=2
+alignment='end'
+name='User Indicator'
+
+[solus-project/budgie-panel/applets/{3fc48600-6126-11e7-8d3c-10c37b6b8003}]
+position=1
+alignment='end'
+name='System Tray'
+
+[solus-project/budgie-wm]
+button-layout='appmenu:minimize,maximize,close'
+button-style='traditional'

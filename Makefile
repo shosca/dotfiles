@@ -93,22 +93,24 @@ clean-python:  ## Clean python files
 	rm -rf $(HOME)/.config/python/sitecustomize.py
 
 GNOME_BACKUP_KEYS=\
-									terminal \
-									desktop \
-									shell \
-									mutter \
-									nautilus \
-									gnome-session
+									"com" \
+									"org/gnome/terminal" \
+									"org/gnome/desktop" \
+									"org/gnome/shell" \
+									"org/gnome/mutter" \
+									"org/gnome/nautilus" \
+									"org/gnome/gnome-session"
 
 gnome-backup:
 	for g in $(GNOME_BACKUP_KEYS); do \
-		dconf dump /org/gnome/$$g/ > gnome/$$g ; \
+		mkdir -p dconf/$$g ; \
+		dconf dump /$$g/ > dconf/$$g/backup ; \
 	done
 
 gnome-restore:
 	for g in $(GNOME_BACKUP_KEYS); do \
-		dconf reset -f /org/gnome/$$g/ ; \
-		dconf load /org/gnome/$$g/ < gnome/$$g ; \
+		dconf reset -f /$$g/ ; \
+		dconf load /$$g/ < dconf/$$g/backup ; \
 	done
 
 help:
