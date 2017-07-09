@@ -17,4 +17,4 @@ antialiasing='rgba'
 hinting='medium'
 
 [peripherals/keyboard]
-numlock-state='off'
+numlock-state='on'
