@@ -1,4 +1,11 @@
 ---
+- repo: roxma/python-support.nvim
+  hook_source: |
+    let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'PyYAML')
+    let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'jedi')
+    let g:python_support_python2_requirements = add(get(g:,'python_support_python2_requirements',[]),'PyYAML')
+    let g:python_support_python2_requirements = add(get(g:,'python_support_python2_requirements',[]),'jedi')
+
 - repo: Shougo/denite.nvim
 
 - repo: chemzqm/unite-location
