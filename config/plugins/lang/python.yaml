@@ -32,9 +32,6 @@
     let g:jedi#quickfix_window_height = 10
     let g:jedi#max_doc_height = 100
 
-- repo: python-rope/ropevim
-  on_ft: python
-
 - repo: zchee/deoplete-jedi
   if: has('nvim')
   depends: [deoplete.nvim]
