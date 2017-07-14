@@ -74,6 +74,12 @@ secondary-color='#000000000000'
 natural-scroll=false
 tap-to-click=true
 
+[peripherals/tablets/056a:00e6]
+display=['LGD', '0x02d8', '0x00000000']
+
+[peripherals/touchscreens/056a:00e6]
+display=['LGD', '0x02d8', '0x00000000']
+
 [peripherals/mouse]
 speed=0.18705035971223016
 
