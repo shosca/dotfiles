@@ -1,4 +1,5 @@
 \set QUIET 1
+\pset null ¤
 
 -- Errors are ignored on interactive sessions,
 -- and not when reading script files
@@ -17,10 +18,12 @@
 
 \set HISTFILE ~/.cache/psql/.psql_history- :DBNAME
 \set HISTCONTROL ignoredups
-\pset null ¤
+\set COMP_KEYWORD_CASE upper
 
 \pset linestyle unicode
 \pset border 2
 \pset pager off
 \pset format wrapped
 \set PROMPT1 '%[%033[33;1m%]%x%[%033[0m%]%[%033[1m%]%/%[%033[0m%]%R%# '
+\set PROMPT2 '... > '
+\unset QUIET
