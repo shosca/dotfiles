@@ -1,6 +1,10 @@
 # do not make noise
 set bell-style none
 
+# Include system wide settings which are ignored
+# by default if one has their own .inputrc
+$include /etc/inputrc
+
 # By default up/down are bound to previous-history
 # and next-history respectively. The following does the
 # same but gives the extra functionality where if you
@@ -23,10 +27,6 @@ $if Bash
   Space: magic-space
 $endif
 
-# Include system wide settings which are ignored
-# by default if one has their own .inputrc
-$include /etc/inputrc
-
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
 "\e[7~": beginning-of-line
@@ -35,3 +35,11 @@ $include /etc/inputrc
 "\eOF": end-of-line
 "\e[H": beginning-of-line
 "\e[F": end-of-line"
+
+set colored-stats On
+set completion-ignore-case On
+set completion-prefix-display-length 3
+set mark-symlinked-directories On
+set show-all-if-ambiguous On
+set show-all-if-unmodified On
+set visible-stats On
