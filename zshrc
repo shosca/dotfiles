@@ -32,8 +32,8 @@ antigen bundle history-substring-search
 #antigen bundle ruby
 #antigen bundle rust
 #antigen bundle rvm
-#antigen bundle systemd
-#antigen bundle virtualenv
+antigen bundle systemd
+antigen bundle virtualenv
 #antigen bundle yarn
 
 antigen bundle $HOME/dotfiles/zsh dotenv
