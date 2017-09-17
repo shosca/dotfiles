@@ -67,6 +67,7 @@ fi
 
 export PYTHONUSERBASE=~/.config/python
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
+export PATH="~/.config/python/bin:$PATH"
 
 #BASE16_SHELL="$HOME/dotfiles/base16-gruvbox.dark.sh"
 #[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL

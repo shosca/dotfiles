@@ -10,9 +10,9 @@ antigen bundle archlinux
 #antigen bundle cargo
 #antigen bundle celery
 antigen bundle command-not-found
-#antigen bundle django
-#antigen bundle docker
-#antigen bundle docker-compose
+antigen bundle django
+antigen bundle docker
+antigen bundle docker-compose
 #antigen bundle dotenv
 #antigen bundle fabric
 antigen bundle git
@@ -25,9 +25,9 @@ antigen bundle git
 antigen bundle history-substring-search
 #antigen bundle hub
 #antigen bundle mercurial
-#antigen bundle pip
+antigen bundle pip
 #antigen bundle postgres
-#antigen bundle python
+antigen bundle python
 #antigen bundle rbenv
 #antigen bundle ruby
 #antigen bundle rust
