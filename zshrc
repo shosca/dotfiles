@@ -4,6 +4,8 @@ source $HOME/dotfiles/zsh/antigen.zsh
 
 antigen use oh-my-zsh
 
+antigen bundle $HOME/dotfiles/zsh dotenv
+
 antigen bundle archlinux
 #antigen bundle autojump
 #antigen bundle aws
@@ -17,26 +19,25 @@ antigen bundle docker-compose
 #antigen bundle fabric
 antigen bundle git
 #antigen bundle git-extras
-#antigen bundle git-flow
-#antigen bundle github
+antigen bundle git-flow
+antigen bundle github
 #antigen bundle go
-#antigen bundle golang
+antigen bundle golang
 #antigen bundle gpg-agent
 antigen bundle history-substring-search
 #antigen bundle hub
 #antigen bundle mercurial
 antigen bundle pip
-#antigen bundle postgres
+antigen bundle postgres
 antigen bundle python
 #antigen bundle rbenv
 #antigen bundle ruby
-#antigen bundle rust
+antigen bundle rust
 #antigen bundle rvm
 antigen bundle systemd
 antigen bundle virtualenv
 #antigen bundle yarn
 
-antigen bundle $HOME/dotfiles/zsh dotenv
 antigen theme $HOME/dotfiles/zsh gentoo2
 
 antigen apply
@@ -56,3 +57,6 @@ autoload -U compinit
 compinit
 
 source ~/.profile
+
+[[ -f $HOME/dotfiles/aliases ]] && source $HOME/dotfiles/aliases
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local

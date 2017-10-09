@@ -194,3 +194,9 @@
     nmap <silent> <leader>T :TestFile<CR>
     nmap <silent> <leader>a :TestSuite<CR>
     nmap <silent> <leader>l :TestLast<CR>
+
+- repo: itchyny/vim-cursorword
+  hook_add: |
+    autocmd MyAutoCmd FileType denite,qf,nerdtree let b:cursorword=0
+    autocmd MyAutoCmd InsertEnter * let b:cursorword=0
+    autocmd MyAutoCmd InsertLeave * let b:cursorword=1

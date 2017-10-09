@@ -24,7 +24,7 @@ case "${TERM}" in
 esac
 
 if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
-	eval $(dircolors -b ${HOME}/.dircolors)
+  eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
 mkdir -p ${HOME}/bin
@@ -34,11 +34,11 @@ mkdir -p ${HOME}/src/bin
 export PATH="${HOME}/src/bin:${PATH}"
 
 if [[ -d "/usr/lib/ccache/bin" ]]; then
-	export PATH="/usr/lib/ccache/bin:${PATH}"
+  export PATH="/usr/lib/ccache/bin:${PATH}"
 fi
 if [[ -d "/usr/lib/distcc/bin" ]]; then
-	export PATH="/usr/lib/distcc/bin:${PATH}"
-	DISTCC_HOSTS="@buttercup.local/4"
+  export PATH="/usr/lib/distcc/bin:${PATH}"
+  DISTCC_HOSTS="@buttercup.local/4"
 fi
 
 mkdir -p ${HOME}/go/bin
@@ -51,9 +51,9 @@ mkdir -p ${HOME}/.cargo/bin
 export PATH="${HOME}/.cargo/bin:${PATH}"
 
 if type keychain >/dev/null 2>&1; then
-	keychain ~/.ssh/id_*.key
-	[[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
-	[[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
+  keychain ~/.ssh/id_*.key
+  [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
+  [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
 fi
 
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
@@ -61,16 +61,13 @@ unset GREP_OPTIONS
 
 export EDITOR=vim
 if type nvim >/dev/null; then
-	export EDITOR=nvim
-	alias vim=nvim
+  export EDITOR=nvim
+  alias vim=nvim
 fi
 
-export PYTHONUSERBASE=~/.config/python
+export PYTHONUSERBASE=~/.local
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
-export PATH="~/.config/python/bin:$PATH"
+export PATH="$PYTHONUSERBASE/bin:$PATH"
 
 #BASE16_SHELL="$HOME/dotfiles/base16-gruvbox.dark.sh"
 #[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
-
-[[ -f $HOME/dotfiles/aliases ]] && source $HOME/dotfiles/aliases
-[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local

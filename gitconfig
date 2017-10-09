@@ -54,9 +54,8 @@
     tool = nvimdiff
 [merge]
     tool = nvimdiff
-    conflictstyle = diff3
-	ff = only
+    ff = only
 [mergetool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
