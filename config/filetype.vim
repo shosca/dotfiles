@@ -7,11 +7,15 @@ execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
 augroup MyAutoCmd " {
   au!
 
+  " Highlight current line only on focused window
+  autocmd WinEnter,InsertLeave * set cursorline
+  autocmd WinLeave,InsertEnter * set nocursorline
+
   " Automatically set read-only for files being edited elsewhere
   autocmd SwapExists * nested let v:swapchoice = 'o'
 
   " Check if file changed when its window is focus, more eager than 'autoread'
-  "autocmd WinEnter,FocusGained * checktime
+  autocmd WinEnter,FocusGained * checktime
 
   autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
 
@@ -43,6 +47,8 @@ augroup MyAutoCmd " {
   autocmd TabLeave * let g:lasttab = tabpagenr()
 
   autocmd FileType crontab setlocal nobackup nowritebackup
+
+	autocmd FileType docker-compose setlocal expandtab
 
   autocmd FileType gitcommit setlocal spell
 
