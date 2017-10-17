@@ -9,6 +9,12 @@ cnoremap <C-n>  <Down>
 cnoremap <Up>   <C-p>
 cnoremap <Down> <C-n>
 
+" Toggle fold
+nnoremap <CR> za
+
+" Focus the current fold by closing all others
+nnoremap <S-Return> zMza
+
 " In normal mode, jj escapes
 inoremap jj <Esc>
 
@@ -103,11 +109,6 @@ nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 " }
 "
-" Toggle fold
-nnoremap <CR> za
-
-" Focus the current fold by closing all others
-nnoremap <S-CR> zMza
 
 " Most prefer to toggle search highlighting rather than clear the current
 " search results. To clear search highlighting rather than toggle it on
@@ -132,9 +133,6 @@ nnoremap < <<_
 " Allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
-
-" For when you forget to sudo.. Really Write the file.
-cmap w!! w !sudo tee % >/dev/null
 
 " Some helpers to edit mode http://vimcasts.org/e/14 " {
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -162,6 +160,11 @@ nnoremap <silent> <leader>q gwip
 nmap <silent> <Leader>ev :e $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 
+" Save a file with sudo
+" http://forrst.com/posts/Use_w_to_sudo_write_a_file_with_Vim-uAN
+cmap W!! w !sudo tee % >/dev/null
+cmap w!! w !sudo tee % >/dev/null
+
 "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
 inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
@@ -177,3 +180,9 @@ augroup gitrebase
   autocmd FileType gitrebase nnoremap <buffer> <silent> F :Fixup<cr>
   autocmd FileType gitrebase nnoremap <buffer> <silent> C :Cycle<cr>
 augroup END
+
+" Show highlight names under cursor
+nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
+	\.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
+	\.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
+

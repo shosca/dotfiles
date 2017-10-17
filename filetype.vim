@@ -11,6 +11,7 @@ augroup filetypedetect
   autocmd BufNewFile,BufReadPost *.feature,*.story setf cucumber
 
   autocmd BufNewFile,BufRead */inventory/*         setf ansible
+  autocmd BufNewFile,BufRead */inventoryies/*      setf ansible
   autocmd BufNewFile,BufRead */playbooks/*/*.yml   setf ansible
 
   autocmd BufNewFile,BufRead .tern-project         setf json

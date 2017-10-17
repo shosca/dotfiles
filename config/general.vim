@@ -13,9 +13,6 @@ set magic                    " For regular expressions turn magic on
 set path=.,**                " Directories to search when using gf
 set virtualedit=block        " Position cursor anywhere in visual block
 set synmaxcol=1000           " Don't syntax highlight long lines
-set nocursorcolumn
-syntax sync minlines=256
-set re=1
 set formatoptions+=1         " Don't break lines after a one-letter word
 set formatoptions-=t         " Don't auto-wrap text
 if has('patch-7.3.541')
@@ -107,7 +104,7 @@ if has('nvim')
   " https://github.com/neovim/neovim/issues/2017
   set ttimeoutlen=-1
 else
-  set ttimeoutlen=250
+	set ttimeoutlen=10
 endif
 
 " }}}
@@ -194,6 +191,21 @@ endif
 " }}}
 " Folds {{{
 " -----
+
+" FastFold
+" Credits: https://github.com/Shougo/shougo-s-github
+autocmd MyAutoCmd TextChangedI,TextChanged *
+  \ if &l:foldenable && &l:foldmethod !=# 'manual' |
+  \   let b:foldmethod_save = &l:foldmethod |
+  \   let &l:foldmethod = 'manual' |
+  \ endif
+
+autocmd MyAutoCmd BufWritePost *
+  \ if &l:foldmethod ==# 'manual' && exists('b:foldmethod_save') |
+  \   let &l:foldmethod = b:foldmethod_save |
+  \   execute 'normal! zx' |
+  \ endif
+
 if has('folding')
   set foldenable
   set foldmethod=syntax
@@ -225,4 +237,3 @@ function! FoldText()
 endfunction
 
 " }}}
-
