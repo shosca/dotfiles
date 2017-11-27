@@ -88,7 +88,7 @@
     highlight link ALEErrorSign GruvboxRedSign
     highlight link ALEWarningSign GruvboxYellowSign
 
-- repo: tpope/vim-surround
+- repo: machakann/vim-sandwich
 
 - repo: airblade/vim-rooter
   hook_source: |
@@ -158,55 +158,14 @@
   on_map:
     n: <Plug>
 
-- repo: vimwiki/vimwiki
-  hook_add: |
-    let g:vimwiki_use_calendar = 1
-    let g:vimwiki_hl_headers = 1
-    let g:vimwiki_hl_cb_checked = 1
-    let g:vimwiki_autowriteall = 0
-  hook_source: |
-    let g:vimwiki_list = [
-    \   { 'diary_header': 'Diary',
-    \     'diary_link_fmt': '%Y-%m/%d',
-    \     'auto_toc': 1,
-    \     'path': '~/docs/wiki/',
-    \     'syntax': 'markdown',
-    \     'ext': '.md' },
-    \   { 'path': '~/docs/blog/',
-    \     'syntax': 'markdown',
-    \     'ext': '.md' }
-    \ ]
-
-- repo: ludovicchabant/vim-gutentags
+- repo: jsfaint/gen_tags.vim
   if: executable('ctags')
-  on_path: .*
-  hook_add: |
-    let g:gutentags_cache_dir = $VARPATH.'/tags'
-    let g:gutentags_generate_on_write = 1
-    let g:gutentags_generate_on_missing = 0
-    let g:gutentags_generate_on_new = 0
-
-- repo: matze/vim-move
-  hook_source: |
-    let g:move_key_modifier = 'C'
+  hook_always: |
+    let g:loaded_gentags#gtags=1
+    let g:gen_tags#ctags_auto_gen=1
 
 - repo: rafi/awesome-vim-colorschemes
 
 - repo: vim-airline/vim-airline
 
 - repo: vim-airline/vim-airline-themes
-
-- repo: tpope/vim-scriptease
-  hook_add: |
-    let test#stategy = "neovim"
-  hook_source: |
-    nmap <silent> <leader>t :TestNearest<CR>
-    nmap <silent> <leader>T :TestFile<CR>
-    nmap <silent> <leader>a :TestSuite<CR>
-    nmap <silent> <leader>l :TestLast<CR>
-
-- repo: itchyny/vim-cursorword
-  hook_add: |
-    autocmd MyAutoCmd FileType denite,qf,nerdtree let b:cursorword=0
-    autocmd MyAutoCmd InsertEnter * let b:cursorword=0
-    autocmd MyAutoCmd InsertLeave * let b:cursorword=1

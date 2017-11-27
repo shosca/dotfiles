@@ -17,6 +17,7 @@ antigen bundle docker
 antigen bundle docker-compose
 #antigen bundle dotenv
 #antigen bundle fabric
+antigen bundle fzf
 antigen bundle git
 #antigen bundle git-extras
 antigen bundle git-flow
@@ -50,11 +51,15 @@ setopt incappendhistory
 setopt histfindnodups
 setopt sharehistory
 
+bindkey '^[[A' fzf-history-widget
 bindkey '\C-P' history-substring-search-up
 bindkey '\C-N' history-substring-search-down
 
 autoload -U compinit
 compinit
+
+[[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
+[[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 
 source ~/.profile
 

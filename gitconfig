@@ -1,6 +1,7 @@
 [alias]
     br = branch
     branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
+    lastbranch = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
     ci = commit
     co = checkout
     d = difftool
