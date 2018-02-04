@@ -77,6 +77,10 @@ python:  # Sets up python related files
 	ln -sf $(PWD)/python/pdbrc $(HOME)/.pdbrc
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
+alacritty:
+	mkdir -p $(XDG_CONFIG_HOME)/alacritty
+	ln -sf $(PWD)/alacritty.yml $(XDG_CONFIG_HOME)/alacritty/alacritty.yml
+
 clean: clean-symlinks clean-vim clean-zsh ## Cleans all configs
 
 clean-symlinks: ## Cleans symlinks and such
