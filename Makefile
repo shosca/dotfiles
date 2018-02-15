@@ -36,14 +36,10 @@ tpm:  ## Install tmux plugin manager
 tmux: tpm  ## Install tmux
 	mkdir -p $(HOME)/.tmux/plugins ; \
 
-oh-my-zsh:
-	if [ ! -e $(OHMYZSH) ]; then \
-		git clone https://github.com/robbyrussell/oh-my-zsh.git $(OHMYZSH) ; \
-	else \
-		cd $(OHMYZSH) && git pull ; \
-	fi
+zsh/antigen.zsh:
+	curl -L git.io/antigen > zsh/antigen.zsh
 
-zsh: oh-my-zsh ## Sets up zsh
+zsh: zsh/antigen.zsh ## Sets up zsh
 	ln -sf $(PWD)/zshrc $(HOME)/.zshrc ; \
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv

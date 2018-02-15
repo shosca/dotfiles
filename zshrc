@@ -4,8 +4,6 @@ source $HOME/dotfiles/zsh/antigen.zsh
 
 antigen use oh-my-zsh
 
-antigen bundle $HOME/dotfiles/zsh dotenv
-
 antigen bundle archlinux
 #antigen bundle autojump
 #antigen bundle aws
@@ -42,6 +40,17 @@ antigen bundle virtualenv
 antigen theme $HOME/dotfiles/zsh gentoo2
 
 antigen apply
+
+# dotenv
+dotenv () {
+  if [[ -r $PWD/.env ]]; then
+    set -a
+    source $PWD/.env
+  fi
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook chpwd dotenv
 
 # User configuration
 

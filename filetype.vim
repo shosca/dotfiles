@@ -15,6 +15,7 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead */playbooks/*/*.yml   setf ansible
 
   autocmd BufNewFile,BufRead .tern-project         setf json
+  autocmd BufNewFile,BufRead .mk                   setf make
 
   autocmd BufNewFile,BufRead Tmuxfile,tmux/config  setf tmux
 
