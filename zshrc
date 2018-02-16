@@ -70,7 +70,8 @@ compinit
 [[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
 [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 
-source ~/.profile
+set -a
+. ~/.profile
 
 [[ -f $HOME/dotfiles/aliases ]] && source $HOME/dotfiles/aliases
 [[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
