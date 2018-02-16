@@ -51,9 +51,9 @@ mkdir -p ${HOME}/.cargo/bin
 export PATH="${HOME}/.cargo/bin:${PATH}"
 
 if type keychain >/dev/null 2>&1; then
-  keychain ~/.ssh/id_*.key
-  [[ -f ~/.keychain/$HOST-sh ]] && source ~/.keychain/$HOST-sh
-  [[ -f ~/.keychain/$HOST-sh-gpg ]] && source ~/.keychain/$HOST-sh-gpg
+  keychain ${HOME}/.ssh/id_*.key
+  [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+  [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
 
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
@@ -65,7 +65,7 @@ if type nvim >/dev/null; then
   alias vim=nvim
 fi
 
-export PYTHONUSERBASE=~/.local
+export PYTHONUSERBASE=${HOME}/.local
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 export PATH="$PYTHONUSERBASE/bin:$PATH"
 
