@@ -69,5 +69,6 @@ export PYTHONUSERBASE=~/.local
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 export PATH="$PYTHONUSERBASE/bin:$PATH"
 
-#BASE16_SHELL="$HOME/dotfiles/base16-gruvbox.dark.sh"
-#[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
+mkdir -p ${HOME}/dc
+export PATH="${HOME}/dc:${PATH}"
+
