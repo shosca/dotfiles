@@ -1,30 +1,51 @@
+# vim: set noet foldmarker={,} foldlevel=0 foldmethod=marker spell:
 PWD=$(shell pwd)
 XDG_CACHE_HOME ?= $(HOME)/.cache
 XDG_CONFIG_HOME ?= $(HOME)/.config
 OHMYZSH = $(XDG_CACHE_HOME)/oh-my-zsh
 RSYNCOPTS=--progress --recursive --links --times -D --delete -v
+CLEAN_TARGETS=$(shell grep ": out " Makefile | grep -v TARGET | cut -d ':' -f1)
+INSTALL_TARGETS=$(shell grep ": in " Makefile | grep -v TARGET | cut -d':' -f1)
 
-SYMLINKS= \
-	ackrc \
-	bash_profile \
-	bashrc \
-	ctags \
-	eslintrc \
-	gitconfig \
-	hgrc \
-	inputrc \
-	jshintrc \
-	pdbrc \
-	profile \
-	psqlrc \
-	rspec \
-	rvmrc \
-	tmux.conf \
-	yaourtrc \
 
-.PHONY: help python vim tilix
+.PHONY: in out zsh/antigen.zsh $(INSTALL_TARGETS) $(CLEAN_TARGETS)
 
-install: vim zsh symlinks tmux ## Installs all
+
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | tr -d '{}' | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo $(INSTALL_TARGETS)
+	@echo $(CLEAN_TARGETS)
+
+
+in:  # this is a dummy target for installers
+
+out:  # this is a dummy target for cleaners
+
+
+zsh: in zsh/antigen.zsh  ## Sets up zsh {
+	ln -sf $(PWD)/zshrc $(HOME)/.zshrc
+	ln -sf $(PWD)/profile $(HOME)/.profile
+
+zsh/antigen.zsh:
+	curl -L git.io/antigen > zsh/antigen.zsh
+
+clean-zsh: out ## remove zsh config
+	rm -rf $(HOME)/.zshrc $(HOME)/.antigen $(XDG_CACHE_HOME)/.oh-my-zsh
+
+# }
+
+bash: in ## install bash config {
+	ln -sf $(PWD)/bashrc $(HOME)/.bashrc
+	ln -sf $(PWD)/bash_profile $(HOME)/.bash_profile
+
+clean-bash:  ## remove bash config
+	rm -f $(HOME)/.bashrc $(HOME)/.bash_profile
+
+# }
+
+tmux: in tpm  ## Install tmux {
+	mkdir -p $(HOME)/.tmux/plugins ; \
+	ln -sf $(PWD)/tmux.conf $(HOME)/.tmux.conf \
 
 tpm:  ## Install tmux plugin manager
 	if [ ! -e $(HOME)/.tmux/plugins/tpm ]; then \
@@ -33,14 +54,15 @@ tpm:  ## Install tmux plugin manager
 		cd $(HOME)/.tmux/plugins/tpm && git pull ; \
 	fi
 
-tmux: tpm  ## Install tmux
-	mkdir -p $(HOME)/.tmux/plugins ; \
+clean-tmux: out
+	rm -rf $(HOME)/.tmux $(HOME)/.tmux.conf
 
-zsh/antigen.zsh:
-	curl -L git.io/antigen > zsh/antigen.zsh
+# }
 
-zsh: zsh/antigen.zsh ## Sets up zsh
-	ln -sf $(PWD)/zshrc $(HOME)/.zshrc ; \
+vim: in vimenv  ## install vim/neovim config {
+	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
+	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
+	ln -s $(PWD) $(HOME)/.vim || true ; \
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv
 VIMENV2=$(VIMENV)/neovim2
@@ -52,49 +74,129 @@ vimenv:  ## Sets python env for vim
 	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim
 	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim
 
-vim: vimenv ## Sets up vim
-	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
-	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
-	ln -s $(PWD) $(HOME)/.vim || true ; \
+clean-vim: out ## remove vim/neovim config
+	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim
 
-tilix:
+# }
+
+tilix: in ## install tilix configs {
 	ln -s $(PWD)/tilix $(XDG_CONFIG_HOME)/tilix || true
 
-symlinks:  ## Symlinks dotfiles into homedir
-	for f in $(SYMLINKS); do \
-		ln -sf $(PWD)/$$f $(HOME)/.$$f ; \
-	done ; \
-	mkdir -p $(XDG_CACHE_HOME)/ssh
-	chmod 600 -R $(XDG_CACHE_HOME)/ssh
+clean-tilix: out
+	rm -rf $(XDG_CONFIG_HOME)/tilix
 
-python:  # Sets up python related files
+# }
+
+python: in  ## install python/pdb config {
 	mkdir -p $(XDG_CONFIG_HOME)/python
 	ln -sf $(PWD)/python/sitecustomize.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
+	ln -sf $(PWD)/python/pylintrc $(XDG_CONFIG_HOME)/pylintrc
 	ln -sf $(PWD)/python/pdbrc $(HOME)/.pdbrc
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
-alacritty:
+clean-python: out  ## remove python/pdb config
+	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
+
+# }
+
+alacritty: in  ## install alacritty config {
 	mkdir -p $(XDG_CONFIG_HOME)/alacritty
 	ln -sf $(PWD)/alacritty.yml $(XDG_CONFIG_HOME)/alacritty/alacritty.yml
 
-clean: clean-symlinks clean-vim clean-zsh ## Cleans all configs
+clean-alacritty: out  ## remove alacritty config
+	rm -f $(XDG_CONFIG_HOME)/alacritty/alacritty.yml
 
-clean-symlinks: ## Cleans symlinks and such
-	for f in $(SYMLINKS) ; do \
-		rm -rf $(HOME)/.$$f ; \
-	done
+# }
 
-clean-zsh: ## Cleans zsh config files
-	rm -rf $(HOME)/.zshrc $(XDG_CACHE_HOME)/.oh-my-zsh
+ackrc: in  ## install ackrc config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
 
-clean-vim: ## Cleans vim config files
-	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim
+clean-ackrc: out  ## remove ackrc config
+	rm -f $(HOME)/.ackrc
 
-clean-python:  ## Clean python files
-	rm -rf $(HOME)/.pdbrc
-	rm -rf $(HOME)/.pdbrc.py
-	rm -rf $(HOME)/.config/python/sitecustomize.py
+# }
 
+ctags: in  ## install ctags config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-ctags: out
+	rm -f $(HOME)/.ctags
+
+#}
+
+eslintrc: in  ## install eslint config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-eslintrc: out  ## remove eslint config
+	rm -f $(HOME)/.eslintrc
+
+#}
+
+jshintrc: in  ## install jshint config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-jshintrc: out  ## remove jshintrc config
+	rm -f $(HOME)/.jshintrc
+
+#}
+
+gitconfig: in  ## install git config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-gitconfig: out  ## remove git config
+	rm -f $(HOME)/.gitconfig
+
+# }
+
+hgrc: in  ## install hc config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-hgrc: out  ## remove hc config
+	rm -f $(HOME)/.hgrc
+
+# }
+
+inputrc: in  ## install input config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-inputrc: out  ## remove input config
+	rm -f $(HOME)/.inputrc
+
+# }
+
+psqlrc: in  ## install psql config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-psqlrc: out  ## remove psql config
+	rm -f $(HOME)/.inputrc
+
+# }
+
+rspec: in  ## install rspec config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-rspec: out  ## remove rspec config
+	rm -f $(HOME)/.rspec
+
+# }
+
+rvmrc: in  ## install rvm config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-rvmrc: out  ## remove rvmrc config
+	rm -f $(HOME)/.rvmrc
+
+# }
+
+yaourtrc: in  ## install yaourt config {
+	ln -sf $(PWD)/$@ $(HOME)/.$@
+
+clean-yaourtrc: out  ## remove yaourt config
+	rm -f $(HOME)/.rvmrc
+
+# }
+
+# gnome stuff {
 GNOME_BACKUP_KEYS=\
 									"com" \
 									"org/gnome/terminal" \
@@ -125,16 +227,18 @@ gnome-restore:
 	for g in $(GNOME_BACKUP_PER_MACHINE); do \
 		dconf write /$$g "$$(cat dconf/$$g.$$HOSTNAME)" ; \
 	done
+# }
 
-help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+install: $(INSTALL_TARGETS) ## installs all
 
-push:
+clean: $(CLEAN_TARGETS)  ## removes all
+
+push:  ## push config to another machine with REMOTE
 	rsync $(RSYNCOPTS) $(OPTS) \
 		$(shell pwd)/ \
 		$(REMOTE):$(shell pwd)/ \
 
-pull:
+pull:  ## pull config from another machine with REMOTE
 	rsync $(RSYNCOPTS) $(OPTS) \
 		$(REMOTE):$(shell pwd)/ \
 		$(shell pwd)/ \

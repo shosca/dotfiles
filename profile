@@ -56,6 +56,10 @@ if type keychain >/dev/null 2>&1; then
   [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
 
+if type yarn >/dev/null 2>&1; then
+  export PATH="$(yarn global dir)/node_modules/.bin:${PATH}"
+fi
+
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 unset GREP_OPTIONS
 
