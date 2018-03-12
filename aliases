@@ -1,5 +1,5 @@
 # vim: set ft=zsh ts=4 sw=4
-
+alias showpath='echo $PATH | tr ":" "\n" | sort -u'
 alias c='clear'
 alias dmesg="dmesg -L"
 alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
@@ -13,7 +13,6 @@ alias ls='ls --color=auto'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias pss='ps -ef | grep $1'
-alias resrc='source ~/.zshrc'
 alias tma='tmux attach -d -t'
 alias up='cd ..'
 alias Syu='sudo reflector -c "United States" -a 1 -f 3 --sort rate --save /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist && sudo pacman -Syyu && cower --ignorerepo=router -u'

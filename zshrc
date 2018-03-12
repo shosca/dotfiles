@@ -1,45 +1,37 @@
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+XDG_CONFIG_HOME="${XDG_CACHE_HOME:-$HOME/.config}"
 
-source $HOME/dotfiles/zsh/antigen.zsh
+export ZSH=$XDG_CACHE_HOME/oh-my-zsh
 
-antigen use oh-my-zsh
+if [ ! -e ${ZSH} ]; then \
+	git clone git@github.com:robbyrussell/oh-my-zsh.git ${ZSH} ; \
+fi
 
-antigen bundle archlinux
-#antigen bundle autojump
-#antigen bundle aws
-#antigen bundle cargo
-#antigen bundle celery
-antigen bundle command-not-found
-antigen bundle django
-antigen bundle docker
-antigen bundle docker-compose
-#antigen bundle dotenv
-#antigen bundle fabric
-antigen bundle fzf
-antigen bundle git
-#antigen bundle git-extras
-antigen bundle git-flow
-antigen bundle github
-#antigen bundle go
-antigen bundle golang
-#antigen bundle gpg-agent
-antigen bundle history-substring-search
-#antigen bundle hub
-#antigen bundle mercurial
-antigen bundle pip
-antigen bundle postgres
-antigen bundle python
-#antigen bundle rbenv
-#antigen bundle ruby
-antigen bundle rust
-#antigen bundle rvm
-antigen bundle systemd
-antigen bundle virtualenv
-#antigen bundle yarn
+ZSH_CUSTOM=${HOME}/dotfiles/zsh
 
-antigen theme $HOME/dotfiles/zsh gentoo2
+plugins=(
+	archlinux
+	command-not-found
+	django
+	docker
+	docker-compose
+	fzf
+	git
+	git-flow
+	github
+	go
+	golang
+	history-substring-search
+	pip
+	postgres
+	python
+	rust
+	systemd
+	virtualenv
+)
+ZSH_THEME='gentoo2'
 
-antigen apply
+source $ZSH/oh-my-zsh.sh
 
 # dotenv
 dotenv () {
@@ -70,8 +62,8 @@ compinit
 [[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
 [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 
-set -a
-. ~/.profile
+alias resrc='source ~/.zshrc'
 
-[[ -f $HOME/dotfiles/aliases ]] && source $HOME/dotfiles/aliases
-[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
+set -a
+. $HOME/dotfiles/aliases
+[[ -f $HOME/.zshrc.local ]] && . $HOME/.zshrc.local

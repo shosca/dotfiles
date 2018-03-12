@@ -7,6 +7,26 @@ RSYNCOPTS=--progress --recursive --links --times -D --delete -v
 CLEAN_TARGETS=$(shell grep ": out " Makefile | grep -v TARGET | cut -d ':' -f1)
 INSTALL_TARGETS=$(shell grep ": in " Makefile | grep -v TARGET | cut -d':' -f1)
 
+SYMS=\
+	ackrc \
+	ctags \
+	eslintrc \
+	gitconfig \
+	hgrc \
+	inputrc \
+	jshintrc \
+	profile \
+	psqlrc \
+	rspec \
+	rvmrc \
+	tmux.conf \
+	bashrc \
+	zshrc \
+	zprofile \
+	yaourtrc \
+
+SYMCLEAN=$(addprefix clean-,$(SYMS))
+
 
 .PHONY: in out zsh/antigen.zsh $(INSTALL_TARGETS) $(CLEAN_TARGETS)
 
@@ -22,30 +42,21 @@ in:  # this is a dummy target for installers
 out:  # this is a dummy target for cleaners
 
 
-zsh: in zsh/antigen.zsh  ## Sets up zsh {
-	ln -sf $(PWD)/zshrc $(HOME)/.zshrc
-	ln -sf $(PWD)/profile $(HOME)/.profile
+zsh: in zshrc zprofile profile ## Sets up zsh {
 
-zsh/antigen.zsh:
-	curl -L git.io/antigen > zsh/antigen.zsh
-
-clean-zsh: out ## remove zsh config
-	rm -rf $(HOME)/.zshrc $(HOME)/.antigen $(XDG_CACHE_HOME)/.oh-my-zsh
+clean-zsh: out clean-zshrc clean-zprofile ## remove zsh config
+	rm -rf $(HOME)/.antigen $(XDG_CACHE_HOME)/oh-my-zsh
 
 # }
 
-bash: in ## install bash config {
-	ln -sf $(PWD)/bashrc $(HOME)/.bashrc
-	ln -sf $(PWD)/bash_profile $(HOME)/.bash_profile
+bash: in bashrc ## install bash config {
 
-clean-bash:  ## remove bash config
-	rm -f $(HOME)/.bashrc $(HOME)/.bash_profile
+clean-bash: clean-bashrc  ## remove bash config
 
 # }
 
-tmux: in tpm  ## Install tmux {
+tmux: in tpm tmux.conf  ## Install tmux {
 	mkdir -p $(HOME)/.tmux/plugins ; \
-	ln -sf $(PWD)/tmux.conf $(HOME)/.tmux.conf \
 
 tpm:  ## Install tmux plugin manager
 	if [ ! -e $(HOME)/.tmux/plugins/tpm ]; then \
@@ -54,8 +65,8 @@ tpm:  ## Install tmux plugin manager
 		cd $(HOME)/.tmux/plugins/tpm && git pull ; \
 	fi
 
-clean-tmux: out
-	rm -rf $(HOME)/.tmux $(HOME)/.tmux.conf
+clean-tmux: out clean-tmux.conf
+	rm -rf $(HOME)/.tmux/plugins ; \
 
 # }
 
@@ -91,7 +102,6 @@ python: in  ## install python/pdb config {
 	mkdir -p $(XDG_CONFIG_HOME)/python
 	ln -sf $(PWD)/python/sitecustomize.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
 	ln -sf $(PWD)/python/pylintrc $(XDG_CONFIG_HOME)/pylintrc
-	ln -sf $(PWD)/python/pdbrc $(HOME)/.pdbrc
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
 clean-python: out  ## remove python/pdb config
@@ -108,93 +118,12 @@ clean-alacritty: out  ## remove alacritty config
 
 # }
 
-ackrc: in  ## install ackrc config {
+$(SYMS): in  ## install config {
 	ln -sf $(PWD)/$@ $(HOME)/.$@
 
-clean-ackrc: out  ## remove ackrc config
-	rm -f $(HOME)/.ackrc
+$(SYMCLEAN): clean-%:
+	rm -f $(HOME)/.$*
 
-# }
-
-ctags: in  ## install ctags config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-ctags: out
-	rm -f $(HOME)/.ctags
-
-#}
-
-eslintrc: in  ## install eslint config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-eslintrc: out  ## remove eslint config
-	rm -f $(HOME)/.eslintrc
-
-#}
-
-jshintrc: in  ## install jshint config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-jshintrc: out  ## remove jshintrc config
-	rm -f $(HOME)/.jshintrc
-
-#}
-
-gitconfig: in  ## install git config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-gitconfig: out  ## remove git config
-	rm -f $(HOME)/.gitconfig
-
-# }
-
-hgrc: in  ## install hc config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-hgrc: out  ## remove hc config
-	rm -f $(HOME)/.hgrc
-
-# }
-
-inputrc: in  ## install input config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-inputrc: out  ## remove input config
-	rm -f $(HOME)/.inputrc
-
-# }
-
-psqlrc: in  ## install psql config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-psqlrc: out  ## remove psql config
-	rm -f $(HOME)/.inputrc
-
-# }
-
-rspec: in  ## install rspec config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-rspec: out  ## remove rspec config
-	rm -f $(HOME)/.rspec
-
-# }
-
-rvmrc: in  ## install rvm config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-rvmrc: out  ## remove rvmrc config
-	rm -f $(HOME)/.rvmrc
-
-# }
-
-yaourtrc: in  ## install yaourt config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
-
-clean-yaourtrc: out  ## remove yaourt config
-	rm -f $(HOME)/.rvmrc
-
-# }
 
 # gnome stuff {
 GNOME_BACKUP_KEYS=\
@@ -229,7 +158,7 @@ gnome-restore:
 	done
 # }
 
-install: $(INSTALL_TARGETS) ## installs all
+install: $(INSTALL_TARGETS) $(SYMS) ## installs all
 
 clean: $(CLEAN_TARGETS)  ## removes all
 

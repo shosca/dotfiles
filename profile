@@ -27,6 +27,43 @@ if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_te
   eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
+export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
+unset GREP_OPTIONS
+
+export EDITOR=vim
+if type nvim >/dev/null; then
+  export EDITOR=nvim
+  alias vim=nvim
+fi
+case "${TERM}" in
+	xterm*)
+		export TERM=xterm-256color
+		cache_term_colors=256
+		if [[ -f "/usr/bin/dircolors" ]]; then
+			eval "$(dircolors -b)"
+		fi
+		;;
+	screen)
+		cache_term_colors=256
+		if [[ -f "/usr/bin/dircolors" ]]; then
+			eval "$(dircolors -b)"
+		fi
+		;;
+	dumb)
+		cache_term_colors=2
+		;;
+	*)
+		cache_term_colors=16
+		if [[ -f "/usr/bin/dircolors" ]]; then
+			eval "$(dircolors -b)"
+		fi
+		;;
+esac
+
+if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
+  eval $(dircolors -b ${HOME}/.dircolors)
+fi
+
 mkdir -p ${HOME}/bin
 export PATH="${HOME}/bin:${PATH}"
 
@@ -75,4 +112,3 @@ export PATH="$PYTHONUSERBASE/bin:$PATH"
 
 mkdir -p ${HOME}/dc
 export PATH="${HOME}/dc:${PATH}"
-

@@ -1,0 +1,3 @@
+set -a
+
+. ${HOME}/.profile
