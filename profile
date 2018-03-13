@@ -88,7 +88,9 @@ mkdir -p ${HOME}/.cargo/bin
 export PATH="${HOME}/.cargo/bin:${PATH}"
 
 if type keychain >/dev/null 2>&1; then
-  keychain ${HOME}/.ssh/id_*.key
+  if ls ${HOME}/.ssh/id_*.key 2>&1; then
+    keychain ${HOME}/.ssh/id_*.key
+  fi
   [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
   [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
