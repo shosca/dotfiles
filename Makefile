@@ -70,7 +70,7 @@ clean-tmux: out clean-tmux.conf
 
 # }
 
-vim: in vimenv  ## install vim/neovim config {
+vim: in vimenv2 vimenv3  ## install vim/neovim config {
 	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
 	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
 	ln -s $(PWD) $(HOME)/.vim || true ; \
@@ -78,11 +78,15 @@ vim: in vimenv  ## install vim/neovim config {
 VIMENV=$(XDG_CACHE_HOME)/vim/venv
 VIMENV2=$(VIMENV)/neovim2
 VIMENV3=$(VIMENV)/neovim3
-vimenv:  ## Sets python env for vim
+
+vimenv2:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
-	python -m virtualenv -p python2.7 $(VIMENV2)
-	python -m virtualenv -p python3 $(VIMENV3)
+	python3 -m virtualenv -p python2.7 $(VIMENV2)
 	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim
+
+vimenv3:  ## Sets python env for vim
+	mkdir -p $(VIMENV)
+	python3 -m virtualenv -p python3 $(VIMENV3)
 	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim
 
 clean-vim: out ## remove vim/neovim config
