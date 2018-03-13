@@ -4,7 +4,7 @@ XDG_CONFIG_HOME="${XDG_CACHE_HOME:-$HOME/.config}"
 export ZSH=$XDG_CACHE_HOME/oh-my-zsh
 
 if [ ! -e ${ZSH} ]; then \
-	git clone git@github.com:robbyrussell/oh-my-zsh.git ${ZSH} ; \
+	git clone https://github.com/robbyrussell/oh-my-zsh.git ${ZSH} ; \
 fi
 
 ZSH_CUSTOM=${HOME}/dotfiles/zsh
