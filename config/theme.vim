@@ -9,9 +9,10 @@ hi MatchParen cterm=bold term=bold
 set termguicolors
 let base16colorspace=256
 set background=dark
-colorscheme gruvbox
+let g:nord_comment_brightness = 1
+colorscheme nord
 
-autocmd MyAutoCmd ColorScheme * colorscheme gruvbox
+autocmd MyAutoCmd ColorScheme * colorscheme nord
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
@@ -40,5 +41,3 @@ set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,eol:¬,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-
-

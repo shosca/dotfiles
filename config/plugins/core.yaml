@@ -85,8 +85,6 @@
     let g:ale_sign_info = '▷'
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
-    highlight link ALEErrorSign GruvboxRedSign
-    highlight link ALEWarningSign GruvboxYellowSign
 
 - repo: machakann/vim-sandwich
 

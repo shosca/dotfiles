@@ -1,106 +1,12 @@
-[interface]
-font-name='Noto Sans 10'
-document-font-name='Noto Sans 11'
-toolkit-accessibility=false
-gtk-im-module='gtk-im-context-simple'
-clock-show-seconds=false
-cursor-theme='Capitaine'
-icon-theme='EvoPop'
-monospace-font-name='Hack 9'
-cursor-blink=false
-gtk-theme='EvoPop'
-clock-show-date=false
-
-[notifications]
-application-children=['evolution', 'gnome-tweak-tool', 'slack', 'org-gnome-software', 'org-gnome-nautilus', 'firefox', 'gnome-network-panel', 'discord', 'org-gnome-chromegnomeshell']
-
-[notifications/application/discordcanary]
-application-id='DiscordCanary.desktop'
-
-[notifications/application/firefox]
-application-id='firefox.desktop'
-
-[notifications/application/firefox-nightly]
-application-id='firefox-nightly.desktop'
-
-[notifications/application/org-gnome-nautilus]
-application-id='org.gnome.Nautilus.desktop'
-
-[notifications/application/gnome-network-panel]
-application-id='gnome-network-panel.desktop'
-
-[notifications/application/org-gnome-software]
-application-id='org.gnome.Software.desktop'
-
-[notifications/application/org-gnome-chromegnomeshell]
-application-id='org.gnome.ChromeGnomeShell.desktop'
-
-[notifications/application/gnome-tweak-tool]
-application-id='gnome-tweak-tool.desktop'
-
-[notifications/application/discord]
-application-id='Discord.desktop'
-
-[notifications/application/evolution]
-application-id='evolution.desktop'
-
-[notifications/application/slack]
-application-id='slack.desktop'
-
-[app-folders]
-folder-children=['Utilities', 'Sundry']
-
-[app-folders/folders/Utilities]
-translate=true
-categories=['X-GNOME-Utilities']
-apps=['org.gnome.baobab.desktop', 'deja-dup-preferences.desktop', 'eog.desktop', 'evince.desktop', 'org.gnome.FileRoller.desktop', 'gnome-calculator.desktop', 'gnome-dictionary.desktop', 'org.gnome.Characters.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Screenshot.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gnome-tweak-tool.desktop', 'gucharmap.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
-name='X-GNOME-Utilities.directory'
-
-[app-folders/folders/Sundry]
-translate=true
-categories=['X-GNOME-Sundry']
-apps=['alacarte.desktop', 'authconfig.desktop', 'ca.desrt.dconf-editor.desktop', 'fedora-release-notes.desktop', 'firewall-config.desktop', 'flash-player-properties.desktop', 'gconf-editor.desktop', 'gnome-abrt.desktop', 'gnome-power-statistics.desktop', 'ibus-setup-anthy.desktop', 'ibus-setup.desktop', 'ibus-setup-hangul.desktop', 'ibus-setup-libbopomofo.desktop', 'ibus-setup-libpinyin.desktop', 'ibus-setup-m17n.desktop', 'ibus-setup-typing-booster.desktop', 'im-chooser.desktop', 'itweb-settings.desktop', 'jhbuild.desktop', 'javaws.desktop', 'java-1.7.0-openjdk-jconsole.desktop', 'java-1.7.0-openjdk-policytool.desktop', 'log4j-chainsaw.desktop', 'log4j-logfactor5.desktop', 'nm-connection-editor.desktop', 'orca.desktop', 'setroubleshoot.desktop', 'system-config-date.desktop', 'system-config-firewall.desktop', 'system-config-keyboard.desktop', 'system-config-language.desktop', 'system-config-printer.desktop', 'system-config-users.desktop', 'vino-preferences.desktop']
-name='X-GNOME-Sundry.directory'
-
-[screensaver]
-picture-uri='file:///home/serkan/Pictures/alena-aenami-over-the-city1k.jpg'
-color-shading-type='solid'
-primary-color='#000000000000'
-picture-options='zoom'
-lock-enabled=false
-secondary-color='#000000000000'
-
-[peripherals/touchpad]
-natural-scroll=false
-tap-to-click=true
-
-[peripherals/tablets/056a:00e6]
-display=['LGD', '0x02d8', '0x00000000']
-
-[peripherals/touchscreens/056a:00e6]
-display=['LGD', '0x02d8', '0x00000000']
-
-[peripherals/mouse]
-speed=0.18705035971223016
-
-[calendar]
-show-weekdate=false
-
-[session]
-idle-delay=uint32 600
-
-[wm/preferences]
-titlebar-font='Noto Sans Bold 11'
-
 [background]
-picture-uri='file:///home/serkan/Pictures/alena-aenami-over-the-city1k.jpg'
-color-shading-type='solid'
-primary-color='#000000000000'
-picture-options='zoom'
-secondary-color='#000000000000'
+picture-uri='file:///home/serkan/Pictures/02335_alpsteinbeforerain_2560x1600.jpg'
 
 [input-sources]
-show-all-sources=false
-current=uint32 0
-sources=@a(ss) []
+sources=[('xkb', 'us')]
 xkb-options=['caps:ctrl_modifier', 'shift:both_capslock']
+
+[interface]
+icon-theme='EvoPop'
+gtk-im-module='gtk-im-context-simple'
+cursor-theme='Paper'
+gtk-theme='EvoPop'

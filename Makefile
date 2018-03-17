@@ -23,7 +23,7 @@ SYMS=\
 	bashrc \
 	zshrc \
 	zprofile \
-	yaourtrc \
+	yaourtrc
 
 SYMCLEAN=$(addprefix clean-,$(SYMS))
 
@@ -33,8 +33,6 @@ SYMCLEAN=$(addprefix clean-,$(SYMS))
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | tr -d '{}' | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo $(INSTALL_TARGETS)
-	@echo $(CLEAN_TARGETS)
 
 
 in:  # this is a dummy target for installers

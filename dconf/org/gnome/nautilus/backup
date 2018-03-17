@@ -1,13 +1,12 @@
 [preferences]
-search-view='icon-view'
 default-folder-viewer='list-view'
 search-filter-time-type='last_modified'
 
 [window-state]
-sidebar-width=191
-geometry='960x811+25+23'
 maximized=false
+initial-size=(1486, 927)
 
 [list-view]
-default-visible-columns=['name', 'size', 'date_modified']
-default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed']
+default-visible-columns=['name', 'size', 'date_modified', 'starred']
+use-tree-view=true
+default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred']
