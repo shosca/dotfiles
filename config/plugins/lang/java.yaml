@@ -1,4 +1,4 @@
----
+
 - repo: artur-shaik/vim-javacomplete2
   on_ft: java
   hook_source: |

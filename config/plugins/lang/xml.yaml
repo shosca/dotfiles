@@ -1,4 +1,4 @@
----
+
 - repo: Valloric/MatchTagAlways
   on_ft: [html, xhtml, xml, jinja]
 

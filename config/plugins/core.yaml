@@ -1,4 +1,4 @@
----
+
 - repo: Shougo/denite.nvim
 
 - repo: chemzqm/unite-location

@@ -1,16 +1,6 @@
----
-- repo: sebastianmarkow/deoplete-rust
-  if: has('nvim')
-  depends: [deoplete.nvim]
-  on_ft: rust
 
 - repo: rust-lang/rust.vim
   on_ft: rust
 
 - repo: rhysd/rust-doc.vim
   on_ft: rust
-
-- repo: racer-rust/vim-racer
-  on_ft: rust
-  hook_source: |
-    let $RUST_SRC_PATH = expand('~/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/')

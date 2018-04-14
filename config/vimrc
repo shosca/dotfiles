@@ -79,7 +79,10 @@ endif " }
 " Initialize dein.vim (package manager) {
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
-let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
+" let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
+
+silent exec '!cat $(find '.expand('$PLUGINPATH').' -type f -iname "*.yaml") > '.expand('$VARPATH/plugins.yaml')
+let s:autoplugs = [expand('$VARPATH/plugins.yaml')]
 
 for autoplug in s:autoplugs
   try
@@ -113,12 +116,12 @@ if dein#load_state(s:dein_path)
   endif
   call dein#end()
   call dein#save_state()
-  if dein#check_install()
-    if ! has('nvim')
-      set nomore
-    endif
-    call dein#install()
+endif
+if dein#check_install()
+  if ! has('nvim')
+    set nomore
   endif
+  call dein#install()
 endif
 
 filetype plugin indent on
@@ -126,6 +129,7 @@ syntax enable
 
 call dein#call_hook('source')
 call dein#call_hook('post_source')
+call dein#remote_plugins()
 unlet g:plugs
 " }
 

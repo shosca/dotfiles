@@ -2,54 +2,53 @@
 " -----------
 
 " INTERFACE
-call denite#custom#option('default', 'prompt', 'λ:')
-call denite#custom#option('default', 'vertical_preview', 1)
-call denite#custom#option('default', 'short_source_names', 1)
+call denite#custom#option('_', {
+      \ 'prompt': 'λ:',
+      \ 'empty': 0,
+      \ 'winheight': 10,
+      \ 'source_names': 'short',
+      \ 'vertical_preview': 1,
+      \ 'auto-accel': 1,
+      \ 'auto-resume': 1, 
+      \ })
+call denite#custom#option('list', {})
 
-call denite#custom#option('grep', 'empty', 0)
-call denite#custom#option('grep', 'vertical_preview', 1)
-"call denite#custom#option('grep', 'auto_highlight', 1)
-
-call denite#custom#option('list', 'mode', 'normal')
-call denite#custom#option('list', 'winheight', 10)
 
 " MATCHERS
-let s:matchers = ['matcher_fuzzy']
-if &runtimepath =~# 'cpsm'
-  let s:matchers = ['matcher_cpsm', 'matcher_fuzzy']
+" default is matcher_fuzzy
+call denite#custom#source('tag', 'matchers', ['matcher_substring'])
+if has('nvim') && &runtimepath =~# '\/cpsm'
+  call denite#custom#source(
+        \ 'buffer,file_mru,file_old,file_rec,grep,mpc,line',
+        \ 'matchers', ['matcher_cpsm', 'matcher_fuzzy'])
 endif
 
-call denite#custom#source('file_mru,file_old,file_rec,grep', 'matchers', s:matchers)
-
-call denite#custom#source('mark', 'matchers', ['matcher_fuzzy', 'matcher_project_files'])
+" SORTERS
+" default is sorter_rank
+call denite#custom#source('z', 'sorters', ['sorter_z'])
 
 " CONVERTERS
+" default is none
 call denite#custom#source('file_mru,file_old,mark', 'converters', ['converter_relative_word'])
 
 " FIND and GREP COMMANDS
 if executable('rg')
   " ripgrep
-  call denite#custom#var('file_rec', 'command',
-        \ ['rg', '--files', '--glob', '!.git'])
+  call denite#custom#var('file_rec', 'command', ['rg', '--files', '--glob', '!.git'])
   call denite#custom#var('grep', 'command', ['rg'])
   call denite#custom#var('grep', 'recursive_opts', [])
   call denite#custom#var('grep', 'final_opts', [])
   call denite#custom#var('grep', 'separator', ['--'])
-  call denite#custom#var('grep', 'default_opts',
-        \ ['--vimgrep', '--no-heading'])
+  call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
 elseif executable('ag')
   " The Silver Searcher
-  call denite#custom#var('file_rec', 'command',
-        \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
+  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
   call denite#custom#var('grep', 'command', ['ag'])
   call denite#custom#var('grep', 'recursive_opts', [])
   call denite#custom#var('grep', 'pattern_opt', [])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
-  call denite#custom#var('grep', 'default_opts',
-        \ [ '--vimgrep', '--smart-case' ])
-
+  call denite#custom#var('grep', 'default_opts', [ '--skip-vcs-ignores', '--vimgrep', '--smart-case' ])
 elseif executable('ack')
   " Ack command
   call denite#custom#var('grep', 'command', ['ack'])
@@ -57,19 +56,28 @@ elseif executable('ack')
   call denite#custom#var('grep', 'pattern_opt', ['--match'])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
-  call denite#custom#var('grep', 'default_opts',
-        \ ['--ackrc', $HOME.'/.config/ackrc', '-H',
-        \ '--nopager', '--nocolor', '--nogroup', '--column'])
+  call denite#custom#var('grep', 'default_opts', ['--ackrc', $HOME.'/.config/ackrc', '-H', '--nopager', '--nocolor', '--nogroup', '--column'])
 endif
 
 " KEY MAPPINGS
+      "\ ['<Esc>', '<denite:enter_mode:normal>', 'noremap'],
 let insert_mode_mappings = [
+      \ ['jj', '<denite:enter_mode:normal>', 'noremap'],
       \ ['<C-j>', '<denite:move_to_next_line>', 'noremap'],
       \ ['<C-k>', '<denite:move_to_previous_line>', 'noremap'],
+      \ ['<C-Y>', '<denite:redraw>', 'noremap'],
   \ ]
 
 let normal_mode_mappings = [
-      \ ['<r>', '<denite:do_action:quickfix>', 'noremap'],
+      \ ["'", '<denite:toggle_select_down>', 'noremap'],
+      \ ['<C-j>', '<denite:move_to_next_line>', 'noremap'],
+      \ ['<C-k>', '<denite:move_to_previous_line>', 'noremap'],
+      \ ['gg', '<denite:move_to_first_line>', 'noremap'],
+      \ ['sv', '<denite:do_action:vsplit>', 'noremap'],
+      \ ['ss', '<denite:do_action:split>', 'noremap'],
+      \ ['tt', '<denite:do_action:tabopen>', 'noremap'],
+      \ ['sd', '<denite:quit>', 'noremap'],
+      \ ['r', '<denite:redraw>', 'noremap'],
   \ ]
 
 for m in insert_mode_mappings
@@ -94,6 +102,7 @@ nnoremap <silent><LocalLeader>n :<C-u>Denite dein -no-quit<CR>
 nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
 nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
 nnoremap <silent><LocalLeader>s :<C-u>Denite session<CR>
+nnoremap <silent><LocalLeader>m :<C-u>call dein#update()<CR>Denite -no-quit -mode=normal dein_log:!<CR>
 
 " chemzqm/denite-git
 nnoremap <silent> <Leader>gl :<C-u>Denite gitlog<CR>

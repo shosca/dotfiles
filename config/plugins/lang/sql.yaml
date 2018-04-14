@@ -1,4 +1,4 @@
----
+
 - repo: vim-scripts/dbext.vim
   on_ft: sql
 

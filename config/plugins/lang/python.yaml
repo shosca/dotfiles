@@ -1,4 +1,4 @@
----
+
 - repo: vim-python/python-syntax
   on_ft: python
 

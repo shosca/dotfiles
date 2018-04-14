@@ -3,15 +3,13 @@
 " }
 
 " General Settings {
-augroup deoplete
-  au!
-  autocmd CompleteDone * pclose!
-augroup END
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 60
-let g:deoplete#auto_refresh_delay = 1000
+let g:deoplete#enable_refresh_always = 0
 let g:deoplete#enable_camel_case = 1
-let g:deoplete#tag#cache_limit_size = 5000000
+let g:deoplete#max_abbr_width = 35
+let g:deoplete#max_menu_width = 20
+let g:deoplete#skip_chars = ['(', ')', '<', '>']
+let g:deoplete#tag#cache_limit_size = 800000
+let g:deoplete#file#enable_buffer_path = 1
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
 " }

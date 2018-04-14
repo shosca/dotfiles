@@ -1,4 +1,4 @@
----
+
 - repo: Shougo/deoplete.nvim
   if: has('nvim')
   depends: [context_filetype.vim]
@@ -11,10 +11,19 @@
   build: bash install.sh
   hook_source: |
     let g:LanguageClient_autoStart = 1
-    let g:LanguageClient_serverCommands = {}
-    let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
-    let g:LanguageClient_serverCommands.python = ['pyls']
-    let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+    let g:LanguageClient_serverCommands = {
+    \ 'c': ['cquery'],
+    \ 'cpp': ['cquery'],
+    \ 'css': ['css-languageserver'],
+    \ 'go': ['go-langserver'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'less': ['css-languageserver'],
+    \ 'python': ['pyls'],
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'scss': ['css-languageserver'],
+    \ 'sh': ['bash-language-server', 'start'],
+    \ }
     autocmd FileType python nnoremap <buffer> <leader>d :call LanguageClient#textDocument_definition()<CR>
     autocmd FileType python nnoremap <buffer> <leader>K :call LanguageClient#textDocument_hover()<CR>
     autocmd FileType python nnoremap <buffer> <leader>n :call LanguageClient#textDocument_references()<CR>

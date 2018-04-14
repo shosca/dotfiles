@@ -1,4 +1,4 @@
----
+
 - repo: zchee/deoplete-go
   if: has('nvim')
   depends: [deoplete.nvim]

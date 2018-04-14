@@ -1,4 +1,4 @@
----
+
 - repo: osyo-manga/vim-monster
   on_ft: ruby
 
