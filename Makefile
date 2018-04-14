@@ -43,7 +43,7 @@ out:  # this is a dummy target for cleaners
 zsh: in zshrc zprofile profile ## Sets up zsh {
 
 clean-zsh: out clean-zshrc clean-zprofile ## remove zsh config
-	rm -rf $(HOME)/.antigen $(XDG_CACHE_HOME)/oh-my-zsh
+	rm -rf $(HOME)/.antigen $(XDG_CACHE_HOME)/oh-my-zsh $(XDG_CONFIG_HOME)/zplug
 
 # }
 
@@ -126,6 +126,7 @@ $(SYMS): in  ## install config {
 $(SYMCLEAN): clean-%:
 	rm -f $(HOME)/.$*
 
+# }
 
 # gnome stuff {
 GNOME_BACKUP_KEYS=\

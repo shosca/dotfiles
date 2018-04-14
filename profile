@@ -35,34 +35,6 @@ if type nvim >/dev/null; then
   export EDITOR=nvim
   alias vim=nvim
 fi
-case "${TERM}" in
-	xterm*)
-		export TERM=xterm-256color
-		cache_term_colors=256
-		if [[ -f "/usr/bin/dircolors" ]]; then
-			eval "$(dircolors -b)"
-		fi
-		;;
-	screen)
-		cache_term_colors=256
-		if [[ -f "/usr/bin/dircolors" ]]; then
-			eval "$(dircolors -b)"
-		fi
-		;;
-	dumb)
-		cache_term_colors=2
-		;;
-	*)
-		cache_term_colors=16
-		if [[ -f "/usr/bin/dircolors" ]]; then
-			eval "$(dircolors -b)"
-		fi
-		;;
-esac
-
-if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
-  eval $(dircolors -b ${HOME}/.dircolors)
-fi
 
 mkdir -p ${HOME}/bin
 export PATH="${HOME}/bin:${PATH}"
@@ -87,13 +59,6 @@ export PATH="${HOME}/node/bin:${PATH}"
 mkdir -p ${HOME}/.cargo/bin
 export PATH="${HOME}/.cargo/bin:${PATH}"
 
-if type keychain >/dev/null 2>&1; then
-  if ls ${HOME}/.ssh/id_*.key >/dev/null 2>&1; then
-    keychain ${HOME}/.ssh/id_*.key
-  fi
-  [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
-  [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
-fi
 
 if type yarn >/dev/null 2>&1; then
   export PATH="$(yarn global dir)/node_modules/.bin:${PATH}"

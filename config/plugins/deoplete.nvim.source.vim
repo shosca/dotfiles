@@ -41,30 +41,30 @@ let g:deoplete#omni#input_patterns.php = '\w+|[^. \t]->\w*|\w+::\w*'
 
 " Ranking and Marks " {
 " Default rank is 100, higher is better.
-call deoplete#custom#set('buffer',        'mark', 'Ω')
-call deoplete#custom#set('tag',           'mark', '⋆')
-call deoplete#custom#set('omni',          'mark', '⊚')
-call deoplete#custom#set('ternjs',        'mark', '⩫')
-call deoplete#custom#set('jedi',          'mark', '⩫')
-call deoplete#custom#set('vim',           'mark', '⩫')
-call deoplete#custom#set('neosnippet',    'mark', '⊕')
-call deoplete#custom#set('around',        'mark', '⮀')
-call deoplete#custom#set('syntax',        'mark', '♯')
-call deoplete#custom#set('tmux-complete', 'mark', '┼')
+call deoplete#custom#source('buffer',        'mark', 'Ω')
+call deoplete#custom#source('tag',           'mark', '⋆')
+call deoplete#custom#source('omni',          'mark', '⊚')
+call deoplete#custom#source('ternjs',        'mark', '⩫')
+call deoplete#custom#source('jedi',          'mark', '⩫')
+call deoplete#custom#source('vim',           'mark', '⩫')
+call deoplete#custom#source('neosnippet',    'mark', '⊕')
+call deoplete#custom#source('around',        'mark', '⮀')
+call deoplete#custom#source('syntax',        'mark', '♯')
+call deoplete#custom#source('tmux-complete', 'mark', '┼')
 
-call deoplete#custom#set('vim',           'rank', 620)
-call deoplete#custom#set('jedi',          'rank', 610)
-call deoplete#custom#set('omni',          'rank', 600)
-call deoplete#custom#set('neosnippet',    'rank', 510)
-call deoplete#custom#set('member',        'rank', 500)
-call deoplete#custom#set('file_include',  'rank', 420)
-call deoplete#custom#set('file',          'rank', 410)
-call deoplete#custom#set('tag',           'rank', 400)
-call deoplete#custom#set('around',        'rank', 330)
-call deoplete#custom#set('buffer',        'rank', 320)
-call deoplete#custom#set('dictionary',    'rank', 310)
-call deoplete#custom#set('tmux-complete', 'rank', 300)
-call deoplete#custom#set('syntax',        'rank', 200)
+call deoplete#custom#source('vim',           'rank', 620)
+call deoplete#custom#source('jedi',          'rank', 610)
+call deoplete#custom#source('omni',          'rank', 600)
+call deoplete#custom#source('neosnippet',    'rank', 510)
+call deoplete#custom#source('member',        'rank', 500)
+call deoplete#custom#source('file_include',  'rank', 420)
+call deoplete#custom#source('file',          'rank', 410)
+call deoplete#custom#source('tag',           'rank', 400)
+call deoplete#custom#source('around',        'rank', 330)
+call deoplete#custom#source('buffer',        'rank', 320)
+call deoplete#custom#source('dictionary',    'rank', 310)
+call deoplete#custom#source('tmux-complete', 'rank', 300)
+call deoplete#custom#source('syntax',        'rank', 200)
 
 " }
 
@@ -72,7 +72,7 @@ call deoplete#custom#set('syntax',        'rank', 200)
 " Default sorters: ['sorter_rank']
 " Default matchers: ['matcher_length', 'matcher_fuzzy']
 
-call deoplete#custom#set('_', 'converters', [
+call deoplete#custom#source('_', 'converters', [
 	\ 'converter_remove_paren',
 	\ 'converter_remove_overlap',
 	\ 'converter_truncate_abbr',

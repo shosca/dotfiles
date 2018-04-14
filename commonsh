@@ -1,0 +1,7 @@
+if type keychain >/dev/null 2>&1; then
+  if ls ${HOME}/.ssh/id_*.key >/dev/null 2>&1; then
+    keychain ${HOME}/.ssh/id_*.key
+  fi
+  [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+  [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
+fi
