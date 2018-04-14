@@ -5,10 +5,6 @@
 
 - repo: chemzqm/denite-git
 
-- repo: rafi/vim-denite-z
-
-- repo: rafi/vim-denite-session
-
 - repo: scrooloose/nerdcommenter
 
 - repo: editorconfig/editorconfig-vim
@@ -67,6 +63,7 @@
 
 - repo: sbdchd/neoformat
   merged: 0
+  on_cmd: Neoformat
   hook_source: |
     let g:neoformat_try_formatprg = 1
     autocmd BufWritePre *.js Neoformat
