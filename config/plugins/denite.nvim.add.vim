@@ -91,7 +91,7 @@ nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume<CR>
 nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
 nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
 nnoremap <silent><LocalLeader>a :<C-u>Denite codeAction<CR>
-nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_old -default-action=switch<CR>
+nnoremap <silent><LocalLeader>b :<C-u>Denite buffer -default-action=switch<CR>
 nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
 nnoremap <silent><LocalLeader>f :<C-u>Denite file_rec<CR>
 nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>

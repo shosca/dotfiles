@@ -19,7 +19,7 @@
     \ 'javascript': ['javascript-typescript-stdio'],
     \ 'javascript.jsx': ['javascript-typescript-stdio'],
     \ 'less': ['css-languageserver'],
-    \ 'python': ['pyls'],
+    \ 'python': ['pyls', '--log-file', '/tmp/pyls.log'],
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ 'scss': ['css-languageserver'],
     \ 'sh': ['bash-language-server', 'start'],
@@ -30,6 +30,8 @@
     autocmd FileType python nnoremap <buffer> <leader>r :call LanguageClient#textDocument_formatting()<CR>
     autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
     autocmd FileType python setlocal omnifunc=LanguageClient#complete
+    autocmd FileType rust setlocal omnifunc=LanguageClient#complete
+    autocmd FileType go setlocal omnifunc=LanguageClient#complete
 
 - repo: Shougo/neocomplete
   if: ! has('nvim') && has('lua')

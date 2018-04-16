@@ -79,7 +79,6 @@ endif " }
 " Initialize dein.vim (package manager) {
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
-" let s:autoplugs = split(globpath('$PLUGINPATH', '**/*.yaml'), "\n")
 
 silent exec '!cat $(find '.expand('$PLUGINPATH').' -type f -iname "*.yaml") > '.expand('$VARPATH/plugins.yaml')
 let s:autoplugs = [expand('$VARPATH/plugins.yaml')]
