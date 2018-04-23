@@ -2,10 +2,5 @@
 - repo: osyo-manga/vim-monster
   on_ft: ruby
 
-- repo: fishbullet/deoplete-ruby
-  if: has('nvim')
-  depends: [deoplete.nvim]
-  on_ft: ruby
-
 - repo: tpope/vim-rails
   on_ft: ruby

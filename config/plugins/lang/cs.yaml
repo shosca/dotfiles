@@ -1,6 +1,0 @@
-
-- repo: pkosel/deoplete-omnisharp
-  if: has('nvim')
-  depends: [deoplete.nvim]
-  on_ft: python
-  on_event: InsertEnter

@@ -1,13 +1,9 @@
 
-- repo: Shougo/deoplete.nvim
-  if: has('nvim')
-  depends: [context_filetype.vim]
-  hook_add: |
-    let g:deoplete#enable_at_startup = 1
+- repo: roxma/nvim-completion-manager
 
 - repo: autozimu/LanguageClient-neovim
   rev: 'next'
-  depends: [deoplete.nvim]
+  depends: [nvim-completion-manager]
   build: bash install.sh
   hook_source: |
     let g:LanguageClient_autoStart = 1
@@ -32,10 +28,6 @@
     autocmd FileType python setlocal omnifunc=LanguageClient#complete
     autocmd FileType rust setlocal omnifunc=LanguageClient#complete
     autocmd FileType go setlocal omnifunc=LanguageClient#complete
-
-- repo: Shougo/neocomplete
-  if: ! has('nvim') && has('lua')
-  on_event: InsertEnter
 
 - repo: wellle/tmux-complete.vim
   if: has('nvim')

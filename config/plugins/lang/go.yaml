@@ -1,11 +1,4 @@
 
-- repo: zchee/deoplete-go
-  if: has('nvim')
-  depends: [deoplete.nvim]
-  build: make
-  on_ft: go
-  on_event: InsertEnter
-
 - repo: fatih/vim-go
   on_ft: go
   hook_source: |

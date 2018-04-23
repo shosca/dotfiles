@@ -8,15 +8,8 @@
   on_cmd: Magit
 
 - repo: chemzqm/vim-easygit
-  hook_source: |
-    let g:easygit_enable_command = 1
-    nnoremap <silent> <leader>gd :Gdiff<CR>
-    nnoremap <silent> <leader>gD :Gdiffoff<CR>
-    nnoremap <silent> <leader>gc :Gcommit<CR>
-    nnoremap <silent> <leader>gb :Gblame<CR>
-    nnoremap <silent> <leader>gB :Gbrowse<CR>
-    nnoremap <silent> <leader>gS :Gstatus<CR>
-    nnoremap <silent> <leader>gp :Gpush<CR>
+  on_cmd: [Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gstatus, Gpush]
+  hook_source: let g:easygit_enable_command = 1
 
 - repo: airblade/vim-gitgutter
   on_path: .*

@@ -142,6 +142,11 @@ map <leader>ev :vsp %%
 map <leader>et :tabe %%
 " }
 
+" Show highlight names under cursor
+nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
+  \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
+  \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
+
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 

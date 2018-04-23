@@ -1,6 +1,3 @@
 
 - repo: Shougo/neco-vim
   on_ft: vim
-
-- repo: Shougo/neco-syntax
-  on_source: [neocomplete.vim, deoplete.nvim]

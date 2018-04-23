@@ -1,13 +1,100 @@
-
-" Vim Only: Xterm & Tmux
+" Vim Only Terminal Tweaks: Colors, cursor shape, and tmux
 "---------------------------------------------------------
-if has('nvim')
-  finish
+
+" Paste
+" Credits: https://github.com/Shougo/shougo-s-github
+" ---
+let &t_ti .= "\e[?2004h"
+let &t_te .= "\e[?2004l"
+let &pastetoggle = "\e[201~"
+
+function! s:XTermPasteBegin(ret) abort
+  setlocal paste
+  return a:ret
+endfunction
+
+noremap  <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('0i')
+inoremap <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('')
+cnoremap <special> <Esc>[200~ <nop>
+cnoremap <special> <Esc>[201~ <nop>
+
+" Mouse settings
+" ---
+if has('mouse')
+  if has('mouse_sgr')
+    set ttymouse=sgr
+  endif
 endif
 
-if exists('$TMUX')
+" Cursor-shape
+" Credits: https://github.com/wincent/terminus
+" ---
+" Detect terminal
+let s:tmux = exists('$TMUX')
+let s:iterm = exists('$ITERM_PROFILE') || exists('$ITERM_SESSION_ID')
+let s:iterm2 = s:iterm && exists('$TERM_PROGRAM_VERSION') &&
+  \ match($TERM_PROGRAM_VERSION, '\v^[2-9]\.') == 0
+let s:konsole = exists('$KONSOLE_DBUS_SESSION') ||
+  \ exists('$KONSOLE_PROFILE_NAME')
+
+" 1 or 0 -> blinking block
+" 2 -> solid block
+" 3 -> blinking underscore
+" 4 -> solid underscore
+" Recent versions of xterm (282 or above) also support
+" 5 -> blinking vertical bar
+" 6 -> solid vertical bar
+let s:normal_shape = 0
+let s:insert_shape = 5
+let s:replace_shape = 3
+if s:iterm2
+  let s:start_insert = "\<Esc>]1337;CursorShape=" . s:insert_shape . "\x7"
+  let s:start_replace = "\<Esc>]1337;CursorShape=" . s:replace_shape . "\x7"
+  let s:end_insert = "\<Esc>]1337;CursorShape=" . s:normal_shape . "\x7"
+elseif s:iterm || s:konsole
+  let s:start_insert = "\<Esc>]50;CursorShape=" . s:insert_shape . "\x7"
+  let s:start_replace = "\<Esc>]50;CursorShape=" . s:replace_shape . "\x7"
+  let s:end_insert = "\<Esc>]50;CursorShape=" . s:normal_shape . "\x7"
+else
+  let s:cursor_shape_to_vte_shape = {1: 6, 2: 4, 0: 2, 5: 6, 3: 4}
+  let s:insert_shape = s:cursor_shape_to_vte_shape[s:insert_shape]
+  let s:replace_shape = s:cursor_shape_to_vte_shape[s:replace_shape]
+  let s:normal_shape = s:cursor_shape_to_vte_shape[s:normal_shape]
+  let s:start_insert = "\<Esc>[" . s:insert_shape . ' q'
+  let s:start_replace = "\<Esc>[" . s:replace_shape . ' q'
+  let s:end_insert = "\<Esc>[" . s:normal_shape . ' q'
+endif
+
+function! s:tmux_wrap(string)
+  if strlen(a:string) == 0 | return '' | end
+  let l:tmux_begin = "\<Esc>Ptmux;"
+  let l:tmux_end = "\<Esc>\\"
+  let l:parsed = substitute(a:string, "\<Esc>", "\<Esc>\<Esc>", 'g')
+  return l:tmux_begin.l:parsed.l:tmux_end
+endfunction
+
+if s:tmux
+  let s:start_insert = s:tmux_wrap(s:start_insert)
+  let s:start_replace = s:tmux_wrap(s:start_replace)
+  let s:end_insert = s:tmux_wrap(s:end_insert)
+endif
+
+let &t_SI = s:start_insert
+if v:version > 704 || v:version == 704 && has('patch687')
+  let &t_SR = s:start_replace
+end
+let &t_EI = s:end_insert
+
+" Tmux specific settings
+" ---
+if s:tmux
   set ttyfast
-  set ttymouse=sgr
+
+  " Set Vim-specific sequences for RGB colors
+  " Fixes 'termguicolors' usage in tmux
+  " :h xterm-true-color
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
   " Assigns some xterm(1)-style keys to escape sequences passed by tmux
   " when 'xterm-keys' is set to 'on'.  Inspired by an example given by
@@ -40,28 +127,5 @@ if exists('$TMUX')
   execute "set <F10>=\e[21;*~"
   execute "set <F11>=\e[23;*~"
   execute "set <F12>=\e[24;*~"
-
-  execute "set t_kP=^[[5;*~"
-  execute "set t_kN=^[[6;*~"
-
-  " Cursor shape
-  " ------------
-  " For rxvt-unicode:
-  " 1 or 0 -> blinking block
-  " 2 -> solid block
-  " 3 -> blinking underscore
-  " 4 -> solid underscore
-  " Recent versions of xterm (282 or above) also support
-  " 5 -> blinking vertical bar
-  " 6 -> solid vertical bar
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[3 q\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[0 q\<Esc>\\"
-
-else
-  set ttymouse=urxvt
-
-  " Cursor shape outside of tmux
-  let &t_SI = "\<Esc>[3 q"
-  let &t_EI = "\<Esc>[0 q"
 endif
 
