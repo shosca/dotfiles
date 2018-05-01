@@ -1,4 +1,6 @@
 
+- repo: tpope/vim-dotenv
+
 - repo: Shougo/denite.nvim
 
 - repo: chemzqm/unite-location

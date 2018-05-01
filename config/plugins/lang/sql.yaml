@@ -1,12 +1,6 @@
 
-- repo: vim-scripts/dbext.vim
-  on_ft: sql
-
-- repo: vim-scripts/SQLUtilities
-  on_ft: sql
-
-- repo: vim-scripts/Align
-  on_ft: sql
+- repo: tpope/vim-dadbod
+  on_cmd: [DB]
 
 - repo: exu/pgsql.vim
   on_ft: [sql, pgsql]

@@ -1,33 +1,25 @@
 
-- repo: roxma/nvim-completion-manager
+- repo: prabirshrestha/async.vim
+- repo: prabirshrestha/asyncomplete.vim
 
-- repo: autozimu/LanguageClient-neovim
-  rev: 'next'
-  depends: [nvim-completion-manager]
-  build: bash install.sh
+- repo: prabirshrestha/asyncomplete-buffer.vim
+- repo: prabirshrestha/asyncomplete-omni.vim
+- repo: prabirshrestha/asyncomplete-file.vim
+- repo: prabirshrestha/asyncomplete-tags.vim
+
+- repo: prabirshrestha/asyncomplete-necosyntax.vim
+- repo: prabirshrestha/asyncomplete-necovim.vim
+
+- repo: prabirshrestha/asyncomplete-lsp.vim
+- repo: prabirshrestha/vim-lsp
   hook_source: |
-    let g:LanguageClient_autoStart = 1
-    let g:LanguageClient_serverCommands = {
-    \ 'c': ['cquery'],
-    \ 'cpp': ['cquery'],
-    \ 'css': ['css-languageserver'],
-    \ 'go': ['go-langserver'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
-    \ 'less': ['css-languageserver'],
-    \ 'python': ['pyls', '--log-file', '/tmp/pyls.log'],
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'scss': ['css-languageserver'],
-    \ 'sh': ['bash-language-server', 'start'],
-    \ }
-    autocmd FileType python nnoremap <buffer> <leader>d :call LanguageClient#textDocument_definition()<CR>
-    autocmd FileType python nnoremap <buffer> <leader>K :call LanguageClient#textDocument_hover()<CR>
-    autocmd FileType python nnoremap <buffer> <leader>n :call LanguageClient#textDocument_references()<CR>
-    autocmd FileType python nnoremap <buffer> <leader>r :call LanguageClient#textDocument_formatting()<CR>
-    autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-    autocmd FileType python setlocal omnifunc=LanguageClient#complete
-    autocmd FileType rust setlocal omnifunc=LanguageClient#complete
-    autocmd FileType go setlocal omnifunc=LanguageClient#complete
+    let g:lsp_signs_enabled = 1
+    let g:lsp_diagnostics_echo_cursor = 1
+    let g:lsp_signs_error = {'text': '◤'}
+    let g:lsp_signs_warning = {'text': '◸'}
+    let g:lsp_signs_hint = {'text': '▷'}
+    highlight link LspErrorText GruvboxRedSign
+    highlight clear LspWarningLine
 
 - repo: wellle/tmux-complete.vim
   if: has('nvim')
