@@ -1,0 +1,100 @@
+
+- repo: prabirshrestha/async.vim
+
+- repo: prabirshrestha/asyncomplete.vim
+  depends: async.vim
+
+- repo: prabirshrestha/asyncomplete-buffer.vim
+  depends: asyncomplete.vim
+  hook_source: |
+    call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+
+- repo: prabirshrestha/asyncomplete-omni.vim
+  depends: asyncomplete.vim
+  hook_source: |
+    call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+    \ 'name': 'omni',
+    \ 'whitelist': ['*'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#omni#completor')
+    \  }))
+
+- repo: prabirshrestha/asyncomplete-file.vim
+  depends: asyncomplete.vim
+  hook_source: |
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+- repo: prabirshrestha/asyncomplete-tags.vim
+  depends: asyncomplete.vim
+  hook_source: |
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+    \ 'name': 'tags',
+    \ 'whitelist': ['c'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#tags#completor'),
+    \ }))
+
+- repo: prabirshrestha/asyncomplete-necosyntax.vim
+  depends: asyncomplete.vim
+  on_ft: vim
+  hook_source: |
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
+    \ 'name': 'necosyntax',
+    \ 'whitelist': ['*'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
+    \ }))
+
+- repo: prabirshrestha/asyncomplete-necovim.vim
+  depends: asyncomplete.vim
+  on_ft: vim
+  hook_source: |
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
+    \ 'name': 'necovim',
+    \ 'whitelist': ['vim'],
+    \ 'priority': -1,
+    \ 'completor': function('asyncomplete#sources#necovim#completor'),
+    \ }))
+
+- repo: prabirshrestha/asyncomplete-lsp.vim
+  depends: asyncomplete.vim
+
+- repo: prabirshrestha/vim-lsp
+  depends: async.vim
+  hook_source: |
+    let g:lsp_signs_enabled = 1
+    let g:lsp_diagnostics_echo_cursor = 1
+    let g:lsp_signs_error = {'text': '◤'}
+    let g:lsp_signs_warning = {'text': '◸'}
+    let g:lsp_signs_hint = {'text': '▷'}
+    highlight link LspErrorText GruvboxRedSign
+    highlight clear LspWarningLine
+
+- repo: wellle/tmux-complete.vim
+  depends: asyncomplete.vim
+  on_event: InsertEnter
+  hook_add: let g:tmuxcomplete#trigger = ''
+  hook_source: |
+    let g:tmuxcomplete#asyncomplete_source_options = {
+    \ 'name':      'tmuxcomplete',
+    \ 'whitelist': ['*'],
+    \ 'priority': -1,
+    \ 'config': {
+    \     'splitmode':      'words',
+    \     'filter_prefix':   1,
+    \     'show_incomplete': 1,
+    \     'sort_candidates': 0,
+    \     'scrollback':      0,
+    \     'truncate':        0
+    \     }
+    \ }
