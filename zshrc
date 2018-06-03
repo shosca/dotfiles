@@ -30,6 +30,8 @@ plugins=(
 )
 ZSH_THEME='gentoo2'
 
+fpath+=~/.zfunc
+
 source $ZSH/oh-my-zsh.sh
 
 # dotenv

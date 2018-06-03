@@ -120,6 +120,15 @@ clean-alacritty: out  ## remove alacritty config
 
 # }
 
+kitty: in  ## install kitty config {
+	mkdir -p $(XDG_CONFIG_HOME)/kitty
+	ln -sf $(PWD)/kitty.conf $(XDG_CONFIG_HOME)/kitty/kitty.conf
+
+clean-kitty: out  ## remove kitty config
+	rm -f $(XDG_CONFIG_HOME)/kitty/kitty.yml
+
+# }
+
 $(SYMS): in  ## install config {
 	ln -sf $(PWD)/$@ $(HOME)/.$@
 

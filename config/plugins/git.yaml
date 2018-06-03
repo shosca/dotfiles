@@ -4,12 +4,9 @@
 - repo: tpope/vim-git
   on_ft: [gitcommit, gitrebase, gitconfig]
 
-- repo: jreybert/vimagit
-  on_cmd: Magit
+- repo: tpope/vim-fugitive
 
-- repo: chemzqm/vim-easygit
-  on_cmd: [Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gstatus, Gpush]
-  hook_source: let g:easygit_enable_command = 1
+- repo: tpope/vim-rhubarb
 
 - repo: airblade/vim-gitgutter
   on_path: .*
