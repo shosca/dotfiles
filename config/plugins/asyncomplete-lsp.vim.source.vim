@@ -3,6 +3,8 @@ nnoremap <leader>K :LspHover<CR>
 nnoremap <leader>n :LspReferences<CR>
 nnoremap <leader>r :LspRename<CR>
 
+let g:lsp_async_completion = 1
+
 au User lsp_setup call lsp#register_server({
       \ 'name': 'python',
       \ 'cmd': {server_info->['pyls']},
