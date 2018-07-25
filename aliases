@@ -2,7 +2,7 @@
 alias showpath='echo $PATH | tr ":" "\n" | sort -u'
 alias c='clear'
 alias dmesg="dmesg -L"
-alias ducks='sudo du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+alias ducks='sudo du -ahd1 | sort -h'
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 alias l='ls -CF'
 alias la='ls -A'

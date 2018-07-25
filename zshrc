@@ -7,6 +7,8 @@ if [ ! -e ${ZSH} ]; then
   git clone https://github.com/robbyrussell/oh-my-zsh.git ${ZSH}
 fi
 
+source ${HOME}/dotfiles/base16-gruvbox.dark.sh
+
 ZSH_CUSTOM=${HOME}/dotfiles/zsh
 
 plugins=(
