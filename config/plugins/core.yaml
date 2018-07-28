@@ -11,6 +11,8 @@
 
 - repo: editorconfig/editorconfig-vim
 
+- repo: RRethy/vim-illuminate
+
 - repo: epeli/slimux
   hook_always: |
     map <Leader>s :SlimuxREPLSendLine<CR>
