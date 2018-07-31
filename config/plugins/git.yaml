@@ -1,13 +1,4 @@
 
-- repo: itchyny/vim-gitbranch
-
-- repo: tpope/vim-git
-  on_ft: [gitcommit, gitrebase, gitconfig]
-
-- repo: tpope/vim-fugitive
-
-- repo: tpope/vim-rhubarb
-
 - repo: airblade/vim-gitgutter
   on_path: .*
   hook_always: |

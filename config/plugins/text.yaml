@@ -27,9 +27,5 @@
   on_map:
     ox: <Plug>Sideways
 
-- repo: AndrewRadev/splitjoin.vim
-  on_map:
-    n: <Plug>Splitjoin
-
 - repo: AndrewRadev/linediff.vim
   on_cmd: Linediff

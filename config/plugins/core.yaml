@@ -1,5 +1,6 @@
 
 - repo: tpope/vim-dotenv
+  on_cmd: Dotenv
 
 - repo: Shougo/denite.nvim
 
@@ -26,17 +27,6 @@
 - repo: Shougo/vimproc.vim
   build: make
   on_func: vimproc#
-
-- repo: hecal3/vim-leader-guide
-  on_cmd: [LeaderGuide, LeaderGuideVisual]
-  on_map:
-    nv: <Plug>leaderguide-
-  hook_always: |
-    nmap <Leader>ll <Plug>leaderguide-global
-    nmap <Leader>lb <Plug>leaderguide-buffer
-    nnoremap <Leader>l<Space> :<C-u>LeaderGuide ';'<CR>
-
-- repo: krisajenkins/vim-pipe
 
 - repo: Shougo/context_filetype.vim
   lazy: 1
@@ -65,13 +55,6 @@
     noremap <silent> <F2> :TagbarToggle<CR>
     let g:tagbar_iconchars = ['▷', '◢']
 
-- repo: sbdchd/neoformat
-  merged: 0
-  on_cmd: Neoformat
-  hook_source: |
-    let g:neoformat_try_formatprg = 1
-    autocmd BufWritePre *.js Neoformat
-
 - repo: w0rp/ale
   hook_source: |
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
@@ -95,18 +78,9 @@
 
 - repo: benizi/vim-automkdir
 
-- repo: kana/vim-operator-user
-  merged: 0
-
-- repo: haya14busa/vim-operator-flashy
-  merged: 0
-
 - repo: Shougo/deol.nvim
   if: has('nvim')
-
-- repo: Shougo/vimshell.vim
-  if: ! has('nvim')
-  on_cmd: VimShell
+  on_cmd: Deol
 
 - repo: luochen1990/rainbow
   hook_source: |
@@ -144,8 +118,6 @@
     vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 - repo: Yggdroot/indentLine
-
-- repo: thinca/vim-localrc
 
 - repo: gioele/vim-autoswap
 
