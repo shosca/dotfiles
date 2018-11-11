@@ -1,63 +1,70 @@
 [alias]
-    ammend = commit -a --amend
-    br = branch
-    branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
-    recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
-    ci = commit
-    co = checkout
-    d = difftool
-    diffr  = "!f() { git diff "$1"^.."$1"; }; f"
-    dl = "!git ll -1"
-    dlc = diff --cached HEAD^
-    dr  = "!f() { git diff "$1"^.."$1"; }; f"
-    f = "!git ls-files | grep -i"
-    filelog = log -u
-    fl = log -u
-    gr = grep -Ii
-    gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
-    grep = grep -Ii
-    lc  = "!f() { git ll "$1"^.."$1"; }; f"
-    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-    news = log -p HEAD@{1}..HEAD@{0}
-    r = reset
-    r1 = reset HEAD^
-    r2 = reset HEAD^^
-    rh = reset --hard
-    rh1 = reset HEAD^ --hard
-    rh2 = reset HEAD^^ --hard
-    st = status -s
+  biggest = "!f() { git rev-list --objects --all \
+    | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+    | sed -n 's/^blob //p' \
+    | sort --numeric-sort --key=2 -r \
+    | head -n 25 \
+    | cut -c 1-12,41- \
+    | numfmt --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest ; }; f"
+  ammend = commit -a --amend
+  br = branch
+  branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
+  recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
+  ci = commit
+  co = checkout
+  d = difftool
+  diffr = "!f() { git diff "$1"^.."$1"; }; f"
+  dl = "!git ll -1"
+  dlc = diff --cached HEAD^
+  dr  = "!f() { git diff "$1"^.."$1"; }; f"
+  f = "!git ls-files | grep -i"
+  filelog = log -u
+  fl = log -u
+  gr = grep -Ii
+  gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+  grep = grep -Ii
+  lc  = "!f() { git ll "$1"^.."$1"; }; f"
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+  news = log -p HEAD@{1}..HEAD@{0}
+  r = reset
+  r1 = reset HEAD^
+  r2 = reset HEAD^^
+  rh = reset --hard
+  rh1 = reset HEAD^ --hard
+  rh2 = reset HEAD^^ --hard
+  st = status -s
 [user]
-    name = Serkan Hosca
-    email = serkan@hosca.com
+  name = Serkan Hosca
+  email = serkan@hosca.com
 [color]
-    branch = auto
-    diff = auto
-    interactive = auto
-    status = auto
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
 [core]
-    fileMode = false
-    autocrlf = false
+  fileMode = false
+  autocrlf = false
 [merge]
-    stat = true
+  stat = true
 [credential]
-    helper = cache --timeout=3600
+  helper = cache --timeout=3600
 [push]
-    default = current
+  default = current
 [url "https://github.com/"]
-    insteadOf = git://github.com/
+  insteadOf = git://github.com/
 [pager]
-    show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
-    diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+  show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+  diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
 [difftool]
-    prompt = false
+  prompt = false
 [diff]
-    tool = nvimdiff
+  tool = nvimdiff
 [merge]
-    tool = nvimdiff
-    ff = only
+  tool = nvimdiff
+  ff = only
 [mergetool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
 [branch]
-    autosetuprebase = always
+  autosetuprebase = always

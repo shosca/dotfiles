@@ -9,6 +9,10 @@ cnoremap <C-n>  <Down>
 cnoremap <Up>   <C-p>
 cnoremap <Down> <C-n>
 
+" Highlights word under cursor by placing it in @/ register
+nnoremap <silent> * :set hlsearch<Cr>:exe "let @/='\\<'.expand('<cword>').'\\>'"<Cr>
+nnoremap <silent> <a-*> :set hlsearch<Cr>:exe 'let @/=expand("<cWORD>")'<Cr>
+
 " Toggle fold
 nnoremap <CR> za
 
@@ -21,10 +25,45 @@ inoremap jj <Esc>
 " Disable Ex mode
 :map Q <Nop>
 
-
 " Wrapped lines goes down/up to next row, rather than next line in file.
 noremap j gj
 noremap k gk
+
+" move lines around {
+nnoremap <silent><A-j> :m .+1<CR>==
+nnoremap <silent><A-k> :m .-2<CR>==
+inoremap <silent><A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent><A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent><A-j> :m '>+1<CR>gv=gv
+vnoremap <silent><A-k> :m '<-2<CR>gv=gv
+" }
+
+" <F7> eol format {
+set  wcm=<Tab>
+menu EOL.unix :set fileformat=unix<CR>
+menu EOL.dos  :set fileformat=dos<CR>
+menu EOL.mac  :set fileformat=mac<CR>
+noremap <F7> :emenu EOL.<Tab>
+
+" <F8> change encoding {
+menu Enc.cp1251  :e! ++enc=cp1251<CR>
+menu Enc.koi8-r  :e! ++enc=koi8-r<CR>
+menu Enc.cp866   :e! ++enc=ibm866<CR>
+menu Enc.utf-8   :e! ++enc=utf-8<CR>
+menu Enc.ucs-2le :e! ++enc=ucs-2le<CR>
+menu Enc.koi8-u  :e! ++enc=koi8-u<CR>
+noremap  <F8> :emenu Enc.<Tab>
+" }
+
+" <F9> Convert file encoding {
+menu FEnc.cp1251  :set fenc=cp1251<CR>
+menu FEnc.koi8-r  :set fenc=koi8-r<CR>
+menu FEnc.cp866   :set fenc=ibm866<CR>
+menu FEnc.utf-8   :set fenc=utf-8<CR>
+menu FEnc.ucs-2le :set fenc=ucs-2le<CR>
+menu FEnc.koi8-u  :set fenc=koi8-u<CR>
+noremap <F9> :emenu FEnc.<Tab>
+" }
 
 " buffers {
 nnoremap <Tab> :bnext<CR>

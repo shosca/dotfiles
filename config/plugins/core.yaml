@@ -1,4 +1,6 @@
 
+- repo: roxma/nvim-yarp
+
 - repo: tpope/vim-dotenv
   on_cmd: Dotenv
 

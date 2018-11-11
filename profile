@@ -36,34 +36,6 @@ if type nvim >/dev/null; then
   alias vim=nvim
 fi
 
-mkdir -p ${HOME}/bin
-export PATH="${HOME}/bin:${PATH}"
-
-mkdir -p ${HOME}/src/bin
-export PATH="${HOME}/src/bin:${PATH}"
-
-if [[ -d "/usr/lib/ccache/bin" ]]; then
-  export PATH="/usr/lib/ccache/bin:${PATH}"
-fi
-if [[ -d "/usr/lib/distcc/bin" ]]; then
-  export PATH="/usr/lib/distcc/bin:${PATH}"
-  DISTCC_HOSTS="@buttercup.local/4"
-fi
-
-mkdir -p ${HOME}/go/bin
-export PATH="${HOME}/go/bin:${PATH}"
-
-mkdir -p ${HOME}/node/bin
-export PATH="${HOME}/node/bin:${PATH}"
-
-mkdir -p ${HOME}/.cargo/bin
-export PATH="${HOME}/.cargo/bin:${PATH}"
-
-
-if type yarn >/dev/null 2>&1; then
-  export PATH="$(yarn global dir)/node_modules/.bin:${PATH}"
-fi
-
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 unset GREP_OPTIONS
 
@@ -75,7 +47,35 @@ fi
 
 export PYTHONUSERBASE=${HOME}/.local
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
-export PATH="$PYTHONUSERBASE/bin:$PATH"
+
+# Extend $NODE_PATH
+if [ -d ~/.npm-global ]; then
+  export NODE_PATH="$NODE_PATH:$HOME/.npm-global/lib/node_modules"
+fi
+
+# Extend $PATH without duplicates
+_extend_path() {
+  if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
+    export PATH="$1:$PATH"
+  fi
+}
+
+[[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
+[[ -d "$HOME/dc" ]] && _extend_path "$HOME/dc"
+[[ -d "$HOME/go/bin" ]] && _extend_path "$HOME/go/bin"
+[[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
+[[ -d "$HOME/.npm-global" ]] && _extend_path "$HOME/.npm-global/bin"
+[[ -d "$HOME/.rvm/bin" ]] && _extend_path "$HOME/.rvm/bin"
+[[ -d "$HOME/.cargo/bin" ]] && _extend_path "$HOME/.cargo/bin"
+[[ -d "$HOME/.local/bin" ]] && _extend_path "$HOME/.local/bin"
+
+[[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
+[[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"
+
+if type yarn >/dev/null 2>&1; then
+  _extend_path "$(yarn global dir)/node_modules/.bin"
+fi
 
 mkdir -p ${HOME}/dc
 export PATH="${HOME}/dc:${PATH}"
+
