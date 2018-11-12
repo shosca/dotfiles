@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export COMPOSE_FILE=${COMPOSE_FILE:-local.yml}
+if [ ! -f $COMPOSE_FILE ]; then
+	export COMPOSE_FILE=docker-compose.yml
+fi
+
+echo "Using ${COMPOSE_FILE:-local.yml}"
+
+if [ $# -eq 0 ]; then
+  echo "Usage: dkr <arguments>"
+  exit 1
+fi
+
+docker-compose $@

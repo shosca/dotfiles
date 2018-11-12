@@ -1,0 +1,2 @@
+#!/bin/bash
+dkr up --force-recreate -d dt20db

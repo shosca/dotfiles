@@ -1,0 +1,21 @@
+#! /bin/bash
+
+WATCH_EVENTS=modify,close_write,moved_to,create
+
+if [ -z "$1" ]; then
+  echo "rpeat <command to run over and over on file change>"
+  exit 1
+fi
+
+if ! type inotifywait > /dev/null; then
+  echo "Please install inotify-tools"
+  exit 1
+fi
+
+echo "Watching $(pwd) to run: $@"
+
+while true; do
+  $@
+  inotifywait -e $WATCH_EVENTS -r --exclude '.*(git|~)' . ;
+done
+

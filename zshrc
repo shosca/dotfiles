@@ -85,7 +85,6 @@ zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/github", from:oh-my-zsh
 zplug "plugins/go", from:oh-my-zsh
 zplug "plugins/golang", from:oh-my-zsh
-zplug "plugins/history-substring-search", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/nvm", from:oh-my-zsh
 zplug "plugins/postgres", from:oh-my-zsh
@@ -99,19 +98,14 @@ zplug "plugins/yarn", from:oh-my-zsh
 # Zsh improvements
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-history-substring-search"
 zplug "hlissner/zsh-autopair", defer:2
 
 # Extra
 zplug "lukechilds/zsh-better-npm-completion", defer:2
-zplug "denysdovhan/gitio-zsh", as:command, use:"gitio.zsh", rename-to:"gitio"
-zplug "rauchg/wifi-password", as:command, use:"wifi-password.sh", rename-to:"wifi-password"
+zplug "junegunn/fzf", use:"shell/*.zsh"
 
-# Spaceship ZSH
-if [[ -d "$HOME/Projects/Repos/spaceship-prompt" ]]; then
-  zplug "$HOME/Projects/Repos/spaceship-prompt", from:local, as:theme, use:"spaceship.zsh"
-else
-  zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
-fi
+zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 
 # Dotfiles
 zplug "$DOTFILES/zsh/lib/misc", from:local, if:"[[ -f $DOTFILES/zsh/lib ]]"

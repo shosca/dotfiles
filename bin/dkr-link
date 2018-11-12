@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z $1 ] || [ -z $2 ]; then
+	echo "Usage: dkr-link <source container> <dest container>"
+	exit 1
+fi
+
+src=$(dkr-id $1)
+dst=$(dkr-id $2)
+name=$(docker exec -it $src hostname)
+
+entry=$(docker exec -it $dst grep $name /etc/hosts)
+
+
+if [ "$entry" != "" ] ; then
+	echo "$1 is already linked to $2"
+	exit 1
+fi
+
+ip=$(dkr-ip $dst)
+
+docker exec -it $dst bash -c "echo '$ip $name' | tee -a /etc/hosts"

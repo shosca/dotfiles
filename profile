@@ -1,3 +1,7 @@
+export DOTFILES="${HOME}/dotfiles"
+
+source $DOTFILES/base16-gruvbox.dark.sh
+
 case "${TERM}" in
 	xterm*)
 		export TERM=xterm-256color
@@ -75,7 +79,3 @@ _extend_path() {
 if type yarn >/dev/null 2>&1; then
   _extend_path "$(yarn global dir)/node_modules/.bin"
 fi
-
-mkdir -p ${HOME}/dc
-export PATH="${HOME}/dc:${PATH}"
-
