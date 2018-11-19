@@ -1,0 +1,2 @@
+#! /bin/bash
+/usr/bin/find ~/.mozilla -iname '*.sqlite' -exec /usr/bin/sqlite3 {} vacuum \;
