@@ -10,9 +10,8 @@ set termguicolors
 let base16colorspace=256
 set background=dark
 let g:nord_comment_brightness = 1
-"colorscheme nord
-colorscheme gruvbox
-autocmd MyAutoCmd ColorScheme * colorscheme gruvbox
+colorscheme onedark
+autocmd MyAutoCmd ColorScheme * colorscheme onedark
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode

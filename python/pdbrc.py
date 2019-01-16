@@ -1,7 +1,4 @@
-import atexit
-import os
 import pdb
-import readline
 import sys
 import termios
 
@@ -10,31 +7,6 @@ try:
     from pygments import token
 except ImportError:
     HAS_PYGMENTS = False
-
-
-# Find home.
-home = os.curdir
-if 'HOME' in os.environ:
-    home = os.environ['HOME']
-elif os.name == 'posix':
-    home = os.path.expanduser("~/")
-# Make sure home always ends with a directory separator.
-home = os.path.realpath(home) + os.sep
-print("Home folder: ", home)
-
-
-# Command line history.
-# Source: https://wiki.python.org/moin/PdbRcIdea
-histfile = home + ".pdb_history"
-print("Command history: " + histfile)
-try:
-    readline.read_history_file(histfile)
-except IOError:
-    pass
-atexit.register(readline.write_history_file, histfile)
-del histfile
-readline.set_history_length(20000)
-
 
 # Sometimes when you do something funky, you may lose your terminal echo. This
 # should restore it when spanwning new pdb.
@@ -48,7 +20,6 @@ termios_result = termios.tcsetattr(termios_fd, termios.TCSADRAIN, termios_echo)
 class Config(pdb.DefaultConfig):
     sticky_by_default = True
     current_line_color = 7
-    editor = 'nvim'
 
     if HAS_PYGMENTS:
         # Fix up the comment color for dark background

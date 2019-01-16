@@ -10,6 +10,7 @@ export DOTFILES="${HOME}/dotfiles"
 if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug
 fi
+export ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh
@@ -20,7 +21,7 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 # Do not override files using `>`, but it's still possible using `>!`
-set -o noclobber
+# set -o noclobber
 
 # Extend $PATH without duplicates
 _extend_path() {
@@ -125,6 +126,9 @@ set -a
 . $HOME/dotfiles/commonsh
 . $HOME/dotfiles/aliases
 
-bindkey '^[[A' fzf-history-widget
-bindkey '\C-P' history-substring-search-up
-bindkey '\C-N' history-substring-search-down
+bindkey '^T' fzf-file-widget
+bindkey '\ec' fzf-cd-widget
+bindkey '^R' fzf-history-widget
+
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down

@@ -1,4 +1,6 @@
 
+- repo: wsdjeg/dein-ui.vim
+
 - repo: roxma/nvim-yarp
 
 - repo: tpope/vim-dotenv
@@ -57,20 +59,21 @@
     noremap <silent> <F2> :TagbarToggle<CR>
     let g:tagbar_iconchars = ['▷', '◢']
 
-- repo: w0rp/ale
-  hook_source: |
-    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    let g:ale_lint_on_insert_leave = 1
-    let g:ale_lint_delay = 300
-    let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
-    let g:ale_sign_error = '◤'
-    let g:ale_sign_style_error = '◤'
-    let g:ale_sign_warning = '◸'
-    let g:ale_sign_style_warning = '◸'
-    let g:ale_sign_info = '▷'
-    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-    nmap <silent> <C-j> <Plug>(ale_next_wrap)
+# repo: w0rp/ale
+# hook_source: |
+#   let g:ale_linters_explicit = 1
+#   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+#   let g:ale_lint_on_insert_leave = 1
+#   let g:ale_lint_delay = 300
+#   let g:ale_set_loclist = 0
+#   let g:ale_set_quickfix = 1
+#   let g:ale_sign_error = '◤'
+#   let g:ale_sign_style_error = '◤'
+#   let g:ale_sign_warning = '◸'
+#   let g:ale_sign_style_warning = '◸'
+#   let g:ale_sign_info = '▷'
+#   nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+#   nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 - repo: machakann/vim-sandwich
 

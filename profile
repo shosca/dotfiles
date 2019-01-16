@@ -1,6 +1,7 @@
+export DRI_PRIME=1
 export DOTFILES="${HOME}/dotfiles"
 
-source $DOTFILES/base16-gruvbox.dark.sh
+# source $DOTFILES/base16-gruvbox.dark.sh
 
 case "${TERM}" in
 	xterm*)
