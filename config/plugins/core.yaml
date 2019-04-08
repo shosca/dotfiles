@@ -1,12 +1,30 @@
 
 - repo: wsdjeg/dein-ui.vim
 
+- repo: Shougo/defx.nvim
+  on_cmd: Defx
+  hook_always: |
+    noremap <silent> <F3> :Defx -toggle<CR>
+
+- repo: kristijanhusak/defx-git
+  on_source: defx.nvim
+
+- repo: kristijanhusak/defx-icons
+  on_source: defx.nvim
+
 - repo: roxma/nvim-yarp
+
+- repo: roxma/vim-hug-neovim-rpc
+  if: has('vim')
 
 - repo: tpope/vim-dotenv
   on_cmd: Dotenv
 
 - repo: Shougo/denite.nvim
+
+- repo: Shougo/neoyank.vim
+  on_event: TextYankPost
+  on_source: denite.nvim
 
 - repo: chemzqm/unite-location
 
@@ -34,19 +52,6 @@
 
 - repo: Shougo/context_filetype.vim
   lazy: 1
-
-- repo: scrooloose/nerdtree
-  on_cmd: NERDTreeToggle
-  hook_source: |
-  hook_post_source: source $VIMPATH/config/plugins/nerdtree.vim
-  hook_always: |
-    noremap <silent> <F3> :NERDTreeToggle<CR>
-
-- repo: Xuyuanp/nerdtree-git-plugin
-  on_source: nerdtree
-  hook_always: |
-    let g:NERDTreeDirArrowExpandable = '▷'
-    let g:NERDTreeDirArrowCollapsible = '▼'
 
 - repo: majutsushi/tagbar
   on_cmd: TagbarToggle

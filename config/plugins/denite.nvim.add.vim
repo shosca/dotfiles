@@ -87,9 +87,11 @@ for m in normal_mode_mappings
   call denite#custom#map('normal', m[0], m[1], m[2])
 endfor
 
-nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume<CR>
 nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
 nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
+nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
+nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
+nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume -refresh -mode=normal<CR>
 nnoremap <silent><LocalLeader>a :<C-u>Denite codeAction<CR>
 nnoremap <silent><LocalLeader>b :<C-u>Denite buffer -default-action=switch<CR>
 nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
@@ -98,17 +100,22 @@ nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>
 nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
 nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file_point<CR>
 nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
+nnoremap <silent><LocalLeader>m :<C-u>call dein#update()<CR>Denite -no-quit -mode=normal dein_log:!<CR>
 nnoremap <silent><LocalLeader>n :<C-u>Denite dein -no-quit<CR>
+nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
 nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
 nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
 nnoremap <silent><LocalLeader>s :<C-u>Denite session<CR>
-nnoremap <silent><LocalLeader>m :<C-u>call dein#update()<CR>Denite -no-quit -mode=normal dein_log:!<CR>
+nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+
+xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
 
 " chemzqm/denite-git
 nnoremap <silent> <Leader>gl :<C-u>Denite gitlog<CR>
 nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus<CR>
 
 " Open Denite with word under cursor or selection
+nnoremap <silent> <Leader>gt :DeniteCursorWord tag:include -buffer-name=tag -immediately<CR>
 nnoremap <silent> <Leader>gf :DeniteCursorWord file_rec<CR>
 nnoremap <silent> <Leader>gg :DeniteCursorWord grep<CR>
 vnoremap <silent> <Leader>gg :<C-u>call <SID>get_selection('/')<CR> :execute 'Denite grep:::'.@/<CR><CR>

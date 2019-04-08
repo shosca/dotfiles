@@ -77,15 +77,17 @@ VIMENV=$(XDG_CACHE_HOME)/vim/venv
 VIMENV2=$(VIMENV)/neovim2
 VIMENV3=$(VIMENV)/neovim3
 
+vimenv: vimenv2 vimenv3
+
 vimenv2:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
 	python3 -m virtualenv -p python2.7 $(VIMENV2)
-	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim
+	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim pynvim
 
 vimenv3:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
 	python3 -m virtualenv -p python3 $(VIMENV3)
-	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim
+	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim pynvim
 
 clean-vim: out ## remove vim/neovim config
 	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim

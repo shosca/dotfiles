@@ -23,7 +23,7 @@ function! LoadYaml(filename) abort " {
 python3 << endpython
 import vim, yaml
 with open(vim.eval('a:filename'), 'r') as f:
-    vim.vars['yaml_file'] = yaml.load(f.read())
+    vim.vars['yaml_file'] = yaml.load(f.read(), Loader=yaml.FullLoader)
 endpython
   return g:yaml_file
 endfunction " }
@@ -63,11 +63,6 @@ function! s:source_file(path, ...) abort "{
     endif
   endtry
 endfunction " }
-
-augroup MyAutoCmd " { Set augroup
-  autocmd!
-  autocmd CursorHold *? syntax sync minlines=300
-augroup END " }
 
 if has('vim_starting') " { Initialize base requirements
   call s:source_file('init.vim')

@@ -16,8 +16,6 @@ augroup MyAutoCmd " {
   " Check if file changed when its window is focus, more eager than 'autoread'
   autocmd WinEnter,FocusGained * checktime
 
-  autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
-
   " Update filetype on save if empty
   autocmd BufWritePost * nested
         \ if &l:filetype ==# '' || exists('b:ftdetect')
@@ -72,3 +70,5 @@ augroup MyAutoCmd " {
         \ match goErr /\<err\>/
 
 augroup END " }
+
+let g:python_highlight_all = 1
