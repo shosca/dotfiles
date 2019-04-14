@@ -20,17 +20,22 @@ let hook_immediate = []
 let plugs = []
 
 function! LoadYaml(filename) abort " {
+  if exists('*json_decode')
+    let js = system("python3 -c \"import yaml, json; print(json.dumps(yaml.load(open('".a:filename."', 'r'))))\"")
+    return json_decode(js)
+  else
 python3 << endpython
 import vim, yaml
-with open(vim.eval('a:filename'), 'r') as f:
-    vim.vars['yaml_file'] = yaml.load(f.read(), Loader=yaml.FullLoader)
+with open(vim.eval('a:filename'), 'rb') as f:
+    vim.vars['yaml_file'] = yaml.load(f, Loader=yaml.FullLoader)
 endpython
-  return g:yaml_file
+    return g:yaml_file
+  endif
 endfunction " }
 
 function! s:dein_load_yaml(plug) abort " {
   let a:events = ['add', 'source', 'always']
-  for plugin in g:plug
+  for plugin in a:plug
     let s:plug_name = split(plugin['repo'], "/")[-1]
 
     for s:event in a:events
@@ -74,36 +79,29 @@ endif " }
 " Initialize dein.vim (package manager) {
 let s:dein_path = expand('$VARPATH/dein')
 let $PLUGINPATH = expand('$VIMPATH/config/plugins')
+let s:plugins = expand('$VARPATH/plugins.yaml')
 
-silent exec '!cat $(find '.expand('$PLUGINPATH').' -type f -iname "*.yaml") > '.expand('$VARPATH/plugins.yaml')
-let s:autoplugs = [expand('$VARPATH/plugins.yaml')]
+silent exec '!cat $(find '.expand('$PLUGINPATH').' -type f -iname "*.yaml") > '.s:plugins
+try
+  let g:plugs = LoadYaml(s:plugins)
+catch /.*/
+  echomsg v:exception
+  echomsg 'Error loading '.s:plugins.' ...'
+  echomsg 'Caught: ' v:exception
+endtry
 
-for autoplug in s:autoplugs
-  try
-    call add(g:plugs, LoadYaml(autoplug))
-  catch /.*/
-    echomsg v:exception
-    echomsg 'Error loading '.autoplug.' ...'
-    echomsg 'Caught: ' v:exception
-  endtry
-endfor
-
-for plug in g:plugs
-  for plugin in plug
-    if has_key(plugin, 'hook_always')
-      execute plugin['hook_always']
-    endif
-  endfor
+for plugin in g:plugs
+  if has_key(plugin, 'hook_always')
+    execute plugin['hook_always']
+  endif
 endfor
 
 if dein#load_state(s:dein_path)
 
-  call dein#begin(s:dein_path, s:autoplugs + [expand('<sfile>')])
+  call dein#begin(s:dein_path, [s:plugins])
   call dein#add('Shougo/dein.vim')
 
-  for plug in g:plugs
-    call s:dein_load_yaml(plug)
-  endfor
+  call s:dein_load_yaml(g:plugs)
 
   if isdirectory(expand('$VIMPATH/dev'))
     call dein#local(expand('$VIMPATH/dev'), {'frozen': 1, 'merged': 0})

@@ -37,6 +37,14 @@ if filereadable(expand('$VIMPATH/.vault.vim'))
   execute 'source' expand('$VIMPATH/.vault.vim')
 endif
 
+if has('pythonx')
+	if has('python3')
+		set pyxversion=3
+	elseif has('python')
+		set pyxversion=2
+	endif
+endif
+
 " }}}
 " Setup dein {{{
 if &runtimepath !~# '/dein.vim'
