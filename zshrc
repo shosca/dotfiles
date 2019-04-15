@@ -4,6 +4,7 @@
 
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 
 export DOTFILES="${HOME}/dotfiles"
 
@@ -11,6 +12,7 @@ if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug
 fi
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
+export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
 
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh
@@ -105,6 +107,8 @@ zplug "hlissner/zsh-autopair", defer:2
 # Extra
 zplug "lukechilds/zsh-better-npm-completion", defer:2
 zplug "junegunn/fzf", use:"shell/*.zsh"
+
+zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 
 zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 

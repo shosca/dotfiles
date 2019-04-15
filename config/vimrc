@@ -21,7 +21,7 @@ let plugs = []
 
 function! LoadYaml(filename) abort " {
   if exists('*json_decode')
-    let js = system("python3 -c \"import yaml, json; print(json.dumps(yaml.load(open('".a:filename."', 'r'))))\"")
+    let js = system("python3 -c \"import yaml, json; print(json.dumps(yaml.load(open('".a:filename."', 'r'), Loader=yaml.FullLoader)))\"")
     return json_decode(js)
   else
 python3 << endpython
