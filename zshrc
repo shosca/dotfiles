@@ -13,6 +13,7 @@ if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
 fi
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
 export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
+export AUTOSWITCH_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
 
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh

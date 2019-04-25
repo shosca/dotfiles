@@ -1,0 +1,3 @@
+neovim
+pyyaml
+python-language-server[all]
