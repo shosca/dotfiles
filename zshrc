@@ -15,6 +15,8 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history)
 export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
 export AUTOSWITCH_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
 
+export DISABLE_MAGIC_FUNCTIONS=true
+
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh
 
@@ -59,24 +61,7 @@ export LESS="${less_opts[*]}"
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # Oh-My-Zsh core
-#zplug "lib/*", from:oh-my-zsh
-zplug "lib/bzr", from:oh-my-zsh
-zplug "lib/clipboard", from:oh-my-zsh
-zplug "lib/compfix", from:oh-my-zsh
-zplug "lib/completion", from:oh-my-zsh
-zplug "lib/correction", from:oh-my-zsh
-zplug "lib/diagnostics", from:oh-my-zsh
-zplug "lib/directories", from:oh-my-zsh
-zplug "lib/functions", from:oh-my-zsh
-zplug "lib/git", from:oh-my-zsh
-zplug "lib/grep", from:oh-my-zsh
-zplug "lib/history", from:oh-my-zsh
-zplug "lib/key-bindings", from:oh-my-zsh
-zplug "lib/nvm", from:oh-my-zsh
-zplug "lib/prompt_info_functions", from:oh-my-zsh
-zplug "lib/spectrum", from:oh-my-zsh
-zplug "lib/termsupport", from:oh-my-zsh
-zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "lib/*", from:oh-my-zsh
 
 # Oh-My-Zsh plugins
 zplug "plugins/archlinux", from:oh-my-zsh
@@ -114,7 +99,7 @@ zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 
 # Dotfiles
-zplug "$DOTFILES/zsh/lib/misc", from:local, if:"[[ -f $DOTFILES/zsh/lib ]]"
+#zplug "$DOTFILES/zsh/lib/misc", from:local, if:"[[ -f $DOTFILES/zsh/lib ]]"
 
 # Custom local overridings
 zplug "~/.zsh.local", from:local, if:"[[ -f ~/.zsh.local ]]"

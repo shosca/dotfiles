@@ -18,5 +18,5 @@ let g:LanguageClient_serverCommands = {
       \ 'scss': ['css-languageserver'],
       \ 'sh': ['bash-language-server'],
       \ 'typescript': ['typescript-language-server'],
-      \ 'cs': ['/opt/omnisharp-roslyn/OmniSharp.exe', '--languageserver', '--verbose'],
+      \ 'cs': ['dotnet', 'run', '/opt/omnisharp-roslyn/OmniSharp.exe', '--languageserver', '--verbose'],
       \ }
