@@ -302,7 +302,7 @@ unlet g:plugs
 
 " }
 
-" Theme {
+" Theme and UI {
 set t_Co=256 " Enable 256 color term
 
 hi MatchParen cterm=bold term=bold
@@ -330,17 +330,46 @@ set number                      " Line numbers on
 set incsearch                   " Find as you type search
 set hlsearch                    " Highlight search terms
 set winminheight=0              " Windows can be 0 line high
-set ignorecase                  " Case insensitive search
-set smartcase                   " Case sensitive when uc present
-set wildmenu                    " Show list instead of just completing
-set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
-set wildignore=*.pyc,*.o,*.lo,*.la,*.exe,*.swp,*.db,*.bak,*.old,*.dat,*.,tmp,*.mdb,*~,~*
 set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
 set scrolljump=5                " Lines to scroll when cursor leaves screen
-set scrolloff=3                 " Minimum lines to keep above and below cursor
-set foldenable                  " Auto fold code
-set list
+set list                        " Show hidden characters
 set listchars=tab:›\ ,eol:¬,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set noshowmode          " Don't show mode in cmd window
+set shortmess=aoOTI     " Shorten messages and don't show intro
+set scrolloff=2         " Keep at least 2 lines above/below
+set sidescrolloff=5     " Keep at least 5 lines left/right
+set noruler             " Disable default status ruler
+
+set showtabline=2       " Always show the tabs line
+set winwidth=30         " Minimum width for active window
+set winheight=1         " Minimum height for active window
+set pumheight=15        " Pop-up menu's line height
+set helpheight=12       " Minimum help window height
+set previewheight=12    " Completion preview height
+
+set noshowcmd           " Don't show command in status line
+set cmdheight=1         " Height of the command line
+set cmdwinheight=5      " Command-line lines
+set equalalways         " Resize windows on split or close
+set laststatus=2        " Always show a status line
+set colorcolumn=120     " Highlight the 80th character limit
+set display=lastline
+
+" Do not display completion messages
+" Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
+if has('patch-7.4.314')
+  set shortmess+=c
+endif
+
+" Do not display message when editing files
+if has('patch-7.4.1570')
+  set shortmess+=F
+endif
+
+" For snippet_complete marker
+if has('conceal') && v:version >= 703
+  set conceallevel=2 concealcursor=niv
+endif
 " }
 
 " General Settings {
@@ -387,16 +416,15 @@ endif
 " }
 
 " - Wildmenu {
-if has('wildmenu')
-  set nowildmenu
-  set wildmode=list:longest,full
-  set wildoptions=tagfile
-  set wildignorecase
-  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
-  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
-  set wildignore+=__pycache__,*.egg-info
-endif
+set wildmenu
+set wildmode=list:longest,full
+set wildignore=*.pyc,*.o,*.lo,*.la,*.exe,*.swp,*.db,*.bak,*.old,*.dat,*.,tmp,*.mdb,*~,~*
+set wildoptions=tagfile
+set wildignorecase
+set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+set wildignore+=__pycache__,*.egg-info
 " }
 
 " - Tabs and Indents {
@@ -424,8 +452,6 @@ set ttimeoutlen=10
 set ignorecase      " Search ignoring case
 set smartcase       " Keep case when searching with *
 set infercase       " Adjust case in insert completion mode
-set incsearch       " Incremental search
-set hlsearch        " Highlight search results
 set wrapscan        " Searches wrap around the end of the file
 set showmatch       " Jump to matching bracket
 set matchpairs+=<:> " Add HTML brackets to pair matching
@@ -449,47 +475,6 @@ set complete=.                  " No wins, buffs, tags, include scanning
 
 if exists('+inccommand')
   set inccommand=nosplit
-endif
-" }
-
-" - Editor UI Appearance {
-set noshowmode          " Don't show mode in cmd window
-set shortmess=aoOTI     " Shorten messages and don't show intro
-set scrolloff=2         " Keep at least 2 lines above/below
-set sidescrolloff=5     " Keep at least 5 lines left/right
-set number              " Show line numbers
-set noruler             " Disable default status ruler
-set list                " Show hidden characters
-
-set showtabline=2       " Always show the tabs line
-set winwidth=30         " Minimum width for active window
-set winheight=1         " Minimum height for active window
-set pumheight=15        " Pop-up menu's line height
-set helpheight=12       " Minimum help window height
-set previewheight=12    " Completion preview height
-
-set noshowcmd           " Don't show command in status line
-set cmdheight=1         " Height of the command line
-set cmdwinheight=5      " Command-line lines
-set equalalways         " Resize windows on split or close
-set laststatus=2        " Always show a status line
-set colorcolumn=120     " Highlight the 80th character limit
-set display=lastline
-
-" Do not display completion messages
-" Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
-if has('patch-7.4.314')
-  set shortmess+=c
-endif
-
-" Do not display message when editing files
-if has('patch-7.4.1570')
-  set shortmess+=F
-endif
-
-" For snippet_complete marker
-if has('conceal') && v:version >= 703
-  set conceallevel=2 concealcursor=niv
 endif
 " }
 
