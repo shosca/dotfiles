@@ -12,6 +12,10 @@ let g:denite_leader = "f"
 " Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+
+" Constants
+let s:is_sudo = $SUDO_USER !=# '' && $USER !=# $SUDO_USER
+
 let g:dein#install_max_processes = 16
 let g:dein#install_progress_type = 'echo'
 let g:dein#enable_notification = 0
@@ -19,10 +23,53 @@ let g:dein#install_log_filename = $VARPATH.'/dein.log'
 let hook_immediate = []
 let plugs = []
 
+" Search and use environments specifically made for Neovim.
+if isdirectory($VARPATH.'/venv/neovim2')
+  let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
+endif
+if isdirectory($VARPATH.'/venv/neovim3')
+  let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
+endif
+
+if has('pythonx')
+  if has('python3')
+    set pyxversion=3
+  elseif has('python')
+    set pyxversion=2
+  endif
+endif
+
+function! s:yaml_check_ruby() abort
+  call system("ruby -e 'require \"json\"; require \"yaml\"'")
+  return (v:shell_error == 0) ? 1 : 0
+endfunction
+
+function! s:yaml_check_yaml2json()
+  try
+    let result = system('yaml2json', "---\ntest: 1")
+    if v:shell_error != 0
+      return 0
+    endif
+    let result = json_decode(result)
+    return result.test
+  catch
+  endtry
+  return 0
+endfunction
+
 function! LoadYaml(filename) abort " {
   if exists('*json_decode')
-    let js = system("python3 -c \"import yaml, json; print(json.dumps(yaml.load(open('".a:filename."', 'r'), Loader=yaml.FullLoader)))\"")
-    return json_decode(js)
+    if s:yaml_check_yaml2json()
+      return json_decode(system('yaml2json', readfile(a:filename)))
+    elseif s:yaml_check_ruby()
+      return json_decode(
+            \ system("ruby -e 'require \"json\"; require \"yaml\"; ".
+            \ "print JSON.generate YAML.load \$stdin.read'",
+            \ readfile(a:filename)))
+    else
+      let js = system("python3 -c \"import yaml, json; print(json.dumps(yaml.load(open('".a:filename."', 'r'), Loader=yaml.FullLoader)))\"")
+      return json_decode(js)
+    endif
   else
 python3 << endpython
 import vim, yaml
@@ -34,11 +81,10 @@ endpython
 endfunction " }
 
 function! s:dein_load_yaml(plug) abort " {
-  let a:events = ['add', 'source', 'always']
   for plugin in a:plug
     let s:plug_name = split(plugin['repo'], "/")[-1]
 
-    for s:event in a:events
+    for s:event in ['add', 'source', 'always']
       let s:plug_name_event = expand('$PLUGINPATH/').s:plug_name.'.'.s:event.'.vim'
       if filereadable(s:plug_name_event)
         let plugin['hook_'.s:event] = 'source '.s:plug_name_event
@@ -133,3 +179,15 @@ call s:source_file('filetype.vim')
 call s:source_file('mappings.vim')
 set secure
 " }
+
+if s:is_sudo
+  set noswapfile
+  set nobackup
+  set nowritebackup
+  set noundofile
+  if has('nvim')
+    set shada="NONE"
+  else
+    set viminfo="NONE"
+  endif
+endif

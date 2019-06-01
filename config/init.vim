@@ -2,6 +2,11 @@
 " Vim Initialization
 " ------------------
 
+" Write history on idle
+augroup MyAutoCmd
+  autocmd CursorHold * if exists(':rshada') | rshada | wshada | endif
+augroup END
+
 " Global Mappings "{{{
 " Use spacebar as leader and ; as secondary-leader
 " Required before loading plugins!

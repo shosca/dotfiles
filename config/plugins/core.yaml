@@ -15,7 +15,6 @@
 - repo: roxma/nvim-yarp
 
 - repo: roxma/vim-hug-neovim-rpc
-  if: has('vim')
 
 - repo: tpope/vim-dotenv
   on_cmd: Dotenv
