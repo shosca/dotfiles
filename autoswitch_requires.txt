@@ -1,3 +1,5 @@
+--no-binary :all:
+
 neovim
 pyyaml
 python-language-server[all]

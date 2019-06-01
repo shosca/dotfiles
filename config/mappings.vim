@@ -44,6 +44,7 @@ menu EOL.unix :set fileformat=unix<CR>
 menu EOL.dos  :set fileformat=dos<CR>
 menu EOL.mac  :set fileformat=mac<CR>
 noremap <F7> :emenu EOL.<Tab>
+" }
 
 " <F8> change encoding {
 menu Enc.cp1251  :e! ++enc=cp1251<CR>

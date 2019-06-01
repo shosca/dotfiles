@@ -1,7 +1,7 @@
 
 " Reload vim config automatically {
-execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
-      \ .' source $MYVIMRC | redraw | silent doautocmd ColorScheme'
+"execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
+"      \ .' source $MYVIMRC | redraw | silent doautocmd ColorScheme'
 " }
 
 augroup MyAutoCmd " {
