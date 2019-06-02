@@ -19,6 +19,5 @@
 - repo: filipekiss/ncm2-look.vim
   depends: ncm2
 
-- repo: autozimu/LanguageClient-neovim
-  rev: next
-  build: bash install.sh
+- repo: neoclide/coc.nvim
+  build: yarn install --frozen-lockfile
