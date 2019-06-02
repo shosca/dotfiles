@@ -1,4 +1,11 @@
 {
+  "coc.preferences.colorSupport": true,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.errorSign": "•",
+  "diagnostic.infoSign": "•",
+  "diagnostic.warningSign": "•",
+  "suggest.echodocSupport": true,
+  "suggest.maxCompleteItemCount": 20,
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
@@ -6,10 +13,5 @@
       "args": ["start"],
       "ignoredRootPaths": ["~"]
     }
-  },
-  "suggest.echodocSupport": true,
-  "suggest.maxCompleteItemCount": 20,
-  "diagnostic.errorSign": "•",
-  "diagnostic.warningSign": "•",
-  "diagnostic.infoSign": "•"
+  }
 }
