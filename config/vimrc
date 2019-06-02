@@ -7,25 +7,10 @@ endif
 let s:is_sudo = $SUDO_USER !=# '' && $USER !=# $SUDO_USER
 
 " Global Mappings {
-" The default leader is '\', but many people prefer ',' as it's in a standard
-" location.
 " Use spacebar as leader and ; as secondary-leader
 " Required before loading plugins!
-let g:denite_leader = "f"
 let g:mapleader="\<Space>"
 let g:maplocalleader=';'
-let mapleader = "\<Space>"
-let maplocalleader = ","
-
-" Release keymappings prefixes, evict entirely for use of plug-ins.
-nnoremap <Space>  <Nop>
-xnoremap <Space>  <Nop>
-nnoremap ,        <Nop>
-xnoremap ,        <Nop>
-nnoremap ;        <Nop>
-xnoremap ;        <Nop>
-nnoremap m        <Nop>
-xnoremap m        <Nop>
 " }
 
 " Paths and directories {

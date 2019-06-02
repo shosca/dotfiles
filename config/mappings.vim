@@ -14,7 +14,7 @@ nnoremap <silent> * :set hlsearch<Cr>:exe "let @/='\\<'.expand('<cword>').'\\>'"
 nnoremap <silent> <a-*> :set hlsearch<Cr>:exe 'let @/=expand("<cWORD>")'<Cr>
 
 " Toggle fold
-nnoremap <CR> za
+" nnoremap <CR> za
 
 " Focus the current fold by closing all others
 nnoremap <S-Return> zMza

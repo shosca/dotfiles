@@ -90,7 +90,6 @@ endfor
 nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
 nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
 nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
-nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
 nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume -refresh -mode=normal<CR>
 nnoremap <silent><LocalLeader>a :<C-u>Denite codeAction<CR>
 nnoremap <silent><LocalLeader>b :<C-u>Denite buffer -default-action=switch<CR>
