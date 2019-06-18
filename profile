@@ -1,7 +1,50 @@
-export DRI_PRIME=1
-export DOTFILES="${HOME}/dotfiles"
+# Locale
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
-# source $DOTFILES/base16-gruvbox.dark.sh
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+export DOTFILES="${HOME}/dotfiles"
+export GOPATH="${HOME}/go"
+
+export ZSH_AUTOSUGGEST_STRATEGY=(history)
+export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
+export AUTOSWITCH_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
+
+export DISABLE_MAGIC_FUNCTIONS=true
+
+export PAGER='less'
+
+# less options
+less_opts=(
+  # Quit if entire file fits on first screen.
+  --quit-if-one-screen
+  # Ignore case in searches that do not contain uppercase.
+  --ignore-case
+  # Allow ANSI colour escapes, but no other escapes.
+  --RAW-CONTROL-CHARS
+  # Quiet the terminal bell. (when trying to scroll past the end of the buffer)
+  --quiet
+  # Do not complain when we are on a dumb terminal.
+  --dumb
+)
+export LESS="${less_opts[*]}"
+
+export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
+
+export PYTHONUSERBASE=${HOME}/.local
+export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
+
+export EDITOR=vim
+if type nvim >/dev/null; then
+  export EDITOR=nvim
+  alias vim=nvim
+fi
+
+unset GREP_OPTIONS
 
 case "${TERM}" in
 	xterm*)
@@ -31,27 +74,6 @@ esac
 if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
   eval $(dircolors -b ${HOME}/.dircolors)
 fi
-
-export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
-unset GREP_OPTIONS
-
-export EDITOR=vim
-if type nvim >/dev/null; then
-  export EDITOR=nvim
-  alias vim=nvim
-fi
-
-export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
-unset GREP_OPTIONS
-
-export EDITOR=vim
-if type nvim >/dev/null; then
-  export EDITOR=nvim
-  alias vim=nvim
-fi
-
-export PYTHONUSERBASE=${HOME}/.local
-export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 
 # Extend $NODE_PATH
 if [ -d ~/.npm-global ]; then

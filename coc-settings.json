@@ -12,6 +12,16 @@
       "filetypes": ["sh"],
       "args": ["start"],
       "ignoredRootPaths": ["~"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    },
+    "omnisharp": {
+      "command": "/opt/omnisharp-roslyn/OmniSharp.exe",
+      "args": ["-lsp"],
+      "filetypes": ["cs"],
     }
   }
 }

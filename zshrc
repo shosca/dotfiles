@@ -1,57 +1,12 @@
-# ------------------------------------------------------------------------------
-# Environment
-# ------------------------------------------------------------------------------
-
-XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-
-export DOTFILES="${HOME}/dotfiles"
-
 if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug
 fi
-export ZSH_AUTOSUGGEST_STRATEGY=(history)
-export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
-export AUTOSWITCH_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
-
-export DISABLE_MAGIC_FUNCTIONS=true
 
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh
 
-# Locale
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
 # Do not override files using `>`, but it's still possible using `>!`
 # set -o noclobber
-
-# Extend $PATH without duplicates
-_extend_path() {
-  if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
-    export PATH="$1:$PATH"
-  fi
-}
-
-# Default pager
-export PAGER='less'
-
-# less options
-less_opts=(
-  # Quit if entire file fits on first screen.
-  --quit-if-one-screen
-  # Ignore case in searches that do not contain uppercase.
-  --ignore-case
-  # Allow ANSI colour escapes, but no other escapes.
-  --RAW-CONTROL-CHARS
-  # Quiet the terminal bell. (when trying to scroll past the end of the buffer)
-  --quiet
-  # Do not complain when we are on a dumb terminal.
-  --dumb
-)
-export LESS="${less_opts[*]}"
 
 # ------------------------------------------------------------------------------
 # Dependencies
