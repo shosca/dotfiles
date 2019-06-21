@@ -1,27 +1,112 @@
 {
   "coc.preferences.colorSupport": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "json"
+  ],
+  "coc.preferences.snippetStatusText": "Ⓢ ",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "•",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
-  "suggest.echodocSupport": true,
-  "suggest.maxCompleteItemCount": 20,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "vue-html": "html"
+  },
+  "eslint.autoFix": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "javascript.jsx",
+    "javascriptreact"
+  ],
+  "git.addGlameToBufferVar": true,
+  "git.addGlameToVirtualText": true,
+  "git.addedSign.hlGroup": "GitGutterAdd",
+  "git.addedSign.text": "▎",
+  "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+  "git.changeRemovedSign.text": "▋",
+  "git.changedSign.hlGroup": "GitGutterChange",
+  "git.changedSign.text": "▎",
+  "git.enableGutters": true,
+  "git.removedSign.hlGroup": "GitGutterDelete",
+  "git.removedSign.text": "▏",
+  "git.topRemovedSign.hlGroup": "GitGutterDelete",
+  "git.topRemovedSign.text": "▔",
+  "git.virtualTextPrefix": " ❯❯❯ ",
   "languageserver": {
     "bash": {
+      "args": [
+        "start"
+      ],
       "command": "bash-language-server",
-      "filetypes": ["sh"],
-      "args": ["start"],
-      "ignoredRootPaths": ["~"]
+      "filetypes": [
+        "sh"
+      ],
+      "ignoredRootPaths": [
+        "~"
+      ]
     },
     "golang": {
       "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
+      "filetypes": [
+        "go"
+      ],
+      "rootPatterns": [
+        "go.mod",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ]
     },
     "omnisharp": {
+      "args": [
+        "-lsp"
+      ],
       "command": "/opt/omnisharp-roslyn/OmniSharp.exe",
-      "args": ["-lsp"],
-      "filetypes": ["cs"],
+      "filetypes": [
+        "cs"
+      ]
     }
-  }
+  },
+  "prettier.eslintIntegration": true,
+  "prettier.statusItemText": "ⓟ ",
+  "prettier.stylelintIntegration": true,
+  "prettier.tslintIntegration": true,
+  "suggest.completionItemKindLabels": {
+    "class": "",
+    "color": " ",
+    "constant": "",
+    "default": " ",
+    "enum": "",
+    "enumMember": "",
+    "event": " ",
+    "field": "",
+    "file": " ",
+    "folder": " ",
+    "function": "⨕",
+    "interface": "",
+    "keyword": "",
+    "method": "",
+    "module": "",
+    "operator": "Ψ",
+    "property": "",
+    "reference": "",
+    "snippet": "",
+    "struct": "פּ",
+    "text": "♣",
+    "typeParameter": "",
+    "unit": "",
+    "value": "",
+    "variable": ""
+  },
+  "suggest.detailField": "abbr",
+  "suggest.echodocSupport": true,
+  "suggest.maxCompleteItemCount": 20,
+  "suggest.noselect": false,
+  "suggest.snippetIndicator": "●",
+  "suggest.timeout": 500,
+  "suggest.triggerAfterInsertEnter": false,
+  "suggest.triggerCompletionWait": 100
 }

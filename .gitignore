@@ -1,2 +1,4 @@
 *.pyc
 .netrwhist
+sessions
+.netrwhist

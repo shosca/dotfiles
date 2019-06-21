@@ -1,0 +1,6 @@
+
+- repo: bcicen/vim-jfmt
+  on_ft: json
+  hook_always: |
+    let g:jfmt_autofmt = 1
+    let g:jfmt_jq_options = '--sort-keys'
