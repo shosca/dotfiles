@@ -3,12 +3,13 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
+export DOTFILES="${HOME}/dotfiles"
+
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_LOCAL="${XDG_LOCAL:-$HOME/.local}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-
-export DOTFILES="${HOME}/dotfiles"
-export GOPATH="${HOME}/go"
+export GOPATH="${XDG_DATA_HOME}/go"
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
 export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
@@ -35,8 +36,12 @@ export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 
-export PYTHONUSERBASE=${HOME}/.local
+export PYTHONUSERBASE=${XDG_LOCAL}
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
+
+export CARGO_HOME=${XDG_CONFIG_HOME}/cargo
+
+export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME}/npm/npmrc
 
 export EDITOR=vim
 if type nvim >/dev/null; then
@@ -75,11 +80,6 @@ if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_te
   eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
-# Extend $NODE_PATH
-if [ -d ~/.npm-global ]; then
-  export NODE_PATH="$NODE_PATH:$HOME/.npm-global/lib/node_modules"
-fi
-
 # Extend $PATH without duplicates
 _extend_path() {
   if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
@@ -88,13 +88,10 @@ _extend_path() {
 }
 
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
-[[ -d "$HOME/dc" ]] && _extend_path "$HOME/dc"
-[[ -d "$HOME/go/bin" ]] && _extend_path "$HOME/go/bin"
+[[ -d "GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
-[[ -d "$HOME/.npm-global" ]] && _extend_path "$HOME/.npm-global/bin"
-[[ -d "$HOME/.rvm/bin" ]] && _extend_path "$HOME/.rvm/bin"
-[[ -d "$HOME/.cargo/bin" ]] && _extend_path "$HOME/.cargo/bin"
-[[ -d "$HOME/.local/bin" ]] && _extend_path "$HOME/.local/bin"
+[[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
+[[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
 
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"

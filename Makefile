@@ -131,6 +131,11 @@ clean-kitty: out  ## remove kitty config
 
 # }
 
+npm: in  ## install npm config {
+	mkdir -p $(XDG_CONFIG_HOME)/npm
+	ln -sf $(PWD)/npmrc $(XDG_CONFIG_HOME)/npm/npmrc
+# }
+
 $(SYMS): in  ## install config {
 	ln -sf $(PWD)/$@ $(HOME)/.$@
 

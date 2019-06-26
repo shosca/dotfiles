@@ -33,6 +33,7 @@ zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/nvm", from:oh-my-zsh
 zplug "plugins/postgres", from:oh-my-zsh
 zplug "plugins/python", from:oh-my-zsh
+zplug "plugins/pyenv", from:oh-my-zsh
 zplug "plugins/rust", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/systemd", from:oh-my-zsh
