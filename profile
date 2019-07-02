@@ -34,7 +34,7 @@ less_opts=(
 )
 export LESS="${less_opts[*]}"
 
-export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
+[[ -d /proc ]] && export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 
 export PYTHONUSERBASE=${XDG_LOCAL}
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
@@ -98,4 +98,10 @@ _extend_path() {
 
 if type yarn >/dev/null 2>&1; then
   _extend_path "$(yarn global dir)/node_modules/.bin"
+fi
+
+if [ -x "$(command -v gfind)" ]; then
+  for _p in $(gfind /usr/local/Cellar -type d -iname gnubin); do
+    _extend_path "${_p}"
+  done
 fi
