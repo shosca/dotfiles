@@ -108,6 +108,9 @@ python: in  ## install python/pdb config {
 	ln -sf $(PWD)/python/pylintrc $(XDG_CONFIG_HOME)/pylintrc
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
+python-user:  ## installs user packages
+	pip3 install --user -U -r requirements.txt
+
 clean-python: out  ## remove python/pdb config
 	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
 
@@ -177,21 +180,23 @@ gnome-restore:
 	done
 # }
 
-install: $(INSTALL_TARGETS) $(SYMS) ## installs all
-
-clean: $(CLEAN_TARGETS)  ## removes all
-
-brew-tap:
-	brew tap $$(cat Brewfile.tap)
-
-brew: brew-tap ## installs brew stuff
+brew: brew-tap ## installs brew stuff {
 	brew install $$(cat Brewfile)
 	brew cask install $$(cat Brewfile.cask)
+
+brew-tap:  ## install brew taps
+	brew tap $$(cat Brewfile.tap)
 
 brew-update:  ## update brewfiles
 	brew leaves | sort > Brewfile
 	brew cask list > Brewfile.cask
 	brew tap > Brewfile.tap
+
+# }
+
+install: $(INSTALL_TARGETS) $(SYMS) ## installs all
+
+clean: $(CLEAN_TARGETS)  ## removes all
 
 push:  ## push config to another machine with REMOTE
 	rsync $(RSYNCOPTS) $(OPTS) \
