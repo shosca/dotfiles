@@ -1,5 +1,6 @@
 coreutils
 curl
+docker-compose
 findutils
 gawk
 git
@@ -13,9 +14,10 @@ make
 moreutils
 neovim
 openssh
+postgresql
 pyenv
-python
 ripgrep
 rsync
 tmux
+yarn
 zsh
