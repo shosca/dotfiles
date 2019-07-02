@@ -181,13 +181,17 @@ install: $(INSTALL_TARGETS) $(SYMS) ## installs all
 
 clean: $(CLEAN_TARGETS)  ## removes all
 
-brew: ## installs brew stuff
+brew-tap:
+	brew tap $$(cat Brewfile.tap)
+
+brew: brew-tap ## installs brew stuff
 	brew install $$(cat Brewfile)
 	brew cask install $$(cat Brewfile.cask)
 
 brew-update:  ## update brewfiles
 	brew leaves | sort > Brewfile
 	brew cask list > Brewfile.cask
+	brew tap > Brewfile.tap
 
 push:  ## push config to another machine with REMOTE
 	rsync $(RSYNCOPTS) $(OPTS) \

@@ -1,3 +1,8 @@
+# handle mac stupidity
+if [ -f /usr/libexec/path_helper ]; then
+  export PATH=""
+  source /etc/profile
+fi
 # Locale
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -83,6 +88,7 @@ fi
 # Extend $PATH without duplicates
 _extend_path() {
   if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
+    echo "adding $1 to PATH"
     export PATH="$1:$PATH"
   fi
 }
@@ -101,7 +107,7 @@ if type yarn >/dev/null 2>&1; then
 fi
 
 if [ -x "$(command -v gfind)" ]; then
-  for _p in $(gfind /usr/local/Cellar -type d -iname gnubin); do
+  for _p in $(gfind /usr/local/Cellar -type d -iname gnubin | sort); do
     _extend_path "${_p}"
   done
 fi
