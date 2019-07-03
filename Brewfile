@@ -17,12 +17,13 @@ gzip
 htop
 jq
 keychain
-libxml2
+libxmlsec1
 make
 moreutils
 mysql
 neovim
 openssh
+openssl@1.1
 pango
 postgresql
 pyenv
@@ -33,5 +34,6 @@ the_silver_searcher
 tmux
 tree
 wget
+xml2
 yarn
 zsh
