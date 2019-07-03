@@ -14,6 +14,7 @@ gnu-which
 grep
 gzip
 htop
+jq
 keychain
 libxml2
 make
