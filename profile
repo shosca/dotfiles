@@ -111,3 +111,7 @@ if [ -x "$(command -v gfind)" ]; then
     _extend_path "${_p}"
   done
 fi
+
+if [ -d "${VIRTUAL_ENV}/bin/activate" ]; then
+	source ${VIRTUAL_ENV}/bin/activate
+fi

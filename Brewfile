@@ -11,6 +11,7 @@ git
 gnu-sed
 gnu-tar
 gnu-which
+graphviz
 grep
 gzip
 htop
