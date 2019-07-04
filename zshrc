@@ -79,3 +79,7 @@ bindkey '^R' fzf-history-widget
 
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
+
+if [ -f "${HOME}/.ssh/env" ]; then
+	source ${HOME}/.ssh/env
+fi
