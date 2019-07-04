@@ -1,0 +1,10 @@
+#!/bin/bash
+_pids=()
+for img in $(docker images | grep latest | awk '{b=$1":"$2; print b}'); do
+  docker pull $img &
+  _pids+=($!)
+done
+
+for p in "${_pids[@]}"; do
+  wait $p
+done
