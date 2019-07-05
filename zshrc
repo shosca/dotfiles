@@ -33,11 +33,12 @@ zplug "plugins/golang", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/nvm", from:oh-my-zsh
 zplug "plugins/postgres", from:oh-my-zsh
-zplug "plugins/python", from:oh-my-zsh
 zplug "plugins/pyenv", from:oh-my-zsh
+zplug "plugins/python", from:oh-my-zsh
 zplug "plugins/rust", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/systemd", from:oh-my-zsh
+zplug "plugins/terraform", from:oh-my-zsh
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/yarn", from:oh-my-zsh
 
@@ -50,6 +51,7 @@ zplug "hlissner/zsh-autopair", defer:2
 # Extra
 zplug "lukechilds/zsh-better-npm-completion", defer:2
 zplug "junegunn/fzf", use:"shell/*.zsh"
+zplug "pbar1/zsh-terraform"
 
 zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 

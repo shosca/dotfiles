@@ -1,2 +1,2 @@
 #!/bin/bash
-docker images | grep -vi "IMAGE ID" | awk '{ print $3 }' | xargs docker rmi -f
+docker images | grep -vi "IMAGE ID" | awk '{ print $3 }' | xargs -r docker rmi -f
