@@ -30,6 +30,7 @@ pyenv
 python@2
 ripgrep
 rsync
+terraform
 the_silver_searcher
 tmux
 tree
