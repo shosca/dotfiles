@@ -53,7 +53,8 @@ zplug "lukechilds/zsh-better-npm-completion", defer:2
 zplug "junegunn/fzf", use:"shell/*.zsh"
 zplug "pbar1/zsh-terraform"
 
-zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
+# zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
+zplug "shosca/zsh-pew"
 
 zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 
@@ -61,7 +62,7 @@ zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 #zplug "$DOTFILES/zsh/lib/misc", from:local, if:"[[ -f $DOTFILES/zsh/lib ]]"
 
 # Custom local overridings
-zplug "~/.zsh.local", from:local, if:"[[ -f ~/.zsh.local ]]"
+zplug "$HOME/.zsh.local", from:local, use:"*", if:"[[ -d ~/.zsh.local ]]"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then

@@ -17,8 +17,7 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export GOPATH="${XDG_DATA_HOME}/go"
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
-export AUTOSWITCH_VIRTUAL_ENV_DIR=$XDG_DATA_HOME/virtualenvs
-export AUTOSWITCH_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
+export PEW_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
 
 export DISABLE_MAGIC_FUNCTIONS=true
 
