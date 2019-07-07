@@ -53,8 +53,11 @@ zplug "lukechilds/zsh-better-npm-completion", defer:2
 zplug "junegunn/fzf", use:"shell/*.zsh"
 zplug "pbar1/zsh-terraform"
 
-# zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
-zplug "shosca/zsh-pew"
+if [[ -d "$HOME/src/zsh-pew" ]]; then
+  zplug "$HOME/src/zsh-pew", from:local, use:"*"
+else
+  zplug "shosca/zsh-pew"
+fi
 
 zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
 
