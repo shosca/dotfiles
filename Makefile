@@ -109,7 +109,7 @@ python: in  ## install python/pdb config {
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
 python-user:  ## installs user packages
-	pip3 install --user -U -r requirements.txt
+	pip3 install --user -U -r user_requirements.txt
 
 clean-python: out  ## remove python/pdb config
 	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
