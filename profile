@@ -38,12 +38,7 @@ less_opts=(
 )
 export LESS="${less_opts[*]}"
 
-if [[ -d /proc ]]; then
-  export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
-elif sysctl -n hw.logicalcpu > /dev/null; then
-  export MAKEFLAGS="-j$(sysctl hw.logicalcpu)"
-fi
-
+export MAKEFLAGS="-j$(nproc)"
 export PYTHONUSERBASE=${XDG_LOCAL}
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 
