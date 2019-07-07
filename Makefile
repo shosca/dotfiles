@@ -104,7 +104,6 @@ clean-tilix: out
 
 python: in  ## install python/pdb config {
 	mkdir -p $(XDG_CONFIG_HOME)/python
-	ln -sf $(PWD)/python/sitecustomize.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
 	ln -sf $(PWD)/python/pylintrc $(XDG_CONFIG_HOME)/pylintrc
 	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
 
@@ -112,7 +111,7 @@ python-user:  ## installs user packages
 	pip3 install --user -U -r user_requirements.txt
 
 clean-python: out  ## remove python/pdb config
-	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py $(XDG_CONFIG_HOME)/python/sitecustomize.py
+	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py
 
 # }
 
