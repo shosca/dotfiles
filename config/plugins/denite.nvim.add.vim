@@ -59,10 +59,45 @@ elseif executable('ack')
   call denite#custom#var('grep', 'default_opts', ['--ackrc', $HOME.'/.config/ackrc', '-H', '--nopager', '--nocolor', '--nogroup', '--column'])
 endif
 
+" KEY MAPPINGS
+autocmd FileType denite call s:denite_settings()
+function! s:denite_settings() abort
+	highlight! link CursorLine Visual
+	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+	nnoremap <silent><buffer><expr> i    denite#do_map('open_filter_buffer')
+	nnoremap <silent><buffer><expr> d    denite#do_map('do_action', 'delete')
+	nnoremap <silent><buffer><expr> p    denite#do_map('do_action', 'preview')
+	nnoremap <silent><buffer><expr> st   denite#do_map('do_action', 'tabopen')
+	nnoremap <silent><buffer><expr> sg   denite#do_map('do_action', 'vsplit')
+	nnoremap <silent><buffer><expr> sv   denite#do_map('do_action', 'split')
+	nnoremap <silent><buffer><expr> '    denite#do_map('quick_move')
+	nnoremap <silent><buffer><expr> q    denite#do_map('quit')
+	nnoremap <silent><buffer><expr> r    denite#do_map('redraw')
+	nnoremap <silent><buffer><expr> yy   denite#do_map('do_action', 'yank')
+	nnoremap <silent><buffer><expr> <Esc>   denite#do_map('quit')
+	nnoremap <silent><buffer><expr> <C-u>   denite#do_map('restore_sources')
+	nnoremap <silent><buffer><expr> <C-f>   denite#do_map('do_action', 'defx')
+	nnoremap <silent><buffer><expr> <C-x>   denite#do_map('choose_action')
+	nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
+endfunction
+
+autocmd FileType denite-filter call s:denite_filter_settings()
+function! s:denite_filter_settings() abort
+	nnoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+	" inoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+	nnoremap <silent><buffer><expr> q      denite#do_map('quit')
+	inoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+	nnoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+	inoremap <silent><buffer>       kk     <Esc><C-w>p
+	nnoremap <silent><buffer>       kk     <C-w>p
+	inoremap <silent><buffer>       jj     <Esc><C-w>p
+	nnoremap <silent><buffer>       jj     <C-w>p
+endfunction
+
 nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
 nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
 nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
-nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume -refresh -mode=normal<CR>
+nnoremap <silent><LocalLeader><Space> :<C-u>Denite -resume -refresh<CR>
 nnoremap <silent><LocalLeader>b :<C-u>Denite buffer -default-action=switch<CR>
 nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
 nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
