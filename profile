@@ -18,6 +18,7 @@ export GOPATH="${XDG_DATA_HOME}/go"
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
 export PEW_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
+export DISABLE_PEW_AUTOACTIVATE="1"
 
 export DISABLE_MAGIC_FUNCTIONS=true
 
