@@ -1,6 +1,8 @@
+automake
 awscli
 bash
 coreutils
+cowsay
 ctop
 curl
 docker-compose
@@ -34,6 +36,7 @@ terraform
 the_silver_searcher
 tmux
 tree
+universal-ctags/universal-ctags/universal-ctags
 wget
 xml2
 yarn
