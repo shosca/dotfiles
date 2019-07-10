@@ -104,7 +104,7 @@ nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
 nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>
 nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
 nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file_point<CR>
-nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
+nnoremap <silent><LocalLeader>l :<C-u>Denite location_list<CR>
 nnoremap <silent><LocalLeader>m :<C-u>call dein#update()<CR>Denite -no-quit -mode=normal dein_log:!<CR>
 nnoremap <silent><LocalLeader>n :<C-u>Denite dein -no-quit<CR>
 nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>

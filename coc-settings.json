@@ -74,6 +74,9 @@
   "prettier.statusItemText": "ⓟ ",
   "prettier.stylelintIntegration": true,
   "prettier.tslintIntegration": true,
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": false,
   "suggest.completionItemKindLabels": {
     "class": "",
     "color": "",
