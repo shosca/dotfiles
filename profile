@@ -1,3 +1,9 @@
+if type keychain >/dev/null 2>&1; then
+  keychain $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
+  [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+  [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
+fi
+
 # handle mac stupidity
 if [ -f /usr/libexec/path_helper ]; then
   export PATH=""
@@ -87,7 +93,6 @@ fi
 # Extend $PATH without duplicates
 _extend_path() {
   if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
-    echo "adding $1 to PATH"
     export PATH="$1:$PATH"
   fi
 }
@@ -118,3 +123,5 @@ fi
 if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
 	export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 fi
+
+source $DOTFILES/aliases

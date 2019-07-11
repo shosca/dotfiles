@@ -75,10 +75,6 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
-set -a
-. $HOME/dotfiles/commonsh
-. $HOME/dotfiles/aliases
-
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
 bindkey '^R' fzf-history-widget

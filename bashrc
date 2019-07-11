@@ -50,6 +50,3 @@ if [[ -d "$HOME/.local/share/bash-completion" ]]; then
 		source $f
 	done
 fi
-
-. $HOME/dotfiles/commonsh
-. $HOME/dotfiles/aliases
