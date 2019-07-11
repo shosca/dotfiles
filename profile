@@ -116,10 +116,6 @@ if [ -x "$(command -v gfind)" ]; then
   done
 fi
 
-if [ -d "${VIRTUAL_ENV}/bin/activate" ]; then
-	source ${VIRTUAL_ENV}/bin/activate
-fi
-
 if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
 	export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 fi

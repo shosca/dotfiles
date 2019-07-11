@@ -10,7 +10,7 @@ let s:is_sudo = $SUDO_USER !=# '' && $USER !=# $SUDO_USER
 " Use spacebar as leader and ; as secondary-leader
 " Required before loading plugins!
 let g:mapleader="\<Space>"
-let g:maplocalleader=';'
+let g:maplocalleader=","
 " }
 
 " Paths and directories {

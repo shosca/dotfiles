@@ -85,3 +85,11 @@ bindkey '^N' history-substring-search-down
 if [ -f "${HOME}/.ssh/env" ]; then
 	source ${HOME}/.ssh/env
 fi
+
+source_sh() {
+  emulate -LR sh
+  . "$@"
+}
+
+source_sh ${HOME}/dotfiles/aliases
+
