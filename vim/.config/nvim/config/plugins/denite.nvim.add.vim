@@ -111,6 +111,7 @@ nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
 nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
 nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
 nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+nnoremap <silent><LocalLeader>z :<C-u>Denite -resume -cursor-pos=+1 -immediately<CR>
 
 xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
 
