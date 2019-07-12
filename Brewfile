@@ -6,7 +6,9 @@ cowsay
 ctop
 curl
 docker-compose
+entr
 findutils
+fswatch
 fzf
 gawk
 git
@@ -32,6 +34,7 @@ pyenv
 python@2
 ripgrep
 rsync
+stow
 terraform
 the_silver_searcher
 tmux
