@@ -23,19 +23,21 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 export GOPATH="${XDG_DATA_HOME}/go"
 
-export GEM_HOME="$XDG_DATA_HOME"/gem
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
+export GEM_HOME="${XDG_DATA_HOME}/gem"
+export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 
 export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
 export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
 export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
 export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
 
-export ZSH_AUTOSUGGEST_STRATEGY=(history)
-export PEW_DEFAULT_REQUIREMENTS="$DOTFILES/autoswitch_requires.txt"
-export DISABLE_PEW_AUTOACTIVATE="1"
+export ATOM_HOME="${XDG_DATA_HOME}/atom"
 
-export DISABLE_MAGIC_FUNCTIONS=true
+export AWS_SHARED_CREDENTIALS_FILE="${XDG_CONFIG_HOME}/aws/credentials"
+export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
+
+export CCACHE_CONFIGPATH="${XDG_CONFIG_HOME}/ccache.config"
+export CCACHE_DIR="${XDG_CACHE_HOME}/ccache"
 
 export PAGER='less'
 
@@ -55,12 +57,18 @@ less_opts=(
 export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(nproc)"
+
+export PYLINTHOME="${XDG_DATA_DIR}/pylint"
+export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"
 export PYTHONUSERBASE=${XDG_LOCAL}
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
+export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
+export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
+export PYTHON_EGG_CACHE="${XDG_CACHE_HOME}/python-eggs"
 
-export CARGO_HOME=${XDG_CONFIG_HOME}/cargo
+export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
 
-export NPM_CONFIG_USERCONFIG=${XDG_CONFIG_HOME}/npm/npmrc
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 export EDITOR=vim
 if type nvim >/dev/null; then
