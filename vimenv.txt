@@ -1,0 +1,4 @@
+neovim
+PyYAML
+ropevim
+pynvim

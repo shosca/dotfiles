@@ -7,28 +7,8 @@ RSYNCOPTS=--progress --recursive --links --times -D --delete -v
 CLEAN_TARGETS=$(shell grep ": out " Makefile | grep -v TARGET | cut -d ':' -f1)
 INSTALL_TARGETS=$(shell grep ": in " Makefile | grep -v TARGET | cut -d':' -f1)
 
-SYMS=\
-	ackrc \
-	ctags \
-	eslintrc \
-	gitconfig \
-	hgrc \
-	inputrc \
-	jshintrc \
-	profile \
-	psqlrc \
-	rspec \
-	rvmrc \
-	tmux.conf \
-	bashrc \
-	zshrc \
-	zprofile \
-	yaourtrc
 
-SYMCLEAN=$(addprefix clean-,$(SYMS))
-
-
-.PHONY: in out zsh/antigen.zsh $(INSTALL_TARGETS) $(CLEAN_TARGETS)
+.PHONY: $(MAKECMDGOALS)
 
 
 help:
@@ -40,21 +20,42 @@ in:  # this is a dummy target for installers
 out:  # this is a dummy target for cleaners
 
 
-zsh: in zshrc zprofile profile ## Sets up zsh {
+zsh: in aliases profile  ## Sets up zsh {
+	stow -R zsh
 
-clean-zsh: out clean-zshrc clean-zprofile ## remove zsh config
-	rm -rf $(HOME)/.antigen $(XDG_CACHE_HOME)/oh-my-zsh $(XDG_CONFIG_HOME)/zplug
+clean-zsh: out  ## remove zsh config
+	stow -D zsh
 
 # }
 
-bash: in bashrc ## install bash config {
+profile:  ## Sets up profile {
+	stow -R profile
+
+clean-profile:
+	stow -D profile
+
+# }
+
+aliases:  ## Sets up aliases {
+	stow -R aliases
+
+clean-aliases:
+	stow -D aliases
+
+# }
+
+bash: in aliases profile  ## install bash config {
+	stow -R bash
 
 clean-bash: clean-bashrc  ## remove bash config
+	stow -D bash
 
 # }
 
-tmux: in tpm tmux.conf  ## Install tmux {
+tmux: in  ## Install tmux {
+	stow -R tmux
 	mkdir -p $(HOME)/.tmux/plugins ; \
+	$(MAKE) tpm
 
 tpm:  ## Install tmux plugin manager
 	if [ ! -e $(HOME)/.tmux/plugins/tpm ]; then \
@@ -63,15 +64,14 @@ tpm:  ## Install tmux plugin manager
 		cd $(HOME)/.tmux/plugins/tpm && git pull ; \
 	fi
 
-clean-tmux: out clean-tmux.conf
-	rm -rf $(HOME)/.tmux/plugins ; \
+clean-tmux: out
+	stow -D tmux
+	rm -rf ~/.tmux
 
 # }
 
 vim: in vimenv2 vimenv3  ## install vim/neovim config {
-	rm -f $(XDG_CONFIG_HOME)/nvim $(HOME)/.vim
-	ln -s $(PWD) $(XDG_CONFIG_HOME)/nvim || true ; \
-	ln -s $(PWD) $(HOME)/.vim || true ; \
+	stow -R vim
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv
 VIMENV2=$(VIMENV)/neovim2
@@ -82,67 +82,133 @@ vimenv: vimenv2 vimenv3
 vimenv2:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
 	python3 -m virtualenv -p python2.7 $(VIMENV2)
-	$(VIMENV2)/bin/pip install -U neovim PyYAML ropevim pynvim
+	$(VIMENV2)/bin/pip install -U -r vimenv.txt
 
 vimenv3:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
 	python3 -m virtualenv -p python3 $(VIMENV3)
-	$(VIMENV3)/bin/pip install -U neovim PyYAML ropevim pynvim
+	$(VIMENV3)/bin/pip install -U -r vimenv.txt
 
 clean-vim: out ## remove vim/neovim config
+	stow -D vim
 	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim
 
 # }
 
 tilix: in ## install tilix configs {
-	ln -s $(PWD)/tilix $(XDG_CONFIG_HOME)/tilix || true
+	stow -R tilix
 
 clean-tilix: out
-	rm -rf $(XDG_CONFIG_HOME)/tilix
+	stow -D tilix
 
 # }
 
 python: in  ## install python/pdb config {
-	mkdir -p $(XDG_CONFIG_HOME)/python
-	ln -sf $(PWD)/python/pylintrc $(XDG_CONFIG_HOME)/pylintrc
-	ln -sf $(PWD)/python/pdbrc.py $(HOME)/.pdbrc.py
+	stow -R python
 
 python-user:  ## installs user packages
 	pip3 install --user -U -r user_requirements.txt
 
 clean-python: out  ## remove python/pdb config
-	rm -rf $(HOME)/.pdbrc $(HOME)/.pdbrc.py
+	stow -D python
 
 # }
 
 alacritty: in  ## install alacritty config {
-	mkdir -p $(XDG_CONFIG_HOME)/alacritty
-	ln -sf $(PWD)/alacritty.yml $(XDG_CONFIG_HOME)/alacritty/alacritty.yml
+	stow -R alacritty
 
 clean-alacritty: out  ## remove alacritty config
-	rm -f $(XDG_CONFIG_HOME)/alacritty/alacritty.yml
+	stow -D alacritty
 
 # }
 
 kitty: in  ## install kitty config {
-	mkdir -p $(XDG_CONFIG_HOME)/kitty
-	ln -sf $(PWD)/kitty.conf $(XDG_CONFIG_HOME)/kitty/kitty.conf
+	stow -R kitty
 
 clean-kitty: out  ## remove kitty config
-	rm -f $(XDG_CONFIG_HOME)/kitty/kitty.yml
+	stow -D kitty
 
 # }
 
 npm: in  ## install npm config {
-	mkdir -p $(XDG_CONFIG_HOME)/npm
-	ln -sf $(PWD)/npmrc $(XDG_CONFIG_HOME)/npm/npmrc
+	stow -R npm
+
+clean-npm: out
+	stow -D npm
+
 # }
 
-$(SYMS): in  ## install config {
-	ln -sf $(PWD)/$@ $(HOME)/.$@
+ctags: in  ## install ctags config {
+	stow -R ctags
 
-$(SYMCLEAN): clean-%:
-	rm -f $(HOME)/.$*
+clean-ctags: out
+	stow -D ctags
+
+# }
+
+eslint: in  ## install eslint config {
+	stow -R eslint
+
+clean-eslint: out
+	stow -D eslint
+
+# }
+
+hg: in  ## install hg config {
+	stow -R hg
+
+clean-hg: out
+	stow -D hg
+
+# }
+
+git: in  ## install git config {
+	stow -R git
+
+clean-git: out
+	stow -D git
+
+# }
+
+pacman: in  ## install pacman config {
+	stow -R pacman
+
+clean-pacman: out
+	stow -D pacman
+
+# }
+
+gem: in  ## install gem config {
+	stow -R gem
+
+clean-gem: out
+	stow -D gem
+
+# }
+
+input: in  ## install input config {
+	stow -R input
+
+clean-input: out
+	stow -D input
+
+# }
+
+pg: in  ## install postgres config {
+	stow -R pg
+	mkdir -p $(XDG_CONFIG_HOME)/pg $(XDG_CACHE_HOME)/pg
+
+clean-pg: out
+	stow -D pg
+	rm -rf $(XDG_CONFIG_HOME)/pg $(XDG_CACHE_HOME)/pg
+
+# }
+
+youtubedl: in  ## install youtube-dl config {
+	stow -R youtubedl
+
+clean-youtubedl: out
+	stow -D youtubedl
 
 # }
 
@@ -193,7 +259,7 @@ brew-update:  ## update brewfiles
 
 # }
 
-install: $(INSTALL_TARGETS) $(SYMS) ## installs all
+install: $(INSTALL_TARGETS)  ## installs all
 
 clean: $(CLEAN_TARGETS)  ## removes all
 

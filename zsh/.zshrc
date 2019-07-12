@@ -91,5 +91,5 @@ source_sh() {
   . "$@"
 }
 
-source_sh ${HOME}/dotfiles/aliases
+source_sh ${HOME}/.aliases
 

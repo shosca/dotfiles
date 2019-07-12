@@ -1,1 +1,7 @@
 pre-commit
+neovim
+ropevim
+pynvim
+pyyaml
+black
+importanize
