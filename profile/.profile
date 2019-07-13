@@ -1,4 +1,4 @@
-if type keychain >/dev/null 2>&1; then
+if [ -x "$(command -v keychain)" ]; then
   keychain $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
   [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
   [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
@@ -125,7 +125,7 @@ _extend_path() {
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"
 
-if type yarn >/dev/null 2>&1; then
+if [ -x "$(command -v yarn)" ]; then
   _extend_path "$(yarn global dir)/node_modules/.bin"
 fi
 
