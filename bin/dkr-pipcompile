@@ -1,7 +1,0 @@
-#!/bin/bash
-if [ $# -eq 0 ]; then
-  echo "Usage: dkr-pipcompile <command>"
-  exit 1
-fi
-docker pull docker.nhp.dt.local:2022/dt20/pipcompile:2
-docker run -it -v $(pwd):/www -v $(pwd)/pip.conf:/etc/pip.conf:ro -w /www docker.nhp.dt.local:2022/dt20/pipcompile:2 $@

@@ -1,9 +1,14 @@
 {
   "coc.preferences.colorSupport": true,
   "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "coffee",
     "css",
-    "markdown",
-    "json"
+    "json",
+    "Markdown"
   ],
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "diagnostic.checkCurrentLine": true,
@@ -108,7 +113,6 @@
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
   "suggest.noselect": false,
-  "suggest.snippetIndicator": "●",
   "suggest.timeout": 500,
   "suggest.triggerAfterInsertEnter": false,
   "suggest.triggerCompletionWait": 100

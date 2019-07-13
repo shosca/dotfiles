@@ -1,2 +1,0 @@
-#!/bin/bash
-dkr-db && dkr-run alembic

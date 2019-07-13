@@ -1,2 +1,7 @@
-setlocal makeprg=python\ -mjson.tool\ 2>&1\ %\ >\ /dev/null
-setlocal errorformat=%m:\ line\ %l\ column\ %c\ %.%#
+setlocal tabstop=2
+setlocal softtabstop=2
+setlocal shiftwidth=2
+setlocal textwidth=120
+setlocal expandtab
+setlocal smarttab
+setlocal formatprg=prettier
