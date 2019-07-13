@@ -1,12 +1,63 @@
+[app-folders]
+folder-children=['Utilities', 'YaST']
+
+[app-folders/folders/Utilities]
+apps=['eog.desktop', 'gnome-abrt.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gucharmap.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Calculator.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.Screenshot.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.tweaks.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
+categories=['X-GNOME-Utilities']
+name='X-GNOME-Utilities.directory'
+translate=true
+
+[app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
 [background]
-picture-uri='file:///home/serkan/Pictures/02335_alpsteinbeforerain_2560x1600.jpg'
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/serkan/Pictures/7jWBoem.jpg'
+primary-color='#000000000000'
+secondary-color='#000000000000'
 
 [input-sources]
 sources=[('xkb', 'us')]
-xkb-options=['caps:ctrl_modifier', 'shift:both_capslock']
+xkb-options=['caps:ctrl_modifier']
 
 [interface]
-icon-theme='EvoPop'
+cursor-theme='capitaine-cursors-light'
+document-font-name='Noto Sans 11'
+font-name='Noto Sans 11'
 gtk-im-module='gtk-im-context-simple'
-cursor-theme='Paper'
-gtk-theme='EvoPop'
+gtk-theme='macterial'
+icon-theme='McMojave-circle-blue'
+monospace-font-name='Hack Nerd Font 9'
+toolkit-accessibility=false
+
+[notifications]
+application-children=['gnome-power-panel', 'dbeaver', 'org-gnome-baobab', 'firefox', 'keybase']
+
+[notifications/application/dbeaver]
+application-id='dbeaver.desktop'
+
+[notifications/application/firefox]
+application-id='firefox.desktop'
+
+[notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[notifications/application/keybase]
+application-id='keybase.desktop'
+
+[notifications/application/org-gnome-baobab]
+application-id='org.gnome.baobab.desktop'
+
+[screensaver]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/serkan/Pictures/7jWBoem.jpg'
+primary-color='#000000000000'
+secondary-color='#000000000000'
+
+[wm/preferences]
+button-layout='close:appmenu'
+titlebar-font='Noto Sans Bold 11'

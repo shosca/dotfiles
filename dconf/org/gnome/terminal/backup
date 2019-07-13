@@ -1,0 +1,21 @@
+[legacy/profiles:]
+list=['72749745-1881-49eb-8d6d-0fb35283055b']
+
+[legacy/profiles:/:72749745-1881-49eb-8d6d-0fb35283055b]
+background-color='#282c34'
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+login-shell=true
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+scrollback-unlimited=true
+scrollbar-policy='never'
+text-blink-mode='focused'
+use-theme-background=false
+use-theme-colors=false
+visible-name='One Dark'
+
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(0,43,54)'
+foreground-color='rgb(131,148,150)'
+use-theme-colors=false

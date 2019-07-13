@@ -1,12 +1,28 @@
 [/]
-enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'sound-output-device-chooser@kgshank.net', 'unite@hardpixel.eu', 'multi-monitors-add-on@spin83', 'dash-to-dock@micxgx.gmail.com']
-favorite-apps=['org.gnome.Epiphany.desktop', 'org.gnome.Nautilus.desktop', 'firefox-nightly.desktop', 'Alacritty.desktop']
-
-[extensions/user-theme]
-name='EvoPop'
+enabled-extensions=['dash-to-dock@micxgx.gmail.com', 'drop-down-terminal-x@bigbn.pro', 'freon@UshakovVasilii_Github.yahoo.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'sound-output-device-chooser@kgshank.net', 'multi-monitors-add-on@spin83', 'appindicatorsupport@rgcjonas.gmail.com']
+favorite-apps=['org.gnome.Terminal.desktop', 'firefox-nightly.desktop', 'org.gnome.Epiphany.desktop', 'chromium.desktop', 'google-chrome.desktop', 'org.gnome.Nautilus.desktop']
 
 [extensions/dash-to-dock]
+dash-max-icon-size=32
 dock-position='BOTTOM'
+
+[extensions/freon]
+hot-sensors=['__average__', '__max__']
+
+[extensions/multi-monitors-add-on]
+available-indicators=@as []
+show-activities=false
+show-app-menu=false
+show-date-time=false
+show-panel=false
+show-thumbnails-slider=false
+thumbnails-on-left-side=false
+
+[extensions/user-theme]
+name='macterial'
+
+[extensions/workspaces-to-dock]
+dock-position='RIGHT'
 
 [overrides]
 workspaces-only-on-primary=false

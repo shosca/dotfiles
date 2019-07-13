@@ -1,5 +1,14 @@
-[plugins/xsettings]
-hinting='slight'
-
 [peripherals/keyboard]
 numlock-state='off'
+
+[plugins/color]
+night-light-enabled=true
+night-light-schedule-automatic=true
+night-light-temperature=uint32 4000
+
+[plugins/power]
+sleep-inactive-ac-type='nothing'
+
+[plugins/xsettings]
+antialiasing='rgba'
+hinting='medium'

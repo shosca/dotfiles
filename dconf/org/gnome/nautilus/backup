@@ -1,12 +1,11 @@
+[list-view]
+default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred', 'detailed_type']
+default-visible-columns=['name', 'size', 'date_modified', 'starred']
+
 [preferences]
 default-folder-viewer='list-view'
 search-filter-time-type='last_modified'
 
 [window-state]
+initial-size=(1066, 960)
 maximized=false
-initial-size=(1486, 927)
-
-[list-view]
-default-visible-columns=['name', 'size', 'date_modified', 'starred']
-use-tree-view=true
-default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred']

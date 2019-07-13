@@ -1,0 +1,95 @@
+[gexperts/Tilix]
+tab-position='top'
+terminal-title-style='small'
+theme-variant='dark'
+
+[gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+background-color='#282828'
+badge-color-set=false
+bold-color-set=false
+cursor-colors-set=false
+font='Hack 9'
+foreground-color='#EBDBB2'
+highlight-colors-set=false
+login-shell=true
+palette=['#282828', '#CC241D', '#98971A', '#D79921', '#458588', '#B16286', '#689D6A', '#A89984', '#928374', '#FB4934', '#B8BB26', '#FABD2F', '#83A598', '#D3869B', '#8EC07C', '#EBDBB2']
+use-system-font=false
+use-theme-colors=false
+visible-name='Default'
+
+[solus-project/budgie-panel]
+migration-level=1
+panels=['ce7d5956-3c4c-11e8-b9da-10c37b6b8003']
+
+[solus-project/budgie-panel/applets/{ce7e8cb8-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='start'
+name='Budgie Menu'
+position=0
+
+[solus-project/budgie-panel/applets/{ce82cac6-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='start'
+name='Spacer'
+position=1
+
+[solus-project/budgie-panel/applets/{ce82e2b8-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='start'
+name='Icon Task List'
+position=2
+
+[solus-project/budgie-panel/applets/{ce87835e-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Spacer'
+position=0
+
+[solus-project/budgie-panel/applets/{ce878d86-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='System Tray'
+position=1
+
+[solus-project/budgie-panel/applets/{ce881e68-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Notifications'
+position=2
+
+[solus-project/budgie-panel/applets/{ce883db2-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Status Indicator'
+position=3
+
+[solus-project/budgie-panel/applets/{ce893ece-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='User Indicator'
+position=4
+
+[solus-project/budgie-panel/applets/{ce8984ce-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Spacer'
+position=5
+
+[solus-project/budgie-panel/applets/{ce8991c6-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Separator'
+position=6
+
+[solus-project/budgie-panel/applets/{ce89aa3a-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Clock'
+position=7
+
+[solus-project/budgie-panel/applets/{ce89f12a-3c4c-11e8-b9da-10c37b6b8003}]
+alignment='end'
+name='Raven Trigger'
+position=8
+
+[solus-project/budgie-panel/instance/icon-tasklist/{ce82e2b8-3c4c-11e8-b9da-10c37b6b8003}]
+pinned-launchers=['org.gnome.Terminal.desktop']
+
+[solus-project/budgie-panel/panels/{ce7d5956-3c4c-11e8-b9da-10c37b6b8003}]
+applets=['ce82cac6-3c4c-11e8-b9da-10c37b6b8003', 'ce89f12a-3c4c-11e8-b9da-10c37b6b8003', 'ce878d86-3c4c-11e8-b9da-10c37b6b8003', 'ce8991c6-3c4c-11e8-b9da-10c37b6b8003', 'ce89aa3a-3c4c-11e8-b9da-10c37b6b8003', 'ce7e8cb8-3c4c-11e8-b9da-10c37b6b8003', 'ce883db2-3c4c-11e8-b9da-10c37b6b8003', 'ce893ece-3c4c-11e8-b9da-10c37b6b8003', 'ce87835e-3c4c-11e8-b9da-10c37b6b8003', 'ce881e68-3c4c-11e8-b9da-10c37b6b8003', 'ce82e2b8-3c4c-11e8-b9da-10c37b6b8003', 'ce8984ce-3c4c-11e8-b9da-10c37b6b8003']
+dock-mode=false
+location='top'
+size=39
+transparency='none'
+
+[solus-project/budgie-wm]
+caffeine-mode=false
