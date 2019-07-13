@@ -5,3 +5,6 @@ pynvim
 pyyaml
 black
 importanize
+pipenv
+poetry
+pew
