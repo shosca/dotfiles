@@ -71,8 +71,10 @@ export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 export EDITOR=vim
-if type nvim >/dev/null; then
+export WHICHVIM=vim
+if [ -x "$(command -v nvim)" ]; then
   export EDITOR=nvim
+  export WHICHVIM=nvim
   alias vim=nvim
 fi
 

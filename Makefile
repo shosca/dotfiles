@@ -214,17 +214,16 @@ clean-youtubedl: out
 
 # gnome stuff {
 GNOME_BACKUP_KEYS=\
-									"com" \
-									"org/gnome/terminal" \
-									"org/gnome/desktop" \
-									"org/gnome/shell" \
-									"org/gnome/mutter" \
-									"org/gnome/nautilus" \
-									"org/gnome/gnome-session" \
-									"org/gnome/settings-daemon"
+	"com" \
+	"org/gnome/terminal" \
+	"org/gnome/desktop" \
+	"org/gnome/shell" \
+	"org/gnome/mutter" \
+	"org/gnome/nautilus" \
+	"org/gnome/gnome-session" \
+	"org/gnome/settings-daemon"
 
-GNOME_BACKUP_PER_MACHINE=\
-												 "org/gnome/shell/favorite-apps"
+GNOME_BACKUP_PER_MACHINE="org/gnome/shell/favorite-apps"
 
 gnome-backup:
 	for g in $(GNOME_BACKUP_KEYS); do \
