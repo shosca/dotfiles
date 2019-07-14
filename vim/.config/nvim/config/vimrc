@@ -291,9 +291,9 @@ hi MatchParen cterm=bold term=bold
 set termguicolors
 let base16colorspace=256
 set background=dark
-let g:nord_comment_brightness = 1
-colorscheme onedark
-autocmd MyAutoCmd ColorScheme * colorscheme onedark
+let ayucolor="dark"
+colorscheme ayu
+autocmd MyAutoCmd ColorScheme * colorscheme ayu
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode

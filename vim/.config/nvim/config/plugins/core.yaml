@@ -146,6 +146,12 @@
 
 - repo: rafi/awesome-vim-colorschemes
 
+- repo: ayu-theme/ayu-vim
+
 - repo: vim-airline/vim-airline
+
+- repo: ayu-theme/ayu-vim-airline
+  hook_always:
+    let g:airline_theme='ayu'
 
 - repo: vim-airline/vim-airline-themes

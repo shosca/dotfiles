@@ -30,7 +30,7 @@ font-name='Noto Sans 11'
 gtk-im-module='gtk-im-context-simple'
 gtk-theme='macterial'
 icon-theme='McMojave-circle-blue'
-monospace-font-name='Hack Nerd Font 9'
+monospace-font-name='Hack Nerd Font 10'
 toolkit-accessibility=false
 
 [notifications]
