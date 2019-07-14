@@ -15,18 +15,32 @@ use-theme-colors=false
 visible-name='One Dark'
 
 [legacy/profiles:/:72749745-1881-49eb-8d6d-0fb35283055b]
-background-color='rgb(10,14,20)'
+background-color='rgb(15,20,25)'
 bold-color='#ABB2BF'
 bold-color-same-as-fg=true
-foreground-color='#abb2bf'
+foreground-color='rgb(230,225,207)'
 login-shell=true
-palette=['rgb(10,14,20)', 'rgb(240,113,120)', 'rgb(184,204,82)', 'rgb(255,180,84)', 'rgb(54,163,217)', 'rgb(163,122,204)', 'rgb(149,230,203)', 'rgb(92,103,115)', 'rgb(92,103,115)', 'rgb(240,113,120)', 'rgb(184,204,82)', 'rgb(255,180,84)', 'rgb(54,163,217)', 'rgb(163,122,204)', 'rgb(149,230,203)', 'rgb(230,225,207)']
+palette=['rgb(0,0,0)', 'rgb(243,74,74)', 'rgb(186,230,126)', 'rgb(255,238,153)', 'rgb(115,208,255)', 'rgb(212,191,255)', 'rgb(131,206,198)', 'rgb(92,103,115)', 'rgb(92,103,115)', 'rgb(255,51,51)', 'rgb(194,217,76)', 'rgb(231,197,71)', 'rgb(89,194,255)', 'rgb(183,126,224)', 'rgb(92,207,230)', 'rgb(242,242,242)']
 scrollback-unlimited=true
 scrollbar-policy='never'
 text-blink-mode='focused'
 use-theme-background=false
 use-theme-colors=false
-visible-name='Ayu'
+visible-name='Ayu (Dark)'
+
+[legacy/profiles:/:82749745-1881-49eb-8d6d-0fb35283055b]
+background-color='#282c34'
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+login-shell=true
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+scrollback-unlimited=true
+scrollbar-policy='never'
+text-blink-mode='focused'
+use-theme-background=false
+use-theme-colors=false
+visible-name='One Dark'
 
 [legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
 background-color='rgb(0,43,54)'
