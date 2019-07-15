@@ -15,10 +15,6 @@
   "diagnostic.errorSign": "•",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact",
-    "vue-html": "html"
-  },
   "eslint.autoFix": true,
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": [
@@ -82,6 +78,11 @@
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
   "python.linting.pylintEnabled": false,
+  "python.sortImports.args": [
+    "--style google"
+  ],
+  "python.sortImports.path": "zimports",
+  "python.venvPath": "~/.local/share/virtualenvs",
   "suggest.completionItemKindLabels": {
     "class": "",
     "color": "",
