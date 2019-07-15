@@ -16,6 +16,8 @@ alias tma='tmux attach -d -t'
 alias up='cd ..'
 alias e="$EDITOR"
 alias vim="$WHICHVIM"
+alias vimenv='make -C ~/dotfiles vimenv'
+alias rekey='keychain $(find ~/.ssh -iname "id_*" ! -name "*.pub")'
 alias awsedit="e $AWS_CONFIG_FILE"
 alias Syu='sudo reflector -c "United States" -a 1 -f 3 --sort rate --save /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist && sudo pacman -Syyu && cower --ignorerepo=router -u'
 alias pipupdate='pip install -U $(pip freeze | cut -d"=" -f1 | grep -v "git@")'
