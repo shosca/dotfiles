@@ -1,0 +1,11 @@
+
+- repo: Shougo/denite.nvim
+
+- repo: Shougo/neoyank.vim
+  on_event: TextYankPost
+  on_source: denite.nvim
+
+- repo: chemzqm/unite-location
+
+- repo: chemzqm/denite-git
+

@@ -19,16 +19,6 @@
 - repo: tpope/vim-dotenv
   on_cmd: Dotenv
 
-- repo: Shougo/denite.nvim
-
-- repo: Shougo/neoyank.vim
-  on_event: TextYankPost
-  on_source: denite.nvim
-
-- repo: chemzqm/unite-location
-
-- repo: chemzqm/denite-git
-
 - repo: scrooloose/nerdcommenter
 
 - repo: editorconfig/editorconfig-vim
@@ -51,33 +41,6 @@
 
 - repo: Shougo/context_filetype.vim
   lazy: 1
-
-- repo: majutsushi/tagbar
-  on_cmd: TagbarToggle
-  hook_source: |
-    let g:tagbar_width = 40
-    if executable('jsctags')
-      let g:tagbar_type_javascript = { 'ctagsbin': 'jsctags' }
-    endif
-  hook_always: |
-    noremap <silent> <F2> :TagbarToggle<CR>
-    let g:tagbar_iconchars = ['▷', '◢']
-
-# repo: w0rp/ale
-# hook_source: |
-#   let g:ale_linters_explicit = 1
-#   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-#   let g:ale_lint_on_insert_leave = 1
-#   let g:ale_lint_delay = 300
-#   let g:ale_set_loclist = 0
-#   let g:ale_set_quickfix = 1
-#   let g:ale_sign_error = '◤'
-#   let g:ale_sign_style_error = '◤'
-#   let g:ale_sign_warning = '◸'
-#   let g:ale_sign_style_warning = '◸'
-#   let g:ale_sign_info = '▷'
-#   nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-#   nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 - repo: machakann/vim-sandwich
 
@@ -138,20 +101,3 @@
   on_map:
     n: <Plug>
 
-- repo: jsfaint/gen_tags.vim
-  if: executable('ctags')
-  hook_always: |
-    let g:loaded_gentags#gtags=1
-    let g:gen_tags#ctags_auto_gen=1
-
-- repo: rafi/awesome-vim-colorschemes
-
-- repo: ayu-theme/ayu-vim
-
-- repo: vim-airline/vim-airline
-
-- repo: ayu-theme/ayu-vim-airline
-  hook_always:
-    let g:airline_theme='ayu'
-
-- repo: vim-airline/vim-airline-themes
