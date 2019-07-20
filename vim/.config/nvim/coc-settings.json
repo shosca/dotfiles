@@ -71,6 +71,8 @@
       ]
     }
   },
+  "list.autoResize": false,
+  "list.maxHeight": 15,
   "prettier.eslintIntegration": true,
   "prettier.statusItemText": "ⓟ ",
   "prettier.stylelintIntegration": true,
