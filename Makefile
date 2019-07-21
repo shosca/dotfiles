@@ -109,6 +109,9 @@ python: in  ## install python/pdb config {
 python-user:  ## installs user packages
 	pip3 install --user -U -r user_requirements.txt
 
+python-rebuild:  ## installs user packages
+	pip3 freeze | xargs -r pip uninstall -y
+
 clean-python: out  ## remove python/pdb config
 	stow -D python
 
