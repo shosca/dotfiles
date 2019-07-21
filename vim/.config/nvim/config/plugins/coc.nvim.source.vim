@@ -63,6 +63,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> <C-p> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-p> <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>d <Plug>(coc-definition)
 nmap <silent> <leader>K :call <SID>show_documentation()<CR>
 nmap <silent> <leader>n <Plug>(coc-references)

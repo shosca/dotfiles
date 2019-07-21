@@ -58,7 +58,7 @@ export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(nproc)"
 
-export PYLINTHOME="${XDG_DATA_DIR}/pylint"
+export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
 export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"
 export PYTHONUSERBASE=${XDG_LOCAL}
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE

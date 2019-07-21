@@ -77,14 +77,19 @@
   "prettier.statusItemText": "ⓟ ",
   "prettier.stylelintIntegration": true,
   "prettier.tslintIntegration": true,
+  "python.analysis.openFilesOnly": false,
+  "python.jediEnabled": false,
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
+  "python.linting.maxNumberOfProblems": 999999,
+  "python.linting.mypyEnabled": true,
   "python.linting.pylintEnabled": false,
   "python.sortImports.args": [
     "--style google"
   ],
   "python.sortImports.path": "zimports",
   "python.venvPath": "~/.local/share/virtualenvs",
+  "python.workspaceSymbols.enabled": true,
   "suggest.completionItemKindLabels": {
     "class": "",
     "color": "",
