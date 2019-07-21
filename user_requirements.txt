@@ -2,7 +2,7 @@ awscli
 awsebcli
 black
 importanize
-neovim
+pynvim
 pew
 pipenv
 poetry

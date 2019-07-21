@@ -1,5 +1,5 @@
 --no-binary :all:
 
-neovim
+pynvim
 pyyaml
 python-language-server[all]

@@ -1,4 +1,3 @@
-neovim
 PyYAML
 ropevim
 pynvim
