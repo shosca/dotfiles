@@ -89,6 +89,10 @@ vimenv3:  ## Sets python env for vim
 	python3 -m virtualenv -p python3 $(VIMENV3)
 	$(VIMENV3)/bin/pip install -U -r vimenv.txt
 
+vim-rebuild:
+	rm -rf $(VIMENV2) $(VIMENV3)
+	$(MAKE) vimenv
+
 clean-vim: out ## remove vim/neovim config
 	stow -D vim
 	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim
@@ -110,7 +114,9 @@ python-user:  ## installs user packages
 	pip3 install --user -U -r user_requirements.txt
 
 python-rebuild:  ## installs user packages
-	pip3 freeze | xargs -r pip uninstall -y
+	pip2 freeze | xargs -r pip2 uninstall -y
+	pip3 freeze | xargs -r pip3 uninstall -y
+	$(MAKE) python-user
 
 clean-python: out  ## remove python/pdb config
 	stow -D python
