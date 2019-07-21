@@ -4,11 +4,28 @@ if [ -x "$(command -v keychain)" ]; then
   [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
 
-# handle mac stupidity
-if [ -f /usr/libexec/path_helper ]; then
-  export PATH=""
-  source /etc/profile
+# Extend $PATH without duplicates
+_extend_path() {
+  if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
+    export PATH="$1:$PATH"
+  fi
+}
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # handle mac stupidity
+  if [ -f /usr/libexec/path_helper ]; then
+    export PATH=""
+    source /etc/profile
+  fi
+  for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
+    _extend_path "${_p}"
+  done
+
+  if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
+    export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+  fi
 fi
+
 # Locale
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -109,13 +126,6 @@ if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_te
   eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
-# Extend $PATH without duplicates
-_extend_path() {
-  if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
-    export PATH="$1:$PATH"
-  fi
-}
-
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
 [[ -d "GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
@@ -127,16 +137,6 @@ _extend_path() {
 
 if [ -x "$(command -v yarn)" ]; then
   _extend_path "$(yarn global dir)/node_modules/.bin"
-fi
-
-if [ -x "$(command -v gfind)" ]; then
-  for _p in $(gfind /usr/local/Cellar -type d -iname gnubin | sort); do
-    _extend_path "${_p}"
-  done
-fi
-
-if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
-	export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 fi
 
 source $DOTFILES/aliases
