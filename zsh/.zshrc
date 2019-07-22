@@ -93,4 +93,5 @@ source_sh() {
   . "$@"
 }
 
+alias resrc='source ~/.zshrc'
 source_sh ${HOME}/.aliases

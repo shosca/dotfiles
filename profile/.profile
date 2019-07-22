@@ -138,5 +138,3 @@ fi
 if [ -x "$(command -v yarn)" ]; then
   _extend_path "$(yarn global dir)/node_modules/.bin"
 fi
-
-source $DOTFILES/aliases

@@ -50,3 +50,4 @@ if [[ -d "$HOME/.local/share/bash-completion" ]]; then
 		source $f
 	done
 fi
+source_sh ${HOME}/.aliases
