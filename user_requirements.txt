@@ -1,6 +1,7 @@
 awscli
 awsebcli
 black
+cookiecutter
 importanize
 pynvim
 pew
