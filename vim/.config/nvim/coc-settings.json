@@ -8,8 +8,10 @@
     "coffee",
     "css",
     "json",
-    "Markdown"
+    "Markdown",
+    "python"
   ],
+  "coc.preferences.formatOnType": true,
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "•",
@@ -78,6 +80,7 @@
   "prettier.stylelintIntegration": true,
   "prettier.tslintIntegration": true,
   "python.analysis.openFilesOnly": false,
+  "python.formatting.provider": "black",
   "python.jediEnabled": false,
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
