@@ -1,9 +1,12 @@
 alacritty
+amethyst
 atom
+bitwarden
+chromedriver
 chromium
 dbeaver-community
-font-hack
 font-hack-nerd-font
+font-hack-nerd-font-mono
 gimp
 google-chrome
 insomnia
@@ -11,6 +14,7 @@ iterm2
 java
 karabiner-elements
 keybase
+pycharm-ce
 sensiblesidebuttons
 sublime-text
 vagrant

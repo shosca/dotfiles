@@ -1,6 +1,8 @@
+asciinema
 automake
 awscli
 bash
+cmake
 coreutils
 cowsay
 ctop
@@ -19,9 +21,12 @@ graphviz
 grep
 gzip
 htop
+jemalloc
 jq
 keychain
 libxmlsec1
+lua@5.1
+luarocks
 make
 moreutils
 mysql
@@ -32,11 +37,14 @@ pango
 postgresql
 pyenv
 python@2
+rename
 ripgrep
 rsync
 stow
+telnet
 terraform
 the_silver_searcher
+tmate
 tmux
 tree
 universal-ctags/universal-ctags/universal-ctags
