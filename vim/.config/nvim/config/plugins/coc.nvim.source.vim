@@ -69,6 +69,8 @@ nmap <silent> <leader>d <Plug>(coc-definition)
 nmap <silent> <leader>K :call <SID>show_documentation()<CR>
 nmap <silent> <leader>n <Plug>(coc-references)
 nmap <silent> <leader>r <Plug>(coc-rename)
+nmap <silent> <leader>f <Plug>(coc-format-selected)
+xmap <silent> <leader>f <Plug>(coc-format-selected)
 
 nmap <silent> gd :call <SID>GoToDefinition()<CR>
 nmap <silent> gD <Plug>(coc-declaration)
