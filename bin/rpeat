@@ -1,26 +1,31 @@
 #! /bin/bash
 
-WATCH_EVENTS=modify,close_write,moved_to,create
-
 if [ -z "$1" ]; then
   echo "rpeat <command to run over and over on file change>"
   exit 1
 fi
 
 if [ -x "$(command -v inotifywait)" ]; then
+  WATCH_EVENTS=modify,close_write,moved_to,create
   echo "Watching $(pwd) to run: $@"
   while true; do
     $@
     inotifywait -e $WATCH_EVENTS -r --exclude '.*(git|~)' . ;
   done
+elif [ -x "$(command -v fswatch)" ]; then
+  echo "Watching $(pwd) to run: $@"
+  $@
+  fswatch -0 . --exclude '.*(git|~)' | while read -d "" event; do
+    $@
+    sleep 1;
+  done
 elif [ -x "$(command -v entr)" ]; then
-  ag -l | entr "$@"
-  exit 0
-fi
-
-echo "Please install inotify-tools or entr"
-echo "If you using mac follow https://medium.com/mindful-technology/too-many-open-files-limit-ulimit-on-mac-os-x-add0f1bfddde"
+  while true; do
+    ag -l | entr -d "$@";
+    sleep 1;
+  done
+else
+  echo "Please install inotify-tools, fswatch or entr"
+  echo "If you're using mac follow https://medium.com/mindful-technology/too-many-open-files-limit-ulimit-on-mac-os-x-add0f1bfddde"
 exit 1
-
-
-
+fi
