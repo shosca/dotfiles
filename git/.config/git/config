@@ -12,6 +12,7 @@
   recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
   ci = commit
   co = checkout
+  clr = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
   d = difftool
   diffr = "!f() { git diff "$1"^.."$1"; }; f"
   dl = "!git ll -1"
@@ -69,7 +70,7 @@
 [branch]
   autosetuprebase = always
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
