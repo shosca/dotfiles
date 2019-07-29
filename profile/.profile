@@ -95,6 +95,15 @@ if [ -x "$(command -v nvim)" ]; then
   alias vim=nvim
 fi
 
+export WHICHRG=grep
+if [ -x "$(command -v rg)" ]; then
+  export WHICHRG=rg
+elif [ -x "$(command -v ag)" ]; then
+  export WHICHRG=ag
+elif [ -x "$(command -v ack)" ]; then
+  export WHICHRG=ack
+fi
+
 unset GREP_OPTIONS
 
 case "${TERM}" in
