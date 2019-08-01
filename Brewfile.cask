@@ -5,8 +5,11 @@ bitwarden
 chromedriver
 chromium
 dbeaver-community
+firefox
 font-hack-nerd-font
 font-hack-nerd-font-mono
+font-noto-sans
+font-noto-serif
 gimp
 google-chrome
 insomnia
@@ -14,6 +17,8 @@ iterm2
 java
 karabiner-elements
 keybase
+minikube
+phantomjs
 pycharm-ce
 sensiblesidebuttons
 sublime-text

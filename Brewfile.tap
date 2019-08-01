@@ -2,4 +2,7 @@ caskroom/cask
 homebrew/cask
 homebrew/cask-fonts
 homebrew/core
+homebrew/services
+koekeishiya/formulae
 universal-ctags/universal-ctags
+weaveworks/tap

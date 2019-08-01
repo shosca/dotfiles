@@ -13,6 +13,7 @@ findutils
 fswatch
 fzf
 gawk
+geckodriver
 git
 gnu-sed
 gnu-tar
@@ -24,6 +25,9 @@ htop
 jemalloc
 jq
 keychain
+koekeishiya/formulae/skhd
+koekeishiya/formulae/yabai
+kubernetes-helm
 libxmlsec1
 lua@5.1
 luarocks
@@ -48,6 +52,7 @@ tmate
 tmux
 tree
 universal-ctags/universal-ctags/universal-ctags
+weaveworks/tap/eksctl
 wget
 xml2
 yarn
