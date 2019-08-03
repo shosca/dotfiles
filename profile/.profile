@@ -20,6 +20,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
     _extend_path "${_p}"
   done
+  [[ -d /usr/local/opt/ruby/bin ]] && _extend_path /usr/local/opt/ruby/bin
 
   if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
     export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
