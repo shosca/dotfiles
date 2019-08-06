@@ -9,7 +9,6 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-lists',
       \ 'coc-marketplace',
-      \ 'coc-pairs',
       \ 'coc-prettier',
       \ 'coc-python',
       \ 'coc-snippets',
@@ -19,6 +18,7 @@ let g:coc_global_extensions = [
       \ 'coc-tsserver',
       \ 'coc-yank',
       \ ]
+      "\ 'coc-pairs',
 
 set hidden
 set signcolumn=yes
