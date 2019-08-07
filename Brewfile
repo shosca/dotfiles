@@ -9,6 +9,7 @@ ctop
 curl
 docker-compose
 entr
+ffmpeg
 findutils
 fswatch
 fzf
@@ -18,6 +19,8 @@ git
 gnu-sed
 gnu-tar
 gnu-which
+go
+gobject-introspection
 graphviz
 grep
 gzip
@@ -32,11 +35,13 @@ libxmlsec1
 lua@5.1
 luarocks
 make
+meson
 moreutils
 mysql
 neovim
 openssh
 openssl@1.1
+packer
 pango
 postgresql
 pyenv
@@ -47,6 +52,8 @@ rsync
 stow
 telnet
 terraform
+terraform_landscape
+terraformer
 the_silver_searcher
 tmate
 tmux

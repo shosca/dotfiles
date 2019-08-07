@@ -57,7 +57,7 @@ zplug "junegunn/fzf", use:"shell/*.zsh"
 zplug "pbar1/zsh-terraform"
 
 if [[ -d "$HOME/src/zsh-pew" ]]; then
-  zplug "$HOME/src/zsh-pew", from:local, use:"*"
+  zplug "$HOME/src/zsh-pew", from:local, use:"pew.plugin.zsh"
 else
   zplug "shosca/zsh-pew"
 fi

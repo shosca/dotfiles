@@ -2,12 +2,13 @@ awscli
 awsebcli
 black
 cookiecutter
+docker-compose
 importanize
-pynvim
-pew
+pew[pythonz]
 pipenv
 poetry
 pre-commit
+pynvim
 pynvim
 python-language-server[all]
 pyyaml
