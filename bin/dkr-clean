@@ -1,2 +1,2 @@
 #!/bin/bash
-docker ps -a | grep -vi "CONTAINER" | awk '{ print $1 }' | xargs -r docker rm -f
+docker ps -a --format "{{.ID}}" | xargs -r docker rm -f

@@ -1,2 +1,2 @@
 #!/bin/bash
-docker volume ls | grep -vi "VOLUME" | awk '{ print $2 }' | xargs -r docker volume rm -f
+docker volume ls --format "{{.Name}}" | xargs -r docker volume rm -f
