@@ -83,6 +83,8 @@ export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
 export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
 export PYTHON_EGG_CACHE="${XDG_CACHE_HOME}/python-eggs"
+export WORKON_HOME="${XDG_LOCAL}/share/virtualenvs"
+export PIP_VIRUTALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
 
 export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
 
