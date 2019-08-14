@@ -12,7 +12,8 @@
   recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
   ci = commit
   co = checkout
-  clr = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
+  clr = "!f() { git status -s | grep '??' | cut -d' ' -f2 | xargs -r rm -rf; }; f"
+  clearbranches = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
   d = difftool
   diffr = "!f() { git diff "$1"^.."$1"; }; f"
   dl = "!git ll -1"
