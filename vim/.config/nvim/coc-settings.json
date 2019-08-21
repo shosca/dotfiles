@@ -78,10 +78,6 @@
   "python.linting.maxNumberOfProblems": 999999,
   "python.linting.mypyEnabled": true,
   "python.linting.pylintEnabled": false,
-  "python.sortImports.args": [
-    "--style google"
-  ],
-  "python.sortImports.path": "zimports",
   "python.venvPath": "~/.local/share/virtualenvs",
   "python.workspaceSymbols.enabled": true,
   "suggest.completionItemKindLabels": {
