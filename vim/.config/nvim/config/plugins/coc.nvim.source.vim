@@ -9,6 +9,7 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-lists',
       \ 'coc-marketplace',
+      \ 'coc-omnisharp',
       \ 'coc-prettier',
       \ 'coc-python',
       \ 'coc-snippets',

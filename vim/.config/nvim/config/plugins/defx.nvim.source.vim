@@ -1,6 +1,6 @@
 call defx#custom#option('_', {
 	\ 'columns': 'icons:git:filename:type',
-	\ 'winwidth': 25,
+	\ 'winwidth': 30,
 	\ 'split': 'vertical',
 	\ 'direction': 'topleft',
 	\ })

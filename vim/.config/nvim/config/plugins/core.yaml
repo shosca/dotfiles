@@ -4,7 +4,7 @@
 - repo: Shougo/defx.nvim
   on_cmd: Defx
   hook_always: |
-    noremap <silent> <F3> :Defx -toggle<CR>
+    noremap <silent> <F3> :Defx -toggle -show-ignored-files<CR>
 
 - repo: kristijanhusak/defx-git
   on_source: defx.nvim

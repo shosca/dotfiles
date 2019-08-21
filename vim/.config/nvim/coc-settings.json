@@ -13,7 +13,7 @@
   ],
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "diagnostic.checkCurrentLine": true,
-  "diagnostic.errorSign": "•",
+  "diagnostic.errorSign": "●",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
   "eslint.autoFix": true,
@@ -61,19 +61,11 @@
         ".git/",
         ".hg/"
       ]
-    },
-    "omnisharp": {
-      "args": [
-        "-lsp"
-      ],
-      "command": "/opt/omnisharp-roslyn/OmniSharp.exe",
-      "filetypes": [
-        "cs"
-      ]
     }
   },
   "list.autoResize": false,
   "list.maxHeight": 15,
+  "omnisharp.useDotnet": false,
   "prettier.eslintIntegration": true,
   "prettier.statusItemText": "ⓟ ",
   "prettier.stylelintIntegration": true,
