@@ -284,7 +284,7 @@ unlet g:plugs
 " }
 
 " Theme and UI {
-set t_Co=256 " Enable 256 color term
+"set t_Co=256 " Enable 256 color term
 
 hi MatchParen cterm=bold term=bold
 
