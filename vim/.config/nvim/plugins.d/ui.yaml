@@ -7,6 +7,8 @@
 
 - repo: ayu-theme/ayu-vim
 
+- repo: cocopon/iceberg.vim
+
 - repo: vim-airline/vim-airline
 
 - repo: ayu-theme/ayu-vim-airline

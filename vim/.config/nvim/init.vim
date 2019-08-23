@@ -292,8 +292,8 @@ set termguicolors
 let base16colorspace=256
 set background=dark
 let ayucolor="dark"
-colorscheme ayu
-autocmd MyAutoCmd ColorScheme * colorscheme ayu
+colorscheme iceberg
+autocmd MyAutoCmd ColorScheme * colorscheme iceberg
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
