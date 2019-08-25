@@ -288,6 +288,9 @@ unlet g:plugs
 
 hi MatchParen cterm=bold term=bold
 
+if (has("nvim"))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
 set termguicolors
 let base16colorspace=256
 set background=dark
