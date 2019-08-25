@@ -1,5 +1,6 @@
 [legacy/profiles:]
-list=['72749745-1881-49eb-8d6d-0fb35283055b', '5f339b8a-dba0-4d15-93d5-2039450a65d0']
+default='8b249722-132f-48c5-8146-d78150a11ce9'
+list=['72749745-1881-49eb-8d6d-0fb35283055b', '5f339b8a-dba0-4d15-93d5-2039450a65d0', '8b249722-132f-48c5-8146-d78150a11ce9']
 
 [legacy/profiles:/:5f339b8a-dba0-4d15-93d5-2039450a65d0]
 background-color='#282c34'
@@ -15,12 +16,12 @@ use-theme-colors=false
 visible-name='One Dark'
 
 [legacy/profiles:/:72749745-1881-49eb-8d6d-0fb35283055b]
-background-color='rgb(15,20,25)'
+background-color='rgb(22,24,32)'
 bold-color='#ABB2BF'
 bold-color-same-as-fg=true
-foreground-color='rgb(230,225,207)'
+foreground-color='rgb(198,200,209)'
 login-shell=true
-palette=['rgb(0,0,0)', 'rgb(243,74,74)', 'rgb(186,230,126)', 'rgb(255,238,153)', 'rgb(115,208,255)', 'rgb(212,191,255)', 'rgb(131,206,198)', 'rgb(92,103,115)', 'rgb(92,103,115)', 'rgb(255,51,51)', 'rgb(194,217,76)', 'rgb(231,197,71)', 'rgb(89,194,255)', 'rgb(183,126,224)', 'rgb(92,207,230)', 'rgb(242,242,242)']
+palette=['rgb(68,75,113)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(227,164,121)', 'rgb(132,160,199)', 'rgb(160,147,200)', 'rgb(137,184,194)', 'rgb(130,133,150)', 'rgb(30,33,50)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(227,164,121)', 'rgb(132,160,199)', 'rgb(160,147,200)', 'rgb(137,184,194)', 'rgb(130,133,150)']
 scrollback-unlimited=true
 scrollbar-policy='never'
 text-blink-mode='focused'
@@ -41,6 +42,23 @@ text-blink-mode='focused'
 use-theme-background=false
 use-theme-colors=false
 visible-name='One Dark'
+
+[legacy/profiles:/:8b249722-132f-48c5-8146-d78150a11ce9]
+background-color='rgb(22,24,33)'
+bold-color='rgb(198,200,209)'
+bold-color-same-as-fg=true
+bold-is-bright=true
+cursor-background-color='rgb(22,24,33)'
+cursor-colors-set=false
+cursor-foreground-color='rgb(198,200,209)'
+foreground-color='rgb(198,200,209)'
+login-shell=true
+palette=['rgb(22,24,33)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(226,164,120)', 'rgb(132,160,198)', 'rgb(160,147,199)', 'rgb(137,184,194)', 'rgb(198,200,209)', 'rgb(107,112,137)', 'rgb(233,137,137)', 'rgb(192,202,142)', 'rgb(233,177,137)', 'rgb(145,172,209)', 'rgb(160,147,200)', 'rgb(149,196,206)', 'rgb(210,212,222)']
+scrollback-unlimited=true
+scrollbar-policy='never'
+text-blink-mode='focused'
+use-theme-colors=false
+visible-name='Iceberg'
 
 [legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
 background-color='rgb(0,43,54)'

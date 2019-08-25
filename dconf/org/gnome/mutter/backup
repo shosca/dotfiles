@@ -1,2 +1,6 @@
 [/]
-workspaces-only-on-primary=false
+edge-tiling=false
+workspaces-only-on-primary=true
+
+[wayland/keybindings]
+restore-shortcuts=['']

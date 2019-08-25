@@ -1,18 +1,19 @@
 [gexperts/Tilix]
+paste-advanced-default=false
 tab-position='top'
 terminal-title-style='small'
-theme-variant='dark'
+theme-variant='system'
 
 [gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
-background-color='#282828'
+background-color='#161618182020'
 badge-color-set=false
 bold-color-set=false
 cursor-colors-set=false
-font='Hack 9'
-foreground-color='#EBDBB2'
+font='Hack Nerd Font 10'
+foreground-color='#C6C6C8C8D1D1'
 highlight-colors-set=false
 login-shell=true
-palette=['#282828', '#CC241D', '#98971A', '#D79921', '#458588', '#B16286', '#689D6A', '#A89984', '#928374', '#FB4934', '#B8BB26', '#FABD2F', '#83A598', '#D3869B', '#8EC07C', '#EBDBB2']
+palette=['#161618182020', '#E2E277777777', '#B4B4BEBE8282', '#E3E3A4A47979', '#83839F9FC7C7', '#A0A09292C8C8', '#8888B8B8C2C2', '#828285859696', '#1E1E21213232', '#E2E277777777', '#B4B4BEBE8282', '#E3E3A4A47979', '#83839F9FC7C7', '#A0A09292C8C8', '#8888B8B8C2C2', '#828285859696']
 use-system-font=false
 use-theme-colors=false
 visible-name='Default'

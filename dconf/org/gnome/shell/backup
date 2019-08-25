@@ -1,6 +1,14 @@
 [/]
+command-history=['r']
 enabled-extensions=['dash-to-dock@micxgx.gmail.com', 'drop-down-terminal-x@bigbn.pro', 'freon@UshakovVasilii_Github.yahoo.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'sound-output-device-chooser@kgshank.net', 'multi-monitors-add-on@spin83', 'appindicatorsupport@rgcjonas.gmail.com']
-favorite-apps=['org.gnome.Terminal.desktop', 'firefox-nightly.desktop', 'org.gnome.Epiphany.desktop', 'chromium.desktop', 'google-chrome.desktop', 'org.gnome.Nautilus.desktop']
+favorite-apps=['alacritty.desktop', 'org.gnome.Terminal.desktop', 'firefox-nightly.desktop', 'org.gnome.Epiphany.desktop', 'chromium.desktop', 'google-chrome.desktop', 'org.gnome.Nautilus.desktop']
+
+[extensions/breezytile/layouts]
+gap=1
+ratio-value=0.45000000000000001
+screen-gap=0
+tween-time=0.19999999999999996
+use-screen-gap=false
 
 [extensions/dash-to-dock]
 dash-max-icon-size=32
@@ -24,5 +32,10 @@ name='macterial'
 [extensions/workspaces-to-dock]
 dock-position='RIGHT'
 
+[keybindings]
+toggle-application-view=['']
+toggle-overview=['']
+
 [overrides]
+edge-tiling=false
 workspaces-only-on-primary=false

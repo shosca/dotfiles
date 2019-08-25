@@ -34,7 +34,7 @@ monospace-font-name='Hack Nerd Font 10'
 toolkit-accessibility=false
 
 [notifications]
-application-children=['gnome-power-panel', 'dbeaver', 'org-gnome-baobab', 'firefox', 'keybase']
+application-children=['gnome-power-panel', 'dbeaver', 'org-gnome-baobab', 'firefox', 'keybase', 'org-gnome-nautilus', 'org-gnome-fileroller']
 
 [notifications/application/dbeaver]
 application-id='dbeaver.desktop'
@@ -50,6 +50,12 @@ application-id='keybase.desktop'
 
 [notifications/application/org-gnome-baobab]
 application-id='org.gnome.baobab.desktop'
+
+[notifications/application/org-gnome-fileroller]
+application-id='org.gnome.FileRoller.desktop'
+
+[notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
 
 [screensaver]
 color-shading-type='solid'

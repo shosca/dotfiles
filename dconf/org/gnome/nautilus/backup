@@ -7,5 +7,5 @@ default-folder-viewer='list-view'
 search-filter-time-type='last_modified'
 
 [window-state]
-initial-size=(1066, 960)
+initial-size=(1280, 1374)
 maximized=false

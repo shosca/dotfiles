@@ -186,18 +186,18 @@ colors:
     blue:    '0x84a0c7'
     magenta: '0xa093c8'
     cyan:    '0x89b8c2'
-    white:   '0x828596'
+    white:   '0xC6C8D1'
 
   # Bright colors
   bright:
     black:   '0x6b7089'
-    red:     '0xe27878'
-    green:   '0xb4be82'
-    yellow:  '0xe3a479'
-    blue:    '0x84a0c7'
-    magenta: '0xa093c8'
-    cyan:    '0x89b8c2'
-    white:   '0x828596'
+    red:     '0xE98989'
+    green:   '0xC0CA8E'
+    yellow:  '0xE9B189'
+    blue:    '0x91ACD1'
+    magenta: '0xA093C8'
+    cyan:    '0x95C4CE'
+    white:   '0xD2D4DE'
 
   indexed_colors: []
 
