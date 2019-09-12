@@ -87,6 +87,8 @@ nmap <silent> gk <Plug>(coc-git-prevchunk)
 nmap <silent> gs <Plug>(coc-git-chunkinfo)
 nmap <silent> gm <Plug>(coc-git-commit)
 
+nnoremap <silent><LocalLeader>f :<C-u>CocList files<CR>
+
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 inoremap <silent><expr> <c-space> coc#refresh()

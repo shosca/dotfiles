@@ -1,11 +1,2 @@
 #!/bin/bash
-if [ -z "$1" ]; then
-  echo "You're about to nuke all images, you sure? [y/N]"
-  read ans
-  if [[ "$ans" = "y" || "$ans" == "Y" ]]; then
-    docker images --format '{{.Repository}} {{.ID}}' | awk '{ print $2 }' | xargs -r docker rmi -f
-    exit 0
-  fi
-fi
-
-docker images --format '{{.Repository}} {{.ID}}' | grep -i "$1" | awk '{ print $3 }' | xargs -r docker rmi -f
+docker images --format '{{.Repository}} {{.ID}}' | awk '{ print $2 }' | xargs -r docker rmi -f
