@@ -1,6 +1,7 @@
 
-- repo: iamcco/markdown-preview.vim
+- repo: iamcco/markdown-preview.nvim
   on_ft: markdown
+  build: cd app && yarn install
 
 - repo: rhysd/vim-gfm-syntax
   on_ft: markdown
