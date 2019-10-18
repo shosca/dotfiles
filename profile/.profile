@@ -51,8 +51,8 @@ export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
 
 export ATOM_HOME="${XDG_DATA_HOME}/atom"
 
-export AWS_SHARED_CREDENTIALS_FILE="${XDG_CONFIG_HOME}/aws/credentials"
-export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="${HOME}/.ssh/aws/credentials"
+export AWS_CONFIG_FILE="${HOME}/.ssh/aws/config"
 export AWS_VAULT_BACKEND="file"
 export AWS_VAULT_PASS_PASSWORD_STORE_DIR="${XDG_CONFIG_HOME}/awsvault"
 

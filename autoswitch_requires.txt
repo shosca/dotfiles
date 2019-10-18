@@ -1,3 +1,6 @@
 pynvim
 pyyaml
 python-language-server[all]
+mypy
+flake8-bugbear
+flake8-comprehensions
