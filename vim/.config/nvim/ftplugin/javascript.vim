@@ -5,3 +5,5 @@ setlocal textwidth=120
 setlocal expandtab
 setlocal smarttab
 setlocal formatprg=prettier
+
+au FileType python nnoremap <leader>p odebugger;<Esc>
