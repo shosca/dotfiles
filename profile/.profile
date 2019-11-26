@@ -80,13 +80,17 @@ export MAKEFLAGS="-j$(nproc)"
 
 export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
 export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"
-export PYTHONUSERBASE=${XDG_LOCAL}
+if [ -x "$(command -v nvim)" ]; then
+  eval "$(pyenv init -)"
+fi
+export PYTHONUSERBASE=${XDG_LOCAL}/python
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
 export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
 export PYTHON_EGG_CACHE="${XDG_CACHE_HOME}/python-eggs"
 export WORKON_HOME="${XDG_LOCAL}/share/virtualenvs"
 export PIP_VIRUTALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
+export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
 
 export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
 

@@ -16,15 +16,8 @@
   "diagnostic.errorSign": "●",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
-  "eslint.autoFix": true,
-  "eslint.autoFixOnSave": true,
-  "eslint.filetypes": [
-    "javascript",
-    "javascript.jsx",
-    "javascriptreact"
-  ],
-  "git.addGlameToBufferVar": true,
-  "git.addGlameToVirtualText": true,
+  "git.addGBlameToBufferVar": true,
+  "git.addGBlameToVirtualText": true,
   "git.addedSign.hlGroup": "GitGutterAdd",
   "git.addedSign.text": "▎",
   "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
