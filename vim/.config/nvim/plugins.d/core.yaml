@@ -101,3 +101,6 @@
   on_map:
     n: <Plug>
 
+- repo: sheerun/vim-polyglot
+  hook_always: |
+    let g:polyglot_disabled = ['python']

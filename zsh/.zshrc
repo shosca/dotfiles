@@ -62,11 +62,6 @@ else
   zplug "shosca/zsh-pew"
 fi
 
-zplug "denysdovhan/spaceship-prompt", as:theme, use:"spaceship.zsh"
-
-# Dotfiles
-#zplug "$DOTFILES/zsh/lib/misc", from:local, if:"[[ -f $DOTFILES/zsh/lib ]]"
-
 # Custom local overridings
 zplug "$HOME/.zsh.local", from:local, use:"*", if:"[[ -d ~/.zsh.local ]]"
 
@@ -77,6 +72,7 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load
+eval "$(starship init zsh)"
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget

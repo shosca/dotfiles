@@ -20,11 +20,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
     _extend_path "${_p}"
   done
+  export PKG_CONFIG_PATH=""
+  for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
+    export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
+  done
   [[ -d /usr/local/opt/ruby/bin ]] && _extend_path /usr/local/opt/ruby/bin
 
   if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
     export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
   fi
+  export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
 fi
 
 # Locale
@@ -53,8 +58,6 @@ export ATOM_HOME="${XDG_DATA_HOME}/atom"
 
 export AWS_SHARED_CREDENTIALS_FILE="${HOME}/.ssh/aws/credentials"
 export AWS_CONFIG_FILE="${HOME}/.ssh/aws/config"
-export AWS_VAULT_BACKEND="file"
-export AWS_VAULT_PASS_PASSWORD_STORE_DIR="${XDG_CONFIG_HOME}/awsvault"
 
 export CCACHE_CONFIGPATH="${XDG_CONFIG_HOME}/ccache.config"
 export CCACHE_DIR="${XDG_CACHE_HOME}/ccache"
@@ -78,11 +81,9 @@ export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(nproc)"
 
+export ANSIBLE_NOCOWS=1
 export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
 export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"
-if [ -x "$(command -v nvim)" ]; then
-  eval "$(pyenv init -)"
-fi
 export PYTHONUSERBASE=${XDG_LOCAL}/python
 export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
 export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
@@ -147,7 +148,7 @@ fi
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
 [[ -d "GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
-[[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
+[[ -d "$XDG_LOCAL/python/bin" ]] && _extend_path "$XDG_LOCAL/python/bin"
 [[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
 

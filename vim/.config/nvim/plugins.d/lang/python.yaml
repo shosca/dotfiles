@@ -1,16 +1,10 @@
 
-- repo: vim-python/python-syntax
-  on_ft: python
-
-- repo: Vimjas/vim-python-pep8-indent
-  on_ft: python
-
-- repo: vim-scripts/python_match.vim
-  on_ft: python
-
 - repo: tmhedberg/SimpylFold
 
 - repo: Konfekt/FastFold
 
 - repo: raimon49/requirements.txt.vim
   on_ft: requirements
+
+- repo: numirias/semshi
+  on_ft: python
