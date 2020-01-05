@@ -23,13 +23,7 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
 	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-if [[ -f $HOME/dotfiles/git-prompt.sh ]]; then
-	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n\$ '
-else
-	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(__git_ps1 " (%s)") \n\$ '
-fi
-
-PROMPT_COMMAND='history -a; history -n'
+eval "$(starship init bash)"
 
 export HISTIGNORE="&:ls:[bf]g:exit:cd:ls"
 
@@ -50,4 +44,4 @@ if [[ -d "$HOME/.local/share/bash-completion" ]]; then
 		source $f
 	done
 fi
-source_sh ${HOME}/.aliases
+source ${HOME}/.aliases

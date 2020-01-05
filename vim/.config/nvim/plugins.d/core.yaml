@@ -1,4 +1,8 @@
 
+- repo: glacambre/firenvim
+  hook_post_update: |
+    call firenvim#install(0)
+
 - repo: wsdjeg/dein-ui.vim
 
 - repo: Shougo/defx.nvim
