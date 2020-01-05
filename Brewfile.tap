@@ -1,8 +1,8 @@
-caskroom/cask
 homebrew/cask
 homebrew/cask-fonts
+homebrew/cask-versions
 homebrew/core
-homebrew/services
 koekeishiya/formulae
 universal-ctags/universal-ctags
 weaveworks/tap
+xo/xo
