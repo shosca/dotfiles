@@ -2,6 +2,19 @@ if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug
 fi
 
+if [ ! -e ~/.bash-my-aws ]; then
+  git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
+fi
+export PATH="$PATH:$HOME/.bash-my-aws/bin"
+source ~/.bash-my-aws/aliases
+
+# For ZSH users, uncomment the following two lines:
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
+source ~/.bash-my-aws/bash_completion.sh
+
+
 # Source zplug manager (https://github.com/zplug/zplug)
 source ${XDG_CACHE_HOME}/zplug/init.zsh
 
