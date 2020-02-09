@@ -74,23 +74,15 @@ vim: in vimenv2 vimenv3  ## install vim/neovim config {
 	stow -R vim
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv
-VIMENV2=$(VIMENV)/neovim2
 VIMENV3=$(VIMENV)/neovim3
 
-vimenv: vimenv2 vimenv3
-
-vimenv2:  ## Sets python env for vim
-	mkdir -p $(VIMENV)
-	python3 -m virtualenv -p python2.7 $(VIMENV2)
-	$(VIMENV2)/bin/pip install -U -r vimenv.txt
-
-vimenv3:  ## Sets python env for vim
+vimenv:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
 	python3 -m virtualenv -p python3 $(VIMENV3)
 	$(VIMENV3)/bin/pip install -U -r vimenv.txt
 
 vim-rebuild:
-	rm -rf $(VIMENV2) $(VIMENV3)
+	rm -rf $(VIMENV)
 	$(MAKE) vimenv
 
 clean-vim: out ## remove vim/neovim config
@@ -114,7 +106,6 @@ python-user:  ## installs user packages
 	pip3 install --user -U -r user_requirements.txt
 
 python-rebuild:  ## installs user packages
-	pip2 freeze | xargs -r pip2 uninstall -y
 	pip3 freeze | xargs -r pip3 uninstall -y
 	$(MAKE) python-user
 
