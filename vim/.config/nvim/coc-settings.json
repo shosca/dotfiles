@@ -30,6 +30,9 @@
   "git.topRemovedSign.hlGroup": "GitGutterDelete",
   "git.topRemovedSign.text": "▔",
   "git.virtualTextPrefix": " ❯❯❯ ",
+  "highlight.disableLanguages": [
+    "python"
+  ],
   "languageserver": {
     "bash": {
       "args": [
