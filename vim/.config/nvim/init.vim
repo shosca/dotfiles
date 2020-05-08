@@ -27,7 +27,7 @@ call mkdir(expand('$VARPATH/view'), 'p')
 " Ensure custom spelling directory
 call mkdir(expand('$VIMPATH/nvim/spell'), 'p')
 
-set undofile swapfile nobackup
+set undofile swapfile
 set directory=$VARPATH/swap/,$VARPATH,~/tmp,/var/tmp,/tmp
 set undodir=$VARPATH/undo/,$VARPATH,~/tmp,/var/tmp,/tmp
 set backupdir=$VARPATH/backup/,$VARPATH,~/tmp,/var/tmp,/tmp
@@ -532,3 +532,5 @@ if s:is_sudo
     set viminfo="NONE"
   endif
 endif
+
+let loaded_netrwPlugin = 1

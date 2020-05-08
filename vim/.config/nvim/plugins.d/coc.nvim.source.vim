@@ -2,6 +2,7 @@ let g:coc_global_extensions = [
       \ 'coc-calc',
       \ 'coc-dictionary',
       \ 'coc-emoji',
+      \ 'coc-explorer',
       \ 'coc-git',
       \ 'coc-highlight',
       \ 'coc-html',
@@ -9,7 +10,6 @@ let g:coc_global_extensions = [
       \ 'coc-lists',
       \ 'coc-marketplace',
       \ 'coc-omnisharp',
-      \ 'coc-prettier',
       \ 'coc-python',
       \ 'coc-snippets',
       \ 'coc-syntax',
@@ -60,6 +60,8 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 inoremap <silent><expr> <c-space> coc#refresh()
+noremap <silent> <F3> :CocCommand explorer<CR>
+noremap <silent> <leader>f :CocCommand explorer --preset floating<CR>
 
 "nmap <silent> [c <Plug>(coc-diagnostic-prev)
 "nmap <silent> ]c <Plug>(coc-diagnostic-next)

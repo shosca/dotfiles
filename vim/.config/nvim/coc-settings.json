@@ -16,6 +16,13 @@
   "diagnostic.errorSign": "●",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": true,
+  "explorer.keyMappings": {
+    "<cr>": ["expandable?", "expand", "open"],
+    "v": "open:vsplit",
+  },
+  "explorer.position": "floating",
   "git.addGBlameToBufferVar": true,
   "git.addGBlameToVirtualText": true,
   "git.addedSign.hlGroup": "GitGutterAdd",
@@ -74,6 +81,7 @@
   "python.linting.maxNumberOfProblems": 999999,
   "python.linting.mypyEnabled": true,
   "python.linting.pylintEnabled": false,
+  "python.sortImports.path": "zimports",
   "python.venvPath": "~/.local/share/virtualenvs",
   "python.workspaceSymbols.enabled": true,
   "suggest.completionItemKindLabels": {

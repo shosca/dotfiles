@@ -1,6 +1,6 @@
 pynvim
 pyyaml
-python-language-server[all]
+jedi
 mypy
 flake8-bugbear
 flake8-comprehensions

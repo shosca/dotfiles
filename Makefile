@@ -70,7 +70,7 @@ clean-tmux: out
 
 # }
 
-vim: in vimenv2 vimenv3  ## install vim/neovim config {
+vim: in vimenv  ## install vim/neovim config {
 	stow -R vim
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv

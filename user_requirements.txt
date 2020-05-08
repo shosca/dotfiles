@@ -10,7 +10,7 @@ poetry
 pre-commit
 pynvim
 pynvim
-python-language-server[all]
+jedi
 pyyaml
 ropevim
 zimports
