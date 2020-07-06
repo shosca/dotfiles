@@ -1,4 +1,4 @@
-# vim: set noet foldmarker={,} foldlevel=0 foldmethod=marker spell:
+# vim: set noet spell:
 PWD=$(shell pwd)
 XDG_CACHE_HOME ?= $(HOME)/.cache
 XDG_CONFIG_HOME ?= $(HOME)/.config
@@ -103,6 +103,8 @@ python: in  ## install python/pdb config {
 	stow -R python
 
 python-user:  ## installs user packages
+	pip3 install --user https://github.com/boto/botocore/archive/v2.tar.gz
+	pip3 install --user https://github.com/aws/aws-cli/archive/v2.tar.gz
 	pip3 install --user -U -r user_requirements.txt
 
 python-rebuild:  ## installs user packages

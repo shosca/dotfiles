@@ -5,3 +5,15 @@
 
 - repo: hotwatermorning/auto-git-diff
   on_ft: gitrebase
+
+- repo: tpope/vim-fugitive
+  on_cmd: [ G, Git, Gfetch, Gpush, Glog, Gclog, Gdiffsplit, GBrowse ]
+  hook_source:
+    augroup user_fugitive_plugin
+      autocmd!
+      autocmd FileType fugitiveblame normal A
+    augroup END
+
+- repo: tpope/vim-rhubarb
+  depends_on: tpope/vim-fugitive
+  on_cmd: [ GBrowse ]

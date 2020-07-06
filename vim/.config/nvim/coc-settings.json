@@ -1,28 +1,34 @@
 {
   "coc.preferences.colorSupport": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
     "coffee",
     "css",
+    "graphql",
+    "javascript",
+    "javascriptreact",
     "json",
-    "Markdown",
-    "python"
+    "markdown",
+    "python",
+    "typescript",
+    "typescriptreact"
   ],
+  "coc.preferences.hoverTarget": "float",
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "●",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
   "explorer.icon.enableNerdfont": true,
-  "explorer.previewAction.onHover": true,
   "explorer.keyMappings": {
-    "<cr>": ["expandable?", "expand", "open"],
-    "v": "open:vsplit",
+    "<cr>": [
+      "expandable?",
+      "expand",
+      "open"
+    ],
+    "v": "open:vsplit"
   },
   "explorer.position": "floating",
+  "explorer.previewAction.onHover": true,
   "git.addGBlameToBufferVar": true,
   "git.addGBlameToVirtualText": true,
   "git.addedSign.hlGroup": "GitGutterAdd",
@@ -40,6 +46,9 @@
   "highlight.disableLanguages": [
     "python"
   ],
+  "html.autoClosingTags": true,
+  "html.enable": true,
+  "html.format.enable": true,
   "languageserver": {
     "bash": {
       "args": [
@@ -64,6 +73,13 @@
         ".git/",
         ".hg/"
       ]
+    },
+    "terraform": {
+      "command": "terraform-lsp",
+      "filetypes": [
+        "terraform"
+      ],
+      "initializationOptions": {}
     }
   },
   "list.autoResize": false,
@@ -75,7 +91,7 @@
   "prettier.tslintIntegration": true,
   "python.analysis.openFilesOnly": false,
   "python.formatting.provider": "black",
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
   "python.linting.maxNumberOfProblems": 999999,

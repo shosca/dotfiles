@@ -1,7 +1,11 @@
 let g:coc_global_extensions = [
+      \ 'coc-actions',
       \ 'coc-calc',
+      \ 'coc-css',
+      \ 'coc-cssmodules',
       \ 'coc-dictionary',
       \ 'coc-emoji',
+      \ 'coc-eslint',
       \ 'coc-explorer',
       \ 'coc-git',
       \ 'coc-highlight',
@@ -10,12 +14,16 @@ let g:coc_global_extensions = [
       \ 'coc-lists',
       \ 'coc-marketplace',
       \ 'coc-omnisharp',
+      \ 'coc-prettier',
       \ 'coc-python',
+      \ 'coc-rls',
       \ 'coc-snippets',
       \ 'coc-syntax',
       \ 'coc-tag',
       \ 'coc-tslint-plugin',
       \ 'coc-tsserver',
+      \ 'coc-vimlsp',
+      \ 'coc-yaml',
       \ 'coc-yank',
       \ ]
       "\ 'coc-pairs',
@@ -68,7 +76,7 @@ noremap <silent> <leader>f :CocCommand explorer --preset floating<CR>
 "nmap <silent> <C-p> <Plug>(coc-diagnostic-prev)
 "nmap <silent> <C-p> <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>d <Plug>(coc-definition)
-nmap <silent> <leader>K :call <SID>show_documentation()<CR>
+nmap <silent> <leader>h :call <SID>show_documentation()<CR>
 nmap <silent> <leader>n <Plug>(coc-references)
 nmap <silent> <leader>r <Plug>(coc-rename)
 nmap <silent> <leader>f <Plug>(coc-format-selected)
@@ -96,3 +104,5 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+

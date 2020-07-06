@@ -37,11 +37,11 @@ augroup filetypedetect
 augroup END
 
 " Reload vim config automatically {
-"execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
+"execute 'autocmd user_events BufWritePost '.$VIMPATH.'/config/*,vimrc nested'
 "      \ .' source $MYVIMRC | redraw | silent doautocmd ColorScheme'
 " }
 
-augroup MyAutoCmd " {
+augroup user_events " {
 
   " Highlight current line only on focused window
   "autocmd WinEnter,InsertLeave * set cursorline

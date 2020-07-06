@@ -11,7 +11,7 @@ call defx#custom#column('mark', {
 	\ 'selected_icon': '✓',
 	\ })
 
-autocmd MyAutoCmd FileType defx call s:defx_my_settings()
+autocmd user_events FileType defx call s:defx_my_settings()
 
 function! s:defx_my_settings() abort
 	" Define mappings

@@ -3,6 +3,11 @@ if &compatible
   set nocompatible
 endif
 
+" Set custom augroup
+augroup user_events
+	autocmd!
+augroup END
+
 " Constants
 let s:is_sudo = $SUDO_USER !=# '' && $USER !=# $SUDO_USER
 
@@ -17,6 +22,7 @@ let g:maplocalleader=","
 " Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+
 
 " Create missing dirs i.e. cache/{undo,backup}
 call mkdir(expand('$VARPATH/undo'), 'p')
@@ -66,7 +72,7 @@ endif
 if has('vim_starting')
 
   " Write history on idle
-  augroup MyAutoCmd
+  augroup user_events
     autocmd CursorHold * if exists(':rshada') | rshada | wshada | endif
   augroup END
 
@@ -292,7 +298,7 @@ let base16colorspace=256
 set background=dark
 let ayucolor="dark"
 colorscheme iceberg
-autocmd MyAutoCmd ColorScheme * colorscheme iceberg
+autocmd user_events ColorScheme * colorscheme iceberg
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
@@ -469,13 +475,13 @@ endif
 
 " - Folds {
 " FastFold https://github.com/Shougo/shougo-s-github
-autocmd MyAutoCmd TextChangedI,TextChanged *
+autocmd user_events TextChangedI,TextChanged *
   \ if &l:foldenable && &l:foldmethod !=# 'manual' |
   \   let b:foldmethod_save = &l:foldmethod |
   \   let &l:foldmethod = 'manual' |
   \ endif
 
-autocmd MyAutoCmd BufWritePost *
+autocmd user_events BufWritePost *
   \ if &l:foldmethod ==# 'manual' && exists('b:foldmethod_save') |
   \   let &l:foldmethod = b:foldmethod_save |
   \   execute 'normal! zx' |

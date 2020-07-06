@@ -93,7 +93,8 @@ export WORKON_HOME="${XDG_LOCAL}/share/virtualenvs"
 export PIP_VIRUTALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
 export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
 
-export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
+export CARGO_HOME="${XDG_LOCAL}/cargo"
+export RUSTUP_HOME="${XDG_LOCAL}/rustup"
 
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
@@ -151,6 +152,7 @@ fi
 [[ -d "$XDG_LOCAL/python/bin" ]] && _extend_path "$XDG_LOCAL/python/bin"
 [[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
+[[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
 
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"

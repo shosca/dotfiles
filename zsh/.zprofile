@@ -9,3 +9,5 @@ export PEW_DEFAULT_REQUIREMENTS="${DOTFILES}/autoswitch_requires.txt"
 export DISABLE_PEW_AUTOACTIVATE="1"
 
 . ${HOME}/.profile
+
+export PATH="/home/serkan/.local/cargo/bin:$PATH"

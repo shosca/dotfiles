@@ -35,6 +35,7 @@ zplug "lib/*", from:oh-my-zsh
 zplug "plugins/archlinux", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/brew", from:oh-my-zsh
+zplug "plugins/cargo", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "plugins/django", from:oh-my-zsh
 zplug "plugins/docker", from:oh-my-zsh
@@ -85,6 +86,9 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 eval "$(starship init zsh)"
+if [ -x "$(command -v awless)" ]; then
+  source <(awless completion zsh)
+fi
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
