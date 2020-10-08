@@ -15,5 +15,5 @@
     augroup END
 
 - repo: tpope/vim-rhubarb
-  depends_on: tpope/vim-fugitive
+  depends: tpope/vim-fugitive
   on_cmd: [ GBrowse ]

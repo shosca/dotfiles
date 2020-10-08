@@ -30,6 +30,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
   fi
   export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
+  export XDG_RUNTIME_DIR="${TMPDIR}"
+else
+  export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 fi
 
 # Locale
@@ -43,7 +46,6 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_LOCAL="${XDG_LOCAL:-$HOME/.local}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 export GOPATH="${XDG_DATA_HOME}/go"
 
 export GEM_HOME="${XDG_DATA_HOME}/gem"

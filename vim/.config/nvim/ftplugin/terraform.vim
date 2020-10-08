@@ -4,3 +4,5 @@ setlocal shiftwidth=2
 setlocal textwidth=120
 setlocal expandtab
 setlocal smarttab
+setlocal foldmethod=marker
+setlocal foldmarker={,}

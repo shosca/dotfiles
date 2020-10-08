@@ -1,7 +1,7 @@
 
 - repo: artur-shaik/vim-javacomplete2
   on_ft: java
-  hook_source: |
+  hook_add: |
     augroup javacomplete
       au!
       autocmd FileType java setlocal omnifunc=javacomplete#Complete

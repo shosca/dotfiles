@@ -11,3 +11,6 @@ export DISABLE_PEW_AUTOACTIVATE="1"
 . ${HOME}/.profile
 
 export PATH="/home/serkan/.local/cargo/bin:$PATH"
+
+# Created by `userpath` on 2020-09-18 19:49:19
+export PATH="$PATH:/home/serkan/.local/bin"

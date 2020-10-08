@@ -22,3 +22,6 @@
 
 - repo: AndrewRadev/linediff.vim
   on_cmd: Linediff
+
+- repo: chrisbra/Colorizer
+  on_cmd: ColorHighlight
