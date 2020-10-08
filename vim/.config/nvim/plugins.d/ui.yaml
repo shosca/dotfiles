@@ -16,3 +16,5 @@
     let g:airline_theme='ayu'
 
 - repo: vim-airline/vim-airline-themes
+
+- repo: nvim-treesitter/nvim-treesitter
