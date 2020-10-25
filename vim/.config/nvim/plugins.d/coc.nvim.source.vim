@@ -7,7 +7,6 @@ let g:coc_global_extensions = [
       \ 'coc-emoji',
       \ 'coc-eslint',
       \ 'coc-explorer',
-      \ 'coc-git',
       \ 'coc-highlight',
       \ 'coc-html',
       \ 'coc-json',
@@ -91,10 +90,6 @@ nmap <silent> gn <Plug>(coc-rename)
 nmap <silent> ge <Plug>(coc-diagnostic-next)
 nmap <silent> gx <Plug>(coc-fix-current)
 nmap <silent> ga <Plug>(coc-codeaction)
-nmap <silent> gj <Plug>(coc-git-nextchunk)
-nmap <silent> gk <Plug>(coc-git-prevchunk)
-nmap <silent> gs <Plug>(coc-git-chunkinfo)
-nmap <silent> gm <Plug>(coc-git-commit)
 
 nnoremap <silent><LocalLeader>f :<C-u>CocList files<CR>
 

@@ -74,12 +74,11 @@ vim: in vimenv  ## install vim/neovim config {
 	stow -R vim
 
 VIMENV=$(XDG_CACHE_HOME)/vim/venv
-VIMENV3=$(VIMENV)/neovim3
 
 vimenv:  ## Sets python env for vim
 	mkdir -p $(VIMENV)
-	python3 -m virtualenv -p python3 $(VIMENV3)
-	$(VIMENV3)/bin/pip install -U -r vimenv.txt
+	python3 -m virtualenv -p python3 $(VIMENV)
+	$(VIMENV)/bin/pip install -U -r vimenv.txt
 
 vim-rebuild:
 	rm -rf $(VIMENV)

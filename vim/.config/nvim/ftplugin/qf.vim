@@ -19,8 +19,6 @@ setlocal nolist
 setlocal cursorline
 setlocal nobuflisted
 
-wincmd J
-
 nnoremap <buffer> <CR> <CR><C-w>p
 nnoremap <buffer> sv <C-w><CR>
 nnoremap <buffer> sg <C-w><Enter><C-w>L
@@ -35,21 +33,5 @@ if b:qf_isLoc == 1
 else
   nnoremap <buffer> O <CR>:cclose<CR>
 endif
-
-function! s:preview_file()
-  let winwidth = &columns
-  let cur_list = b:qf_isLoc == 1 ? getloclist('.') : getqflist()
-  let cur_line = getline(line('.'))
-  let cur_file = fnameescape(substitute(cur_line, '|.*$', '', ''))
-  if cur_line =~# '|\d\+'
-    let cur_pos  = substitute(cur_line, '^\(.\{-}|\)\(\d\+\)\(.*\)', '\2', '')
-    execute 'vertical pedit! +'.cur_pos.' '.cur_file
-  else
-    execute 'vertical pedit! '.cur_file
-  endif
-  wincmd P
-  execute 'vert resize '.(winwidth / 2)
-  wincmd p
-endfunction
 
 let &cpoptions = s:save_cpo
