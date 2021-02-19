@@ -19,7 +19,7 @@
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
   "explorer.icon.enableNerdfont": true,
-  "explorer.keyMappings": {
+  "explorer.keyMappings.global": {
     "<cr>": [
       "expandable?",
       "expand",
@@ -28,7 +28,7 @@
     "v": "open:vsplit"
   },
   "explorer.position": "floating",
-  "explorer.previewAction.onHover": true,
+  "explorer.previewAction.onHover": "labeling",
   "git.addGBlameToBufferVar": true,
   "git.addGBlameToVirtualText": true,
   "git.addedSign.hlGroup": "GitGutterAdd",
@@ -82,16 +82,11 @@
       "initializationOptions": {}
     }
   },
-  "list.autoResize": false,
-  "list.maxHeight": 15,
-  "omnisharp.useDotnet": false,
   "prettier.eslintIntegration": true,
   "prettier.statusItemText": "ⓟ ",
   "prettier.stylelintIntegration": true,
   "prettier.tslintIntegration": true,
-  "python.analysis.openFilesOnly": false,
   "python.formatting.provider": "black",
-  "python.jediEnabled": false,
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
   "python.linting.maxNumberOfProblems": 999999,
@@ -99,7 +94,6 @@
   "python.linting.pylintEnabled": false,
   "python.sortImports.path": "zimports",
   "python.venvPath": "~/.local/share/virtualenvs",
-  "python.workspaceSymbols.enabled": true,
   "suggest.completionItemKindLabels": {
     "class": "",
     "color": "",

@@ -11,7 +11,6 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead *.feature,*.story        setfiletype cucumber
   autocmd BufNewFile,BufRead *.j2                     setfiletype jinja
   autocmd BufNewFile,BufRead *.js.map                 setfiletype json
-  autocmd BufNewFile,BufRead *.lock                   setfiletype json
   autocmd BufNewFile,BufRead *.postman_collection     setfiletype json
   autocmd BufNewFile,BufRead *.{feature,story}        setfiletype cucumber
   autocmd BufNewFile,BufRead */.kube/config           setfiletype yaml
@@ -33,6 +32,7 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead Tmuxfile,tmux/config     setfiletype tmux
   autocmd BufNewFile,BufRead Tmuxfile,tmux/config     setfiletype tmux
   autocmd BufNewFile,BufRead yarn.lock                setfiletype yaml
+  autocmd BufNewFile,BufRead poetry.lock              setfiletype toml
 
 augroup END
 

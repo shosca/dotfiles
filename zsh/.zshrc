@@ -1,3 +1,9 @@
+mkdir -p ~/.zfunc
+
+fpath+=~/.zfunc
+
+[ -x "$(command -v pew)" ] && poetry completions zsh > ~/.zfunc/_poetry
+
 if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug
 fi
@@ -43,7 +49,6 @@ zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/extract", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/github", from:oh-my-zsh
-zplug "plugins/go", from:oh-my-zsh
 zplug "plugins/golang", from:oh-my-zsh
 zplug "plugins/helm", from:oh-my-zsh
 zplug "plugins/kubectl", from:oh-my-zsh

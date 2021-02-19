@@ -35,6 +35,7 @@ else
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 fi
 
+export MOZ_ENABLE_WAYLAND=1
 # Locale
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

@@ -18,3 +18,5 @@
 - repo: vim-airline/vim-airline-themes
 
 - repo: nvim-treesitter/nvim-treesitter
+  hook_post_update: |
+    :TSUpdate
