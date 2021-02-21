@@ -1,4 +1,4 @@
-alias showpath='echo $PATH | tr ":" "\n" | sort -u'
+alias showpath='echo $PATH | tr ":" "\n"'
 alias c='clear'
 alias dmesg="dmesg -L"
 alias ducks='sudo du -ahd1 | sort -h'
@@ -10,7 +10,6 @@ alias lfiles='ls -lhA |grep ^-'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
-alias npm-exec='PATH=$(npm bin):$PATH'
 alias pss='ps -ef | grep $1'
 alias tma='tmux attach -d -t'
 alias up='cd ..'
@@ -19,8 +18,9 @@ alias vim="$WHICHVIM"
 alias ag="$WHICHRG"
 alias vimenv='make -C ~/dotfiles vimenv'
 alias rekey='keychain $(find ~/.ssh -iname "id_*" ! -name "*.pub")'
-alias awsedit="e $AWS_CONFIG_FILE"
+alias awsedit="e $AWS_CONFIG_FILE $AWS_SHARED_CREDENTIALS_FILE"
 alias Syu='sudo reflector -c "United States" -a 1 -f 3 --sort rate --save /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist && sudo pacman -Syyu && yay -Syu'
 alias pipupdate='pip3 install -U $(pip3 freeze | cut -d"=" -f1 | grep -v "git@")'
 alias open="xdg-open"
-#alias aws='docker run --rm -t $(tty &>/dev/null && echo "-i") -v $AWS_CONFIG_FILE:/root/.aws/config -v $AWS_SHARED_CREDENTIALS_FILE:/root/.aws/credentials -v "$(pwd):/project" mesosphere/aws-cli'
+alias tf12="docker run --rm -t $(tty &>/dev/null && echo "-i") -e AWS_PROFILE -e AWS_DEFAULT_REGION -v $AWS_CONFIG_FILE:/root/.aws/config -v $AWS_SHARED_CREDENTIALS_FILE:/root/.aws/credentials -v "$(pwd):/w" -w /w hashicorp/terraform:0.12.30"
+#alias aws='docker run --rm -t $(tty &>/dev/null && echo "-i") -e AWS_PROFILE -e AWS_DEFAULT_REGION -v $AWS_CONFIG_FILE:/root/.aws/config -v $AWS_SHARED_CREDENTIALS_FILE:/root/.aws/credentials -v "$(pwd):/w" -w /w mesosphere/aws-cli'

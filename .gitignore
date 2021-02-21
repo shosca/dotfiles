@@ -2,3 +2,5 @@
 .netrwhist
 sessions
 .netrwhist
+log
+*.log
