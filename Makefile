@@ -36,6 +36,14 @@ clean-profile:
 
 # }
 
+starship:  ## Sets up starship {
+	stow -R starship
+
+clean-starship:
+	stow -D starship
+
+# }
+
 aliases:  ## Sets up aliases {
 	stow -R aliases
 
