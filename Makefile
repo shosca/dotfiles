@@ -131,6 +131,14 @@ clean-alacritty: out  ## remove alacritty config
 
 # }
 
+foot: in  ## install foot config {
+	stow -R foot
+
+clean-foot: out  ## remove foot config
+	stow -D foot
+
+# }
+
 kitty: in  ## install kitty config {
 	stow -R kitty
 
