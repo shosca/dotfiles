@@ -16,6 +16,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   if [ -f /usr/libexec/path_helper ]; then
     export PATH=""
     source /etc/profile
+    _extend_path "/usr/local/sbin"
   fi
   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
     _extend_path "${_p}"
@@ -24,12 +25,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
     export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
   done
-  [[ -d /usr/local/opt/ruby/bin ]] && _extend_path /usr/local/opt/ruby/bin
 
   if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
     export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+    export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+    export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
   fi
-  export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
   export XDG_RUNTIME_DIR="${TMPDIR}"
 else
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
@@ -101,6 +102,10 @@ export RUSTUP_HOME="${XDG_LOCAL}/rustup"
 
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
+export JAVA_FONTS=/usr/share/fonts/TTF
+
 export EDITOR=vim
 export WHICHVIM=vim
 if [ -x "$(command -v nvim)" ]; then
@@ -153,13 +158,10 @@ fi
 [[ -d "GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
 [[ -d "$XDG_LOCAL/python/bin" ]] && _extend_path "$XDG_LOCAL/python/bin"
-[[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
 [[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
 
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"
 
-if [ -x "$(command -v yarn)" ]; then
-  _extend_path "$(yarn global dir)/node_modules/.bin"
-fi
+[[ -x "$(command -v yarn)" ]] && _extend_path "$(yarn global dir)/node_modules/.bin"

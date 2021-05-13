@@ -1,6 +1,5 @@
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='iceberg'
 let g:airline_mode_map = {
       \ '__' : '-',
       \ 'n'  : 'N',

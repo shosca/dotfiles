@@ -9,7 +9,6 @@ endif
 let b:undo_ftplugin .= 'setl modeline<'
 
 setlocal iskeyword+=:,#
-setlocal foldmethod=indent
 setlocal keywordprg=:help
 
 " For gf
@@ -21,8 +20,6 @@ let &cpoptions = s:save_cpo
 
 setlocal expandtab
 setlocal foldlevel=0
-setlocal foldmarker={,}
-setlocal foldmethod=marker
 setlocal shiftwidth=2
 setlocal spell
 setlocal tabstop=2

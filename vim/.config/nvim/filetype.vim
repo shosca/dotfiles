@@ -91,8 +91,6 @@ augroup user_events " {
   " https://webpack.github.io/docs/webpack-dev-server.html#working-with-editors-ides-supporting-safe-write
   autocmd FileType html,css,javascript,jsx,javascript.jsx setlocal backupcopy=yes
 
-  autocmd FileType zsh setlocal foldenable foldmethod=marker
-
   autocmd FileType html setlocal path+=./;/
 
   autocmd FileType markdown

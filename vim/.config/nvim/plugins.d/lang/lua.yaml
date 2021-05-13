@@ -1,11 +1,2 @@
-
-- repo: tbastos/vim-lua
-  on_ft: lua
-
 - repo: WolfgangMehner/lua-support
   on_ft: lua
-
-- repo: SpaceVim/vim-luacomplete
-  on_ft: lua
-  hook_source: |
-    autocmd FileType lua setlocal omnifunc=luacomplete#complete

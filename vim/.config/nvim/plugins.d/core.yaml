@@ -3,14 +3,9 @@
   hook_post_update: |
     call firenvim#install(0)
 
-- repo: wsdjeg/dein-ui.vim
-
 - repo: roxma/nvim-yarp
 
 - repo: roxma/vim-hug-neovim-rpc
-
-- repo: tpope/vim-dotenv
-  on_cmd: Dotenv
 
 - repo: scrooloose/nerdcommenter
 
@@ -31,16 +26,6 @@
     highlight! link ClapMatches Function
     highlight! link ClapNoMatchesFound WarningMsg
 
-- repo: epeli/slimux
-  hook_always: |
-    map <Leader>s :SlimuxREPLSendLine<CR>
-    vmap <Leader>s :SlimuxREPLSendSelection<CR>
-    map <Leader>b :SlimuxREPLSendBuffer<CR>
-    map <Leader>a :SlimuxShellLast<CR>
-    map <Leader>k :SlimuxSendKeysLast<CR>
-    map <C-c><C-c> :SlimuxREPLSendLine<CR>
-    vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
-
 - repo: Shougo/vimproc.vim
   build: make
   on_func: vimproc#
@@ -59,21 +44,6 @@
 - repo: Shougo/deol.nvim
   if: has('nvim')
   on_cmd: Deol
-
-- repo: luochen1990/rainbow
-  hook_source: |
-    let g:rainbow_active=1
-    let g:rainbow_load_separately = [
-        \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-        \ [ '*.tex' , [['(', ')'], ['\[', '\]']]  ],
-        \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']]  ],
-        \ [ '*.{html,htm}' , [['(', ')'],
-        \   ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]  ],
-    \ ]
-    let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3',
-        \ 'DarkOrchid3', 'FireBrick']
-    let g:rainbow_ctermfgs = ['lightblue', 'lightgreen',
-        \ 'yellow', 'red', 'magenta']
 
 - repo: godlygeek/tabular
   on_cmd: Tabularize
@@ -106,3 +76,35 @@
 - repo: rhysd/accelerated-jk
   on_map:
     n: <Plug>
+
+- repo: CantoroMC/slimux
+  hook_always: |
+    let g:slimux_buffer_filetype = 'slimux'
+    map <Leader>s :SlimuxREPLSendLine<CR>
+    vmap <Leader>s :SlimuxREPLSendSelection<CR>
+    map <Leader>b :SlimuxREPLSendBuffer<CR>
+    map <Leader>a :SlimuxShellLast<CR>
+    map <Leader>k :SlimuxSendKeysLast<CR>
+    map <C-c><C-c> :SlimuxREPLSendLine<CR>
+    vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+
+- repo: vim-test/vim-test
+  on_cmd:
+  - TestNearest
+  - TestFile
+  - TestSuite
+  - TestLast
+  - TestVisit
+  hook_always: |
+    let test#strategy = "slimux"
+    map <silent> <leader>tt :TestNearest<CR>
+    map <silent> <leader>tf :TestFile<CR>
+    map <silent> <leader>tr :TestLast<CR>
+    function! VagrantTransform(cmd) abort
+      return 'docker-compose run --rm '.a:cmd
+    endfunction
+    let g:test#custom_transformations = {'compose': function('VagrantTransform')}
+    let g:test#transformation = 'compose'
+    let test#python#pytest#executable = 'pytest'
+    let test#python#runner = 'pytest'
+    let g:test#preserve_screen = 1

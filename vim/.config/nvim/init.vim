@@ -296,9 +296,8 @@ endif
 set termguicolors
 let base16colorspace=256
 set background=dark
-let ayucolor="dark"
-colorscheme iceberg
-autocmd user_events ColorScheme * colorscheme iceberg
+colorscheme tokyonight
+autocmd user_events ColorScheme * colorscheme tokyonight
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
@@ -471,53 +470,6 @@ set complete=.                  " No wins, buffs, tags, include scanning
 if exists('+inccommand')
   set inccommand=nosplit
 endif
-" }
-
-" - Folds {
-" FastFold https://github.com/Shougo/shougo-s-github
-autocmd user_events TextChangedI,TextChanged *
-  \ if &l:foldenable && &l:foldmethod !=# 'manual' |
-  \   let b:foldmethod_save = &l:foldmethod |
-  \   let &l:foldmethod = 'manual' |
-  \ endif
-
-autocmd user_events BufWritePost *
-  \ if &l:foldmethod ==# 'manual' && exists('b:foldmethod_save') |
-  \   let &l:foldmethod = b:foldmethod_save |
-  \   execute 'normal! zx' |
-  \ endif
-
-" if has('folding')
-"   set foldenable
-"   set foldmethod=syntax
-"   set foldlevelstart=99
-"   set foldtext=FoldText()
-" endif
-" 
-" " Improved Vim fold-text
-" " See: http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
-" function! FoldText()
-"   " Get first non-blank line
-"   let fs = v:foldstart
-"   while getline(fs) =~? '^\s*$' | let fs = nextnonblank(fs + 1)
-"   endwhile
-"   if fs > v:foldend
-"     let line = getline(v:foldstart)
-"   else
-"     let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-"   endif
-" 
-"   let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-"   let foldSize = 1 + v:foldend - v:foldstart
-"   let foldSizeStr = ' ' . foldSize . ' lines '
-"   let foldLevelStr = repeat('+--', v:foldlevel)
-"   let lineCount = line('$')
-"   let foldPercentage = printf('[%.1f', (foldSize*1.0)/lineCount*100) . '%] '
-"   let expansionString = repeat('.', w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-"   return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
-" endfunction
-" }
-
 " }
 
 " Load other modules {

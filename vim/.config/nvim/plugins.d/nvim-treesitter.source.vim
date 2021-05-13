@@ -1,9 +1,13 @@
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",     -- one of "all", "language", or a list of languages
+require "nvim-treesitter.configs".setup {
+  ensure_installed = "all",
   highlight = {
-    enable = true,              -- false will disable the whole extension
+    enable = true,
     disable = {  },  -- list of language that will be disabled
+  },
+  rainbow = {
+    enable = true,
+    extended_mode = true,
   },
   incremental_selection = {
     enable = true,
@@ -15,7 +19,10 @@ require'nvim-treesitter.configs'.setup {
     },
   },
   indent = {
-    enable = true
+    enable = true,
   }
 }
 EOF
+
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()

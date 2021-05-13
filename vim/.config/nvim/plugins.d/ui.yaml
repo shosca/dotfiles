@@ -3,19 +3,12 @@
   hook_add: |
     let g:startify_session_dir = $VARPATH.'/session'
 
-- repo: rafi/awesome-vim-colorschemes
-
-- repo: ayu-theme/ayu-vim
-
-- repo: cocopon/iceberg.vim
+- repo: ghifarit53/tokyonight-vim
+  hook_source: |
+    let g:tokyonight_style = 'night'
+    let g:airline_theme = "tokyonight"
 
 - repo: vim-airline/vim-airline
-
-- repo: ayu-theme/ayu-vim-airline
-  hook_always:
-    let g:airline_theme='ayu'
-
-- repo: vim-airline/vim-airline-themes
 
 - repo: nvim-treesitter/nvim-treesitter
   hook_post_update: |
