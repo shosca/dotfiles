@@ -78,23 +78,12 @@ clean-tmux: out
 
 # }
 
-vim: in vimenv  ## install vim/neovim config {
+vim: in ## install vim/neovim config {
 	stow -R vim
-
-VIMENV=$(XDG_CACHE_HOME)/vim/venv
-
-vimenv:  ## Sets python env for vim
-	mkdir -p $(VIMENV)
-	python3 -m virtualenv -p python3 $(VIMENV)
-	$(VIMENV)/bin/pip install -U -r vimenv.txt
-
-vim-rebuild:
-	rm -rf $(VIMENV)
-	$(MAKE) vimenv
 
 clean-vim: out ## remove vim/neovim config
 	stow -D vim
-	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(HOME)/.cache/vimfiler $(HOME)/.vim
+	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(XDG_DATA_HOME)/vim $(XDG_DATA_HOME)/nvim $(HOME)/.cache/vimfiler $(HOME)/.vim
 
 # }
 

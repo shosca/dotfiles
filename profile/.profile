@@ -36,6 +36,8 @@ else
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 fi
 
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
 export MOZ_ENABLE_WAYLAND=1
 # Locale
 export LC_ALL=en_US.UTF-8
@@ -85,6 +87,7 @@ export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(nproc)"
 
+export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ANSIBLE_NOCOWS=1
 export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
 export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"

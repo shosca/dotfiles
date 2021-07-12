@@ -1,6 +1,0 @@
-
-- repo: rust-lang/rust.vim
-  on_ft: rust
-
-- repo: rhysd/rust-doc.vim
-  on_ft: rust

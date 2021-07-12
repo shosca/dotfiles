@@ -54,7 +54,6 @@ zplug "plugins/helm", from:oh-my-zsh
 zplug "plugins/kubectl", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/postgres", from:oh-my-zsh
-zplug "plugins/pyenv", from:oh-my-zsh
 zplug "plugins/python", from:oh-my-zsh
 zplug "plugins/rust", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
@@ -90,7 +89,9 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load
-eval "$(starship init zsh)"
+if [ -x "$(command -v starship)" ]; then
+  eval "$(starship init zsh)"
+fi
 if [ -x "$(command -v awless)" ]; then
   source <(awless completion zsh)
 fi

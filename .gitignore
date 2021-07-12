@@ -4,3 +4,4 @@ sessions
 .netrwhist
 log
 *.log
+packer_compiled.lua
