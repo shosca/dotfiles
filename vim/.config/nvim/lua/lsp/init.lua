@@ -54,7 +54,9 @@ vim.cmd "nnoremap <silent> <C-n> :lua vim.lsp.diagnostic.goto_next({popup_opts =
 -- scroll up hover doc
 vim.cmd 'command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()'
 
-local function on_attach(client, bufnr)
+local M = {}
+
+local function common_on_attach(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
@@ -66,20 +68,23 @@ local function on_attach(client, bufnr)
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]],
+      ]],
       false
     )
   end
 end
+M.common_on_attach = common_on_attach
 
-local function config()
+function M.lspinstall_config()
   local lspinstall = require('lspinstall')
   local lspconfig = require('lspconfig')
   local function setup_servers()
     lspinstall.setup()
     local servers = lspinstall.installed_servers()
     for _, server in pairs(servers) do
-      lspconfig[server].setup {on_attach = on_attach}
+      lspconfig[server].setup {
+        on_attach = common_on_attach,
+      }
     end
   end
   setup_servers()
@@ -89,29 +94,30 @@ local function config()
   end
 end
 
-return {
-  configure_packer = function(use)
-    use 'neovim/nvim-lspconfig'
-    use 'ray-x/lsp_signature.nvim'
-    use {
-      'kabouzeid/nvim-lspinstall',
-      requires = 'neovim/nvim-lspconfig',
-      config = config,
+function M.compe_config()
+  require "compe".setup {
+    enabled = true,
+    autocomplete = true,
+    min_length = 1,
+    source = {
+      nvim_lsp = true,
+      buffer = {kind = "﬘", true},
     }
-    use {
-      'hrsh7th/nvim-compe',
-      event = 'InsertEnter',
-      config = function()
-        require "compe".setup {
-          enabled = true,
-          autocomplete = true,
-          min_length = 1,
-          source = {
-            nvim_lsp = true,
-            buffer = {kind = "﬘", true},
-          }
-        }
-      end
-    }
-  end
-}
+  }
+end
+
+function M.configure_packer(use)
+  use 'neovim/nvim-lspconfig'
+  use 'ray-x/lsp_signature.nvim'
+  use {
+    'kabouzeid/nvim-lspinstall',
+    requires = 'neovim/nvim-lspconfig',
+    config = M.lspinstall_config,
+  }
+  use {
+    'hrsh7th/nvim-compe',
+    event = 'InsertEnter',
+    config = M.compe_config,
+  }
+end
+return M

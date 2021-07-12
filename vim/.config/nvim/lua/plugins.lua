@@ -24,6 +24,8 @@ packer.startup({
     for _, pkg in pairs(packages) do
       require(pkg).configure_packer(use)
     end
+
+    use 'bfredl/nvim-luadev'
   end,
   config = {
     display = {

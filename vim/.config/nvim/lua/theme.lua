@@ -1,4 +1,6 @@
-local setup = function()
+local M = {}
+
+function M.setup()
   vim.opt.termguicolors = true
   vim.opt.background = 'dark'
 
@@ -12,16 +14,15 @@ local setup = function()
   vim.g.material_disable_background = false
 end
 
-local config = function()
+function M.config()
   require('material').set()
 end
 
-return {
-  configure_packer = function(use)
-    use {
-      'marko-cerovac/material.nvim',
-      setup = setup,
-      config = config,
-    }
-  end
-}
+function M.configure_packer(use)
+  use {
+    'marko-cerovac/material.nvim',
+    setup = M.setup,
+    config = M.config,
+  }
+end
+return M
