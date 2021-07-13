@@ -56,7 +56,7 @@ vim.cmd 'command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").
 
 local M = {}
 
-local function common_on_attach(client, bufnr)
+function M.common_on_attach(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
@@ -73,26 +73,6 @@ local function common_on_attach(client, bufnr)
     )
   end
 end
-M.common_on_attach = common_on_attach
-
-function M.lspinstall_config()
-  local lspinstall = require('lspinstall')
-  local lspconfig = require('lspconfig')
-  local function setup_servers()
-    lspinstall.setup()
-    local servers = lspinstall.installed_servers()
-    for _, server in pairs(servers) do
-      lspconfig[server].setup {
-        on_attach = common_on_attach,
-      }
-    end
-  end
-  setup_servers()
-  lspinstall.post_install_hook = function()
-    setup_servers()
-    vim.cmd("bufdo e")
-  end
-end
 
 function M.compe_config()
   require "compe".setup {
@@ -106,13 +86,26 @@ function M.compe_config()
   }
 end
 
+function M.is_client_active(name)
+  local clients = vim.lsp.get_active_clients()
+  for _, client in pairs(clients) do
+    if client.name == name then
+      return true
+    end
+  end
+  return false
+end
+
 function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'ray-x/lsp_signature.nvim'
   use {
     'kabouzeid/nvim-lspinstall',
     requires = 'neovim/nvim-lspconfig',
-    config = M.lspinstall_config,
+    event = "VimEnter",
+    config = function()
+      require("lspinstall").setup()
+    end,
   }
   use {
     'hrsh7th/nvim-compe',

@@ -13,6 +13,7 @@ local packages = {
   'theme',
   'treesitter',
   'telescope',
+  'comment',
   --"compe",
   'lsp',
   'git',
