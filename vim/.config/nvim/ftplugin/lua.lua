@@ -2,11 +2,8 @@ local lsp = require('lsp')
 local lspconfig = require('lspconfig')
 
 if not lsp.is_client_active("sumneko_lua") then
-  local install_path = vim.fn.stdpath('data') .. '/lspinstall/lua'
-  local cmd = install_path .. '/sumneko-lua-language-server'
-
   lspconfig.sumneko_lua.setup {
-    cmd = { cmd , "-E", install_path .. "/main.lua" },
+    cmd = { "lua-language-server" },
     on_attach = lsp.common_on_attach,
     settings = {
       Lua = {

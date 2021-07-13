@@ -100,14 +100,6 @@ function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'ray-x/lsp_signature.nvim'
   use {
-    'kabouzeid/nvim-lspinstall',
-    requires = 'neovim/nvim-lspconfig',
-    event = "VimEnter",
-    config = function()
-      require("lspinstall").setup()
-    end,
-  }
-  use {
     'hrsh7th/nvim-compe',
     event = 'InsertEnter',
     config = M.compe_config,
