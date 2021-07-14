@@ -55,5 +55,14 @@ function M.configure_packer(use)
       }
     end
   }
+  use 'kevinhwang91/nvim-bqf'
+  use {
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('trouble').setup {
+      }
+    end
+  }
 end
 return M

@@ -10,7 +10,7 @@ local packer = require('packer')
 
 local packages = {
   'core',
-  'theme',
+  'ui',
   'treesitter',
   'telescope',
   'comment',
