@@ -5,6 +5,7 @@ if not lsp.is_client_active("sumneko_lua") then
   lspconfig.sumneko_lua.setup {
     cmd = { "lua-language-server" },
     on_attach = lsp.common_on_attach,
+    capabilities = lsp.capabilities(),
     settings = {
       Lua = {
         runtime = {

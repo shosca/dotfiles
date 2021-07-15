@@ -8,7 +8,7 @@ if not lsp.is_client_active('cssls') then
   lspconfig.cssls.setup {
     cmd = { 'css-languageserver', '--stdio' },
     on_attach = lsp.common_on_attach,
-    capabilities = capabilities,
+    capabilities = lsp.capabilities(),
   }
 
   vim.cmd [[LspStart]]

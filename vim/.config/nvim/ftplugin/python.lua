@@ -29,9 +29,57 @@ if not lsp.is_client_active("jedi_language_server") then
 end
 
 if not lsp.is_client_active('efm') then
+  local cmd_env = get_python_env()
+  local python_setup = {}
+  local bin_path = ''
+  if cmd_env.VIRTUAL_ENV then
+    bin_path = util.path.join(cmd_env.VIRTUAL_ENV, 'bin') .. '/'
+  end
+
+  local flake8 = {
+    LintCommand = bin_path .. 'flake8 --stdin-display-name ${INPUT} -',
+    lintStdin = true,
+    lintFormats = { '%f:%l:%c: %m' },
+  }
+  table.insert(python_setup, flake8)
+
+  local mypy = {
+    LintCommand = bin_path .. 'mypy --show-column-numbers',
+    lintFormats = {
+      '%f:%l:%c: %trror: %m',
+      '%f:%l:%c: %tarning: %m',
+      '%f:%l:%c: %tote: %m',
+    }
+  }
+  table.insert(python_setup, mypy)
+
+  local black = {
+    LintCommand = bin_path .. 'black --quiet -',
+    lintStdin = true,
+  }
+  table.insert(python_setup, black)
+
   lspconfig.efm.setup {
-    cmd_env = get_python_env(),
+    cmd_env = cmd_env,
     on_attach = lsp.common_on_attach,
+    capabilities = lsp.capabilities(),
+    init_options = { documentFormatting = true, codeAction = false },
+    filetypes = { "python" },
+    settings = {
+      rootMarkers = {
+        ".git",
+        "poetry.lock",
+        "pyproject.toml",
+        "Pipfile",
+        "requirements.txt",
+        "requirements.in",
+        "setup.cfg",
+        "setup.py",
+      },
+      languages = {
+        python = python_setup
+      }
+    }
   }
   vim.cmd [[LspStart]]
 end
