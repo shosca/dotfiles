@@ -72,6 +72,7 @@ function M.common_on_attach(client, bufnr)
       false
     )
   end
+  require('lsp_signature').on_attach()
 end
 
 function M.compe_config()
@@ -105,6 +106,7 @@ end
 function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'ray-x/lsp_signature.nvim'
+  use 'folke/lua-dev.nvim'
   use {
     'hrsh7th/nvim-compe',
     event = 'InsertEnter',

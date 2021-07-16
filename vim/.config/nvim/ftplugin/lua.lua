@@ -1,32 +1,8 @@
 local lsp = require('lsp')
-local lspconfig = require('lspconfig')
 
 if not lsp.is_client_active("sumneko_lua") then
-  lspconfig.sumneko_lua.setup {
-    cmd = { "lua-language-server" },
-    on_attach = lsp.common_on_attach,
-    capabilities = lsp.capabilities(),
-    settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJit",
-          path = vim.split(package.path, ";"),
-        },
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { "vim", "require" },
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = {
-            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-          },
-          maxPreload = 100000,
-          preloadFileSize = 1000,
-        }
-      }
-    }
-  }
+  local luadev = require("lua-dev").setup {}
+  luadev.cmd = { "lua-language-server" }
+  require('lspconfig').sumneko_lua.setup(luadev)
   vim.cmd [[LspStart]]
 end
