@@ -63,7 +63,7 @@ if not lsp.is_client_active('efm') then
     cmd_env = cmd_env,
     on_attach = lsp.common_on_attach,
     capabilities = lsp.capabilities(),
-    init_options = { documentFormatting = true, codeAction = false },
+    init_options = { documentFormatting = true, documentSymbol = true, codeAction = true, hover = true },
     filetypes = { "python" },
     settings = {
       rootMarkers = {
