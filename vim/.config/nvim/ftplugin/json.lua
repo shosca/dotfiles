@@ -1,4 +1,4 @@
-local lsp = require('lsp')
+local lsp = require('sh.lsp')
 local lspconfig = require('lspconfig')
 
 

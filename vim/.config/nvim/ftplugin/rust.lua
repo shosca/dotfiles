@@ -1,4 +1,4 @@
-local lsp = require("lsp")
+local lsp = require("sh.lsp")
 
 if not lsp.is_client_active("rust_analyzer") then
   require("lspconfig").rust_analyzer.setup {

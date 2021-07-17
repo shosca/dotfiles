@@ -9,14 +9,14 @@ end
 local packer = require('packer')
 
 local packages = {
-  'core',
-  'ui',
-  'treesitter',
-  'telescope',
-  'comment',
+  'sh.core',
+  'sh.ui',
+  'sh.treesitter',
+  'sh.telescope',
+  'sh.comment',
   --"compe",
-  'lsp',
-  'git',
+  'sh.lsp',
+  'sh.git',
 }
 
 packer.startup({

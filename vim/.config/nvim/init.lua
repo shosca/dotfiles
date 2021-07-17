@@ -100,6 +100,6 @@ vim.opt.listchars = {
   extends   = '#'   ,
 }
 
-require 'filetypes'
-require 'mappings'
-require 'plugins'
+require 'sh.filetypes'
+require 'sh.mappings'
+require 'sh.plugins'
