@@ -117,4 +117,5 @@ source_sh() {
 alias resrc='source ~/.zshrc'
 source_sh ${HOME}/.aliases
 
+[ -x "$(command -v invoke)" ] && source <(inv --print-completion-script zsh)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

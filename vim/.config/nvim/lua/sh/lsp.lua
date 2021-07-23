@@ -156,6 +156,7 @@ function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'ray-x/lsp_signature.nvim'
   use 'folke/lua-dev.nvim'
+  use 'nvim-lua/lsp-status.nvim'
   use {
     'hrsh7th/nvim-compe',
     event = 'InsertEnter',

@@ -6,3 +6,5 @@ if not lsp.is_client_active("sumneko_lua") then
   require('lspconfig').sumneko_lua.setup(luadev)
   vim.cmd [[LspStart]]
 end
+
+vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
