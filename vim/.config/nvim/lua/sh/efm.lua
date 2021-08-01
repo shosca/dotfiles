@@ -4,35 +4,48 @@ local lsp = require('sh.lsp')
 
 local M = {}
 
-function M.setup()
+function M.get_python_setup()
     local venv = require('sh.utils').get_python_venv()
-    local python_setup = {}
     local bin_path = ''
     if venv then bin_path = lsputil.path.join(venv, 'bin') .. '/' end
-    local flake8 = {
-        LintCommand = bin_path .. 'flake8 --stdin-display-name ${INPUT} -',
-        lintStdin = true,
-        lintFormats = {'%f:%l:%c: %m'}
-    }
-    table.insert(python_setup, flake8)
 
-    local mypy = {
-        LintCommand = bin_path .. 'mypy --show-column-numbers',
-        lintFormats = {
-            '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m',
-            '%f:%l:%c: %tote: %m'
+    local root_markers = {
+        ".git", "poetry.lock", "pyproject.toml", "Pipfile", "requirements.txt",
+        "requirements.in", "setup.cfg", "setup.py"
+    }
+
+    return {
+        {
+            lintCommand = bin_path .. 'flake8',
+            lintIgnoreExitCode = true,
+            lintFormats = {'%f:%l:%c: %m'},
+            rootMarkers = root_markers
+        }, {
+            lintCommand = bin_path .. 'mypy --show-column-numbers',
+            lintFormats = {
+                '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m',
+                '%f:%l:%c: %tote: %m'
+            },
+            rootMarkers = root_markers
+        }, {
+            formatCommand = bin_path .. 'black --quiet -',
+            formatStdin = true,
+            rootMarkers = root_markers
         }
     }
-    table.insert(python_setup, mypy)
-    local black = {
-        LintCommand = bin_path .. 'black --quiet -',
-        lintStdin = true
-    }
-    table.insert(python_setup, black)
+end
 
-    local lua_setup = {}
-    local luaformat = {formatCommand = 'lua-format -i', formatStdin = true}
-    table.insert(lua_setup, luaformat)
+function M.lua_setup()
+    return {
+        {
+            formatCommand = 'lua-format -i',
+            formatStdin = true,
+            rootMarkers = {".git"}
+        }
+    }
+end
+
+function M.setup()
 
     lspconfig.efm.setup {
         on_attach = lsp.common_on_attach,
@@ -45,11 +58,7 @@ function M.setup()
         },
         filetypes = {"python", "lua"},
         settings = {
-            rootMarkers = {
-                ".git", "poetry.lock", "pyproject.toml", "Pipfile",
-                "requirements.txt", "requirements.in", "setup.cfg", "setup.py"
-            },
-            languages = {python = python_setup, lua = lua_setup}
+            languages = {python = M.get_python_setup(), lua = M.lua_setup()}
         }
     }
 

@@ -13,7 +13,10 @@ end
 if not lsp.is_client_active("pylsp") then
     lspconfig.pylsp.setup {
         cmd_env = get_python_env(),
-        on_attach = lsp.common_on_attach,
+        on_attach = function(client, bufnr)
+            lsp.common_on_attach(client, bufnr)
+            client.resolved_capabilities.document_formatting = false
+        end,
         capabilities = lsp.capabilities()
     }
     vim.cmd [[LspStart]]
