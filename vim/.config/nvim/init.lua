@@ -1,14 +1,17 @@
 vim.g.loaded_matchparen = 1
+vim.g.loaded_zipPlugin= 1
+vim.g.loaded_zip = 1
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Ignore compiled files
 vim.opt.wildignorecase = true
 vim.opt.wildignore = {
-    "__pycache__", 
-    "*.o", 
-    "*~", 
-    "*.pyc", 
+    "__pycache__",
+    "*.o",
+    "*~",
+    "*.pyc",
     "*pycache*"
 }
 

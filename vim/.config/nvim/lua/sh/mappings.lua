@@ -1,37 +1,31 @@
-local map = function(rhs, lhs)
-  vim.api.nvim_set_keymap('', rhs, lhs, {})
-end
+local map = function(rhs, lhs) vim.api.nvim_set_keymap('', rhs, lhs, {}) end
 
-local cmap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('c', rhs, lhs, {})
-end
+local cmap = function(rhs, lhs) vim.api.nvim_set_keymap('c', rhs, lhs, {}) end
 
-local nmap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('n', rhs, lhs, {})
-end
+local nmap = function(rhs, lhs) vim.api.nvim_set_keymap('n', rhs, lhs, {}) end
 
 local noremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('', rhs, lhs, {noremap = true})
 end
 
 local cnoremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('c', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('c', rhs, lhs, {noremap = true})
 end
 
 local inoremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('i', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('i', rhs, lhs, {noremap = true})
 end
 
 local nnoremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('n', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('n', rhs, lhs, {noremap = true})
 end
 
 local xnoremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('x', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('x', rhs, lhs, {noremap = true})
 end
 
 local vnoremap = function(rhs, lhs)
-  vim.api.nvim_set_keymap('v', rhs, lhs, {noremap = true})
+    vim.api.nvim_set_keymap('v', rhs, lhs, {noremap = true})
 end
 
 -- common typos
@@ -91,7 +85,6 @@ nnoremap('<Down>', ':resize -2<CR>')
 nnoremap('<Left>', ':vertical resize +2<CR>')
 nnoremap('<Right>', ':vertical resize -2<CR>')
 
-
 -- Easier horizontal scrolling
 map('zl', 'zL')
 map('zh', 'zH')
@@ -117,7 +110,6 @@ nmap('<leader>f6', ':set foldlevel=6<CR>')
 nmap('<leader>f7', ':set foldlevel=7<CR>')
 nmap('<leader>f8', ':set foldlevel=8<CR>')
 nmap('<leader>f9', ':set foldlevel=9<CR>')
-
 
 -- Save a file with sudo
 -- http://forrst.com/posts/Use_w_to_sudo_write_a_file_with_Vim-uAN
