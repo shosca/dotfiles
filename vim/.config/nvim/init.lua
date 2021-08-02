@@ -1,5 +1,5 @@
 vim.g.loaded_matchparen = 1
-vim.g.loaded_zipPlugin= 1
+vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
 
 vim.g.mapleader = ' '
@@ -7,21 +7,15 @@ vim.g.maplocalleader = ' '
 
 -- Ignore compiled files
 vim.opt.wildignorecase = true
-vim.opt.wildignore = {
-    "__pycache__",
-    "*.o",
-    "*~",
-    "*.pyc",
-    "*pycache*"
-}
+vim.opt.wildignore = {"__pycache__", "*.o", "*~", "*.pyc", "*pycache*"}
 
-vim.opt.wildmode = { "longest", "list", "full" }
+vim.opt.wildmode = {"longest", "list", "full"}
 
 -- Cool floating window popup menu for completion on command line
 vim.opt.pumblend = 17
 
 vim.opt.wildmode = vim.opt.wildmode - "list"
-vim.opt.wildmode = vim.opt.wildmode + { "longest", "full" }
+vim.opt.wildmode = vim.opt.wildmode + {"longest", "full"}
 
 vim.opt.wildoptions = "pum"
 
@@ -67,7 +61,7 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.inccommand = "split"
 vim.opt.swapfile = false -- Living on the edge
-vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
+vim.opt.shada = {"!", "'1000", "<50", "s10", "h"}
 
 vim.opt.mouse = "n"
 
@@ -76,32 +70,25 @@ vim.opt.mouse = "n"
 --   2. gw{motion} - Put cursor back after formatting motion.
 --
 -- TODO: w, {v, b, l}
-vim.opt.formatoptions = vim.opt.formatoptions
-  - "a" -- Auto formatting is BAD.
-  - "t" -- Don't auto format my code. I got linters for that.
-  + "c" -- In general, I like it when comments respect textwidth
-  + "q" -- Allow formatting comments w/ gq
-  - "o" -- O and o, don't continue comments
-  + "r" -- But do continue when pressing enter.
-  + "n" -- Indent past the formatlistpat, not underneath it.
-  + "j" -- Auto-remove comments if possible.
-  - "2" -- I'm not in gradeschool anymore
+vim.opt.formatoptions = vim.opt.formatoptions - "a" -- Auto formatting is BAD.
+- "t" -- Don't auto format my code. I got linters for that.
++ "c" -- In general, I like it when comments respect textwidth
++ "q" -- Allow formatting comments w/ gq
+- "o" -- O and o, don't continue comments
++ "r" -- But do continue when pressing enter.
++ "n" -- Indent past the formatlistpat, not underneath it.
++ "j" -- Auto-remove comments if possible.
+- "2" -- I'm not in gradeschool anymore
 
 -- set joinspaces
 vim.opt.joinspaces = false -- Two spaces and grade school, we're done
 
 -- set fillchars=eob:~
-vim.opt.fillchars = { eob = "~" }
+vim.opt.fillchars = {eob = "~"}
 
 -- invisible characters to use on ':set list'
 vim.opt.list = true
-vim.opt.listchars = {
-  tab       = '› '  ,
-  eol       = '↲'   ,
-  nbsp      = '.'   ,
-  trail     = '•'   ,
-  extends   = '#'   ,
-}
+vim.opt.listchars = {tab = '› ', eol = '↲', nbsp = '.', trail = '•', extends = '#'}
 
 require 'sh.filetypes'
 require 'sh.mappings'

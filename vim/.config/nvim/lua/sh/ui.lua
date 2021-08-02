@@ -18,13 +18,12 @@ function M.configure_packer(use)
         end,
         config = function() require('material').set() end
     }
+
     use {"kyazdani42/nvim-web-devicons"}
     use {
         'hoob3rt/lualine.nvim',
         commit = 'dc2c711a5329470a64f07da100113e598044c5ae',
-        requires = {
-            {'kyazdani42/nvim-web-devicons'}, {'marko-cerovac/material.nvim'}
-        },
+        requires = {{'kyazdani42/nvim-web-devicons'}, {'marko-cerovac/material.nvim'}},
         config = function()
             require('lualine').setup {
                 options = {
@@ -38,10 +37,7 @@ function M.configure_packer(use)
                     lualine_a = {'mode'},
                     lualine_b = {'branch'},
                     lualine_c = {'filename', 'data', require'lsp-status'.status},
-                    lualine_x = {
-                        {'diagnostics', sources = {'nvim_lsp'}}, 'encoding',
-                        'fileformat', 'filetype'
-                    },
+                    lualine_x = {{'diagnostics', sources = {'nvim_lsp'}}, 'encoding', 'fileformat', 'filetype'},
                     lualine_y = {'progress'},
                     lualine_z = {'location'}
                 },
@@ -59,10 +55,6 @@ function M.configure_packer(use)
         end
     }
     use 'kevinhwang91/nvim-bqf'
-    use {
-        'folke/trouble.nvim',
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = function() require('trouble').setup {} end
-    }
+    use {'folke/trouble.nvim', requires = 'kyazdani42/nvim-web-devicons', config = function() require('trouble').setup {} end}
 end
 return M

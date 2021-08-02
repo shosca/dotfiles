@@ -1,32 +1,13 @@
 vim.lsp.protocol.CompletionItemKind = {
-    "   (Text) ", "   (Method)", "   (Function)",
-    "   (Constructor)", " ﴲ  (Field)", "[] (Variable)", "   (Class)",
-    " ﰮ  (Interface)", "   (Module)", " 襁 (Property)", "   (Unit)",
-    "   (Value)", " 練 (Enum)", "   (Keyword)", "   (Snippet)",
-    "   (Color)", "   (File)", "   (Reference)", "   (Folder)",
-    "   (EnumMember)", " ﲀ  (Constant)", " ﳤ  (Struct)", "   (Event)",
-    "   (Operator)", "   (TypeParameter)"
+    "   (Text) ", "   (Method)", "   (Function)", "   (Constructor)", " ﴲ  (Field)", "[] (Variable)", "   (Class)",
+    " ﰮ  (Interface)", "   (Module)", " 襁 (Property)", "   (Unit)", "   (Value)", " 練 (Enum)", "   (Keyword)", "   (Snippet)",
+    "   (Color)", "   (File)", "   (Reference)", "   (Folder)", "   (EnumMember)", " ﲀ  (Constant)", " ﳤ  (Struct)",
+    "   (Event)", "   (Operator)", "   (TypeParameter)"
 }
-vim.fn.sign_define("LspDiagnosticsSignError", {
-    texthl = "LspDiagnosticsSignError",
-    text = "",
-    numhl = "LspDiagnosticsSignError"
-})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {
-    texthl = "LspDiagnosticsSignWarning",
-    text = "",
-    numhl = "LspDiagnosticsSignWarning"
-})
-vim.fn.sign_define("LspDiagnosticsSignHint", {
-    texthl = "LspDiagnosticsSignHint",
-    text = "",
-    numhl = "LspDiagnosticsSignHint"
-})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {
-    texthl = "LspDiagnosticsSignInformation",
-    text = "",
-    numhl = "LspDiagnosticsSignInformation"
-})
+vim.fn.sign_define("LspDiagnosticsSignError", {texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError"})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning"})
+vim.fn.sign_define("LspDiagnosticsSignHint", {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"})
 vim.cmd "nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>"
 vim.cmd "nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>"
 vim.cmd "nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>"
@@ -42,9 +23,7 @@ vim.cmd 'command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").
 
 -- Use <Tab> to navigate completion menu.
 -- ======================================
-local t = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+local t = function(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
 local check_back_space = function()
     local col = vim.fn.col('.') - 1
@@ -115,17 +94,13 @@ function M.compe_config()
     }
     vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
     vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-    vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()",
-                            {expr = true})
-    vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()",
-                            {expr = true})
+    vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+    vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 end
 
 function M.is_client_active(name)
     local clients = vim.lsp.get_active_clients()
-    for _, client in pairs(clients) do
-        if client.name == name then return true end
-    end
+    for _, client in pairs(clients) do if client.name == name then return true end end
     return false
 end
 

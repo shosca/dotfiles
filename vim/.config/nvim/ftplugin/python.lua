@@ -1,9 +1,7 @@
 local lspconfig = require('lspconfig')
 local lsp = require('sh.lsp')
 
-local function get_python_env()
-    return {VIRTUAL_ENV = require('sh.utils').get_python_venv()}
-end
+local function get_python_env() return {VIRTUAL_ENV = require('sh.utils').get_python_venv()} end
 
 if not lsp.is_client_active('efm') then
     require('sh.efm').setup()
@@ -22,5 +20,4 @@ if not lsp.is_client_active("pylsp") then
     vim.cmd [[LspStart]]
 end
 
-vim.api
-    .nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]

@@ -4,29 +4,17 @@ local cmap = function(rhs, lhs) vim.api.nvim_set_keymap('c', rhs, lhs, {}) end
 
 local nmap = function(rhs, lhs) vim.api.nvim_set_keymap('n', rhs, lhs, {}) end
 
-local noremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('', rhs, lhs, {noremap = true})
-end
+local noremap = function(rhs, lhs) vim.api.nvim_set_keymap('', rhs, lhs, {noremap = true}) end
 
-local cnoremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('c', rhs, lhs, {noremap = true})
-end
+local cnoremap = function(rhs, lhs) vim.api.nvim_set_keymap('c', rhs, lhs, {noremap = true}) end
 
-local inoremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('i', rhs, lhs, {noremap = true})
-end
+local inoremap = function(rhs, lhs) vim.api.nvim_set_keymap('i', rhs, lhs, {noremap = true}) end
 
-local nnoremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('n', rhs, lhs, {noremap = true})
-end
+local nnoremap = function(rhs, lhs) vim.api.nvim_set_keymap('n', rhs, lhs, {noremap = true}) end
 
-local xnoremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('x', rhs, lhs, {noremap = true})
-end
+local xnoremap = function(rhs, lhs) vim.api.nvim_set_keymap('x', rhs, lhs, {noremap = true}) end
 
-local vnoremap = function(rhs, lhs)
-    vim.api.nvim_set_keymap('v', rhs, lhs, {noremap = true})
-end
+local vnoremap = function(rhs, lhs) vim.api.nvim_set_keymap('v', rhs, lhs, {noremap = true}) end
 
 -- common typos
 vim.cmd([[
