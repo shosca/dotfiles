@@ -12,11 +12,19 @@ function M.get_python_setup()
     local root_markers = {".git", "poetry.lock", "pyproject.toml", "Pipfile", "requirements.txt", "requirements.in", "setup.cfg", "setup.py"}
 
     return {
-        {lintCommand = bin_path .. 'flake8', lintIgnoreExitCode = true, lintFormats = {'%f:%l:%c: %m'}, rootMarkers = root_markers}, {
-            lintCommand = bin_path .. 'mypy --show-column-numbers',
-            lintFormats = {'%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m'},
+        {
+            lintCommand = bin_path .. "flake8 --stdin-display-name '${INPUT}' -",
+            lintStdin = true,
+            lintIgnoreExitCode = true,
+            lintFormats = {'%f:%l:%c: %m', '%f = %l:%c: %m'},
             rootMarkers = root_markers
-        }, {formatCommand = bin_path .. 'black --quiet -', formatStdin = true, rootMarkers = root_markers}
+        }, {formatCommand = bin_path .. 'black --quiet -', formatStdin = true, rootMarkers = root_markers, formatIgnoreExitCode = true}
+        -- {
+        --     lintCommand = bin_path .. 'mypy --show-column-numbers',
+        --     lintStdin = false,
+        --     lintFormats = {'%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m'},
+        --     rootMarkers = root_markers
+        -- }
     }
 end
 
