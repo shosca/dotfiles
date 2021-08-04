@@ -78,11 +78,11 @@ clean-tmux: out
 
 # }
 
-vim: in ## install vim/neovim config {
-	stow -R vim
+nvim: in ## install neovim config {
+	stow -R nvim
 
-clean-vim: out ## remove vim/neovim config
-	stow -D vim
+clean-nvim: out ## remove neovim
+	stow -D nvim
 	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(XDG_DATA_HOME)/vim $(XDG_DATA_HOME)/nvim $(HOME)/.cache/vimfiler $(HOME)/.vim
 
 # }

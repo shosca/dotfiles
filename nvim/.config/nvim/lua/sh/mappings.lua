@@ -97,7 +97,7 @@ nmap('<leader>f5', ':set foldlevel=5<CR>')
 nmap('<leader>f6', ':set foldlevel=6<CR>')
 nmap('<leader>f7', ':set foldlevel=7<CR>')
 nmap('<leader>f8', ':set foldlevel=8<CR>')
-nmap('<leader>f9', ':set foldlevel=9<CR>')
+nmap('<leader>f9', ':set foldlevel=9999<CR>')
 
 -- Save a file with sudo
 -- http://forrst.com/posts/Use_w_to_sudo_write_a_file_with_Vim-uAN
