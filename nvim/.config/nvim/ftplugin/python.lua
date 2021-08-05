@@ -3,21 +3,21 @@ local lsp = require('sh.lsp')
 
 local function get_python_env() return {VIRTUAL_ENV = require('sh.utils').get_python_venv()} end
 
-if not lsp.is_client_active('efm') then
-    require('sh.efm').setup()
-    vim.cmd [[LspStart]]
-end
+-- if not lsp.is_client_active('efm') then
+--     require('sh.efm').setup()
+--     vim.cmd [[LspStart]]
+-- end
 
 if not lsp.is_client_active("pylsp") then
     lspconfig.pylsp.setup {
-        -- cmd = {"pylsp", "-v"},
+        cmd = {"pylsp", "-v"},
         cmd_env = get_python_env(),
         on_attach = function(client, bufnr)
             lsp.common_on_attach(client, bufnr)
             client.resolved_capabilities.document_formatting = false
         end,
-        capabilities = lsp.capabilities()
-        -- settings = {pylsp = {plugins = {flake8 = {enabled = true}}}}
+        capabilities = lsp.capabilities(),
+        settings = {pylsp = {plugins = {flake8 = {enabled = true}, jedi_completion = {fuzzy = true}, pylsp_mypy = {enabled = true}}}}
     }
     vim.cmd [[LspStart]]
 end

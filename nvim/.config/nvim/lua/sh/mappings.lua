@@ -57,16 +57,6 @@ nnoremap('sk', '<C-W>W<CR>')
 nnoremap('ss', ':split<Space>')
 nnoremap('sv', ':vsplit<Space>')
 
--- tab management {
-nnoremap('th', ':tabfirst<CR>')
-nnoremap('tj', ':tabnext<CR>')
-nnoremap('tk', ':tabprev<CR>')
-nnoremap('tl', ':tablast<CR>')
-nnoremap('tt', ':tabedit<Space>')
-nnoremap('tn', ':tabnext<CR>')
-nnoremap('tm', ':tabm<Space>')
-nnoremap('td', ':tabclose<CR>')
-
 -- arrow key resize
 nnoremap('<Up>', ':resize +2<CR>')
 nnoremap('<Down>', ':resize -2<CR>')
