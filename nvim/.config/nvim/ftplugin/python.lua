@@ -4,9 +4,11 @@ local lsp = require('sh.lsp')
 if not lsp.is_client_active("pylsp") then
     local lsputil = require('lspconfig/util')
     local venv = require('sh.utils').get_python_venv()
+    local path = vim.env.PATH
+    if venv then path = lsputil.path.join(venv, 'bin') .. ':' .. path end
     lspconfig.pylsp.setup {
         cmd = {"pylsp", "-v"},
-        cmd_env = {VIRTUAL_ENV = venv, PATH = lsputil.path.join(venv, 'bin') .. ':' .. vim.env.PATH},
+        cmd_env = {VIRTUAL_ENV = venv, PATH = path},
         on_attach = lsp.common_on_attach,
         capabilities = lsp.capabilities(),
         settings = {
