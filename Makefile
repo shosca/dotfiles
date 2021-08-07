@@ -98,10 +98,17 @@ clean-tilix: out
 python: in  ## install python/pdb config {
 	stow -R python
 
-python-user:  ## installs user packages
-	pip3 install --user https://github.com/boto/botocore/archive/v2.tar.gz
-	pip3 install --user https://github.com/aws/aws-cli/archive/v2.tar.gz
-	pip3 install --user -U -r user_requirements.txt
+pipx: in  ## installs pipx packages
+	pipx install --force python-lsp-server
+	pipx inject python-lsp-server rope
+	pipx inject python-lsp-server pylsp-mypy
+	pipx inject python-lsp-server python-lsp-black
+
+pipx-update:  ## update all pipx installs
+	pipx upgrade-all
+
+clean-pipx: out  ## uninstalls pipx packages
+	pipx uninstall-all
 
 python-rebuild:  ## installs user packages
 	pip3 freeze | xargs -r pip3 uninstall -y
