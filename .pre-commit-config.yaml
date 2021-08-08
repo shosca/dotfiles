@@ -6,6 +6,7 @@ repos:
     - id: lua-format
       name: format lua
       description: format lua
-      entry: lua-format --column-limit 150 -i
+      entry: lua-format
+      args: ["--tab-width=2", "--indent-width=2", "--column-limit=150", "-i"]
       language: system
       types: [file, lua]
