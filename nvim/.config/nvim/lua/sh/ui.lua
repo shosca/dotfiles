@@ -21,8 +21,10 @@ function M.configure_packer(use)
 
     use {"kyazdani42/nvim-web-devicons"}
     use {
-        'hoob3rt/lualine.nvim',
-        commit = 'dc2c711a5329470a64f07da100113e598044c5ae',
+        -- 'hoob3rt/lualine.nvim', https://github.com/hoob3rt/lualine.nvim/issues/230
+        -- commit = 'dc2c711a5329470a64f07da100113e598044c5ae',
+
+        'shadmansaleh/lualine.nvim',
         requires = {{'kyazdani42/nvim-web-devicons'}, {'marko-cerovac/material.nvim'}},
         config = function()
             require('lualine').setup {
@@ -54,7 +56,16 @@ function M.configure_packer(use)
             }
         end
     }
-    use 'kevinhwang91/nvim-bqf'
+    use {
+        'kdheepak/tabline.nvim',
+        config = function()
+            require('tabline').setup()
+            vim.cmd [[
+                set guioptions-=e
+                set sessionoptions+=tabpages,globals " store tabpages and globals in session
+            ]]
+        end
+    }
     use {'folke/trouble.nvim', requires = 'kyazdani42/nvim-web-devicons', config = function() require('trouble').setup {} end}
 end
 return M
