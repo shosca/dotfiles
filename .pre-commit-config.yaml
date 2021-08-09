@@ -7,6 +7,13 @@ repos:
       name: format lua
       description: format lua
       entry: lua-format
-      args: ["--tab-width=2", "--indent-width=2", "--column-limit=150", "-i"]
+      args: 
+        - --tab-width=2
+        - --indent-width=2
+        - --column-limit=150
+        - --align-parameter 
+        - --chop-down-table 
+        - --chop-down-kv-table 
+        - -i
       language: system
       types: [file, lua]

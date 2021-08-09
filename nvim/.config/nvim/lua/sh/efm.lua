@@ -4,7 +4,13 @@ local lsp = require('sh.lsp')
 local M = {}
 
 function M.lua_setup()
-  return {{formatCommand = 'lua-format --tab-width=2 --indent-width 2 --column-limit=150 -i', formatStdin = true, rootMarkers = {".git"}}}
+  return {
+    {
+      formatCommand = 'lua-format --tab-width=2 --indent-width 2 --column-limit=150 --align-parameter --chop-down-table --chop-down-kv-table -i',
+      formatStdin = true,
+      rootMarkers = {".git"}
+    }
+  }
 end
 
 function M.setup()

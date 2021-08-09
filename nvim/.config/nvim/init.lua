@@ -5,6 +5,18 @@ vim.g.loaded_zip = 1
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+local backupdir = vim.fn.stdpath('data') .. '/backup'
+local swapdir = vim.fn.stdpath('data') .. '/swap'
+local undodir = vim.fn.stdpath('data') .. '/undo'
+
+vim.fn.mkdir(backupdir, 'p')
+vim.fn.mkdir(swapdir, 'p')
+vim.fn.mkdir(undodir, 'p')
+
+vim.opt.backupdir = backupdir
+vim.opt.directory = swapdir
+vim.opt.undodir = undodir
+
 -- Ignore compiled files
 vim.opt.wildignorecase = true
 vim.opt.wildignore = {"__pycache__", "*.o", "*~", "*.pyc", "*pycache*"}
@@ -60,7 +72,6 @@ vim.opt.belloff = "all" -- Just turn the dang bell off
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.inccommand = "split"
-vim.opt.swapfile = false -- Living on the edge
 vim.opt.shada = {"!", "'1000", "<50", "s10", "h"}
 
 vim.opt.mouse = "n"
