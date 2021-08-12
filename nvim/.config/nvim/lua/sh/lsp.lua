@@ -30,7 +30,6 @@ vim.fn.sign_define("LspDiagnosticsSignWarning", {texthl = "LspDiagnosticsSignWar
 vim.fn.sign_define("LspDiagnosticsSignHint", {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"})
 vim.fn.sign_define("LspDiagnosticsSignInformation", {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"})
 
--- vim.cmd('nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>')
 -- scroll down hover doc or scroll in definition preview
 -- scroll up hover doc
 vim.cmd 'command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()'
@@ -89,18 +88,17 @@ function M.common_on_attach(client, bufnr)
       augroup END
       ]], false)
   end
-  require('lsp_signature').on_attach()
 
   local opts = {noremap = true, silent = true}
   local function map(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
-  map("n", "lD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  map("n", "ld", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  map("n", "li", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  map("n", "lr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  map("n", "lp", "<cmd>lua require'lsp'.PeekDefinition()<CR>", opts)
-  map("n", "lp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-  map("n", "ln", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+  map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+  map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+  map("n", "gp", "<cmd>lua require'lsp'.PeekDefinition()<CR>", opts)
+  map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
+  map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
 end
@@ -139,7 +137,6 @@ end
 
 function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
-  use 'ray-x/lsp_signature.nvim'
   use 'folke/lua-dev.nvim'
   use 'nvim-lua/lsp-status.nvim'
   use {'hrsh7th/nvim-compe', event = 'InsertEnter', config = M.compe_config}

@@ -4,6 +4,8 @@ local function config()
   vim.api.nvim_set_keymap("n", "<Leader>b", ":Telescope buffers<CR>", {noremap = true, silent = true})
   vim.api.nvim_set_keymap("n", "<Leader>f", ":Telescope find_files<CR>", {noremap = true, silent = true})
   vim.api.nvim_set_keymap("n", "<Leader>g", ":Telescope live_grep<CR>", {noremap = true, silent = true})
+  vim.api.nvim_set_keymap("n", "<Leader>dd", ":Telescope lsp_document_diagnostics<CR>", {noremap = true, silent = true})
+  vim.api.nvim_set_keymap("n", "<Leader>wd", ":Telescope lsp_workspace_diagnostics<CR>", {noremap = true, silent = true})
 
   local actions = require('telescope.actions')
   require('telescope').setup {
