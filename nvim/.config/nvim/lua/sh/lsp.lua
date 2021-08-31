@@ -113,8 +113,9 @@ function M.compe_config()
       path = {kind = "   (Path)"},
       buffer = {kind = "   (Buffer)"},
       calc = {kind = "   (Calc)"},
-      vsnip = {kind = "   (Snippet)"},
-      nvim_lsp = {kind = "   (LSP)"}
+      nvim_lsp = {kind = "   (LSP)"},
+      spell = {kind = ""},
+      nvim_lua = {kind = ""}
     }
   }
   vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
@@ -132,6 +133,7 @@ end
 function M.capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {properties = {"documentation", "detail", "additionalTextEdits"}}
   return capabilities
 end
 
@@ -139,6 +141,7 @@ function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'folke/lua-dev.nvim'
   use 'nvim-lua/lsp-status.nvim'
-  use {'hrsh7th/nvim-compe', event = 'InsertEnter', config = M.compe_config}
+  use {'hrsh7th/nvim-compe', config = M.compe_config}
+  use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M

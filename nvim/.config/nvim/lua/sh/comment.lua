@@ -3,7 +3,7 @@ local M = {}
 function M.configure_packer(use)
   use {
     "terrortylor/nvim-comment",
-    event = "BufRead",
+    cmd = "CommentToggle",
     config = function()
       local status_ok, nvim_comment = pcall(require, "nvim_comment")
       if not status_ok then return end

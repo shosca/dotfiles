@@ -21,6 +21,25 @@ function M.configure_packer(use)
 
   use {"kyazdani42/nvim-web-devicons"}
   use {
+    "SmiteshP/nvim-gps",
+    config = function()
+      require('nvim-gps').setup({
+        icons = {["class-name"] = ' ', ["function-name"] = ' ', ["method-name"] = ' '},
+        languages = {
+          ["c"] = true,
+          ["cpp"] = true,
+          ["go"] = true,
+          ["java"] = true,
+          ["javascript"] = true,
+          ["lua"] = true,
+          ["python"] = true,
+          ["rust"] = true
+        },
+        separator = ' > '
+      })
+    end
+  }
+  use {
     'famiu/feline.nvim',
     config = function()
 
@@ -134,12 +153,18 @@ function M.configure_packer(use)
             hl = {fg = colors.cyan}
           }
         },
-        lsp = {name = {provider = 'lsp_client_names', left_sep = ' ', icon = icons.lsp, hl = {fg = colors.yellow}}},
+        lsp = {provider = 'lsp_client_names', left_sep = ' ', icon = icons.lsp, hl = {fg = colors.yellow}},
         git = {
           branch = {provider = 'git_branch', icon = icons.git, left_sep = ' ', hl = {fg = colors.violet, style = 'bold'}},
           add = {provider = 'git_diff_added', hl = {fg = colors.green}},
           change = {provider = 'git_diff_changed', hl = {fg = colors.orange}},
           remove = {provider = 'git_diff_removed', hl = {fg = colors.red}}
+        },
+        gps = {
+          provider = function() return require('nvim-gps').get_location() end,
+          enabled = function() return require('nvim-gps').is_available() end,
+          left_sep = ' ',
+          hl = {fg = colors.blue}
         }
       }
 
@@ -149,15 +174,7 @@ function M.configure_packer(use)
 
       local components = {
         left = {
-          active = {
-            comps.vi_mode.left,
-            comps.file.info,
-            comps.lsp.name,
-            comps.diagnos.err,
-            comps.diagnos.warn,
-            comps.diagnos.hint,
-            comps.diagnos.info
-          },
+          active = {comps.vi_mode.left, comps.file.info, comps.diagnos.err, comps.diagnos.warn, comps.diagnos.hint, comps.diagnos.info, comps.gps},
           inactive = {comps.vi_mode.left, comps.file.info}
         },
         mid = {active = {}, inactive = {}},
@@ -166,6 +183,7 @@ function M.configure_packer(use)
             comps.git.add,
             comps.git.change,
             comps.git.remove,
+            comps.lsp,
             comps.file.os,
             comps.git.branch,
             comps.line_percentage,
