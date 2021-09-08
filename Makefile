@@ -100,9 +100,7 @@ python: in  ## install python/pdb config {
 
 pipx: in  ## installs pipx packages
 	pipx install --force python-lsp-server
-	pipx inject python-lsp-server rope
-	pipx inject python-lsp-server pylsp-mypy
-	pipx inject python-lsp-server python-lsp-black
+	pipx inject python-lsp-server rope pylsp-mypy python-lsp-black
 
 pipx-update:  ## update all pipx installs
 	pipx upgrade-all

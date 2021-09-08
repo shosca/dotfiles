@@ -36,7 +36,7 @@ function M.configure_packer(use)
         },
         custom_highlights = {} -- Overwrite highlights with your own
       })
-      require('material.util').load()
+      vim.cmd [[colorscheme material]]
     end
   }
 
@@ -194,13 +194,10 @@ function M.configure_packer(use)
       }
 
       local components = {
-        left = {
-          active = {comps.vi_mode.left, comps.file.info, comps.diagnos.err, comps.diagnos.warn, comps.diagnos.hint, comps.diagnos.info, comps.gps},
-          inactive = {comps.vi_mode.left, comps.file.info}
-        },
-        mid = {active = {}, inactive = {}},
-        right = {
-          active = {
+        active = {
+          {comps.vi_mode.left, comps.file.info, comps.diagnos.err, comps.diagnos.warn, comps.diagnos.hint, comps.diagnos.info, comps.gps},
+          {},
+          {
             comps.git.add,
             comps.git.change,
             comps.git.remove,
@@ -210,9 +207,9 @@ function M.configure_packer(use)
             comps.line_percentage,
             comps.scroll_bar,
             comps.vi_mode.right
-          },
-          inactive = {}
-        }
+          }
+        },
+        inactive = {{comps.vi_mode.left, comps.file.info}, {}}
       }
 
       require'feline'.setup {
