@@ -45,8 +45,9 @@ function M.configure_packer(use)
   use {
     "SmiteshP/nvim-gps",
     config = function()
+      local kind_icons = require("lspkind").presets.default
       require('nvim-gps').setup({
-        icons = {["class-name"] = ' ', ["function-name"] = ' ', ["method-name"] = ' '},
+        icons = {["class-name"] = kind_icons.Class .. " ", ["function-name"] = kind_icons.Function .. " ", ["method-name"] = kind_icons.Method .. " "},
         languages = {
           ["c"] = true,
           ["cpp"] = true,
@@ -190,8 +191,10 @@ function M.configure_packer(use)
         }
       }
 
-      local properties = {
-        force_inactive = {filetypes = {'NvimTree', 'dbui', 'packer', 'startify', 'fugitive', 'fugitiveblame'}, buftypes = {'terminal'}, bufnames = {}}
+      local force_inactive = {
+        filetypes = {'NvimTree', 'dbui', 'packer', 'startify', 'fugitive', 'fugitiveblame'},
+        buftypes = {'terminal'},
+        bufnames = {}
       }
 
       local components = {
@@ -214,11 +217,10 @@ function M.configure_packer(use)
       }
 
       require'feline'.setup {
-        default_bg = colors.bg,
-        default_fg = colors.fg,
-        components = components,
-        properties = properties,
-        vi_mode_colors = vi_mode_colors
+        colors = {bg = colors.bg, fg = colors.fg},
+        vi_mode_colors = vi_mode_colors,
+        force_inactive = force_inactive,
+        components = components
       }
 
     end
