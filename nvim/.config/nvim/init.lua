@@ -52,7 +52,7 @@ vim.opt.scrolloff = 10 -- Make it so there are always ten lines below my cursor
 -- Tabs
 vim.opt.autoindent = true
 vim.opt.cindent = true
-vim.opt.wrap = true
+vim.opt.wrap = false
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4

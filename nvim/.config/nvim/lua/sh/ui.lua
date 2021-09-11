@@ -1,6 +1,7 @@
 local M = {}
 
 function M.configure_packer(use)
+  use {"beauwilliams/focus.nvim", config = function() require("focus").setup({width = 120}) end}
   use {
     'marko-cerovac/material.nvim',
     setup = function()

@@ -30,9 +30,26 @@ vim.fn.sign_define("LspDiagnosticsSignWarning", {texthl = "LspDiagnosticsSignWar
 vim.fn.sign_define("LspDiagnosticsSignHint", {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"})
 vim.fn.sign_define("LspDiagnosticsSignInformation", {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"})
 
--- scroll down hover doc or scroll in definition preview
--- scroll up hover doc
-vim.cmd 'command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()'
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "single"})
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single"})
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  signs = {
+    active = true,
+    values = {
+      {name = "LspDiagnosticsSignError", text = ""},
+      {name = "LspDiagnosticsSignWarning", text = ""},
+      {name = "LspDiagnosticsSignHint", text = ""},
+      {name = "LspDiagnosticsSignInformation", text = ""}
+    }
+  },
+  virtual_text = false,
+  underline = true,
+  severity_sort = true
+})
+vim.cmd [[
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border="single" })
+autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help({focusable=false, border="single"})
+]]
 
 local M = {}
 
@@ -66,8 +83,10 @@ end
 
 function M.cmp_config()
   local cmp = require('cmp')
+  local luasnip = require('luasnip')
   cmp.setup {
-    snippet = {expand = function(args) require("luasnip").lsp_expand(args.body) end},
+    completion = {completeopt = "menu,menuone,noselect"},
+    snippet = {expand = function(args) luasnip.lsp_expand(args.body) end},
     mapping = {
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -77,11 +96,31 @@ function M.cmp_config()
     formatting = {
       format = function(entry, vim_item)
         vim_item.kind = require("lspkind").presets.default[vim_item.kind]
-        vim_item.menu = entry.source.name
+        vim_item.menu = ({
+          nvim_lsp = "(LSP)",
+          emoji = "(Emoji)",
+          path = "(Path)",
+          calc = "(Calc)",
+          vsnip = "(Snippet)",
+          luasnip = "(Snippet)",
+          buffer = "(Buffer)"
+        })[entry.source.name]
+        vim_item.dup = ({buffer = 1, path = 1, nvim_lsp = 0})[entry.source.name] or 0
         return vim_item
       end
     },
-    sources = {{name = "buffer"}, {name = "path"}, {name = "nvim_lua"}, {name = "nvim_lsp"}, {name = "luasnip"}}
+    documentation = {border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}},
+    sources = {
+      {name = "nvim_lsp"},
+      {name = "path"},
+      {name = "luasnip"},
+      {name = "nvim_lua"},
+      {name = "buffer"},
+      {name = "calc"},
+      {name = "emoji"},
+      {name = "treesitter"},
+      {name = "crates"}
+    }
   }
 end
 
@@ -101,6 +140,7 @@ function M.configure_packer(use)
     "hrsh7th/nvim-cmp",
     config = M.cmp_config,
     requires = {
+      "L3MON4D3/LuaSnip",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-nvim-lua",
@@ -109,6 +149,7 @@ function M.configure_packer(use)
       "onsails/lspkind-nvim"
     }
   }
+  use 'rafamadriz/friendly-snippets'
   use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M
