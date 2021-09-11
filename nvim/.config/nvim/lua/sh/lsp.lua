@@ -47,13 +47,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
   underline = true,
   severity_sort = true
 })
-vim.cmd [[
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border={"╭", "─", "╮", "│", "╯", "─", "╰", "│"} })
-autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help({focusable=false, border={"╭", "─", "╮", "│", "╯", "─", "╰", "│"}})
-]]
+vim.cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border=" .. vim.inspect(border) .. "})")
 
 local M = {}
-
 function M.common_on_attach(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
@@ -79,7 +75,6 @@ function M.common_on_attach(client, bufnr)
   map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-
 end
 
 function M.cmp_config()
