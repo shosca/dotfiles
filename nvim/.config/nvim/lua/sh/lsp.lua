@@ -1,3 +1,4 @@
+local border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 vim.lsp.protocol.CompletionItemKind = {
   "   (Text) ",
   "   (Method)",
@@ -30,8 +31,8 @@ vim.fn.sign_define("LspDiagnosticsSignWarning", {texthl = "LspDiagnosticsSignWar
 vim.fn.sign_define("LspDiagnosticsSignHint", {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"})
 vim.fn.sign_define("LspDiagnosticsSignInformation", {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"})
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "single"})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single"})
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border})
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   signs = {
     active = true,
@@ -47,8 +48,8 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
   severity_sort = true
 })
 vim.cmd [[
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border="single" })
-autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help({focusable=false, border="single"})
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border={"╭", "─", "╮", "│", "╯", "─", "╰", "│"} })
+autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help({focusable=false, border={"╭", "─", "╮", "│", "╯", "─", "╰", "│"}})
 ]]
 
 local M = {}

@@ -45,7 +45,7 @@ vim.opt.cursorline = true -- Highlight the current line
 vim.opt.equalalways = true
 vim.opt.splitright = true -- Prefer windows splitting to the right
 vim.opt.splitbelow = true -- Prefer windows splitting to the bottom
-vim.opt.updatetime = 1000 -- Make updates happen faster
+vim.opt.updatetime = 800 -- Make updates happen faster
 vim.opt.hlsearch = true -- I wouldn't use this without my DoNoHL function
 vim.opt.scrolloff = 10 -- Make it so there are always ten lines below my cursor
 
