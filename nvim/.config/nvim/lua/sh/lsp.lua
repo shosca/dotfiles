@@ -84,10 +84,31 @@ function M.cmp_config()
     completion = {completeopt = "menu,menuone,noselect"},
     snippet = {expand = function(args) luasnip.lsp_expand(args.body) end},
     mapping = {
-      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ["<C-e>"] = cmp.mapping.close(),
-      ["<c-y>"] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true}
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true},
+      ['<Tab>'] = function(fallback)
+        if vim.fn.pumvisible() == 1 then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+        elseif luasnip.expand_or_jumpable() then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+        else
+          fallback()
+        end
+      end,
+      ['<S-Tab>'] = function(fallback)
+        if vim.fn.pumvisible() == 1 then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+        elseif luasnip.jumpable(-1) then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+        else
+          fallback()
+        end
+      end
     },
     formatting = {
       format = function(entry, vim_item)
@@ -108,9 +129,9 @@ function M.cmp_config()
     documentation = {border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}},
     sources = {
       {name = "nvim_lsp"},
-      {name = "path"},
       {name = "luasnip"},
       {name = "nvim_lua"},
+      {name = "path"},
       {name = "buffer"},
       {name = "calc"},
       {name = "emoji"},
@@ -145,7 +166,6 @@ function M.configure_packer(use)
       "onsails/lspkind-nvim"
     }
   }
-  use 'rafamadriz/friendly-snippets'
   use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M

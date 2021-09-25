@@ -7,7 +7,7 @@ end
 
 local packer = require('packer')
 
-local packages = {'sh.core', 'sh.ui', 'sh.treesitter', 'sh.telescope', 'sh.comment', 'sh.lsp', 'sh.git', 'sh.dap'}
+local packages = {'sh.core', 'sh.ui', 'sh.treesitter', 'sh.telescope', 'sh.comment', 'sh.lsp', 'sh.git', 'sh.dap', 'sh.luasnip'}
 
 packer.startup({
   function(use)

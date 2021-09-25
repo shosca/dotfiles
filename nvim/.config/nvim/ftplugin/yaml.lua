@@ -26,11 +26,12 @@ if not lsp.is_client_active('yamlls') then
           "!Split",
           "!Join sequence"
         },
+        editor = {formatOnType = true},
         schemas = {
           {url = 'https://json.schemastore.org/pre-commit-config.json', fileMatch = '.pre-commit-config.{yml,yaml}'},
           {
             url = 'https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json',
-            fileMatch = {'cf-templates/**/*.{yml,yaml}'}
+            fileMatch = {'**/cf-templates/**/*.{yml,yaml}'}
 
           },
           {url = 'https://json.schemastore.org/github-action', fileMatch = '.github/action.{yml,yaml}'},
