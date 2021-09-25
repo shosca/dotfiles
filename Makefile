@@ -99,6 +99,7 @@ python: in  ## install python/pdb config {
 	stow -R python
 
 pipx: in  ## installs pipx packages
+	pipx install --force sourcery-cli
 	pipx install --force python-lsp-server
 	pipx inject python-lsp-server rope pylsp-mypy python-lsp-black
 

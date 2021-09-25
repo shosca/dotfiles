@@ -5,3 +5,4 @@ sessions
 log
 *.log
 packer_compiled.lua
+secrets.*
