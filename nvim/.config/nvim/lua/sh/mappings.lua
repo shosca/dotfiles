@@ -32,6 +32,8 @@ cnoreabbrev Qa qa
 cnoreabbrev Qall qall
 ]])
 
+vim.cmd([[nnoremap <silent> * :set hlsearch<Cr>:exe "let @/='\\<'.expand('<cword>').'\\>'"<Cr>]])
+
 -- Switch history search pairs, matching my bash shell
 cnoremap('<C-p>', '<Up>')
 cnoremap('<C-n>', '<Down>')

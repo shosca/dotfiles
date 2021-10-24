@@ -79,10 +79,13 @@ end
 
 function M.cmp_config()
   local cmp = require('cmp')
-  local luasnip = require('luasnip')
+  local lspkind = require('lspkind')
+  lspkind.init()
+  local gh_issues = require('sh.gh_issues')
+  cmp.register_source("gh_issues", gh_issues.new())
   cmp.setup {
     completion = {completeopt = "menu,menuone,noselect"},
-    snippet = {expand = function(args) luasnip.lsp_expand(args.body) end},
+    snippet = {expand = function(args) require('luasnip').lsp_expand(args.body) end},
     mapping = {
       ['<C-p>'] = cmp.mapping.select_prev_item(),
       ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -90,54 +93,57 @@ function M.cmp_config()
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
-      ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true},
-      ['<Tab>'] = function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-        elseif luasnip.expand_or_jumpable() then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-        else
-          fallback()
-        end
-      end,
-      ['<S-Tab>'] = function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-        elseif luasnip.jumpable(-1) then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-        else
-          fallback()
-        end
-      end
+      ['<C-y>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true},
+      ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true}
+      -- ['<Tab>'] = function(fallback)
+      --   if vim.fn.pumvisible() == 1 then
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+      --   elseif luasnip.expand_or_jumpable() then
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      --   else
+      --     fallback()
+      --   end
+      -- end,
+      -- ['<S-Tab>'] = function(fallback)
+      --   if vim.fn.pumvisible() == 1 then
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+      --   elseif luasnip.jumpable(-1) then
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      --   else
+      --     fallback()
+      --   end
+      -- end
     },
     formatting = {
-      format = function(entry, vim_item)
-        vim_item.kind = require("lspkind").presets.default[vim_item.kind]
-        vim_item.menu = ({
+      format = lspkind.cmp_format {
+        with_text = true,
+        menu = {
           nvim_lsp = "(LSP)",
           emoji = "(Emoji)",
           path = "(Path)",
           calc = "(Calc)",
           vsnip = "(Snippet)",
           luasnip = "(Snippet)",
-          buffer = "(Buffer)"
-        })[entry.source.name]
-        vim_item.dup = ({buffer = 1, path = 1, nvim_lsp = 0})[entry.source.name] or 0
-        return vim_item
-      end
+          buffer = "(Buffer)",
+          gh_issues = "(issues)"
+        }
+      }
     },
     documentation = {border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}},
     sources = {
-      {name = "nvim_lsp"},
-      {name = "luasnip"},
+      {name = "gh_issues"},
       {name = "nvim_lua"},
+      {name = "zsh"},
+      {name = "nvim_lsp"},
       {name = "path"},
-      {name = "buffer"},
+      {name = "luasnip"},
+      {name = "buffer", keyword_length = 5},
       {name = "calc"},
       {name = "emoji"},
       {name = "treesitter"},
       {name = "crates"}
-    }
+    },
+    experimental = {native_menu = false, ghost_text = true}
   }
 end
 
@@ -153,19 +159,14 @@ function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'folke/lua-dev.nvim'
   use 'nvim-lua/lsp-status.nvim'
-  use {
-    "hrsh7th/nvim-cmp",
-    config = M.cmp_config,
-    requires = {
-      "L3MON4D3/LuaSnip",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-nvim-lsp",
-      "saadparwaiz1/cmp_luasnip",
-      "onsails/lspkind-nvim"
-    }
-  }
+  use {"hrsh7th/nvim-cmp", config = M.cmp_config}
+  use "hrsh7th/cmp-buffer"
+  use "hrsh7th/cmp-path"
+  use "hrsh7th/cmp-nvim-lua"
+  use "hrsh7th/cmp-nvim-lsp"
+  use {"saadparwaiz1/cmp_luasnip", requires = {"L3MON4D3/LuaSnip"}}
+  use "onsails/lspkind-nvim"
+  use "tamago324/cmp-zsh"
   use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M

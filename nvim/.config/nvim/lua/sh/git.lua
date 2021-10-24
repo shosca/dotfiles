@@ -5,7 +5,9 @@ function M.configure_packer(use)
     "lewis6991/gitsigns.nvim",
     event = {"CursorMoved", "CursorMovedI"},
     requires = {"nvim-lua/plenary.nvim"},
-    config = function() require("gitsigns").setup {current_line_blame = true} end
+    config = function()
+      require("gitsigns").setup {current_line_blame = true, current_line_blame_opts = {virt_text = true, virt_text_pos = 'right_align', delay = 1000}}
+    end
   }
   use "rhysd/committia.vim"
   use {"sindrets/diffview.nvim", cmd = "DiffviewOpen", config = function() require('diffview').setup() end}

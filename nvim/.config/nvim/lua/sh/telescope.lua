@@ -6,6 +6,7 @@ local function config()
   vim.api.nvim_set_keymap("n", "<Leader>g", ":Telescope live_grep<CR>", {noremap = true, silent = true})
   vim.api.nvim_set_keymap("n", "<Leader>dd", ":Telescope lsp_document_diagnostics<CR>", {noremap = true, silent = true})
   vim.api.nvim_set_keymap("n", "<Leader>wd", ":Telescope lsp_workspace_diagnostics<CR>", {noremap = true, silent = true})
+  vim.api.nvim_set_keymap("n", "<Leader>a", ":Telescope lsp_code_actions<CR>", {noremap = true, silent = true})
 
   local actions = require('telescope.actions')
   require('telescope').setup {
@@ -58,7 +59,8 @@ local function config()
           ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist
         }
       }
-    }
+    },
+    pickers = {live_grep = {only_sort_text = true}}
   }
   -- fzy native extension
   pcall(require("telescope").load_extension, "cheat")
