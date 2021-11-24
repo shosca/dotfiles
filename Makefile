@@ -99,7 +99,6 @@ python: in  ## install python/pdb config {
 	stow -R python
 
 pipx: in  ## installs pipx packages
-	pipx install --force ipython
 	pipx install --force pre-commit
 	pipx install --force pew
 	pipx install --force sourcery-cli

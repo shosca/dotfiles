@@ -79,10 +79,9 @@ end
 
 function M.cmp_config()
   local cmp = require('cmp')
+  require('sh.gh_issues')
   local lspkind = require('lspkind')
   lspkind.init()
-  local gh_issues = require('sh.gh_issues')
-  cmp.register_source("gh_issues", gh_issues.new())
   cmp.setup {
     completion = {completeopt = "menu,menuone,noselect"},
     snippet = {expand = function(args) require('luasnip').lsp_expand(args.body) end},
@@ -93,8 +92,8 @@ function M.cmp_config()
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
-      ['<C-y>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true},
-      ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true}
+      ['<C-y>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true}
+      -- ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true}
       -- ['<Tab>'] = function(fallback)
       --   if vim.fn.pumvisible() == 1 then
       --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')

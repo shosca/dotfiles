@@ -1,5 +1,6 @@
 local Job = require('plenary.job')
 local json = require('sh.json')
+local cmp = require('cmp')
 
 local source = {}
 
@@ -9,7 +10,9 @@ source.new = function()
   return self
 end
 
-source.complete = function(self, _, callback)
+function source:is_available() return vim.bo.filetype == "gitcommit" end
+
+function source:complete(_, callback)
   local bufnr = vim.api.nvim_get_current_buf()
 
   -- This just makes sure that we only hit the GH API once per session.
@@ -56,6 +59,6 @@ end
 
 source.get_trigger_characters = function() return {"#"} end
 
-source.is_available = function() return vim.bo.filetype == "gitcommit" end
+cmp.register_source("gh_issues", source.new())
 
 return source

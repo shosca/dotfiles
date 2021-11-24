@@ -1,3 +1,4 @@
+vim.g.did_load_filetypes = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
@@ -45,7 +46,8 @@ vim.opt.cursorline = true -- Highlight the current line
 vim.opt.equalalways = true
 vim.opt.splitright = true -- Prefer windows splitting to the right
 vim.opt.splitbelow = true -- Prefer windows splitting to the bottom
-vim.opt.updatetime = 800 -- Make updates happen faster
+vim.opt.updatetime = 300 -- Make updates happen faster
+vim.opt.redrawtime = 10000 -- for syntax loading on large files
 vim.opt.hlsearch = true -- I wouldn't use this without my DoNoHL function
 vim.opt.scrolloff = 10 -- Make it so there are always ten lines below my cursor
 
