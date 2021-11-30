@@ -19,13 +19,17 @@ function M.treesitter_config()
       highlight_definitions = {enable = true},
       highlight_current_scope = {enable = false},
       smart_rename = {enable = true, keymaps = {smart_rename = "grr"}}
-    }
+    },
+    pyfold = {enable = true, custom_foldtext = true}
   }
   vim.opt.foldmethod = 'expr'
   vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 end
 
 function M.configure_packer(use)
-  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = M.treesitter_config, requires = {'nvim-treesitter/nvim-treesitter-refactor'}}
+  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = M.treesitter_config}
+  use {"eddiebergman/nvim-treesitter-pyfold"}
+  use {"nvim-treesitter/nvim-treesitter-refactor"}
+  use {"nvim-treesitter/nvim-treesitter-textobjects"}
 end
 return M

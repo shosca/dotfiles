@@ -78,6 +78,14 @@ clean-tmux: out
 
 # }
 
+wezterm: in  ## Install wezterm {
+	stow -R wezterm
+# }
+
+clean-wezterm: out
+	stow -D wezterm
+# }
+
 nvim: in ## install neovim config {
 	stow -R nvim
 

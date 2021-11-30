@@ -17,7 +17,7 @@ function M.setup()
 
   lspconfig.efm.setup {
     on_attach = lsp.common_on_attach,
-    capabilities = lsp.capabilities(),
+    capabilities = lsp.capabilities,
     init_options = {documentFormatting = true, documentSymbol = true, codeAction = true, hover = true},
     filetypes = {"python", "lua"},
     settings = {languages = {lua = M.lua_setup()}}

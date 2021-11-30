@@ -12,9 +12,16 @@ if not lsp.is_client_active("pylsp") then
     cmd = {"pylsp", "-v"},
     cmd_env = {VIRTUAL_ENV = venv, PATH = path},
     on_attach = lsp.common_on_attach,
-    capabilities = lsp.capabilities(),
+    capabilities = lsp.capabilities,
     settings = {
-      pylsp = {plugins = {flake8 = {enabled = true}, jedi_completion = {fuzzy = true}, pylsp_black = {enabled = true}, pylsp_mypy = {enabled = true}}}
+      pylsp = {
+        plugins = {
+          flake8 = {enabled = true},
+          jedi_completion = {include_params = true, fuzzy = true},
+          pylsp_black = {enabled = true},
+          pylsp_mypy = {enabled = true}
+        }
+      }
     }
   }
   vim.cmd [[LspStart]]

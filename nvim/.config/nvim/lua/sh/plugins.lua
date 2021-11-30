@@ -16,7 +16,7 @@ packer.startup({
 
     use 'bfredl/nvim-luadev'
   end,
-  config = {display = {open_fn = require('packer.util').float}}
+  config = {compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua', display = {open_fn = require('packer.util').float}}
 })
 packer.install()
 packer.compile()

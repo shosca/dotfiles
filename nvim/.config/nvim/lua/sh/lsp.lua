@@ -49,7 +49,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 })
 vim.cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border=" .. vim.inspect(border) .. "})")
 
-local M = {}
+local M = {capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())}
 function M.common_on_attach(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
@@ -79,6 +79,7 @@ end
 
 function M.cmp_config()
   local cmp = require('cmp')
+  local cmp_types = require('cmp.types')
   require('sh.gh_issues')
   local lspkind = require('lspkind')
   lspkind.init()
@@ -86,32 +87,28 @@ function M.cmp_config()
     completion = {completeopt = "menu,menuone,noselect"},
     snippet = {expand = function(args) require('luasnip').lsp_expand(args.body) end},
     mapping = {
-      ['<C-p>'] = cmp.mapping.select_prev_item(),
-      ['<C-n>'] = cmp.mapping.select_next_item(),
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
-      ['<C-y>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true}
-      -- ['<CR>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true}
-      -- ['<Tab>'] = function(fallback)
-      --   if vim.fn.pumvisible() == 1 then
-      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      --   elseif luasnip.expand_or_jumpable() then
-      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      --   else
-      --     fallback()
-      --   end
-      -- end,
-      -- ['<S-Tab>'] = function(fallback)
-      --   if vim.fn.pumvisible() == 1 then
-      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      --   elseif luasnip.jumpable(-1) then
-      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      --   else
-      --     fallback()
-      --   end
-      -- end
+      ['<C-y>'] = cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Insert, select = true},
+      ["<CR>"] = function(fallback)
+        if cmp.visible() then
+          return cmp.mapping.confirm {behavior = cmp.ConfirmBehavior.Replace, select = true}(fallback)
+        else
+          return fallback()
+        end
+      end,
+      -- ['<C-n>'] = cmp.mapping.select_next_item(),
+      ["<c-n>"] = function(fallback)
+        if cmp.visible() then
+          return cmp.mapping.select_next_item {behavior = cmp.SelectBehavior.Insert}(fallback)
+        else
+          return cmp.mapping.complete()(fallback)
+        end
+      end,
+      -- ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ["<C-p>"] = cmp.mapping.select_prev_item {behavior = cmp.SelectBehavior.Insert}
     },
     formatting = {
       format = lspkind.cmp_format {
@@ -128,15 +125,47 @@ function M.cmp_config()
         }
       }
     },
+    sorting = {
+      comparators = {
+        cmp.config.compare.offset,
+        cmp.config.compare.exact,
+        cmp.config.compare.score,
+        require("cmp-under-comparator").under,
+        function(entry1, entry2)
+          local kind1 = entry1:get_kind()
+          kind1 = kind1 == cmp_types.lsp.CompletionItemKind.Text and 100 or kind1
+          kind1 = kind1 == cmp_types.lsp.CompletionItemKind.Variable and 1 or kind1
+          local kind2 = entry2:get_kind()
+          kind2 = kind2 == cmp_types.lsp.CompletionItemKind.Text and 100 or kind2
+          kind2 = kind2 == cmp_types.lsp.CompletionItemKind.Variable and 1 or kind2
+          if kind1 ~= kind2 then
+            if kind1 == cmp_types.lsp.CompletionItemKind.Snippet then return true end
+            if kind2 == cmp_types.lsp.CompletionItemKind.Snippet then return false end
+            local diff = kind1 - kind2
+            if diff < 0 then
+              return true
+            elseif diff > 0 then
+              return false
+            end
+          end
+        end,
+        cmp.config.compare.sort_text,
+        cmp.config.compare.length,
+        cmp.config.compare.order
+      }
+    },
     documentation = {border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}},
     sources = {
       {name = "gh_issues"},
-      {name = "nvim_lua"},
+      {name = "path", priority_weight = 110},
+      {name = "nvim_lsp", max_item_count = 20, priority_weight = 100},
+      {name = "nvim_lua", priority_weight = 90},
+      {name = "luasnip", priority_weight = 80},
+      {name = "buffer", max_item_count = 5, priority_weight = 70},
+      {name = "rg", keyword_length = 5, max_item_count = 5, priority_weight = 60},
+      {name = "tmux", max_item_count = 5, option = {all_panes = false}, priority_weight = 50},
+      {name = "look", keyword_length = 5, max_item_count = 5, option = {convert_case = true, loud = true}, priority_weight = 40},
       {name = "zsh"},
-      {name = "nvim_lsp"},
-      {name = "path"},
-      {name = "luasnip"},
-      {name = "buffer", keyword_length = 5},
       {name = "calc"},
       {name = "emoji"},
       {name = "treesitter"},
@@ -144,6 +173,7 @@ function M.cmp_config()
     },
     experimental = {native_menu = false, ghost_text = true}
   }
+  -- cmp.setup.cmdline(":", {completion = {autocomplete = false}, sources = {{name = "cmdline"}}})
 end
 
 function M.is_client_active(name)
@@ -152,20 +182,29 @@ function M.is_client_active(name)
   return false
 end
 
-function M.capabilities() return require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()) end
-
 function M.configure_packer(use)
   use 'neovim/nvim-lspconfig'
   use 'folke/lua-dev.nvim'
   use 'nvim-lua/lsp-status.nvim'
-  use {"hrsh7th/nvim-cmp", config = M.cmp_config}
-  use "hrsh7th/cmp-buffer"
-  use "hrsh7th/cmp-path"
-  use "hrsh7th/cmp-nvim-lua"
-  use "hrsh7th/cmp-nvim-lsp"
-  use {"saadparwaiz1/cmp_luasnip", requires = {"L3MON4D3/LuaSnip"}}
+  use {
+    "hrsh7th/nvim-cmp",
+    config = M.cmp_config,
+    requires = {
+      {"hrsh7th/cmp-cmdline"},
+      {"andersevenrud/compe-tmux", branch = "cmp"},
+      {"hrsh7th/cmp-buffer"},
+      {"hrsh7th/cmp-nvim-lsp"},
+      {"hrsh7th/cmp-nvim-lsp-document-symbol"},
+      {"hrsh7th/cmp-nvim-lua"},
+      {"hrsh7th/cmp-path"},
+      {"saadparwaiz1/cmp_luasnip"},
+      {"tamago324/cmp-zsh"},
+      {"lukas-reineke/cmp-under-comparator"},
+      {"lukas-reineke/cmp-rg"},
+      {"octaltree/cmp-look"}
+    }
+  }
   use "onsails/lspkind-nvim"
-  use "tamago324/cmp-zsh"
   use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M

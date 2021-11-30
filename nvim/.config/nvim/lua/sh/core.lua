@@ -34,6 +34,7 @@ nmap <leader>vd <Plug>(ultest-debug-nearest)
 end
 
 function M.configure_packer(use)
+  use 'lewis6991/impatient.nvim'
   use "nathom/filetype.nvim"
   use 'benizi/vim-automkdir'
   use 'sgur/vim-editorconfig'

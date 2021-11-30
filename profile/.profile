@@ -36,6 +36,9 @@ else
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 fi
 
+export MANGOHUD=1
+export MANGOHUD_DLSYM=1
+
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export MOZ_ENABLE_WAYLAND=1

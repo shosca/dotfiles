@@ -4,7 +4,7 @@ local lspconfig = require('lspconfig')
 if not lsp.is_client_active('yamlls') then
   lspconfig.yamlls.setup {
     on_attach = lsp.common_on_attach,
-    capabilities = lsp.capabilities(),
+    capabilities = lsp.capabilities,
     settings = {
       yaml = {
         customTags = {
