@@ -26,28 +26,15 @@ vim.lsp.protocol.CompletionItemKind = {
   "   (Operator)",
   "   (TypeParameter)"
 }
-vim.fn.sign_define("LspDiagnosticsSignError", {texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError"})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning"})
-vim.fn.sign_define("LspDiagnosticsSignHint", {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"})
+vim.fn.sign_define("DiagnosticSignError", {texthl = "DiagnosticSignError", text = "", numhl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {texthl = "DiagnosticSignWarn", text = "", numhl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignHint", {texthl = "DiagnosticSignHint", text = "", numhl = "DiagnosticSignHint"})
+vim.fn.sign_define("DiagnosticSignInfo", {texthl = "DiagnosticSignInfo", text = "", numhl = "DiagnosticSignInfo"})
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border})
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  signs = {
-    active = true,
-    values = {
-      {name = "LspDiagnosticsSignError", text = ""},
-      {name = "LspDiagnosticsSignWarning", text = ""},
-      {name = "LspDiagnosticsSignHint", text = ""},
-      {name = "LspDiagnosticsSignInformation", text = ""}
-    }
-  },
-  virtual_text = false,
-  underline = true,
-  severity_sort = true
-})
-vim.cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false, border=" .. vim.inspect(border) .. "})")
+vim.diagnostic.config({virtual_text = false, underline = true, severity_sort = true})
+vim.cmd("autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, border=" .. vim.inspect(border) .. "})")
 
 local M = {capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())}
 function M.common_on_attach(client, bufnr)
@@ -72,8 +59,8 @@ function M.common_on_attach(client, bufnr)
   map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
   map("n", "gp", "<cmd>lua require'lsp'.PeekDefinition()<CR>", opts)
-  map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-  map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+  map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+  map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
   map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 end
 
