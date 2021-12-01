@@ -33,7 +33,7 @@ vim.fn.sign_define("DiagnosticSignInfo", {texthl = "DiagnosticSignInfo", text = 
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border})
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
-vim.diagnostic.config({virtual_text = false, underline = true, severity_sort = true})
+vim.diagnostic.config({virtual_text = false, signs = true, update_in_insert = false, underline = true, severity_sort = true})
 vim.cmd("autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, border=" .. vim.inspect(border) .. "})")
 
 local M = {capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())}
