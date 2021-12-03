@@ -91,7 +91,7 @@ nvim: in ## install neovim config {
 
 clean-nvim: out ## remove neovim
 	stow -D nvim
-	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/vim $(XDG_DATA_HOME)/vim $(XDG_DATA_HOME)/nvim $(HOME)/.cache/vimfiler $(HOME)/.vim
+	rm -rf $(XDG_CONFIG_HOME)/nvim $(XDG_CACHE_HOME)/nvim $(XDG_DATA_HOME)/nvim $(XDG_DATA_HOME)/nvim
 
 # }
 

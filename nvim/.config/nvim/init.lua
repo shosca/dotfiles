@@ -1,4 +1,4 @@
-require('impatient')
+pcall(require, 'impatient')
 
 vim.g.did_load_filetypes = 1
 vim.g.loaded_matchparen = 1

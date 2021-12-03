@@ -36,7 +36,11 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 vim.diagnostic.config({virtual_text = false, signs = true, update_in_insert = false, underline = true, severity_sort = true})
 vim.cmd("autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, border=" .. vim.inspect(border) .. "})")
 
-local M = {capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())}
+local caps = vim.lsp.protocol.make_client_capabilities()
+local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if ok then caps = cmp_nvim_lsp.update_capabilities(caps) end
+
+local M = {capabilities = caps}
 function M.common_on_attach(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
