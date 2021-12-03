@@ -15,9 +15,11 @@ function M.configure_packer(use)
     "ruifm/gitlinker.nvim",
     config = function()
       require('gitlinker').setup()
-      vim.api.nvim_set_keymap('n', '<leader>gb',
-                              '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-                              {silent = true})
+      vim.keymap.nnoremap {
+        "<leader>gb",
+        function() require("gitlinker").get_buf_range_url("n", {action_callback = require("gitlinker.actions").open_in_browser}) end,
+        silent = true
+      }
     end
   }
   if vim.fn.executable "gh" == 1 then use "pwntester/octo.nvim" end

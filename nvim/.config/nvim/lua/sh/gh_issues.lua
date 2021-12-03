@@ -1,5 +1,4 @@
 local Job = require('plenary.job')
-local json = require('sh.json')
 local cmp = require('cmp')
 
 local source = {}
@@ -32,7 +31,7 @@ function source:complete(_, callback)
 
       on_exit = function(job)
         local result = job:result()
-        local ok, parsed = pcall(json.decode, table.concat(result, ""))
+        local ok, parsed = pcall(vim.json.decode, table.concat(result, ""))
         if not ok then
           vim.notify "Failed to parse gh result"
           return

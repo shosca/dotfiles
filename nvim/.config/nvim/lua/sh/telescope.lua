@@ -1,12 +1,13 @@
 local M = {}
 
 local function config()
-  vim.api.nvim_set_keymap("n", "<Leader>b", ":Telescope buffers<CR>", {noremap = true, silent = true})
-  vim.api.nvim_set_keymap("n", "<Leader>f", ":Telescope find_files<CR>", {noremap = true, silent = true})
-  vim.api.nvim_set_keymap("n", "<Leader>g", ":Telescope live_grep<CR>", {noremap = true, silent = true})
-  vim.api.nvim_set_keymap("n", "<Leader>dd", ":Telescope lsp_document_diagnostics<CR>", {noremap = true, silent = true})
-  vim.api.nvim_set_keymap("n", "<Leader>wd", ":Telescope lsp_workspace_diagnostics<CR>", {noremap = true, silent = true})
-  vim.api.nvim_set_keymap("n", "<Leader>a", ":Telescope lsp_code_actions<CR>", {noremap = true, silent = true})
+  local nnoremap = vim.keymap.noremap
+  nnoremap {"<Leader>b", ":Telescope buffers<CR>", {silent = true}}
+  nnoremap {"<Leader>f", ":Telescope find_files<CR>", {silent = true}}
+  nnoremap {"<Leader>g", ":Telescope live_grep<CR>", {silent = true}}
+  nnoremap {"<Leader>dd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
+  nnoremap {"<Leader>wd", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
+  -- nnoremap {"<Leader>a", ":Telescope lsp_code_actions<CR>", {silent = true}}
 
   local actions = require('telescope.actions')
   require('telescope').setup {
@@ -75,6 +76,14 @@ end
 
 function M.configure_packer(use)
   use 'nvim-telescope/telescope-fzy-native.nvim'
+  use {
+    'ThePrimeagen/git-worktree.nvim',
+    config = function()
+      local nnoremap = vim.keymap.noremap
+      nnoremap {"<Leader>gw", require('telescope').extensions.git_worktree.git_worktrees}
+      nnoremap {"<Leader>gm", require('telescope').extensions.git_worktree.create_git_worktree}
+    end
+  }
   use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}, config = config}
 end
 return M

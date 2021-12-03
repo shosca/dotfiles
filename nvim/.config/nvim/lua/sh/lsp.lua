@@ -50,18 +50,14 @@ function M.common_on_attach(client, bufnr)
       augroup END
       ]], false)
   end
-
-  local opts = {noremap = true, silent = true}
-  local function map(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
-  map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  map("n", "gp", "<cmd>lua require'lsp'.PeekDefinition()<CR>", opts)
-  map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-  map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+  local noremap = vim.keymap.noremap
+  noremap {"gD", vim.lsp.buf.declaration, silent = true, buffer = bufnr}
+  noremap {"gd", vim.lsp.buf.definition, silent = true, buffer = bufnr}
+  noremap {"gi", vim.lsp.buf.implementation, silent = true, buffer = bufnr}
+  noremap {"gr", vim.lsp.buf.references, silent = true, buffer = bufnr}
+  noremap {"[d", vim.diagnostic.goto_prev, silent = true, buffer = bufnr}
+  noremap {"]d", vim.diagnostic.goto_next, silent = true, buffer = bufnr}
+  noremap {"K", vim.lsp.buf.hover, silent = true, buffer = bufnr}
 end
 
 function M.cmp_config()
@@ -178,7 +174,7 @@ function M.configure_packer(use)
     config = M.cmp_config,
     requires = {
       {"hrsh7th/cmp-cmdline"},
-      {"andersevenrud/compe-tmux", branch = "cmp"},
+      {"andersevenrud/compe-tmux"},
       {"hrsh7th/cmp-buffer"},
       {"hrsh7th/cmp-nvim-lsp"},
       {"hrsh7th/cmp-nvim-lsp-document-symbol"},
