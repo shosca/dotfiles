@@ -85,5 +85,6 @@ function M.configure_packer(use)
     end
   }
   use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}, config = config}
+
 end
 return M

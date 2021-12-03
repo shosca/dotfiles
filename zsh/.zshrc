@@ -118,5 +118,4 @@ alias resrc='source ~/.zshrc'
 source_sh ${HOME}/.aliases
 
 [ -x "$(command -v invoke)" ] && source <(inv --print-completion-script zsh)
-eval "$(register-python-argcomplete pipx)"
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+[ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"

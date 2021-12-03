@@ -33,6 +33,7 @@ end
 
 function M.configure_packer(use)
   use 'lewis6991/impatient.nvim'
+  use "tjdevries/astronauta.nvim"
   use "nathom/filetype.nvim"
   use 'benizi/vim-automkdir'
   use 'sgur/vim-editorconfig'
@@ -67,12 +68,11 @@ function M.configure_packer(use)
       vmap {"<C-c><C-c>", ":SlimuxREPLSendSelection<CR>"}
     end
   }
-  use {"tjdevries/astronauta.nvim"}
   use {
     "ThePrimeagen/harpoon",
     setup = function()
       local nnoremap = vim.keymap.nnoremap
-      require("harpoon").setup {}
+      require("harpoon").setup {projects = {}}
       nnoremap {"<Leader>a", function() require("harpoon.mark").add_file() end}
       nnoremap {"<C-e>", function() require("harpoon.ui").toggle_quick_menu() end}
       nnoremap {"<Leader>tc", function() require("harpoon.cmd-ui").toggle_quick_menu() end}
