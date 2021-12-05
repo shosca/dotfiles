@@ -105,6 +105,6 @@ vim.opt.fillchars = {eob = "~"}
 vim.opt.list = true
 vim.opt.listchars = {tab = '› ', eol = '↲', nbsp = '.', trail = '•', extends = '#'}
 
-require 'sh.plugins'
 require 'sh.filetypes'
 require 'sh.mappings'
+require 'sh.plugins'

@@ -36,6 +36,8 @@ else
   export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 fi
 
+export WINE_FULLSCREEN_FSR=1 
+export WINE_FULLSCREEN_FSR_STRENGTH=1
 export MANGOHUD=1
 export MANGOHUD_DLSYM=1
 

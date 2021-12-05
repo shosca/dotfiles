@@ -34,6 +34,7 @@ end
 function M.configure_packer(use)
   use 'lewis6991/impatient.nvim'
   use "tjdevries/astronauta.nvim"
+  use 'bfredl/nvim-luadev'
   use "nathom/filetype.nvim"
   use 'benizi/vim-automkdir'
   use 'sgur/vim-editorconfig'

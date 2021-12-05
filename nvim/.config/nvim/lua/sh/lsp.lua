@@ -54,14 +54,14 @@ function M.common_on_attach(client, bufnr)
       augroup END
       ]], false)
   end
-  local noremap = vim.keymap.noremap
-  noremap {"gD", vim.lsp.buf.declaration, silent = true, buffer = bufnr}
-  noremap {"gd", vim.lsp.buf.definition, silent = true, buffer = bufnr}
-  noremap {"gi", vim.lsp.buf.implementation, silent = true, buffer = bufnr}
-  noremap {"gr", vim.lsp.buf.references, silent = true, buffer = bufnr}
-  noremap {"[d", vim.diagnostic.goto_prev, silent = true, buffer = bufnr}
-  noremap {"]d", vim.diagnostic.goto_next, silent = true, buffer = bufnr}
-  noremap {"K", vim.lsp.buf.hover, silent = true, buffer = bufnr}
+  local nnoremap = vim.keymap.nnoremap
+  nnoremap {"gD", vim.lsp.buf.declaration, silent = true, buffer = bufnr}
+  nnoremap {"gd", vim.lsp.buf.definition, silent = true, buffer = bufnr}
+  nnoremap {"gi", vim.lsp.buf.implementation, silent = true, buffer = bufnr}
+  nnoremap {"gr", vim.lsp.buf.references, silent = true, buffer = bufnr}
+  nnoremap {"[d", vim.diagnostic.goto_prev, silent = true, buffer = bufnr}
+  nnoremap {"]d", vim.diagnostic.goto_next, silent = true, buffer = bufnr}
+  nnoremap {"gl", vim.lsp.buf.hover, silent = true, buffer = bufnr}
 end
 
 function M.cmp_config()
@@ -192,6 +192,5 @@ function M.configure_packer(use)
     }
   }
   use "onsails/lspkind-nvim"
-  use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
 end
 return M

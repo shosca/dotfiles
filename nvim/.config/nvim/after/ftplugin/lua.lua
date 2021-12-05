@@ -1,3 +1,5 @@
+vim.opt_local.shiftwidth = 2
+
 local lsp = require('sh.lsp')
 
 if not lsp.is_client_active('efm') then

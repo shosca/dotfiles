@@ -2,12 +2,12 @@ local M = {}
 
 local function config()
   local nnoremap = vim.keymap.noremap
-  nnoremap {"<Leader>b", ":Telescope buffers<CR>", {silent = true}}
-  nnoremap {"<Leader>f", ":Telescope find_files<CR>", {silent = true}}
-  nnoremap {"<Leader>g", ":Telescope live_grep<CR>", {silent = true}}
-  nnoremap {"<Leader>dd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
-  nnoremap {"<Leader>wd", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
-  -- nnoremap {"<Leader>a", ":Telescope lsp_code_actions<CR>", {silent = true}}
+  nnoremap {"<Leader>fb", ":Telescope buffers<CR>", {silent = true}}
+  nnoremap {"<Leader>ff", ":Telescope find_files<CR>", {silent = true}}
+  nnoremap {"<Leader>fg", ":Telescope live_grep<CR>", {silent = true}}
+  nnoremap {"<Leader>fd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
+  nnoremap {"<Leader>fw", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
+  nnoremap {"<Leader>fa", ":Telescope lsp_code_actions<CR>", {silent = true}}
 
   local actions = require('telescope.actions')
   require('telescope').setup {

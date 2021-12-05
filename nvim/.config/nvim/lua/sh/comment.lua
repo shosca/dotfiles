@@ -1,13 +1,20 @@
 local M = {}
 
 function M.configure_packer(use)
+  use {'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = function() require('todo-comments').setup() end}
   use {
-    "terrortylor/nvim-comment",
-    cmd = "CommentToggle",
+    "numToStr/Comment.nvim",
     config = function()
-      local status_ok, nvim_comment = pcall(require, "nvim_comment")
-      if not status_ok then return end
-      nvim_comment.setup()
+      require("Comment").setup {
+        ignore = nil,
+        opleader = {line = "gc", block = "gb"},
+        mappings = {
+          basic = true, -- Includes `gcc`, `gcb`, `gc[count]{motion}` and `gb[count]{motion}`
+          extra = true, -- Includes `gco`, `gcO`, `gcA`
+          extended = false -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+        },
+        toggler = {line = "gcc", block = "gbc"}
+      }
     end
   }
 end

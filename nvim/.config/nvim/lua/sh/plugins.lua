@@ -13,8 +13,6 @@ packer.startup({
   function(use)
     use 'wbthomason/packer.nvim'
     for _, pkg in pairs(packages) do require(pkg).configure_packer(use) end
-
-    use 'bfredl/nvim-luadev'
   end,
   config = {compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua', display = {open_fn = require('packer.util').float}}
 })

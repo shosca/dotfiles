@@ -28,7 +28,15 @@ if ok then
 
   nnoremap {"*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", silent = true}
 
+  nnoremap {"Y", "yg$"}
+  nnoremap {"n", "nzzzv"}
+  nnoremap {"N", "Nzzzv"}
+  nnoremap {"J", "mzJ`z"}
   -- Switch history search pairs, matching my bash shell
+  for _, c in ipairs({".", "_", ",", "!", "?"}) do inoremap {c, string.format("%s<c-g>u", c)} end
+  vnoremap {"J", ":m '>+1<CR>gv=gv"}
+  vnoremap {"K", ":m '<-2<CR>gv=gv"}
+
   cnoremap {"<C-p>", "<Up>"}
   cnoremap {'<C-n>', '<Down>'}
   cnoremap {'<Up>', '<C-p>'}
