@@ -12,6 +12,7 @@ local packages = {'sh.ui', 'sh.core', 'sh.treesitter', 'sh.telescope', 'sh.comme
 packer.startup({
   function(use)
     use 'wbthomason/packer.nvim'
+    use {'lewis6991/impatient.nvim', rocks = 'mpack'}
     for _, pkg in pairs(packages) do require(pkg).configure_packer(use) end
   end,
   config = {compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua', display = {open_fn = require('packer.util').float}}

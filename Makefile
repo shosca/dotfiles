@@ -115,7 +115,7 @@ pipx: in  ## installs pipx packages
 	pipx install --force mycli
 	pipx install --force pgcli
 	pipx install --force python-lsp-server
-	pipx inject python-lsp-server rope pylsp-mypy python-lsp-black
+	pipx inject python-lsp-server pylsp-rope pylsp-mypy python-lsp-black
 
 pipx-update:  ## update all pipx installs
 	pipx upgrade-all
