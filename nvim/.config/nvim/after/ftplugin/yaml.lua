@@ -7,6 +7,9 @@ if not lsp.is_client_active('yamlls') then
     capabilities = lsp.capabilities,
     settings = {
       yaml = {
+        hover = true,
+        completion = true,
+        validate = true,
         customTags = {
           "!Ref",
           "!GetAtt",
@@ -27,6 +30,7 @@ if not lsp.is_client_active('yamlls') then
           "!Join sequence"
         },
         editor = {formatOnType = true},
+        schemaStore = {enable = true, url = "https://www.schemastore.org/api/json/catalog.json"},
         schemas = {
           {url = 'https://json.schemastore.org/pre-commit-config.json', fileMatch = '.pre-commit-config.{yml,yaml}'},
           {
