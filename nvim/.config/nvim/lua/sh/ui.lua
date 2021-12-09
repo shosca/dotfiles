@@ -8,6 +8,7 @@ function M.configure_packer(use)
       vim.opt.background = 'dark'
 
       vim.g.material_style = 'deep ocean'
+      vim.cmd [[colorscheme material]]
     end,
     config = function()
       require('material').setup({
@@ -36,10 +37,8 @@ function M.configure_packer(use)
         },
         custom_highlights = {} -- Overwrite highlights with your own
       })
-      vim.cmd [[colorscheme material]]
     end
   }
-
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "SmiteshP/nvim-gps",
@@ -63,8 +62,8 @@ function M.configure_packer(use)
   }
   use {
     'famiu/feline.nvim',
+    requires = {'marko-cerovac/material.nvim'},
     config = function()
-
       local colors = require('material.colors')
       local lsp = require('feline.providers.lsp')
       local vi_mode_utils = require('feline.providers.vi_mode')

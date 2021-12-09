@@ -103,7 +103,7 @@ vim.opt.fillchars = {eob = "~"}
 
 -- invisible characters to use on ':set list'
 vim.opt.list = true
-vim.opt.listchars = {tab = '› ', eol = '↲', nbsp = '.', trail = '•', extends = '#'}
+vim.opt.listchars = {tab = '› ', eol = '¬', nbsp = '.', trail = '•', extends = '#'}
 
 require 'sh.filetypes'
 require 'sh.mappings'
