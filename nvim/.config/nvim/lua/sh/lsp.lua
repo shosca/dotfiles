@@ -31,6 +31,18 @@ vim.fn.sign_define("DiagnosticSignWarn", {texthl = "DiagnosticSignWarn", text = 
 vim.fn.sign_define("DiagnosticSignHint", {texthl = "DiagnosticSignHint", text = "", numhl = "DiagnosticSignHint"})
 vim.fn.sign_define("DiagnosticSignInfo", {texthl = "DiagnosticSignInfo", text = "", numhl = "DiagnosticSignInfo"})
 
+vim.lsp.handlers["textDocument/definition"] = function(_, result)
+  if not result or vim.tbl_isempty(result) then
+    print "[LSP] Could not find definition"
+    return
+  end
+
+  if vim.tbl_islist(result) then
+    vim.lsp.util.jump_to_location(result[1])
+  else
+    vim.lsp.util.jump_to_location(result)
+  end
+end
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border})
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
 vim.diagnostic.config({virtual_text = false, signs = true, update_in_insert = false, underline = true, severity_sort = true})
@@ -71,6 +83,7 @@ function M.is_client_active(name)
 end
 
 function M.configure_packer(use)
+  use 'antoinemadec/FixCursorHold.nvim'
   use 'neovim/nvim-lspconfig'
   use 'folke/lua-dev.nvim'
   use 'nvim-lua/lsp-status.nvim'

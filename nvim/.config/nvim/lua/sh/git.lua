@@ -11,6 +11,7 @@ function M.configure_packer(use)
   }
   use "rhysd/committia.vim"
   use {"sindrets/diffview.nvim", cmd = "DiffviewOpen", config = function() require('diffview').setup() end}
+  use {"tpope/vim-fugitive", config = function() vim.keymap.nmap {"<leader>gs", ":G<CR>"} end}
   use {
     "ruifm/gitlinker.nvim",
     config = function()

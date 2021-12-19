@@ -15,7 +15,10 @@ packer.startup({
     use {'lewis6991/impatient.nvim', rocks = 'mpack'}
     for _, pkg in pairs(packages) do require(pkg).configure_packer(use) end
   end,
-  config = {compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua', display = {open_fn = require('packer.util').float}}
+  config = {
+    compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua',
+    display = {open_fn = function() return require("packer.util").float {border = "rounded"} end}
+  }
 })
 packer.install()
 packer.compile()

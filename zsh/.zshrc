@@ -34,16 +34,16 @@ source ${XDG_CACHE_HOME}/zplug/init.zsh
 # Let zplug manage itself like other packages
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
+zplug "apachler/zsh-aws"
+
 # Oh-My-Zsh core
 zplug "lib/*", from:oh-my-zsh
 
 # Oh-My-Zsh plugins
 zplug "plugins/archlinux", from:oh-my-zsh
-zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/brew", from:oh-my-zsh
 zplug "plugins/cargo", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "plugins/django", from:oh-my-zsh
 zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/extract", from:oh-my-zsh
@@ -89,12 +89,6 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load
-if [ -x "$(command -v starship)" ]; then
-  eval "$(starship init zsh)"
-fi
-if [ -x "$(command -v awless)" ]; then
-  source <(awless completion zsh)
-fi
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
@@ -117,5 +111,11 @@ source_sh() {
 alias resrc='source ~/.zshrc'
 source_sh ${HOME}/.aliases
 
+if [ -x "$(command -v starship)" ]; then
+  eval "$(starship init zsh)"
+fi
+if [ -x "$(command -v awless)" ]; then
+  source <(awless completion zsh)
+fi
 [ -x "$(command -v invoke)" ] && source <(inv --print-completion-script zsh)
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"

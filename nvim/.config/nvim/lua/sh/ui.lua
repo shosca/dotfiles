@@ -61,7 +61,7 @@ function M.configure_packer(use)
     end
   }
   use {
-    'famiu/feline.nvim',
+    'feline-nvim/feline.nvim',
     requires = {'marko-cerovac/material.nvim'},
     config = function()
       local colors = require('material.colors')

@@ -44,6 +44,7 @@ export MANGOHUD_DLSYM=1
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export MOZ_ENABLE_WAYLAND=1
+export MOZ_USE_XINPUT2=1
 # Locale
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
