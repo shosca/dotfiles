@@ -115,8 +115,8 @@ function M.configure_packer(use)
       local function lsp_diagnostics_info()
         return {
           errs = lsp.get_diagnostics_count('Error'),
-          warns = lsp.get_diagnostics_count('Warning'),
-          infos = lsp.get_diagnostics_count('Information'),
+          warns = lsp.get_diagnostics_count('Warn'),
+          infos = lsp.get_diagnostics_count('Info'),
           hints = lsp.get_diagnostics_count('Hint')
         }
       end

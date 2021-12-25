@@ -54,7 +54,6 @@ zplug "plugins/helm", from:oh-my-zsh
 zplug "plugins/kubectl", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/postgres", from:oh-my-zsh
-zplug "plugins/python", from:oh-my-zsh
 zplug "plugins/rust", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/systemd", from:oh-my-zsh
