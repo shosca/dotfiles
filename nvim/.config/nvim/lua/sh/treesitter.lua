@@ -18,7 +18,7 @@ function M.configure_packer(use)
           keymaps = {init_selection = "gnn", node_incremental = "grn", scope_incremental = "grc", node_decremental = "grm"}
         },
         autopairs = {enable = true},
-        indent = {enable = true},
+        indent = {enable = true, disable = {"python"}},
         refactor = {
           highlight_definitions = {enable = true},
           highlight_current_scope = {enable = false},

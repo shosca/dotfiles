@@ -67,6 +67,7 @@ function M.common_on_attach(client, bufnr)
       ]], false)
   end
   local nnoremap = vim.keymap.nnoremap
+  local xnoremap = vim.keymap.xnoremap
   nnoremap {"gD", vim.lsp.buf.declaration, silent = true, buffer = bufnr}
   nnoremap {"gd", vim.lsp.buf.definition, silent = true, buffer = bufnr}
   nnoremap {"gi", vim.lsp.buf.implementation, silent = true, buffer = bufnr}
@@ -74,6 +75,8 @@ function M.common_on_attach(client, bufnr)
   nnoremap {"[d", vim.diagnostic.goto_prev, silent = true, buffer = bufnr}
   nnoremap {"]d", vim.diagnostic.goto_next, silent = true, buffer = bufnr}
   nnoremap {"gl", vim.lsp.buf.hover, silent = true, buffer = bufnr}
+  nnoremap {"ga", vim.lsp.buf.code_action, silent = true, buffer = bufnr}
+  xnoremap {"ga", vim.lsp.buf.range_code_action, silent = true, buffer = bufnr}
 end
 
 function M.is_client_active(name)
@@ -182,20 +185,20 @@ function M.configure_packer(use)
         },
         documentation = {border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}},
         sources = {
-          {name = "gh_issues"},
-          {name = "path", priority_weight = 110},
-          {name = "nvim_lsp", max_item_count = 20, priority_weight = 100},
-          {name = "nvim_lua", priority_weight = 90},
-          {name = "luasnip", priority_weight = 80},
-          {name = "buffer", max_item_count = 5, priority_weight = 70},
-          {name = "rg", keyword_length = 5, max_item_count = 5, priority_weight = 60},
-          {name = "tmux", max_item_count = 5, option = {all_panes = false}, priority_weight = 50},
-          {name = "look", keyword_length = 5, max_item_count = 5, option = {convert_case = true, loud = true}, priority_weight = 40},
+          {name = "nvim_lsp", max_item_count = 20},
+          {name = "nvim_lua"},
+          {name = "luasnip"},
+          {name = "buffer", max_item_count = 5},
+          {name = "rg", keyword_length = 5, max_item_count = 5},
+          {name = "tmux", max_item_count = 5, option = {all_panes = false}},
+          {name = "look", keyword_length = 5, max_item_count = 5, option = {convert_case = true, loud = true}},
+          {name = "path"},
           {name = "zsh"},
           {name = "calc"},
           {name = "emoji"},
           {name = "treesitter"},
-          {name = "crates"}
+          {name = "crates"},
+          {name = "gh_issues"}
         },
         experimental = {native_menu = false, ghost_text = true}
       }
@@ -203,5 +206,34 @@ function M.configure_packer(use)
     end
   }
   use "onsails/lspkind-nvim"
+  use {
+    "jose-elias-alvarez/null-ls.nvim",
+    requires = {"nvim-lua/plenary.nvim"},
+    config = function()
+      local nullls = require("null-ls")
+      nullls.setup {
+        sources = {
+          nullls.builtins.completion.luasnip,
+          nullls.builtins.completion.spell,
+          nullls.builtins.completion.tags,
+          nullls.builtins.formatting.djhtml,
+          nullls.builtins.formatting.json_tool,
+          nullls.builtins.formatting.lua_format.with({
+            extra_args = {
+              "--tab-width=2",
+              "--indent-width=2",
+              "--column-limit=150",
+              "--align-parameter",
+              "--chop-down-table",
+              "--chop-down-kv-table "
+            }
+          }),
+          nullls.builtins.formatting.markdownlint,
+          nullls.builtins.formatting.prettier,
+          nullls.builtins.formatting.terraform_fmt
+        }
+      }
+    end
+  }
 end
 return M

@@ -22,8 +22,8 @@ local bright6 = "#0db9d7" -- bright cyan
 local bright7 = "#acb0d0" -- bright white
 
 return {
-  -- enable_wayland = true,
-  window_decorations = "NONE",
+  enable_wayland = true,
+  -- window_decorations = "NONE",
   colors = {
     foreground = foreground,
     background = background,
@@ -50,10 +50,8 @@ return {
   --   {key = "\\", mods = "LEADER", action = wezterm.action {SplitHorizontal = {domain = "DefaultDomain"}}},
   --   {key = "-", mods = "LEADER", action = wezterm.action {SplitVertical = {domain = "DefaultDomain"}}},
   --   {key = "c", mods = "LEADER", action = wezterm.action {SpawnTab = "DefaultDomain"}},
-  --   {key = "j", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Down"}},
-  --   {key = "k", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Up"}},
-  --   {key = "l", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Right"}},
-  --   {key = "h", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Left"}},
+  --   {key = "j", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Next"}},
+  --   {key = "k", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Prev"}},
   --   {key = "n", mods = "LEADER", action = wezterm.action {ActivateTabRelative = 1}},
   --   {key = "p", mods = "LEADER", action = wezterm.action {ActivateTabRelative = -1}}
   -- }
