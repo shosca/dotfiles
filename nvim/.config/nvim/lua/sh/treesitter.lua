@@ -24,7 +24,8 @@ function M.configure_packer(use)
           highlight_current_scope = {enable = false},
           smart_rename = {enable = true, keymaps = {smart_rename = "grr"}}
         },
-        pyfold = {enable = true, custom_foldtext = true}
+        pyfold = {enable = true, custom_foldtext = true},
+        endwise = {enable = true}
       }
       vim.opt.foldmethod = 'expr'
       vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -33,5 +34,6 @@ function M.configure_packer(use)
   use {"eddiebergman/nvim-treesitter-pyfold"}
   use {"nvim-treesitter/nvim-treesitter-refactor"}
   use {"nvim-treesitter/nvim-treesitter-textobjects"}
+  use {"RRethy/nvim-treesitter-endwise"}
 end
 return M

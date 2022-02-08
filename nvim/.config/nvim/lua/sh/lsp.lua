@@ -206,6 +206,7 @@ function M.configure_packer(use)
     end
   }
   use "onsails/lspkind-nvim"
+  use {"j-hui/fidget.nvim", config = function() require('fidget').setup {} end}
   use {
     "jose-elias-alvarez/null-ls.nvim",
     requires = {"nvim-lua/plenary.nvim"},

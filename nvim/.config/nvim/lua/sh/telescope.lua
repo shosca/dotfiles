@@ -15,6 +15,7 @@ function M.configure_packer(use)
     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
     config = function()
       local nnoremap = vim.keymap.noremap
+      nnoremap {"<Leader>fj", ":Telescope resume<CR>", {silent = true}}
       nnoremap {"<Leader>fb", ":Telescope buffers<CR>", {silent = true}}
       nnoremap {"<Leader>ff", ":Telescope find_files<CR>", {silent = true}}
       nnoremap {"<Leader>fg", ":Telescope live_grep<CR>", {silent = true}}
@@ -59,11 +60,11 @@ function M.configure_packer(use)
           winblend = 0,
           mappings = {
             i = {
-              ["<C-n>"] = actions.move_selection_next,
-              ["<C-p>"] = actions.move_selection_previous,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-n>"] = actions.cycle_history_next,
+              ["<C-p>"] = actions.cycle_history_prev,
               ["<C-c>"] = actions.close,
-              ["<C-j>"] = actions.cycle_history_next,
-              ["<C-k>"] = actions.cycle_history_prev,
               ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
               ["<CR>"] = actions.select_default + actions.center
             },
