@@ -19,22 +19,15 @@ if not lsp.is_client_active("pylsp") then
           flake8 = {enabled = true},
           jedi_completion = {include_params = true, fuzzy = true},
           pylsp_black = {enabled = true},
-          pylsp_mypy = {enabled = true}
+          pylsp_mypy = {enabled = true},
+          rope_completion = {enabled = false},
+          rope_rename = {enabled = true}
         }
       }
     }
   }
   vim.cmd [[LspStart]]
 end
-
--- if not lsp.is_client_active("jedi_language_server") then
---   local lsputil = require('lspconfig/util')
---   local venv = require('sh.utils').get_python_venv()
---   local path = vim.env.PATH
---   if venv then path = lsputil.path.join(venv, 'bin') .. ':' .. path end
---   lspconfig.jedi_language_server.setup {cmd_env = {VIRTUAL_ENV = venv, PATH = path}}
---   vim.cmd [[LspStart]]
--- end
 
 if not lsp.is_client_active("sourcery") then
   lspconfig.sourcery.setup {settings = {sourcery = {token = secrets.sourcery.token, extension_version = "coc.vim", editor_version = "vim"}}}
