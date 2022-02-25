@@ -42,7 +42,6 @@ zplug "lib/*", from:oh-my-zsh
 # Oh-My-Zsh plugins
 zplug "plugins/archlinux", from:oh-my-zsh
 zplug "plugins/brew", from:oh-my-zsh
-zplug "plugins/cargo", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
