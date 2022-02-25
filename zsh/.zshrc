@@ -2,7 +2,7 @@ mkdir -p ~/.zfunc
 
 fpath+=~/.zfunc
 
-[ -x "$(command -v pew)" ] && poetry completions zsh > ~/.zfunc/_poetry
+[ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
 
 if [ ! -e ${XDG_CACHE_HOME}/zplug ]; then
   git clone https://github.com/zplug/zplug.git ${XDG_CACHE_HOME}/zplug

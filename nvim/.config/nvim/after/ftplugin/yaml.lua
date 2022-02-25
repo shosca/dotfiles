@@ -32,6 +32,14 @@ if not lsp.is_client_active('yamlls') then
         editor = {formatOnType = true},
         schemaStore = {enable = true, url = "https://www.schemastore.org/api/json/catalog.json"},
         schemas = {
+          {
+            url = "https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json",
+            fileMatch = "*compose.{yml, yaml}"
+          },
+          {
+            url = "https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json",
+            fileMatch = "*compose.override.{yml, yaml}"
+          },
           {url = 'https://json.schemastore.org/pre-commit-config.json', fileMatch = '.pre-commit-config.{yml,yaml}'},
           {
             url = 'https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json',

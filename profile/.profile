@@ -12,6 +12,7 @@ _extend_path() {
 }
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias nproc="sysctl -n hw.logicalcpu"
   # handle mac stupidity
   if [ -f /usr/libexec/path_helper ]; then
     export PATH=""

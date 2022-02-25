@@ -42,7 +42,7 @@ return {
   font_size = 10,
   enable_tab_bar = false,
   exit_behavior = "Close",
-  default_prog = {"tmux"},
+  -- default_prog = {"tmux"},
   unzoom_on_switch_pane = true
   -- leader = {key = "`", mods = "", timeout_milliseconds = 500},
   -- keys = {
