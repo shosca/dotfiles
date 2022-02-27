@@ -115,5 +115,6 @@ fi
 if [ -x "$(command -v awless)" ]; then
   source <(awless completion zsh)
 fi
+[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v invoke)" ] && source <(inv --print-completion-script zsh)
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"

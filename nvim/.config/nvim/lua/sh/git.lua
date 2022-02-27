@@ -11,15 +11,15 @@ function M.configure_packer(use)
   }
   use "rhysd/committia.vim"
   use {"sindrets/diffview.nvim", cmd = "DiffviewOpen", config = function() require('diffview').setup() end}
-  use {"tpope/vim-fugitive", config = function() vim.keymap.nmap {"<leader>gs", ":G<CR>"} end}
+  use {"tpope/vim-fugitive", config = function() require("sh.keymap").nmap {"<leader>gs", ":G<CR>"} end}
   use {
     "ruifm/gitlinker.nvim",
     config = function()
       require('gitlinker').setup()
-      vim.keymap.nnoremap {
+      require('sh.keymap').nmap {
         "<leader>gb",
         function() require("gitlinker").get_buf_range_url("n", {action_callback = require("gitlinker.actions").open_in_browser}) end,
-        silent = true
+        {silent = true}
       }
     end
   }

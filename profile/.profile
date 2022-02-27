@@ -165,11 +165,13 @@ if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_te
   eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
-[[ -x "$(command -v pyenv)" ]] && _extend_path "$(pyenv root)/shims"
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
+[[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
 [[ -d "$GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
 [[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"
+[[ -d "$PYENV_ROOT/bin" ]] && _extend_path "$PYENV_ROOT/bin"
+[[ -x "$(command -v pyenv)" ]] && _extend_path "$(pyenv root)/shims"

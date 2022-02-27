@@ -66,17 +66,17 @@ function M.common_on_attach(client, bufnr)
       augroup END
       ]], false)
   end
-  local nnoremap = vim.keymap.nnoremap
-  local xnoremap = vim.keymap.xnoremap
-  nnoremap {"gD", vim.lsp.buf.declaration, silent = true, buffer = bufnr}
-  nnoremap {"gd", vim.lsp.buf.definition, silent = true, buffer = bufnr}
-  nnoremap {"gi", vim.lsp.buf.implementation, silent = true, buffer = bufnr}
-  nnoremap {"gr", vim.lsp.buf.references, silent = true, buffer = bufnr}
-  nnoremap {"[d", vim.diagnostic.goto_prev, silent = true, buffer = bufnr}
-  nnoremap {"]d", vim.diagnostic.goto_next, silent = true, buffer = bufnr}
-  nnoremap {"gl", vim.lsp.buf.hover, silent = true, buffer = bufnr}
-  nnoremap {"ga", vim.lsp.buf.code_action, silent = true, buffer = bufnr}
-  xnoremap {"ga", vim.lsp.buf.range_code_action, silent = true, buffer = bufnr}
+  local nmap = require("sh.keymap").nmap
+  local xmap = require("sh.keymap").xmap
+  nmap {"gD", vim.lsp.buf.declaration, {silent = true, buffer = bufnr}}
+  nmap {"gd", vim.lsp.buf.definition, {silent = true, buffer = bufnr}}
+  nmap {"gi", vim.lsp.buf.implementation, {silent = true, buffer = bufnr}}
+  nmap {"gr", vim.lsp.buf.references, {silent = true, buffer = bufnr}}
+  nmap {"[d", vim.diagnostic.goto_prev, {silent = true, buffer = bufnr}}
+  nmap {"]d", vim.diagnostic.goto_next, {silent = true, buffer = bufnr}}
+  nmap {"gl", vim.lsp.buf.hover, {silent = true, buffer = bufnr}}
+  nmap {"ga", vim.lsp.buf.code_action, {silent = true, buffer = bufnr}}
+  xmap {"ga", vim.lsp.buf.range_code_action, {silent = true, buffer = bufnr}}
 end
 
 function M.is_client_active(name)

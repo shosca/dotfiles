@@ -1,13 +1,8 @@
-local ok, _ = pcall(require, "astronauta.keymap")
-if not ok then return end
-
-local map = vim.keymap.map
-local nmap = vim.keymap.nmap
-local nnoremap = vim.keymap.nnoremap
-local inoremap = vim.keymap.inoremap
-local cnoremap = vim.keymap.cnoremap
-local xnoremap = vim.keymap.xnoremap
-local vnoremap = vim.keymap.vnoremap
+local nmap = require("sh.keymap").nmap
+local imap = require("sh.keymap").nmap
+local vmap = require("sh.keymap").vmap
+local cmap = require("sh.keymap").cmap
+local xmap = require("sh.keymap").xmap
 
 -- common typos
 vim.cmd([[
@@ -25,52 +20,49 @@ cnoreabbrev Qa qa
 cnoreabbrev Qall qall
 ]])
 
-nnoremap {"*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", silent = true}
+nmap {"*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", {silent = true}}
 
-nnoremap {"Y", "yg$"}
-nnoremap {"n", "nzzzv"}
-nnoremap {"N", "Nzzzv"}
-nnoremap {"J", "mzJ`z"}
+nmap {"Y", "yg$"}
+nmap {"n", "nzzzv"}
+nmap {"N", "Nzzzv"}
+nmap {"J", "mzJ`z"}
 -- Switch history search pairs, matching my bash shell
-for _, c in ipairs({".", "_", ",", "!", "?"}) do inoremap {c, string.format("%s<c-g>u", c)} end
-vnoremap {"J", ":m '>+1<CR>gv=gv"}
-vnoremap {"K", ":m '<-2<CR>gv=gv"}
+for _, c in ipairs({".", "_", ",", "!", "?"}) do imap {c, string.format("%s<c-g>u", c)} end
+vmap {"J", ":m '>+1<CR>gv=gv"}
+vmap {"K", ":m '<-2<CR>gv=gv"}
 
-cnoremap {"<C-p>", "<Up>"}
-cnoremap {'<C-n>', '<Down>'}
-cnoremap {'<Up>', '<C-p>'}
-cnoremap {'<Down>', '<C-n>'}
-
--- In normal mode, jj escapes
-inoremap {'jj', '<Esc>'}
+cmap {"<C-p>", "<Up>"}
+cmap {'<C-n>', '<Down>'}
+cmap {'<Up>', '<C-p>'}
+cmap {'<Down>', '<C-n>'}
 
 -- buffers {
-nnoremap {'<Tab>', ':bnext<CR>'}
-nnoremap {'<S-Tab>', ':bprevious<CR>'}
+nmap {'<Tab>', ':bnext<CR>'}
+nmap {'<S-Tab>', ':bprevious<CR>'}
 
 -- split management {
-nnoremap {'sj', '<C-W>w<CR>'}
-nnoremap {'sk', '<C-W>W<CR>'}
-nnoremap {'ss', ':split<Space>'}
-nnoremap {'sv', ':vsplit<Space>'}
+nmap {'sj', '<C-W>w<CR>'}
+nmap {'sk', '<C-W>W<CR>'}
+nmap {'ss', ':split<Space>'}
+nmap {'sv', ':vsplit<Space>'}
 
 -- arrow key resize
-nnoremap {'<Up>', ':resize +2<CR>'}
-nnoremap {'<Down>', ':resize -2<CR>'}
-nnoremap {'<Left>', ':vertical resize +2<CR>'}
-nnoremap {'<Right>', ':vertical resize -2<CR>'}
+nmap {'<Up>', ':resize +2<CR>'}
+nmap {'<Down>', ':resize -2<CR>'}
+nmap {'<Left>', ':vertical resize +2<CR>'}
+nmap {'<Right>', ':vertical resize -2<CR>'}
 
 -- Easier horizontal scrolling
-map {'zl', 'zL'}
-map {'zh', 'zH'}
+nmap {'zl', 'zL'}
+nmap {'zh', 'zH'}
 
 -- Select blocks after indenting
-xnoremap {'<', '<gv'}
-xnoremap {'>', '>gv|'}
+xmap {'<', '<gv'}
+xmap {'>', '>gv|'}
 
 -- Use tab for indenting in visual mode
-vnoremap {'<Tab>', '>gv|'}
-vnoremap {'<S-Tab>', '<gv'}
+vmap {'<Tab>', '>gv|'}
+vmap {'<S-Tab>', '<gv'}
 -- nnoremap('>', '>>_')
 -- nnoremap('<', '<<_')
 

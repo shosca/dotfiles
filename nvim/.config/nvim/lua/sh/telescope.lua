@@ -5,23 +5,23 @@ function M.configure_packer(use)
   use {
     'ThePrimeagen/git-worktree.nvim',
     config = function()
-      local nnoremap = vim.keymap.noremap
-      nnoremap {"<Leader>gw", require('telescope').extensions.git_worktree.git_worktrees}
-      nnoremap {"<Leader>gm", require('telescope').extensions.git_worktree.create_git_worktree}
+      local nmap = require("sh.keymap").nmap
+      nmap {"<Leader>gw", require('telescope').extensions.git_worktree.git_worktrees}
+      nmap {"<Leader>gm", require('telescope').extensions.git_worktree.create_git_worktree}
     end
   }
   use {
     'nvim-telescope/telescope.nvim',
     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
     config = function()
-      local nnoremap = vim.keymap.noremap
-      nnoremap {"<Leader>fj", ":Telescope resume<CR>", {silent = true}}
-      nnoremap {"<Leader>fb", ":Telescope buffers<CR>", {silent = true}}
-      nnoremap {"<Leader>ff", ":Telescope find_files<CR>", {silent = true}}
-      nnoremap {"<Leader>fg", ":Telescope live_grep<CR>", {silent = true}}
-      nnoremap {"<Leader>fd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
-      nnoremap {"<Leader>fw", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
-      nnoremap {"<Leader>fa", ":Telescope lsp_code_actions<CR>", {silent = true}}
+      local nmap = require("sh.keymap").nmap
+      nmap {"<Leader>fj", ":Telescope resume<CR>", {silent = true}}
+      nmap {"<Leader>fb", ":Telescope buffers<CR>", {silent = true}}
+      nmap {"<Leader>ff", ":Telescope find_files<CR>", {silent = true}}
+      nmap {"<Leader>fg", ":Telescope live_grep<CR>", {silent = true}}
+      nmap {"<Leader>fd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
+      nmap {"<Leader>fw", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
+      nmap {"<Leader>fa", ":Telescope lsp_code_actions<CR>", {silent = true}}
 
       local actions = require('telescope.actions')
       require('telescope').setup {
