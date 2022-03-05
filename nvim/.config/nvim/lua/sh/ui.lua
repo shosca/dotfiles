@@ -12,21 +12,23 @@ function M.configure_packer(use)
     end,
     config = function()
       require('material').setup({
-        contrast = true, -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
-        borders = true, -- Enable borders between verticaly split windows
-        italics = {
-          comments = true, -- Enable italic comments
-          keywords = true, -- Enable italic keywords
-          functions = true, -- Enable italic functions
-          strings = false, -- Enable italic strings
-          variables = false -- Enable italic variables
+        contrast = {
+          -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
+          sidebars = true,
+          floating_windows = true,
+          line_numbers = false,
+          sign_column = false,
+          cursor_line = false,
+          non_current_windows = false,
+          popup_menu = true
         },
+        italics = {comments = true, keywords = true, functions = true, strings = false, variables = false},
         contrast_windows = { -- Specify which windows get the contrasted (darker) background
           "terminal", -- Darker terminal background
           "packer", -- Darker packer background
           "qf" -- Darker qf list background
         },
-        text_contrast = {
+        high_visibility = {
           lighter = false, -- Enable higher contrast text for lighter style
           darker = false -- Enable higher contrast text for darker style
         },
