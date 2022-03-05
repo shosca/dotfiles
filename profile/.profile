@@ -43,8 +43,9 @@ export WINE_FULLSCREEN_FSR_STRENGTH=1
 export MANGOHUD=1
 export MANGOHUD_DLSYM=1
 
-export DOCKER_BUILDKIT=1
-export COMPOSE_DOCKER_CLI_BUILD=1
+# disable buildkit cuz its terrible
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
 export MOZ_ENABLE_WAYLAND=1
 export MOZ_USE_XINPUT2=1
 # Locale
