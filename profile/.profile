@@ -17,10 +17,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   if [ -f /usr/libexec/path_helper ]; then
     export PATH=""
     source /etc/profile
-    _extend_path "/usr/local/sbin"
+    export PATH="/usr/local/sbin:${PATH}"
   fi
   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
-    _extend_path "${_p}"
+    export PATH="${_p}:${PATH}"
   done
   export PKG_CONFIG_PATH=""
   for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do

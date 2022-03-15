@@ -1,4 +1,3 @@
-require('sh.sourcery')
 local lspconfig = require('lspconfig')
 local lsp = require('sh.lsp')
 local secrets = require('sh.secrets')
@@ -30,7 +29,7 @@ if not lsp.is_client_active("pylsp") then
 end
 
 if not lsp.is_client_active("sourcery") then
-  lspconfig.sourcery.setup {settings = {sourcery = {token = secrets.sourcery.token, extension_version = "coc.vim", editor_version = "vim"}}}
+  lspconfig.sourcery.setup {init_options = {token = secrets.sourcery}}
   vim.cmd [[LspStart]]
 end
 

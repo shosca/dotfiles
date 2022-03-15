@@ -1,6 +1,5 @@
 pcall(require, 'impatient')
 
-vim.g.did_load_filetypes = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
@@ -108,3 +107,32 @@ vim.opt.listchars = {tab = '› ', eol = '¬', nbsp = '.', trail = '•', extend
 require 'sh.filetypes'
 require 'sh.mappings'
 require 'sh.plugins'
+
+vim.api.nvim_command [[
+autocmd BufNewFile,BufRead Dockerfile*              set ft=dockerfile
+autocmd BufNewFile,BufRead *.feature,*.story        set ft=cucumber
+autocmd BufNewFile,BufRead *.j2                     set ft=jinja
+autocmd BufNewFile,BufRead *.js.map                 set ft=json
+autocmd BufNewFile,BufRead *.postman_collection     set ft=json
+autocmd BufNewFile,BufRead *.{feature,story}        set ft=cucumber
+autocmd BufNewFile,BufRead */.kube/config           set ft=yaml
+autocmd BufNewFile,BufRead */inventory/*.ini        set ft=ansible_hosts
+autocmd BufNewFile,BufRead */playbooks/*.{yml,yaml} set ft=yaml.ansible
+autocmd BufNewFile,BufRead */playbooks/*/*.yml      set ft=ansible
+autocmd BufNewFile,BufRead */templates/*.{yaml,tpl} set ft=yaml.gotexttmpl
+autocmd BufNewFile,BufRead .babelrc                 set ft=json
+autocmd BufNewFile,BufRead .buckconfig              set ft=toml
+autocmd BufNewFile,BufRead .eslintrc                set ft=json
+autocmd BufNewFile,BufRead .flowconfig              set ft=ini
+autocmd BufNewFile,BufRead .jsbeautifyrc            set ft=json
+autocmd BufNewFile,BufRead .jscsrc                  set ft=json
+autocmd BufNewFile,BufRead .mk                      set ft=make
+autocmd BufNewFile,BufRead .tern-project            set ft=json
+autocmd BufNewFile,BufRead .tern-{project,port}     set ft=json
+autocmd BufNewFile,BufRead .watchmanconfig          set ft=json
+autocmd BufNewFile,BufRead Jenkinsfile              set ft=groovy
+autocmd BufNewFile,BufRead Tmuxfile,tmux/config     set ft=tmux
+autocmd BufNewFile,BufRead Tmuxfile,tmux/config     set ft=tmux
+autocmd BufNewFile,BufRead yarn.lock                set ft=yaml
+autocmd BufNewFile,BufRead poetry.lock              set ft=toml
+]]

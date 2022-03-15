@@ -3,7 +3,6 @@ local M = {}
 function M.configure_packer(use)
   use 'bfredl/nvim-luadev'
   use 'tpope/vim-eunuch'
-  use "nathom/filetype.nvim"
   use 'benizi/vim-automkdir'
   use 'sgur/vim-editorconfig'
   use 'voldikss/vim-floaterm'
@@ -33,21 +32,6 @@ function M.configure_packer(use)
       nmap {"<C-t>", function() require("harpoon.ui").nav_file(2) end}
       nmap {"<C-n>", function() require("harpoon.ui").nav_file(3) end}
       nmap {"<C-s>", function() require("harpoon.ui").nav_file(4) end}
-    end
-  }
-  use {
-    "ten3roberts/qf.nvim",
-    config = function()
-      local nmap = require("sh.keymap").nmap
-      require('qf').setup {}
-      nmap {"<leader>ll", function() require("qf").toggle('l', true) end}
-      nmap {"<leader>cc", function() require("qf").toggle('c', true) end}
-      nmap {"<leader>j", function() require('qf').below('l') end}
-      nmap {"<leader>k", function() require('qf').above('l') end}
-      nmap {"<leader>J", function() require'qf'.below('c') end}
-      nmap {"<leader>K", function() require'qf'.above('c') end}
-      nmap {"]q", function() require('qf').below('visible') end}
-      nmap {"[q", function() require'qf'.above('visible') end}
     end
   }
 end

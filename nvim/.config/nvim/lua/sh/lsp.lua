@@ -144,12 +144,11 @@ function M.configure_packer(use)
             with_text = true,
             menu = {
               nvim_lsp = "(LSP)",
-              emoji = "(Emoji)",
-              path = "(Path)",
-              calc = "(Calc)",
-              vsnip = "(Snippet)",
-              luasnip = "(Snippet)",
-              buffer = "(Buffer)",
+              emoji = "(emoji)",
+              path = "(path)",
+              calc = "(calc)",
+              luasnip = "(snip)",
+              buffer = "(buf)",
               gh_issues = "(issues)"
             }
           }
@@ -159,25 +158,18 @@ function M.configure_packer(use)
             cmp.config.compare.offset,
             cmp.config.compare.exact,
             cmp.config.compare.score,
-            require("cmp-under-comparator").under,
             function(entry1, entry2)
-              local kind1 = entry1:get_kind()
-              kind1 = kind1 == cmp_types.lsp.CompletionItemKind.Text and 100 or kind1
-              kind1 = kind1 == cmp_types.lsp.CompletionItemKind.Variable and 1 or kind1
-              local kind2 = entry2:get_kind()
-              kind2 = kind2 == cmp_types.lsp.CompletionItemKind.Text and 100 or kind2
-              kind2 = kind2 == cmp_types.lsp.CompletionItemKind.Variable and 1 or kind2
-              if kind1 ~= kind2 then
-                if kind1 == cmp_types.lsp.CompletionItemKind.Snippet then return true end
-                if kind2 == cmp_types.lsp.CompletionItemKind.Snippet then return false end
-                local diff = kind1 - kind2
-                if diff < 0 then
-                  return true
-                elseif diff > 0 then
-                  return false
-                end
+              local _, entry1_under = entry1.completion_item.label:find "^_+"
+              local _, entry2_under = entry2.completion_item.label:find "^_+"
+              entry1_under = entry1_under or 0
+              entry2_under = entry2_under or 0
+              if entry1_under > entry2_under then
+                return false
+              elseif entry1_under < entry2_under then
+                return true
               end
             end,
+            cmp.config.compare.kind,
             cmp.config.compare.sort_text,
             cmp.config.compare.length,
             cmp.config.compare.order
@@ -188,7 +180,7 @@ function M.configure_packer(use)
           {name = "nvim_lsp", max_item_count = 20},
           {name = "nvim_lua"},
           {name = "luasnip"},
-          {name = "buffer", max_item_count = 5},
+          {name = "buffer", keyword_length = 5, max_item_count = 5},
           {name = "rg", keyword_length = 5, max_item_count = 5},
           {name = "tmux", max_item_count = 5, option = {all_panes = false}},
           {name = "look", keyword_length = 5, max_item_count = 5, option = {convert_case = true, loud = true}},
@@ -200,9 +192,8 @@ function M.configure_packer(use)
           {name = "crates"},
           {name = "gh_issues"}
         },
-        experimental = {native_menu = false, ghost_text = true}
+        experimental = {native_menu = false, ghost_text = false}
       }
-      -- cmp.setup.cmdline(":", {completion = {autocomplete = false}, sources = {{name = "cmdline"}}})
     end
   }
   use "onsails/lspkind-nvim"
@@ -217,8 +208,6 @@ function M.configure_packer(use)
           nullls.builtins.completion.luasnip,
           nullls.builtins.completion.spell,
           nullls.builtins.completion.tags,
-          nullls.builtins.formatting.djhtml,
-          nullls.builtins.formatting.json_tool,
           nullls.builtins.formatting.lua_format.with({
             extra_args = {
               "--tab-width=2",
@@ -230,7 +219,10 @@ function M.configure_packer(use)
             }
           }),
           nullls.builtins.formatting.markdownlint,
-          nullls.builtins.formatting.prettier,
+          nullls.builtins.formatting.prettier.with {
+            generator_ops = {command = "npx prettier"},
+            filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "graphql", "handlebars"}
+          },
           nullls.builtins.formatting.terraform_fmt
         }
       }

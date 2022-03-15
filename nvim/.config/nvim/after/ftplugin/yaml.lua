@@ -50,7 +50,8 @@ if not lsp.is_client_active('yamlls') then
           {url = 'https://json.schemastore.org/ansible-stable-2.9', fileMatch = 'roles/tasks/*.{yml,yaml}'},
           {url = 'https://json.schemastore.org/prettierrc', fileMatch = '.prettierrc.{yml,yaml}'},
           {url = 'https://json.schemastore.org/stylelintrc', fileMatch = '.stylelintrc.{yml,yaml}'},
-          {url = 'https://json.schemastore.org/circleciconfig', fileMatch = '.circleci/**/*.{yml,yaml}'}
+          {url = 'https://json.schemastore.org/circleciconfig', fileMatch = '.circleci/**/*.{yml,yaml}'},
+          {url = "https://yarnpkg.com/configuration/yarnrc.json", fileMatch = ".yarnrc.{yml,yaml}"}
         }
       }
     }
