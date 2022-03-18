@@ -9,6 +9,7 @@
   network = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
   ammend = commit -a --amend
   br = branch
+  thrust = "!f() { until git push $@; do sleep 0.5; done; }; f"
   branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
   recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
   ci = commit

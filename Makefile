@@ -20,6 +20,13 @@ in:  # this is a dummy target for installers
 out:  # this is a dummy target for cleaners
 
 
+bin: in aliases profile
+	stow -R bin
+
+clean-bin:
+	stow -D bin
+
+
 zsh: in aliases profile  ## Sets up zsh {
 	stow -R zsh
 

@@ -5,10 +5,11 @@ if [ -x "$(command -v keychain)" ]; then
 fi
 
 # Extend $PATH without duplicates
-_extend_path() {
-  if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
-    export PATH="$1:$PATH"
-  fi
+function _extend_path {
+  case ":$PATH:" in
+    *":$1:"*) :;;        # already there
+    *) PATH="$1:$PATH";; # or PATH="$PATH:$1"
+  esac
 }
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -20,7 +21,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="/usr/local/sbin:${PATH}"
   fi
   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
-    export PATH="${_p}:${PATH}"
+    _extend_path $_p
   done
   export PKG_CONFIG_PATH=""
   for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
@@ -169,10 +170,9 @@ fi
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
 [[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
 [[ -d "$GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
-[[ -d "$DOTFILES/bin" ]] && _extend_path "$DOTFILES/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
 [[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
-[[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin:${PATH}"
-[[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin:${PATH}"
+[[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
+[[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"
 [[ -d "$PYENV_ROOT/bin" ]] && _extend_path "$PYENV_ROOT/bin"
-[[ -x "$(command -v pyenv)" ]] && _extend_path "$(pyenv root)/shims"
+[[ -x "$(command -v pyenv)" ]] && eval "$(pyenv init --path)"
