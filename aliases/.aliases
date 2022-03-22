@@ -23,5 +23,6 @@ alias awsedit="e $AWS_CONFIG_FILE $AWS_SHARED_CREDENTIALS_FILE"
 alias Syu='sudo reflector -c "United States" -a 1 -f 3 --sort rate --save /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist && sudo pacman -Syyu && yay -Syu'
 alias pipupdate='pip3 install -U $(pip3 freeze | cut -d"=" -f1 | grep -v "git@")'
 alias open="xdg-open"
+alias sudovim="nvim -u NONE"
 alias tf12="docker run --rm -t $(tty &>/dev/null && echo "-i") -e AWS_PROFILE -e AWS_DEFAULT_REGION -v $AWS_CONFIG_FILE:/root/.aws/config -v $AWS_SHARED_CREDENTIALS_FILE:/root/.aws/credentials -v "$(pwd):/w" -w /w hashicorp/terraform:0.12.30"
 #alias aws='docker run --rm -t $(tty &>/dev/null && echo "-i") -e AWS_PROFILE -e AWS_DEFAULT_REGION -v $AWS_CONFIG_FILE:/root/.aws/config -v $AWS_SHARED_CREDENTIALS_FILE:/root/.aws/credentials -v "$(pwd):/w" -w /w mesosphere/aws-cli'

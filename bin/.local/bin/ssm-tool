@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 # https://raw.githubusercontent.com/elpy1/ssm-tool/master/ssm-tool
 import argparse
-import boto3
-import datetime
 import os
 import shlex
-import sys
 import textwrap
 
-from dateutil.tz import tzlocal
+import boto3
 from prettytable import PrettyTable
 
 
@@ -24,15 +21,15 @@ def get_ec2_name(iid, session):
         tags = session.resource("ec2").Instance(iid).tags
         name = [tag["Value"] for tag in tags if tag["Key"] == "Name"]
         return str(*name) if name else ""
-    except Exception as e:
-        raise SystemExit(f"get_ec2_name failed with {e.__class__.__name__}: {e}")
+    except Exception:
+        return ""
 
 
 def ssm_update_agent(ssmi, session, max_instances=50):
     try:
         for c in range(0, len(ssmi), max_instances):
             instances = [i.get("InstanceId") for i in ssmi[c : c + max_instances]]
-            resp = session.client("ssm").send_command(
+            session.client("ssm").send_command(
                 InstanceIds=instances,
                 DocumentName="AWS-UpdateSSMAgent",
                 DocumentVersion="$LATEST",
