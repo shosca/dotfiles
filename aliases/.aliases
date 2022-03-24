@@ -16,7 +16,6 @@ alias up='cd ..'
 alias e="$EDITOR"
 alias vim="$WHICHVIM"
 alias vi="$WHICHVIM"
-alias ag="$WHICHRG"
 alias vimenv='make -C ~/dotfiles vimenv'
 alias rekey='keychain $(find ~/.ssh -iname "id_*" ! -name "*.pub")'
 alias awsedit="e $AWS_CONFIG_FILE $AWS_SHARED_CREDENTIALS_FILE"

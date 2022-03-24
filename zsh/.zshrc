@@ -4,15 +4,23 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history)
 export PEW_DEFAULT_REQUIREMENTS="${DOTFILES}/autoswitch_requires.txt"
 export DISABLE_PEW_AUTOACTIVATE="1"
 
+[ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
+
 source_sh() {
   emulate -LR sh
   . "$@"
   emulate -LR zsh
 }
-# For ZSH users, uncomment the following two lines:
+
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
+mkdir -p ~/.zfunc
+fpath+=~/.zfunc
+[ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
+[ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
+
+# For ZSH users, uncomment the following two lines:
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
@@ -65,12 +73,21 @@ fpath+=${DOTFILES}/zfunc
 
 if ! zgenom saved; then
     zgenom ohmyzsh lib/
+    zgenom ohmyzsh plugins/archlinux
+    zgenom ohmyzsh plugins/aws
+    zgenom ohmyzsh plugins/docker
+    zgenom ohmyzsh plugins/git
+    zgenom ohmyzsh plugins/invoke
+    zgenom ohmyzsh plugins/pyenv
+    zgenom ohmyzsh plugins/python
+    zgenom ohmyzsh plugins/ripgrep
+    zgenom ohmyzsh plugins/systemd
 
     zgenom load apachler/zsh-aws
     zgenom load hlissner/zsh-autopair
-    zgenom load junegunn/fzf shell/
     zgenom load lukechilds/zsh-better-npm-completion
     zgenom load pbar1/zsh-terraform
+    zgenom load unixorn/fzf-zsh-plugin
     zgenom load zsh-users/zsh-autosuggestions
     zgenom load zsh-users/zsh-completions src
     zgenom load zsh-users/zsh-history-substring-search
@@ -97,9 +114,5 @@ bindkey '^f' forward-word
 
 if [ -f "${HOME}/.ssh/environment-" ]; then
 	source ${HOME}/.ssh/environment-
-fi
-
-if [ -x "$(command -v starship)" ]; then
-  eval "$(starship init zsh)"
 fi
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"

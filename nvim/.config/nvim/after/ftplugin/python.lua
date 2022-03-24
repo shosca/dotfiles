@@ -29,7 +29,7 @@ if not lsp.is_client_active("pylsp") then
 end
 
 if not lsp.is_client_active("sourcery") then
-  lspconfig.sourcery.setup {init_options = {token = secrets.sourcery}}
+  lspconfig.sourcery.setup {init_options = {token = secrets.sourcery.token}}
   vim.cmd [[LspStart]]
 end
 
