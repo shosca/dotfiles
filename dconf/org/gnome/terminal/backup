@@ -1,66 +1,48 @@
+[legacy]
+default-show-menubar=false
+headerbar=@mb false
+
 [legacy/profiles:]
-default='8b249722-132f-48c5-8146-d78150a11ce9'
-list=['72749745-1881-49eb-8d6d-0fb35283055b', '5f339b8a-dba0-4d15-93d5-2039450a65d0', '8b249722-132f-48c5-8146-d78150a11ce9']
+default='28d751a5-f1e7-4a1a-bea3-7a1978af2463'
+list=['0bca083c-b4a7-4698-a100-abd0eab1137e', '5f818d3d-c681-4ba1-aa59-daee6a9fb763', '28d751a5-f1e7-4a1a-bea3-7a1978af2463']
 
-[legacy/profiles:/:5f339b8a-dba0-4d15-93d5-2039450a65d0]
-background-color='#282c34'
-bold-color='#ABB2BF'
-bold-color-same-as-fg=true
-foreground-color='#abb2bf'
-login-shell=true
-palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
-scrollback-unlimited=true
-scrollbar-policy='never'
-text-blink-mode='focused'
-use-theme-colors=false
-visible-name='One Dark'
-
-[legacy/profiles:/:72749745-1881-49eb-8d6d-0fb35283055b]
-background-color='rgb(22,24,32)'
-bold-color='#ABB2BF'
-bold-color-same-as-fg=true
-foreground-color='rgb(198,200,209)'
-login-shell=true
-palette=['rgb(68,75,113)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(227,164,121)', 'rgb(132,160,199)', 'rgb(160,147,200)', 'rgb(137,184,194)', 'rgb(130,133,150)', 'rgb(30,33,50)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(227,164,121)', 'rgb(132,160,199)', 'rgb(160,147,200)', 'rgb(137,184,194)', 'rgb(130,133,150)']
-scrollback-unlimited=true
-scrollbar-policy='never'
-text-blink-mode='focused'
-use-theme-background=false
-use-theme-colors=false
-visible-name='Ayu (Dark)'
-
-[legacy/profiles:/:82749745-1881-49eb-8d6d-0fb35283055b]
-background-color='#282c34'
-bold-color='#ABB2BF'
-bold-color-same-as-fg=true
-foreground-color='#abb2bf'
-login-shell=true
-palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
-scrollback-unlimited=true
-scrollbar-policy='never'
-text-blink-mode='focused'
-use-theme-background=false
-use-theme-colors=false
-visible-name='One Dark'
-
-[legacy/profiles:/:8b249722-132f-48c5-8146-d78150a11ce9]
-background-color='rgb(22,24,33)'
-bold-color='rgb(198,200,209)'
-bold-color-same-as-fg=true
-bold-is-bright=true
-cursor-background-color='rgb(22,24,33)'
+[legacy/profiles:/:0bca083c-b4a7-4698-a100-abd0eab1137e]
+audible-bell=false
+background-color='rgb(18,19,25)'
 cursor-colors-set=false
-cursor-foreground-color='rgb(198,200,209)'
+default-size-columns=100
+default-size-rows=50
 foreground-color='rgb(198,200,209)'
 login-shell=true
-palette=['rgb(22,24,33)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(226,164,120)', 'rgb(132,160,198)', 'rgb(160,147,199)', 'rgb(137,184,194)', 'rgb(198,200,209)', 'rgb(107,112,137)', 'rgb(233,137,137)', 'rgb(192,202,142)', 'rgb(233,177,137)', 'rgb(145,172,209)', 'rgb(160,147,200)', 'rgb(149,196,206)', 'rgb(210,212,222)']
+palette=['rgb(22,23,34)', 'rgb(226,120,120)', 'rgb(180,190,130)', 'rgb(226,164,120)', 'rgb(132,160,198)', 'rgb(160,147,199)', 'rgb(137,184,194)', 'rgb(208,210,219)', 'rgb(55,55,87)', 'rgb(242,155,158)', 'rgb(204,219,160)', 'rgb(237,190,157)', 'rgb(163,190,227)', 'rgb(200,181,230)', 'rgb(182,216,222)', 'rgb(233,235,245)']
 scrollback-unlimited=true
 scrollbar-policy='never'
-text-blink-mode='focused'
 use-theme-colors=false
 visible-name='Iceberg'
 
-[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
-background-color='rgb(0,43,54)'
-foreground-color='rgb(131,148,150)'
+[legacy/profiles:/:28d751a5-f1e7-4a1a-bea3-7a1978af2463]
+audible-bell=false
+background-color='rgb(26,27,38)'
+default-size-columns=100
+foreground-color='rgb(169,177,214)'
+login-shell=true
+palette=['rgb(50,52,74)', 'rgb(247,118,142)', 'rgb(158,206,106)', 'rgb(224,175,104)', 'rgb(122,162,247)', 'rgb(173,142,230)', 'rgb(68,157,171)', 'rgb(120,124,153)', 'rgb(68,75,106)', 'rgb(255,122,147)', 'rgb(185,242,124)', 'rgb(255,158,100)', 'rgb(125,166,255)', 'rgb(187,154,247)', 'rgb(13,185,215)', 'rgb(172,176,208)']
+scroll-on-keystroke=true
+scrollback-unlimited=true
+scrollbar-policy='never'
 use-theme-colors=false
+visible-name='Tokyo Night'
+
+[legacy/profiles:/:5f818d3d-c681-4ba1-aa59-daee6a9fb763]
+audible-bell=false
+background-color='rgb(15,17,26)'
+cursor-background-color='rgb(255,65,81)'
+cursor-colors-set=true
+cursor-foreground-color='rgb(15,17,26)'
+default-size-columns=100
+foreground-color='rgb(216,222,233)'
+login-shell=true
+palette=['rgb(59,66,82)', 'rgb(191,97,106)', 'rgb(163,190,140)', 'rgb(235,203,139)', 'rgb(129,161,193)', 'rgb(180,142,173)', 'rgb(136,192,208)', 'rgb(229,233,240)', 'rgb(76,86,106)', 'rgb(191,97,106)', 'rgb(163,190,140)', 'rgb(235,203,139)', 'rgb(129,161,193)', 'rgb(180,142,173)', 'rgb(136,192,208)', 'rgb(180,142,173)']
+scrollbar-policy='never'
+use-theme-colors=false
+visible-name='Material Ocean'

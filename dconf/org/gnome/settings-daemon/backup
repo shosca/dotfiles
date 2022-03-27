@@ -1,14 +1,7 @@
-[peripherals/keyboard]
-numlock-state='off'
-
 [plugins/color]
-night-light-enabled=true
+night-light-enabled=false
 night-light-schedule-automatic=true
-night-light-temperature=uint32 4000
+night-light-temperature=uint32 1700
 
 [plugins/power]
 sleep-inactive-ac-type='nothing'
-
-[plugins/xsettings]
-antialiasing='rgba'
-hinting='medium'

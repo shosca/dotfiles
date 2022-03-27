@@ -1,11 +1,9 @@
-[list-view]
-default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred', 'detailed_type']
-default-visible-columns=['name', 'size', 'date_modified', 'starred']
-
 [preferences]
 default-folder-viewer='list-view'
 search-filter-time-type='last_modified'
+search-view='list-view'
 
 [window-state]
-initial-size=(1280, 1374)
+initial-size=(1074, 1001)
 maximized=false
+sidebar-width=189

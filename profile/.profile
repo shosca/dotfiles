@@ -160,6 +160,7 @@ fi
 [[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
 [[ -d "$GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
+[[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
 [[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"

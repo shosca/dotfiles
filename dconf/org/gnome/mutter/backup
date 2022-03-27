@@ -1,6 +1,6 @@
 [/]
-edge-tiling=false
-workspaces-only-on-primary=true
+experimental-features=['screen-cast', 'remote-desktop']
+workspaces-only-on-primary=false
 
 [wayland/keybindings]
-restore-shortcuts=['']
+restore-shortcuts=['<Super>Escape']

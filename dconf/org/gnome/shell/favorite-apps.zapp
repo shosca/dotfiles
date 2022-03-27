@@ -1,1 +1,1 @@
-['alacritty.desktop', 'org.gnome.Terminal.desktop', 'firefox-nightly.desktop', 'org.gnome.Epiphany.desktop', 'chromium.desktop', 'google-chrome.desktop', 'org.gnome.Nautilus.desktop']
+['org.wezfurlong.wezterm.desktop', 'firefox-developer-edition.desktop', 'chromium.desktop', 'foot.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Epiphany.desktop', 'org.gnome.Nautilus.desktop']

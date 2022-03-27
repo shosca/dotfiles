@@ -1,5 +1,6 @@
 vim.cmd([[
 augroup filetypedetect
+  autocmd BufNewFile,BufRead *.cr                     setfiletype crystal
   autocmd BufNewFile,BufRead *.feature,*.story        setfiletype cucumber
   autocmd BufNewFile,BufRead *.j2                     setfiletype jinja
   autocmd BufNewFile,BufRead *.js.map                 setfiletype json

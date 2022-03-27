@@ -2,7 +2,7 @@
 folder-children=['Utilities', 'YaST']
 
 [app-folders/folders/Utilities]
-apps=['eog.desktop', 'gnome-abrt.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gucharmap.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Calculator.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.Screenshot.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.tweaks.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
+apps=['gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gucharmap.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Calculator.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.eog.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.Screenshot.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'vinagre.desktop', 'yelp.desktop', 'org.gnome.Characters.desktop', 'org.gnome.Logs.desktop', 'com.gexperts.Tilix.desktop', 'org.gnome.font-viewer.desktop']
 categories=['X-GNOME-Utilities']
 name='X-GNOME-Utilities.directory'
 translate=true
@@ -15,55 +15,172 @@ translate=true
 [background]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///home/serkan/Pictures/7jWBoem.jpg'
+picture-uri='file:///home/serkan/.local/share/backgrounds/2021-12-03-21-41-35-voxel_city.jpg'
+picture-uri-dark='file:///home/serkan/.local/share/backgrounds/2021-12-03-21-41-35-voxel_city.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
 [input-sources]
 sources=[('xkb', 'us')]
-xkb-options=['caps:ctrl_modifier']
+xkb-options=['compose:rwin']
 
 [interface]
-cursor-theme='capitaine-cursors-light'
-document-font-name='Noto Sans 11'
-font-name='Noto Sans 11'
-gtk-im-module='gtk-im-context-simple'
-gtk-theme='macterial'
-icon-theme='McMojave-circle-blue'
-monospace-font-name='Hack Nerd Font 10'
+color-scheme='prefer-dark'
+cursor-theme='Adwaita'
+document-font-name='Roboto 11'
+enable-animations=true
+font-antialiasing='grayscale'
+font-hinting='slight'
+font-name='Roboto 11'
+gtk-theme='Adwaita-dark'
+icon-theme='Adwaita'
+monospace-font-name='Hasklig 10'
 toolkit-accessibility=false
 
 [notifications]
-application-children=['gnome-power-panel', 'dbeaver', 'org-gnome-baobab', 'firefox', 'keybase', 'org-gnome-nautilus', 'org-gnome-fileroller']
+application-children=['gnome-power-panel', 'firefox', 'google-chrome', 'chromium', 'dbeaver', 'net-lutris-lutris', 'skypeforlinux', 'gnome-network-panel', 'org-gnome-extensions-desktop', 'org-gnome-chromegnomeshell', 'com-uploadedlobster-peek', 'org-gnome-nautilus', 'pinegrow', 'gimp', 'steam', 'org-gnome-gedit', 'mpv', 'piavpn', 'zoom', 'slack', 'steam-native', 'signal-desktop', 'dropbox', 'org-wezfurlong-wezterm', 'firefox-nightly', 'org-gnome-baobab', 'firefox-developer-edition', 'com-valvesoftware-steam', 'io-dbeaver-dbeaver', 'org-gnome-eog', 'visual-studio-code', 'org-gnome-fileroller', 'filezilla', 'org-gnome-software', 'net-poedit-poedit', 'kitty', 'org-gnome-characters']
+show-banners=true
+
+[notifications/application/chromium]
+application-id='chromium.desktop'
+
+[notifications/application/com-uploadedlobster-peek]
+application-id='com.uploadedlobster.peek.desktop'
+
+[notifications/application/com-valvesoftware-steam]
+application-id='com.valvesoftware.Steam.desktop'
 
 [notifications/application/dbeaver]
 application-id='dbeaver.desktop'
 
+[notifications/application/dropbox]
+application-id='dropbox.desktop'
+
+[notifications/application/filezilla]
+application-id='filezilla.desktop'
+
+[notifications/application/firefox-developer-edition]
+application-id='firefox-developer-edition.desktop'
+
+[notifications/application/firefox-nightly]
+application-id='firefox-nightly.desktop'
+
 [notifications/application/firefox]
 application-id='firefox.desktop'
+
+[notifications/application/gimp]
+application-id='gimp.desktop'
+
+[notifications/application/gnome-network-panel]
+application-id='gnome-network-panel.desktop'
 
 [notifications/application/gnome-power-panel]
 application-id='gnome-power-panel.desktop'
 
-[notifications/application/keybase]
-application-id='keybase.desktop'
+[notifications/application/google-chrome]
+application-id='google-chrome.desktop'
+
+[notifications/application/io-dbeaver-dbeaver]
+application-id='io.dbeaver.DBeaver.desktop'
+
+[notifications/application/kitty]
+application-id='kitty.desktop'
+
+[notifications/application/mpv]
+application-id='mpv.desktop'
+
+[notifications/application/net-lutris-lutris]
+application-id='net.lutris.Lutris.desktop'
+
+[notifications/application/net-poedit-poedit]
+application-id='net.poedit.Poedit.desktop'
 
 [notifications/application/org-gnome-baobab]
 application-id='org.gnome.baobab.desktop'
 
+[notifications/application/org-gnome-characters]
+application-id='org.gnome.Characters.desktop'
+
+[notifications/application/org-gnome-chromegnomeshell]
+application-id='org.gnome.ChromeGnomeShell.desktop'
+
+[notifications/application/org-gnome-eog]
+application-id='org.gnome.eog.desktop'
+
+[notifications/application/org-gnome-extensions-desktop]
+application-id='org.gnome.Extensions.desktop.desktop'
+
 [notifications/application/org-gnome-fileroller]
 application-id='org.gnome.FileRoller.desktop'
+
+[notifications/application/org-gnome-gedit]
+application-id='org.gnome.gedit.desktop'
 
 [notifications/application/org-gnome-nautilus]
 application-id='org.gnome.Nautilus.desktop'
 
+[notifications/application/org-gnome-software]
+application-id='org.gnome.Software.desktop'
+
+[notifications/application/org-gnome-tweaks]
+application-id='org.gnome.tweaks.desktop'
+
+[notifications/application/org-wezfurlong-wezterm]
+application-id='org.wezfurlong.wezterm.desktop'
+
+[notifications/application/piavpn]
+application-id='piavpn.desktop'
+
+[notifications/application/pinegrow]
+application-id='pinegrow.desktop'
+
+[notifications/application/signal-desktop]
+application-id='signal-desktop.desktop'
+
+[notifications/application/skypeforlinux]
+application-id='skypeforlinux.desktop'
+
+[notifications/application/slack]
+application-id='slack.desktop'
+
+[notifications/application/steam-native]
+application-id='steam-native.desktop'
+
+[notifications/application/steam]
+application-id='steam.desktop'
+
+[notifications/application/visual-studio-code]
+application-id='visual-studio-code.desktop'
+
+[notifications/application/zoom]
+application-id='Zoom.desktop'
+
+[peripherals/mouse]
+accel-profile='flat'
+speed=-0.17647058823529416
+
+[peripherals/touchpad]
+two-finger-scrolling-enabled=true
+
+[privacy]
+disable-microphone=false
+
 [screensaver]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///home/serkan/Pictures/7jWBoem.jpg'
+picture-uri='file:///home/serkan/.local/share/backgrounds/2021-12-03-21-41-35-voxel_city.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
+[session]
+idle-delay=uint32 600
+
+[sound]
+allow-volume-above-100-percent=true
+event-sounds=true
+theme-name='freedesktop'
+
 [wm/preferences]
 button-layout='close:appmenu'
-titlebar-font='Noto Sans Bold 11'
+theme='Juno'
+titlebar-font='Cantarell 11'

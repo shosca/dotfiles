@@ -1,21 +1,96 @@
 [/]
-command-history=['r']
-enabled-extensions=['dash-to-dock@micxgx.gmail.com', 'drop-down-terminal-x@bigbn.pro', 'freon@UshakovVasilii_Github.yahoo.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'sound-output-device-chooser@kgshank.net', 'multi-monitors-add-on@spin83', 'appindicatorsupport@rgcjonas.gmail.com']
-favorite-apps=['alacritty.desktop', 'org.gnome.Terminal.desktop', 'firefox-nightly.desktop', 'org.gnome.Epiphany.desktop', 'chromium.desktop', 'google-chrome.desktop', 'org.gnome.Nautilus.desktop']
+app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Books.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x12.desktop': <{'position': <8>}>, 'org.gnome.gedit.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x16.desktop': <{'position': <10>}>, 'gnome-control-center.desktop': <{'position': <11>}>, 'org.gnome.TwentyFortyEight.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'Alacritty.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'in.lsp_plug.lsp_plugins_art_delay_mono.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_art_delay_stereo.desktop': <{'position': <17>}>, 'atom.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'bssh.desktop': <{'position': <20>}>, 'bvnc.desktop': <{'position': <21>}>, 'avahi-discover.desktop': <{'position': <22>}>, 'org.gnome.Builder.desktop': <{'position': <23>}>}, {'org.gnome.Calendar.desktop': <{'position': <0>}>, 'calf.desktop': <{'position': <1>}>, 'org.gnome.Chess.desktop': <{'position': <2>}>, 'cmake-gui.desktop': <{'position': <3>}>, 'jetbrains-datagrip.desktop': <{'position': <4>}>, 'dbeaver.desktop': <{'position': <5>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <6>}>, 'org.gnome.Devhelp.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_multisampler_x12_do.desktop': <{'position': <8>}>, 'in.lsp_plug.lsp_plugins_multisampler_x24_do.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_multisampler_x48_do.desktop': <{'position': <10>}>, 'org.gnome.Documents.desktop': <{'position': <11>}>, 'dropbox.desktop': <{'position': <12>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x8.desktop': <{'position': <13>}>, 'electron5.desktop': <{'position': <14>}>, 'electron6.desktop': <{'position': <15>}>, 'electron.desktop': <{'position': <16>}>, 'electron4.desktop': <{'position': <17>}>, 'org.gnome.Empathy.desktop': <{'position': <18>}>, 'org.gnome.Evolution.desktop': <{'position': <19>}>, 'org.gnome.Extensions.desktop': <{'position': <20>}>, 'ffado-mixer.desktop': <{'position': <21>}>, 'firefox.desktop': <{'position': <22>}>, 'firefox-developer-edition.desktop': <{'position': <23>}>}, {'fluid.desktop': <{'position': <0>}>, 'org.fontforge.FontForge.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x4.desktop': <{'position': <2>}>, 'org.gnome.Germinal.desktop': <{'position': <3>}>, 'org.gnome.Glade.desktop': <{'position': <4>}>, 'gimp.desktop': <{'position': <5>}>, 'google-chrome.desktop': <{'position': <6>}>, 'gparted.desktop': <{'position': <7>}>, 'org.gtk.Demo4.desktop': <{'position': <8>}>, 'gvim.desktop': <{'position': <9>}>, 'lstopo.desktop': <{'position': <10>}>, 'htop.desktop': <{'position': <11>}>, 'org.gtk.IconBrowser4.desktop': <{'position': <12>}>, 'org.inkscape.Inkscape.desktop': <{'position': <13>}>, 'ipython.desktop': <{'position': <14>}>, 'kitty.desktop': <{'position': <15>}>, 'org.gnome.Klotski.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_latency_meter.desktop': <{'position': <17>}>, 'libreoffice-startcenter.desktop': <{'position': <18>}>, 'libreoffice-base.desktop': <{'position': <19>}>, 'libreoffice-calc.desktop': <{'position': <20>}>, 'libreoffice-draw.desktop': <{'position': <21>}>, 'libreoffice-impress.desktop': <{'position': <22>}>, 'libreoffice-math.desktop': <{'position': <23>}>}, {'libreoffice-writer.desktop': <{'position': <0>}>, 'net.lutris.Lutris.desktop': <{'position': <1>}>, 'org.gnome.Mahjongg.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_crossover_ms.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_mb_compressor_ms.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_mb_expander_ms.desktop': <{'position': <5>}>, 'in.lsp_plug.lsp_plugins_mb_gate_ms.desktop': <{'position': <6>}>, 'in.lsp_plug.lsp_plugins_sc_mb_expander_ms.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_sc_mb_gate_ms.desktop': <{'position': <8>}>, 'in.lsp_plug.lsp_plugins_compressor_ms.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x16_ms.desktop': <{'position': <10>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x16_ms.desktop': <{'position': <11>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x32_ms.desktop': <{'position': <12>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x32_ms.desktop': <{'position': <13>}>, 'in.lsp_plug.lsp_plugins_dyna_processor_ms.desktop': <{'position': <14>}>, 'in.lsp_plug.lsp_plugins_sc_dyna_processor_ms.desktop': <{'position': <15>}>, 'in.lsp_plug.lsp_plugins_expander_ms.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_gate_ms.desktop': <{'position': <17>}>, 'in.lsp_plug.lsp_plugins_sc_expander_ms.desktop': <{'position': <18>}>, 'in.lsp_plug.lsp_plugins_sc_gate_ms.desktop': <{'position': <19>}>, 'in.lsp_plug.lsp_plugins_sc_mb_compressor_ms.desktop': <{'position': <20>}>, 'in.lsp_plug.lsp_plugins_sc_compressor_ms.desktop': <{'position': <21>}>, 'org.gnome.Mines.desktop': <{'position': <22>}>, 'minty-colors.desktop': <{'position': <23>}>}, {'in.lsp_plug.lsp_plugins_graph_equalizer_x16_mono.desktop': <{'position': <0>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x32_mono.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x16_mono.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x32_mono.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_profiler_mono.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_trigger_mono.desktop': <{'position': <5>}>, 'in.lsp_plug.lsp_plugins_compressor_mono.desktop': <{'position': <6>}>, 'in.lsp_plug.lsp_plugins_impulse_reverb_mono.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_crossover_mono.desktop': <{'position': <8>}>, 'in.lsp_plug.lsp_plugins_comp_delay_mono.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_dyna_processor_mono.desktop': <{'position': <10>}>, 'in.lsp_plug.lsp_plugins_sc_dyna_processor_mono.desktop': <{'position': <11>}>, 'in.lsp_plug.lsp_plugins_expander_mono.desktop': <{'position': <12>}>, 'in.lsp_plug.lsp_plugins_gate_mono.desktop': <{'position': <13>}>, 'in.lsp_plug.lsp_plugins_impulse_responses_mono.desktop': <{'position': <14>}>, 'in.lsp_plug.lsp_plugins_limiter_mono.desktop': <{'position': <15>}>, 'in.lsp_plug.lsp_plugins_loud_comp_mono.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_sampler_mono.desktop': <{'position': <17>}>, 'in.lsp_plug.lsp_plugins_trigger_midi_mono.desktop': <{'position': <18>}>, 'in.lsp_plug.lsp_plugins_mb_compressor_mono.desktop': <{'position': <19>}>, 'in.lsp_plug.lsp_plugins_mb_expander_mono.desktop': <{'position': <20>}>, 'in.lsp_plug.lsp_plugins_mb_gate_mono.desktop': <{'position': <21>}>, 'in.lsp_plug.lsp_plugins_sc_mb_expander_mono.desktop': <{'position': <22>}>, 'in.lsp_plug.lsp_plugins_sc_mb_gate_mono.desktop': <{'position': <23>}>}, {'in.lsp_plug.lsp_plugins_room_builder_mono.desktop': <{'position': <0>}>, 'in.lsp_plug.lsp_plugins_sc_compressor_mono.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_sc_expander_mono.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_sc_gate_mono.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_sc_limiter_mono.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_sc_mb_compressor_mono.desktop': <{'position': <5>}>, 'in.lsp_plug.lsp_plugins_oscillator_mono.desktop': <{'position': <6>}>, 'in.lsp_plug.lsp_plugins_slap_delay_mono.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_surge_filter_mono.desktop': <{'position': <8>}>, 'mpv.desktop': <{'position': <9>}>, 'org.gnome.Music.desktop': <{'position': <10>}>, 'nvim.desktop': <{'position': <11>}>, 'gnome-nettool.desktop': <{'position': <12>}>, 'org.gnome.Nibbles.desktop': <{'position': <13>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x1.desktop': <{'position': <14>}>, 'pan.desktop': <{'position': <15>}>, 'org.freedesktop.MalcontentControl.desktop': <{'position': <16>}>, 'com.uploadedlobster.peek.desktop': <{'position': <17>}>, 'in.lsp_plug.lsp_plugins_phase_detector.desktop': <{'position': <18>}>, 'pinegrow.desktop': <{'position': <19>}>, 'org.pitivi.Pitivi.desktop': <{'position': <20>}>, 'plank.desktop': <{'position': <21>}>, 'chrome-fhbjgbiflinjbdggehcddcbncdddomop-Default.desktop': <{'position': <22>}>, 'org.gnome.PowerStats.desktop': <{'position': <23>}>}, {'org.gtk.PrintEditor4.desktop': <{'position': <0>}>, 'piavpn.desktop': <{'position': <1>}>, 'psensor.desktop': <{'position': <2>}>, 'paprefs.desktop': <{'position': <3>}>, 'pavucontrol.desktop': <{'position': <4>}>, 'qv4l2.desktop': <{'position': <5>}>, 'qvidcap.desktop': <{'position': <6>}>, 'ranger.desktop': <{'position': <7>}>, 'redshift-gtk.desktop': <{'position': <8>}>, 'org.remmina.Remmina.desktop': <{'position': <9>}>, 'org.gnome.Robots.desktop': <{'position': <10>}>, 'sakura.desktop': <{'position': <11>}>, 'gnome-search-tool.desktop': <{'position': <12>}>, 'signal-desktop.desktop': <{'position': <13>}>, 'chrome-jfaelnolkgonnjdlkfokjadedkacbnib-Default.desktop': <{'position': <14>}>, 'skypeforlinux.desktop': <{'position': <15>}>, 'slack.desktop': <{'position': <16>}>, 'org.gnome.Software.desktop': <{'position': <17>}>, 'stoken-gui.desktop': <{'position': <18>}>, 'stoken-gui-small.desktop': <{'position': <19>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <20>}>, 'in.lsp_plug.lsp_plugins_crossover_lr.desktop': <{'position': <21>}>, 'in.lsp_plug.lsp_plugins_mb_compressor_lr.desktop': <{'position': <22>}>, 'in.lsp_plug.lsp_plugins_mb_expander_lr.desktop': <{'position': <23>}>}, {'in.lsp_plug.lsp_plugins_mb_gate_lr.desktop': <{'position': <0>}>, 'in.lsp_plug.lsp_plugins_sc_mb_expander_lr.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_sc_mb_gate_lr.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x16_lr.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x16_lr.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x32_lr.desktop': <{'position': <5>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x32_lr.desktop': <{'position': <6>}>, 'in.lsp_plug.lsp_plugins_compressor_lr.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_comp_delay_x2_stereo.desktop': <{'position': <8>}>, 'in.lsp_plug.lsp_plugins_dyna_processor_lr.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_sc_dyna_processor_lr.desktop': <{'position': <10>}>, 'in.lsp_plug.lsp_plugins_expander_lr.desktop': <{'position': <11>}>, 'in.lsp_plug.lsp_plugins_gate_lr.desktop': <{'position': <12>}>, 'in.lsp_plug.lsp_plugins_sc_compressor_lr.desktop': <{'position': <13>}>, 'in.lsp_plug.lsp_plugins_sc_expander_lr.desktop': <{'position': <14>}>, 'in.lsp_plug.lsp_plugins_sc_gate_lr.desktop': <{'position': <15>}>, 'in.lsp_plug.lsp_plugins_sc_mb_compressor_lr.desktop': <{'position': <16>}>, 'steam-native.desktop': <{'position': <17>}>, 'steam.desktop': <{'position': <18>}>, 'in.lsp_plug.lsp_plugins_multisampler_x12.desktop': <{'position': <19>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x16_stereo.desktop': <{'position': <20>}>, 'in.lsp_plug.lsp_plugins_para_equalizer_x16_stereo.desktop': <{'position': <21>}>, 'in.lsp_plug.lsp_plugins_multisampler_x24.desktop': <{'position': <22>}>, 'in.lsp_plug.lsp_plugins_graph_equalizer_x32_stereo.desktop': <{'position': <23>}>}, {'in.lsp_plug.lsp_plugins_para_equalizer_x32_stereo.desktop': <{'position': <0>}>, 'in.lsp_plug.lsp_plugins_multisampler_x48.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_profiler_stereo.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_trigger_stereo.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_compressor_stereo.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_impulse_reverb_stereo.desktop': <{'position': <5>}>, 'in.lsp_plug.lsp_plugins_crossover_stereo.desktop': <{'position': <6>}>, 'in.lsp_plug.lsp_plugins_comp_delay_stereo.desktop': <{'position': <7>}>, 'in.lsp_plug.lsp_plugins_dyna_processor_stereo.desktop': <{'position': <8>}>, 'in.lsp_plug.lsp_plugins_sc_dyna_processor_stereo.desktop': <{'position': <9>}>, 'in.lsp_plug.lsp_plugins_expander_stereo.desktop': <{'position': <10>}>, 'in.lsp_plug.lsp_plugins_gate_stereo.desktop': <{'position': <11>}>, 'in.lsp_plug.lsp_plugins_impulse_responses_stereo.desktop': <{'position': <12>}>, 'in.lsp_plug.lsp_plugins_limiter_stereo.desktop': <{'position': <13>}>, 'in.lsp_plug.lsp_plugins_loud_comp_stereo.desktop': <{'position': <14>}>, 'in.lsp_plug.lsp_plugins_sampler_stereo.desktop': <{'position': <15>}>, 'in.lsp_plug.lsp_plugins_trigger_midi_stereo.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_mb_compressor_stereo.desktop': <{'position': <17>}>, 'in.lsp_plug.lsp_plugins_mb_expander_stereo.desktop': <{'position': <18>}>, 'in.lsp_plug.lsp_plugins_mb_gate_stereo.desktop': <{'position': <19>}>, 'in.lsp_plug.lsp_plugins_sc_mb_expander_stereo.desktop': <{'position': <20>}>, 'in.lsp_plug.lsp_plugins_sc_mb_gate_stereo.desktop': <{'position': <21>}>, 'in.lsp_plug.lsp_plugins_room_builder_stereo.desktop': <{'position': <22>}>, 'in.lsp_plug.lsp_plugins_sc_expander_stereo.desktop': <{'position': <23>}>}, {'in.lsp_plug.lsp_plugins_sc_gate_stereo.desktop': <{'position': <0>}>, 'in.lsp_plug.lsp_plugins_sc_limiter_stereo.desktop': <{'position': <1>}>, 'in.lsp_plug.lsp_plugins_sc_mb_compressor_stereo.desktop': <{'position': <2>}>, 'in.lsp_plug.lsp_plugins_slap_delay_stereo.desktop': <{'position': <3>}>, 'in.lsp_plug.lsp_plugins_surge_filter_stereo.desktop': <{'position': <4>}>, 'in.lsp_plug.lsp_plugins_sc_compressor_stereo.desktop': <{'position': <5>}>, 'streamlink-twitch-gui.desktop': <{'position': <6>}>, 'org.gnome.Sudoku.desktop': <{'position': <7>}>, 'synergy.desktop': <{'position': <8>}>, 'org.gnome.Sysprof3.desktop': <{'position': <9>}>, 'tableplus.desktop': <{'position': <10>}>, 'org.gnome.Taquin.desktop': <{'position': <11>}>, 'termite.desktop': <{'position': <12>}>, 'org.gnome.Tetravex.desktop': <{'position': <13>}>, 'vncviewer.desktop': <{'position': <14>}>, 'org.gnome.Todo.desktop': <{'position': <15>}>, 'transmission-gtk.desktop': <{'position': <16>}>, 'in.lsp_plug.lsp_plugins_spectrum_analyzer_x2.desktop': <{'position': <17>}>, 'wine-Programs-World of Warships-Uninstall World of Warships.desktop': <{'position': <18>}>, 'urxvt.desktop': <{'position': <19>}>, 'urxvtc.desktop': <{'position': <20>}>, 'urxvt-tabbed.desktop': <{'position': <21>}>, 'uxterm.desktop': <{'position': <22>}>, 'v4l2ucp.desktop': <{'position': <23>}>}, {'vim.desktop': <{'position': <0>}>, 'visual-studio-code.desktop': <{'position': <1>}>, 'vlc.desktop': <{'position': <2>}>, 'org.gtk.WidgetFactory4.desktop': <{'position': <3>}>, 'winetricks.desktop': <{'position': <4>}>, 'wine-Programs-World of Warships-World of Warships.desktop': <{'position': <5>}>, 'xchm.desktop': <{'position': <6>}>, 'xdvi.desktop': <{'position': <7>}>, 'xgps.desktop': <{'position': <8>}>, 'xgpsspeed.desktop': <{'position': <9>}>, 'xterm.desktop': <{'position': <10>}>, 'chrome-agimnkijcaahngcdmfeangaknmldooml-Default.desktop': <{'position': <11>}>, 'Zoom.desktop': <{'position': <12>}>, 'org.gnome.seahorse.Application.desktop': <{'position': <13>}>}]
+app-picker-view=uint32 0
+command-history=['r', 'germinal', 'wayst', 'foot', 'neovide', 'r', 'r2modman', 'havoc', 'wezterm', 'xeyex', 'lg', 'code --enable-features=UseOzonePlatform --ozone-platform=wayland', 'xeyes']
+disable-user-extensions=false
+disabled-extensions=['pop-shell@system76.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'material-shell@papyelgringo', 'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com', 'just-perfection-desktop@just-perfection', 'vertical-overview@RensAlthuis.github.com']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'sound-output-device-chooser@kgshank.net', 'dynamic-panel-transparency@rockon999.github.io', 'gtktitlebar@velitasali.github.io', 'multi-monitors-add-on@spin83', 'ddterm@amezin.github.com', 'blur-me@nunchucks', 'blur-my-shell@aunetx', 'desktop-cube@schneegans.github.com', 'flypie@schneegans.github.com', 'gnome-ui-tune@itstime.tech', 'Vitals@CoreCoding.com', 'appindicatorsupport@rgcjonas.gmail.com']
+favorite-apps=['org.wezfurlong.wezterm.desktop', 'firefox-developer-edition.desktop', 'chromium.desktop', 'foot.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Epiphany.desktop', 'org.gnome.Nautilus.desktop']
+looking-glass-history=['global.context.unsafe_mode', 'global.context.unsafe_mode = true']
+welcome-dialog-last-shown-version='40.0'
 
-[extensions/breezytile/layouts]
-gap=1
-ratio-value=0.45000000000000001
-screen-gap=0
-tween-time=0.19999999999999996
-use-screen-gap=false
+[extensions/blur-me]
+blur-applications=true
+blur-lockscreen=true
+blur-panel=false
+brightness=0.75
+dash-opacity=0.0
+hacks-level=1
+sigma=10
+static-blur=true
 
-[extensions/dash-to-dock]
-dash-max-icon-size=32
-dock-position='BOTTOM'
+[extensions/blur-my-shell]
+blur-dash=true
+blur-lockscreen=true
+blur-overview=true
+blur-panel=false
+brightness=0.59999999999999998
+dash-opacity=0.0
+debug=false
+hacks-level=0
+sigma=30
+static-blur=false
+
+[extensions/dynamic-panel-transparency]
+current-user-theme='Plata-Noir-Compact'
+force-theme-update=false
+panel-theme-color=(0, 0, 0)
+theme-opacity=255
+
+[extensions/flypie]
+active-stack-child='menu-editor-page'
+child-color-mode-hover='auto'
+global-scale=2.0
+menu-configuration='[{"name":"Example Menu","icon":"flypie-symbolic-#46a","shortcut":"<Primary>space","centered":false,"id":0,"children":[{"name":"Favorites","icon":"flypie-menu-favorites-symbolic-#da3","type":"Favorites","data":{},"angle":-1},{"name":"Maximize Window","icon":"flypie-window-maximize-symbolic-#b68","type":"Shortcut","data":"<Alt>F10","angle":-1},{"name":"Fly-Pie Settings","icon":"flypie-menu-system-symbolic-#3ab","type":"Command","data":"gnome-extensions prefs flypie@schneegans.github.com","angle":-1},{"name":"Close Window","icon":"flypie-window-close-symbolic-#a33","type":"Shortcut","data":"<Alt>F4","angle":-1},{"name":"Running Apps","icon":"flypie-menu-running-apps-symbolic-#65a","type":"RunningApps","data":{"activeWorkspaceOnly":false,"appGrouping":true,"hoverPeeking":true,"nameRegex":""},"angle":-1}],"type":"CustomMenu","data":{},"touchButton":false,"superRMB":true}]'
+stats-abortions=uint32 5
+stats-achievement-dates={'journey0': int64 1640871612201}
+stats-added-items=uint32 1
+stats-click-selections-depth1=uint32 4
+stats-click-selections-depth2=uint32 5
+stats-dbus-menus=uint32 2
+stats-gesture-selections-depth1=uint32 5
+stats-gesture-selections-depth2=uint32 2
+stats-preview-menus=uint32 1
+stats-selections=uint32 16
+stats-selections-1000ms-depth1=uint32 4
+stats-selections-500ms-depth1=uint32 2
+stats-selections-750ms-depth1=uint32 4
+stats-settings-opened=uint32 5
+stats-tutorial-menus=uint32 1
+stats-unread-achievements=uint32 1
 
 [extensions/freon]
-hot-sensors=['__average__', '__max__']
+hot-sensors=['Package id 0']
+
+[extensions/just-perfection]
+background-menu=false
+dash=true
+double-super-to-appgrid=false
+gesture=false
+hot-corner=true
+osd=false
+panel=false
+panel-corner-size=1
+panel-in-overview=true
+ripple-box=false
+search=false
+show-prefs-intro=false
+startup-status=0
+theme=true
+window-demands-attention-focus=true
+window-picker-icon=false
+window-preview-caption=false
+workspace=false
+workspace-background-corner-size=15
+workspace-popup=false
+workspaces-in-app-grid=false
+
+[extensions/materialshell/layouts]
+gap=0
+tween-time=0.14999999999999991
+
+[extensions/materialshell/theme]
+panel-size=24
 
 [extensions/multi-monitors-add-on]
 available-indicators=@as []
@@ -26,16 +101,58 @@ show-panel=false
 show-thumbnails-slider=false
 thumbnails-on-left-side=false
 
-[extensions/user-theme]
-name='macterial'
+[extensions/netspeed]
+show-ips=false
 
-[extensions/workspaces-to-dock]
-dock-position='RIGHT'
+[extensions/pop-shell]
+gap-inner=uint32 0
+gap-outer=uint32 0
+tile-by-default=false
+
+[extensions/user-theme]
+name=''
+
+[extensions/vertical-overview]
+dash-max-height=100
+dash-max-icon-size=64
+dash-to-panel-left-right-fix=false
+hide-dash=false
+left-offset=200
+override-dash=true
+right-offset=350
+scaling-workspace-background=false
+show-apps-on-top=false
+static-background=false
+thumbnails-position=50
+workspace-peek-distance=10
+
+[extensions/vitals]
+alphabetize=true
+hide-zeros=false
+hot-sensors=['_memory_usage_', '_system_load_1m_', '_processor_average_', '_temperature_hwmon5temp1_']
+position-in-panel=2
+show-temperature=true
+use-higher-precision=false
 
 [keybindings]
-toggle-application-view=['']
-toggle-overview=['']
+switch-to-application-1=['<Super>1']
+switch-to-application-2=['<Super>2']
+switch-to-application-3=['<Super>3']
+switch-to-application-4=['<Super>4']
+switch-to-application-5=['<Super>5']
+switch-to-application-6=['<Super>6']
+switch-to-application-7=['<Super>7']
+switch-to-application-8=['<Super>8']
+switch-to-application-9=['<Super>9']
+toggle-application-view=['<Super>a']
+toggle-overview=['<Super>s']
 
 [overrides]
-edge-tiling=false
 workspaces-only-on-primary=false
+
+[weather]
+automatic-location=true
+locations=@av []
+
+[world-clocks]
+locations=@av []
