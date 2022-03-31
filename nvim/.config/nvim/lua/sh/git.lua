@@ -10,6 +10,7 @@ function M.configure_packer(use)
     end
   }
   use "rhysd/committia.vim"
+  use "rhysd/conflict-marker.vim"
   use {"sindrets/diffview.nvim", cmd = "DiffviewOpen", config = function() require('diffview').setup() end}
   use {"tpope/vim-fugitive", config = function() require("sh.keymap").nmap {"<leader>gs", ":G<CR>"} end}
   use {

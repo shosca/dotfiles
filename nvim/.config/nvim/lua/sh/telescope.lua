@@ -14,15 +14,6 @@ function M.configure_packer(use)
     'nvim-telescope/telescope.nvim',
     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
     config = function()
-      local nmap = require("sh.keymap").nmap
-      nmap {"<Leader>fj", ":Telescope resume<CR>", {silent = true}}
-      nmap {"<Leader>fb", ":Telescope buffers<CR>", {silent = true}}
-      nmap {"<Leader>ff", ":Telescope find_files<CR>", {silent = true}}
-      nmap {"<Leader>fg", ":Telescope live_grep<CR>", {silent = true}}
-      nmap {"<Leader>fd", ":Telescope lsp_document_diagnostics<CR>", {silent = true}}
-      nmap {"<Leader>fw", ":Telescope lsp_workspace_diagnostics<CR>", {silent = true}}
-      nmap {"<Leader>fa", ":Telescope lsp_code_actions<CR>", {silent = true}}
-
       local actions = require('telescope.actions')
       require('telescope').setup {
         defaults = {
@@ -86,6 +77,40 @@ function M.configure_packer(use)
         pcall(require("telescope").load_extension, "gh")
         pcall(require("telescope").load_extension, "octo")
       end
+
+      local nmap = require("sh.keymap").nmap
+      nmap {"<Leader>ff", function() require("telescope.builtin").resume() end, {silent = true}}
+      nmap {"<Leader>fb", function() require("telescope.builtin").buffers {shorten_path = false, preview = false} end, {silent = true}}
+      nmap {"<Leader>fp", function() require("telescope.builtin").find_files() end, {silent = true}}
+      nmap {
+        "<Leader>ft",
+        function()
+          local themes = require "telescope.themes"
+          require("telescope.builtin").git_files(themes.get_dropdown {
+            cwd = vim.fn.expand "%:p:h",
+            winblend = 10,
+            border = true,
+            previewer = false,
+            shorten_path = false
+          })
+        end,
+        {silent = true}
+      }
+      nmap {"<Leader>fg", function() require("telescope.builtin").live_grep {previewer = false, fzf_separator = "|>"} end, {silent = true}}
+      nmap {"<Leader>fd", function() require("telescope.builtin").fd() end, {silent = true}}
+      nmap {
+        "<Leader>fw",
+        function() require("telescope.builtin").find_files {cwd = vim.fn.stdpath "data" .. "/site/pack/packer/start/"} end,
+        {silent = true}
+      }
+      nmap {
+        "<Leader>fa",
+        function()
+          local themes = require "telescope.themes"
+          require("telescope.builtin").lsp_code_actions(themes.get_dropdown {winblend = 10, border = true, previewer = false, shorten_path = false})
+        end,
+        {silent = true}
+      }
     end
   }
 

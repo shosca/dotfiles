@@ -12,7 +12,6 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead */playbooks/*/*.yml      setfiletype ansible
   autocmd BufNewFile,BufRead */templates/*.{yaml,tpl} setfiletype yaml.gotexttmpl
   autocmd BufNewFile,BufRead .babelrc                 setfiletype json
-  autocmd BufNewFile,BufRead Dockerfile*              setfiletype dockerfile
   autocmd BufNewFile,BufRead .buckconfig              setfiletype toml
   autocmd BufNewFile,BufRead .eslintrc                setfiletype json
   autocmd BufNewFile,BufRead .flowconfig              setfiletype ini
@@ -22,8 +21,8 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead .tern-project            setfiletype json
   autocmd BufNewFile,BufRead .tern-{project,port}     setfiletype json
   autocmd BufNewFile,BufRead .watchmanconfig          setfiletype json
+  autocmd BufNewFile,BufRead Dockerfile*              setfiletype dockerfile
   autocmd BufNewFile,BufRead Jenkinsfile              setfiletype groovy
-  autocmd BufNewFile,BufRead Tmuxfile,tmux/config     setfiletype tmux
   autocmd BufNewFile,BufRead Tmuxfile,tmux/config     setfiletype tmux
   autocmd BufNewFile,BufRead poetry.lock              setfiletype toml
   autocmd BufNewFile,BufRead yarn.lock                setfiletype yaml

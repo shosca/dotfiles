@@ -43,7 +43,6 @@ vim.opt.number = true -- But show the actual number for the line we're on
 vim.opt.ignorecase = true -- Ignore case when searching...
 vim.opt.smartcase = true -- ... unless there is a capital letter in the query
 vim.opt.hidden = true -- I like having buffers stay around
-vim.opt.cursorline = true -- Highlight the current line
 vim.opt.equalalways = true
 vim.opt.splitright = true -- Prefer windows splitting to the right
 vim.opt.splitbelow = true -- Prefer windows splitting to the bottom
@@ -78,6 +77,7 @@ vim.opt.inccommand = "split"
 vim.opt.shada = {"!", "'1000", "<50", "s10", "h"}
 
 vim.opt.mouse = "n"
+vim.opt.diffopt = {"internal", "filler", "closeoff", "hiddenoff", "algorithm:minimal"}
 
 -- Helpful related items:
 --   1. :center, :left, :right
@@ -104,35 +104,18 @@ vim.opt.fillchars = {eob = "~"}
 vim.opt.list = true
 vim.opt.listchars = {tab = '› ', eol = '¬', nbsp = '.', trail = '•', extends = '#'}
 
+vim.cmd [[autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif]]
+
+vim.opt.cursorline = true -- Highlight the current line
+local group = vim.api.nvim_create_augroup("CursorLineControl", {clear = true})
+local set_cursorline = function(event, value, pattern)
+  vim.api.nvim_create_autocmd(event, {group = group, pattern = pattern, callback = function() vim.opt_local.cursorline = value end})
+end
+set_cursorline("WinLeave", false)
+set_cursorline("WinEnter", true)
+set_cursorline("FileType", false, "TelescopePrompt")
+
 require 'sh.filetypes'
 require 'sh.mappings'
 require 'sh.plugins'
 
-vim.api.nvim_command [[
-autocmd BufNewFile,BufRead Dockerfile*              set ft=dockerfile
-autocmd BufNewFile,BufRead *.feature,*.story        set ft=cucumber
-autocmd BufNewFile,BufRead *.j2                     set ft=jinja
-autocmd BufNewFile,BufRead *.js.map                 set ft=json
-autocmd BufNewFile,BufRead *.postman_collection     set ft=json
-autocmd BufNewFile,BufRead *.{feature,story}        set ft=cucumber
-autocmd BufNewFile,BufRead */.kube/config           set ft=yaml
-autocmd BufNewFile,BufRead */inventory/*.ini        set ft=ansible_hosts
-autocmd BufNewFile,BufRead */playbooks/*.{yml,yaml} set ft=yaml.ansible
-autocmd BufNewFile,BufRead */playbooks/*/*.yml      set ft=ansible
-autocmd BufNewFile,BufRead */templates/*.{yaml,tpl} set ft=yaml.gotexttmpl
-autocmd BufNewFile,BufRead .babelrc                 set ft=json
-autocmd BufNewFile,BufRead .buckconfig              set ft=toml
-autocmd BufNewFile,BufRead .eslintrc                set ft=json
-autocmd BufNewFile,BufRead .flowconfig              set ft=ini
-autocmd BufNewFile,BufRead .jsbeautifyrc            set ft=json
-autocmd BufNewFile,BufRead .jscsrc                  set ft=json
-autocmd BufNewFile,BufRead .mk                      set ft=make
-autocmd BufNewFile,BufRead .tern-project            set ft=json
-autocmd BufNewFile,BufRead .tern-{project,port}     set ft=json
-autocmd BufNewFile,BufRead .watchmanconfig          set ft=json
-autocmd BufNewFile,BufRead Jenkinsfile              set ft=groovy
-autocmd BufNewFile,BufRead Tmuxfile,tmux/config     set ft=tmux
-autocmd BufNewFile,BufRead Tmuxfile,tmux/config     set ft=tmux
-autocmd BufNewFile,BufRead yarn.lock                set ft=yaml
-autocmd BufNewFile,BufRead poetry.lock              set ft=toml
-]]

@@ -1,5 +1,7 @@
 local M = {}
 
+vim.opt.laststatus = 3
+
 function M.configure_packer(use)
   use {
     'marko-cerovac/material.nvim',
