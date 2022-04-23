@@ -1,19 +1,7 @@
 ---
 
 repos:
-  - repo: local
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.13.1
     hooks:
-    - id: lua-format
-      name: format lua
-      description: format lua
-      entry: lua-format
-      args: 
-        - --tab-width=2
-        - --indent-width=2
-        - --column-limit=150
-        - --align-parameter 
-        - --chop-down-table 
-        - --chop-down-kv-table 
-        - -i
-      language: system
-      types: [file, lua]
+    - id: stylua-system # or stylua-system / stylua-github
