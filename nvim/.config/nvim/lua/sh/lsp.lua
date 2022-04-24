@@ -77,23 +77,34 @@ if ok then
   caps = cmp_nvim_lsp.update_capabilities(caps)
 end
 
-local M = { capabilities = caps }
-function M.common_on_attach(client, bufnr)
+local M = {
+  capabilities = caps,
+}
+
+function M.on_attach_lsp_document_highlight(client, _)
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-      ]],
-      false
-    )
+    vim.cmd([[aug LspShowReferences
+        au! * <buffer>
+        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved,WinLeave <buffer> lua vim.lsp.buf.clear_references()
+        aug END
+      ]])
   end
+end
+
+function M.on_attach_lsp_document_formatting(client, _)
+  local nmap = require('sh.keymap').nmap
+  if client.resolved_capabilities.document_formatting then
+    vim.cmd([[aug LspAutoformat
+        au! * <buffer>
+        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+        aug END
+      ]])
+    nmap({ '=', vim.lsp.buf.formatting })
+  end
+end
+
+function M.on_attach_lsp_keymaps(_, bufnr)
   local nmap = require('sh.keymap').nmap
   local xmap = require('sh.keymap').xmap
   nmap({ 'gD', vim.lsp.buf.declaration, { silent = true, buffer = bufnr } })
@@ -105,6 +116,18 @@ function M.common_on_attach(client, bufnr)
   nmap({ 'gl', vim.lsp.buf.hover, { silent = true, buffer = bufnr } })
   nmap({ 'ga', vim.lsp.buf.code_action, { silent = true, buffer = bufnr } })
   xmap({ 'ga', vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
+end
+
+local function starts_with(str, start)
+  return str:sub(1, #start) == start
+end
+
+function M.common_on_attach(client, bufnr)
+  for key, value in pairs(M) do
+    if starts_with(key, 'on_attach') then
+      value(client, bufnr)
+    end
+  end
 end
 
 function M.is_client_active(name)

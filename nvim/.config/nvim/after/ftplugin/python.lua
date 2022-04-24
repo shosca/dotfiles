@@ -44,5 +44,3 @@ end
 
 dap.adapters.python = { type = 'executable', command = dapcmd, args = { '-m', 'debugpy.adapter' } }
 require('dap.ext.vscode').load_launchjs()
-
-vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)]])

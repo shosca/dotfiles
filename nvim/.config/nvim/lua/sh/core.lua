@@ -8,8 +8,24 @@ function M.configure_packer(use)
   use({
     'rainbowhxch/accelerated-jk.nvim',
     config = function()
-      vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
-      vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+      local ajk = require('accelerated-jk')
+      local nmap = require('sh.keymap').nmap
+
+      ajk.setup({})
+      nmap({
+        'j',
+        function()
+          ajk.move_to('gj')
+        end,
+        { silent = true },
+      })
+      nmap({
+        'k',
+        function()
+          ajk.move_to('gk')
+        end,
+        { silent = true },
+      })
     end,
   })
   use({
@@ -103,4 +119,5 @@ function M.configure_packer(use)
     end,
   })
 end
+
 return M
