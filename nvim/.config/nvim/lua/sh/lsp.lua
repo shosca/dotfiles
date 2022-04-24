@@ -140,7 +140,6 @@ function M.configure_packer(use)
     },
     config = function()
       local cmp = require('cmp')
-      local cmp_types = require('cmp.types')
       require('sh.gh_issues')
       local lspkind = require('lspkind')
       lspkind.init()
@@ -189,13 +188,14 @@ function M.configure_packer(use)
           format = lspkind.cmp_format({
             with_text = true,
             menu = {
-              nvim_lsp = '(LSP)',
-              emoji = '(emoji)',
-              path = '(path)',
-              calc = '(calc)',
-              luasnip = '(snip)',
-              buffer = '(buf)',
-              gh_issues = '(issues)',
+              nvim_lua = '[nvim]',
+              nvim_lsp = '[lsp]',
+              emoji = '[emoji]',
+              path = '[path]',
+              calc = '[calc]',
+              luasnip = '[snip]',
+              buffer = '[buf]',
+              gh_issues = '[issues]',
             },
           }),
         },
@@ -223,29 +223,28 @@ function M.configure_packer(use)
         },
         window = { documentation = cmp.config.window.bordered() },
         sources = {
-          { name = 'nvim_lsp', max_item_count = 20 },
+          { name = 'gh_issues' },
           { name = 'nvim_lua' },
-          { name = 'luasnip' },
+          { name = 'nvim_lsp' },
+          { name = 'path' },
           { name = 'buffer', keyword_length = 5, max_item_count = 5 },
-          { name = 'rg', keyword_length = 5, max_item_count = 5 },
           {
             name = 'tmux',
+            keyword_length = 3,
             max_item_count = 5,
             option = { all_panes = false },
           },
-          {
-            name = 'look',
-            keyword_length = 5,
-            max_item_count = 5,
-            option = { convert_case = true, loud = true },
-          },
-          { name = 'path' },
-          { name = 'zsh' },
-          { name = 'calc' },
-          { name = 'emoji' },
-          { name = 'treesitter' },
-          { name = 'crates' },
-          { name = 'gh_issues' },
+          -- {
+          --   name = 'look',
+          --   keyword_length = 5,
+          --   max_item_count = 5,
+          --   option = { convert_case = true, loud = true },
+          -- },
+          -- { name = 'zsh' },
+          -- { name = 'calc' },
+          -- { name = 'emoji' },
+          -- { name = 'treesitter' },
+          -- { name = 'crates' },
         },
         experimental = { native_menu = false, ghost_text = false },
       })
