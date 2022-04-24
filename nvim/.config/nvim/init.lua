@@ -1,32 +1,32 @@
-pcall(require, "impatient")
+pcall(require, 'impatient')
 
 local disabled_builtins = {
-	"gzip",
-	"man",
-	"matchit",
-	"matchparen",
-	"shada_plugin",
-	"tarPlugin",
-	"tar",
-	"zipPlugin",
-	"zip",
-	"netrwPlugin",
+  'gzip',
+  'man',
+  'matchit',
+  'matchparen',
+  'shada_plugin',
+  'tarPlugin',
+  'tar',
+  'zipPlugin',
+  'zip',
+  'netrwPlugin',
 }
 for _, v in pairs(disabled_builtins) do
-	vim.g["loaded_" .. v] = 1
+  vim.g['loaded_' .. v] = 1
 end
 vim.g.do_filetype_lua = 1
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
-local backupdir = vim.fn.stdpath("data") .. "/backup"
-local swapdir = vim.fn.stdpath("data") .. "/swap"
-local undodir = vim.fn.stdpath("data") .. "/undo"
+local backupdir = vim.fn.stdpath('data') .. '/backup'
+local swapdir = vim.fn.stdpath('data') .. '/swap'
+local undodir = vim.fn.stdpath('data') .. '/undo'
 
-vim.fn.mkdir(backupdir, "p")
-vim.fn.mkdir(swapdir, "p")
-vim.fn.mkdir(undodir, "p")
+vim.fn.mkdir(backupdir, 'p')
+vim.fn.mkdir(swapdir, 'p')
+vim.fn.mkdir(undodir, 'p')
 
 vim.opt.backupdir = backupdir
 vim.opt.directory = swapdir
@@ -34,17 +34,17 @@ vim.opt.undodir = undodir
 
 -- Ignore compiled files
 vim.opt.wildignorecase = true
-vim.opt.wildignore = { "__pycache__", "*.o", "*~", "*.pyc", "*pycache*" }
+vim.opt.wildignore = { '__pycache__', '*.o', '*~', '*.pyc', '*pycache*' }
 
-vim.opt.wildmode = { "longest", "list", "full" }
+vim.opt.wildmode = { 'longest', 'list', 'full' }
 
 -- Cool floating window popup menu for completion on command line
 vim.opt.pumblend = 17
 
-vim.opt.wildmode = vim.opt.wildmode - "list"
-vim.opt.wildmode = vim.opt.wildmode + { "longest", "full" }
+vim.opt.wildmode = vim.opt.wildmode - 'list'
+vim.opt.wildmode = vim.opt.wildmode + { 'longest', 'full' }
 
-vim.opt.wildoptions = "pum"
+vim.opt.wildoptions = 'pum'
 
 vim.opt.showmode = false
 vim.opt.showcmd = true
@@ -75,27 +75,27 @@ vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 
 vim.opt.breakindent = true
-vim.opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
+vim.opt.showbreak = string.rep(' ', 3) -- Make it so that long lines wrap smartly
 vim.opt.linebreak = true
 
-vim.opt.foldmethod = "marker"
+vim.opt.foldmethod = 'marker'
 vim.opt.foldlevel = 3
 vim.opt.modelines = 1
 
-vim.opt.belloff = "all" -- Just turn the dang bell off
+vim.opt.belloff = 'all' -- Just turn the dang bell off
 
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = 'unnamedplus'
 
-vim.opt.inccommand = "split"
-vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
+vim.opt.inccommand = 'split'
+vim.opt.shada = { '!', "'1000", '<50', 's10', 'h' }
 
-vim.opt.mouse = "n"
+vim.opt.mouse = 'n'
 vim.opt.diffopt = {
-	"internal",
-	"filler",
-	"closeoff",
-	"hiddenoff",
-	"algorithm:minimal",
+  'internal',
+  'filler',
+  'closeoff',
+  'hiddenoff',
+  'algorithm:minimal',
 }
 
 -- Helpful related items:
@@ -104,49 +104,49 @@ vim.opt.diffopt = {
 --
 -- TODO: w, {v, b, l}
 vim.opt.formatoptions = vim.opt.formatoptions
-	- "a" -- Auto formatting is BAD.
-	- "t" -- Don't auto format my code. I got linters for that.
-	+ "c" -- In general, I like it when comments respect textwidth
-	+ "q" -- Allow formatting comments w/ gq
-	- "o" -- O and o, don't continue comments
-	+ "r" -- But do continue when pressing enter.
-	+ "n" -- Indent past the formatlistpat, not underneath it.
-	+ "j" -- Auto-remove comments if possible.
-	- "2" -- I'm not in gradeschool anymore
+  - 'a' -- Auto formatting is BAD.
+  - 't' -- Don't auto format my code. I got linters for that.
+  + 'c' -- In general, I like it when comments respect textwidth
+  + 'q' -- Allow formatting comments w/ gq
+  - 'o' -- O and o, don't continue comments
+  + 'r' -- But do continue when pressing enter.
+  + 'n' -- Indent past the formatlistpat, not underneath it.
+  + 'j' -- Auto-remove comments if possible.
+  - '2' -- I'm not in gradeschool anymore
 
 -- set joinspaces
 vim.opt.joinspaces = false -- Two spaces and grade school, we're done
 
 -- set fillchars=eob:~
-vim.opt.fillchars = { eob = "~" }
+vim.opt.fillchars = { eob = '~' }
 
 -- invisible characters to use on ':set list'
 vim.opt.list = true
 vim.opt.listchars = {
-	tab = "› ",
-	eol = "¬",
-	nbsp = ".",
-	trail = "•",
-	extends = "#",
+  tab = '› ',
+  eol = '¬',
+  nbsp = '.',
+  trail = '•',
+  extends = '#',
 }
 
 vim.cmd([[autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif]])
 
 vim.opt.cursorline = true -- Highlight the current line
-local group = vim.api.nvim_create_augroup("CursorLineControl", { clear = true })
+local group = vim.api.nvim_create_augroup('CursorLineControl', { clear = true })
 local set_cursorline = function(event, value, pattern)
-	vim.api.nvim_create_autocmd(event, {
-		group = group,
-		pattern = pattern,
-		callback = function()
-			vim.opt_local.cursorline = value
-		end,
-	})
+  vim.api.nvim_create_autocmd(event, {
+    group = group,
+    pattern = pattern,
+    callback = function()
+      vim.opt_local.cursorline = value
+    end,
+  })
 end
-set_cursorline("WinLeave", false)
-set_cursorline("WinEnter", true)
-set_cursorline("FileType", false, "TelescopePrompt")
+set_cursorline('WinLeave', false)
+set_cursorline('WinEnter', true)
+set_cursorline('FileType', false, 'TelescopePrompt')
 
-require("sh.filetypes")
-require("sh.mappings")
-require("sh.plugins")
+require('sh.filetypes')
+require('sh.mappings')
+require('sh.plugins')
