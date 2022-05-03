@@ -116,6 +116,7 @@ function M.configure_packer(use)
         },
         pickers = { live_grep = { only_sort_text = true } },
       })
+      telescope.load_extension('ui-select')
       -- fzy native extension
       telescope.load_extension('cheat')
       telescope.load_extension('dap')
@@ -127,9 +128,7 @@ function M.configure_packer(use)
       local nmap = require('sh.keymap').nmap
       nmap({
         '<Leader>ff',
-        function()
-          require('telescope.builtin').resume()
-        end,
+        require('telescope.builtin').resume,
         { silent = true },
       })
       nmap({
@@ -170,11 +169,7 @@ function M.configure_packer(use)
       })
       nmap({
         '<Leader>fg',
-        function()
-          require('telescope.builtin').live_grep({
-            fzf_separator = '|>',
-          })
-        end,
+        require('telescope.builtin').grep_string,
         { silent = true },
       })
       nmap({
@@ -190,18 +185,6 @@ function M.configure_packer(use)
           require('telescope.builtin').find_files({
             cwd = vim.fn.stdpath('data') .. '/site/pack/packer/start/',
           })
-        end,
-        { silent = true },
-      })
-      nmap({
-        '<Leader>fa',
-        function()
-          require('telescope.builtin').lsp_code_actions(themes.get_dropdown({
-            winblend = 10,
-            border = true,
-            previewer = false,
-            shorten_path = false,
-          }))
         end,
         { silent = true },
       })

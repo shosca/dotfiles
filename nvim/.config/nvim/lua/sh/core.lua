@@ -6,6 +6,13 @@ function M.configure_packer(use)
   use('benizi/vim-automkdir')
   use('sgur/vim-editorconfig')
   use({
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup()
+    end,
+  })
+  use('vladdoster/remember.nvim')
+  use({
     'rainbowhxch/accelerated-jk.nvim',
     config = function()
       local ajk = require('accelerated-jk')

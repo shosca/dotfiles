@@ -82,7 +82,7 @@ local M = {
 }
 
 function M.on_attach_lsp_document_highlight(client, _)
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.cmd([[aug LspShowReferences
         au! * <buffer>
         autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
@@ -94,7 +94,7 @@ end
 
 function M.on_attach_lsp_document_formatting(client, _)
   local nmap = require('sh.keymap').nmap
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     vim.cmd([[aug LspAutoformat
         au! * <buffer>
         autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
