@@ -36,6 +36,7 @@ function M.configure_packer(use)
       'nvim-telescope/telescope-cheat.nvim',
       'nvim-telescope/telescope-dap.nvim',
       'nvim-telescope/telescope-github.nvim',
+      'nvim-telescope/telescope-packer.nvim',
     },
     config = function()
       local actions = require('telescope.actions')
@@ -57,7 +58,7 @@ function M.configure_packer(use)
           color_devicons = true,
           extensions = {
             fzy_native = {
-              override_generic_sorter = true,
+              override_generic_sorter = false,
               override_file_sorter = true,
             },
             ['ui-select'] = { themes.get_dropdown({}) },
@@ -118,12 +119,11 @@ function M.configure_packer(use)
       })
       telescope.load_extension('ui-select')
       -- fzy native extension
+      telescope.load_extension('fzy_native')
       telescope.load_extension('cheat')
       telescope.load_extension('dap')
-      if vim.fn.executable('gh') == 1 then
-        telescope.load_extension('gh')
-        telescope.load_extension('octo')
-      end
+      telescope.load_extension('gh')
+      telescope.load_extension('packer')
 
       local nmap = require('sh.keymap').nmap
       nmap({
