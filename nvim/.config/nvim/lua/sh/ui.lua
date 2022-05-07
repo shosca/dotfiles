@@ -4,22 +4,22 @@ vim.opt.laststatus = 3
 
 function M.configure_packer(use)
   use({
-    'rcarriga/nvim-notify',
+    "rcarriga/nvim-notify",
     config = function()
-      vim.notify = require('notify')
+      vim.notify = require("notify")
     end,
   })
   use({
-    'marko-cerovac/material.nvim',
+    "marko-cerovac/material.nvim",
     setup = function()
       vim.opt.termguicolors = true
-      vim.opt.background = 'dark'
+      vim.opt.background = "dark"
 
-      vim.g.material_style = 'deep ocean'
+      vim.g.material_style = "deep ocean"
       vim.cmd([[colorscheme material]])
     end,
     config = function()
-      require('material').setup({
+      require("material").setup({
         contrast = {
           -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
           sidebars = true,
@@ -38,9 +38,9 @@ function M.configure_packer(use)
           variables = false,
         },
         contrast_windows = { -- Specify which windows get the contrasted (darker) background
-          'terminal', -- Darker terminal background
-          'packer', -- Darker packer background
-          'qf', -- Darker qf list background
+          "terminal", -- Darker terminal background
+          "packer", -- Darker packer background
+          "qf", -- Darker qf list background
         },
         high_visibility = {
           lighter = false, -- Enable higher contrast text for lighter style
@@ -55,38 +55,38 @@ function M.configure_packer(use)
       })
     end,
   })
-  use({ 'kyazdani42/nvim-web-devicons' })
+  use({ "kyazdani42/nvim-web-devicons" })
   use({
-    'SmiteshP/nvim-gps',
+    "SmiteshP/nvim-gps",
     config = function()
-      local kind_icons = require('lspkind').presets.default
-      require('nvim-gps').setup({
+      local kind_icons = require("lspkind").presets.default
+      require("nvim-gps").setup({
         icons = {
-          ['class-name'] = kind_icons.Class .. ' ',
-          ['function-name'] = kind_icons.Function .. ' ',
-          ['method-name'] = kind_icons.Method .. ' ',
+          ["class-name"] = kind_icons.Class .. " ",
+          ["function-name"] = kind_icons.Function .. " ",
+          ["method-name"] = kind_icons.Method .. " ",
         },
         languages = {
-          ['c'] = true,
-          ['cpp'] = true,
-          ['go'] = true,
-          ['java'] = true,
-          ['javascript'] = true,
-          ['lua'] = true,
-          ['python'] = true,
-          ['rust'] = true,
+          ["c"] = true,
+          ["cpp"] = true,
+          ["go"] = true,
+          ["java"] = true,
+          ["javascript"] = true,
+          ["lua"] = true,
+          ["python"] = true,
+          ["rust"] = true,
         },
-        separator = ' > ',
+        separator = " > ",
       })
     end,
   })
   use({
-    'feline-nvim/feline.nvim',
-    requires = { 'marko-cerovac/material.nvim' },
+    "feline-nvim/feline.nvim",
+    requires = { "marko-cerovac/material.nvim" },
     config = function()
-      local colors = require('material.colors')
-      local lsp = require('feline.providers.lsp')
-      local vi_mode_utils = require('feline.providers.vi_mode')
+      local colors = require("material.colors")
+      local lsp = require("feline.providers.lsp")
+      local vi_mode_utils = require("feline.providers.vi_mode")
 
       local vi_mode_colors = {
         NORMAL = colors.green,
@@ -95,7 +95,7 @@ function M.configure_packer(use)
         OP = colors.green,
         BLOCK = colors.blue,
         REPLACE = colors.violet,
-        ['V-REPLACE'] = colors.violet,
+        ["V-REPLACE"] = colors.violet,
         ENTER = colors.cyan,
         MORE = colors.cyan,
         SELECT = colors.orange,
@@ -106,25 +106,25 @@ function M.configure_packer(use)
       }
 
       local icons = {
-        linux = ' ',
-        macos = ' ',
-        windows = ' ',
+        linux = " ",
+        macos = " ",
+        windows = " ",
 
-        errs = ' ',
-        warns = ' ',
-        infos = ' ',
-        hints = ' ',
+        errs = " ",
+        warns = " ",
+        infos = " ",
+        hints = " ",
 
-        lsp = ' ',
-        git = '',
+        lsp = " ",
+        git = "",
       }
 
       local function file_osinfo()
         local os = vim.bo.fileformat:upper()
         local icon
-        if os == 'UNIX' then
+        if os == "UNIX" then
           icon = icons.linux
-        elseif os == 'MAC' then
+        elseif os == "MAC" then
           icon = icons.macos
         else
           icon = icons.windows
@@ -134,10 +134,10 @@ function M.configure_packer(use)
 
       local function lsp_diagnostics_info()
         return {
-          errs = lsp.get_diagnostics_count('Error'),
-          warns = lsp.get_diagnostics_count('Warn'),
-          infos = lsp.get_diagnostics_count('Info'),
-          hints = lsp.get_diagnostics_count('Hint'),
+          errs = lsp.get_diagnostics_count("Error"),
+          warns = lsp.get_diagnostics_count("Warn"),
+          infos = lsp.get_diagnostics_count("Info"),
+          hints = lsp.get_diagnostics_count("Hint"),
         }
       end
 
@@ -165,110 +165,110 @@ function M.configure_packer(use)
 
       local comps = {
         vi_mode = {
-          left = { provider = '▊', hl = vimode_hl, right_sep = ' ' },
-          right = { provider = '▊', hl = vimode_hl, left_sep = ' ' },
+          left = { provider = "▊", hl = vimode_hl, right_sep = " " },
+          right = { provider = "▊", hl = vimode_hl, left_sep = " " },
         },
         file = {
           info = {
-            provider = 'file_info',
-            hl = { fg = colors.blue, style = 'bold' },
+            provider = "file_info",
+            hl = { fg = colors.blue, style = "bold" },
           },
           encoding = {
-            provider = 'file_encoding',
-            left_sep = ' ',
-            hl = { fg = colors.violet, style = 'bold' },
+            provider = "file_encoding",
+            left_sep = " ",
+            hl = { fg = colors.violet, style = "bold" },
           },
-          type = { provider = 'file_type' },
+          type = { provider = "file_type" },
           os = {
             provider = file_osinfo,
-            left_sep = ' ',
-            hl = { fg = colors.violet, style = 'bold' },
+            left_sep = " ",
+            hl = { fg = colors.violet, style = "bold" },
           },
         },
         line_percentage = {
-          provider = 'line_percentage',
-          left_sep = ' ',
-          hl = { style = 'bold' },
+          provider = "line_percentage",
+          left_sep = " ",
+          hl = { style = "bold" },
         },
         scroll_bar = {
-          provider = 'scroll_bar',
-          left_sep = ' ',
-          hl = { fg = colors.blue, style = 'bold' },
+          provider = "scroll_bar",
+          left_sep = " ",
+          hl = { fg = colors.blue, style = "bold" },
         },
         diagnos = {
           err = {
-            provider = diag_of(lsp_diagnostics_info, 'errs'),
-            left_sep = ' ',
-            enabled = diag_enable(lsp_diagnostics_info, 'errs'),
+            provider = diag_of(lsp_diagnostics_info, "errs"),
+            left_sep = " ",
+            enabled = diag_enable(lsp_diagnostics_info, "errs"),
             hl = { fg = colors.red },
           },
           warn = {
-            provider = diag_of(lsp_diagnostics_info, 'warns'),
-            left_sep = ' ',
-            enabled = diag_enable(lsp_diagnostics_info, 'warns'),
+            provider = diag_of(lsp_diagnostics_info, "warns"),
+            left_sep = " ",
+            enabled = diag_enable(lsp_diagnostics_info, "warns"),
             hl = { fg = colors.yellow },
           },
           info = {
-            provider = diag_of(lsp_diagnostics_info, 'infos'),
-            left_sep = ' ',
-            enabled = diag_enable(lsp_diagnostics_info, 'infos'),
+            provider = diag_of(lsp_diagnostics_info, "infos"),
+            left_sep = " ",
+            enabled = diag_enable(lsp_diagnostics_info, "infos"),
             hl = { fg = colors.blue },
           },
           hint = {
-            provider = diag_of(lsp_diagnostics_info, 'hints'),
-            left_sep = ' ',
-            enabled = diag_enable(lsp_diagnostics_info, 'hints'),
+            provider = diag_of(lsp_diagnostics_info, "hints"),
+            left_sep = " ",
+            enabled = diag_enable(lsp_diagnostics_info, "hints"),
             hl = { fg = colors.cyan },
           },
         },
         lsp = {
-          provider = 'lsp_client_names',
-          left_sep = ' ',
+          provider = "lsp_client_names",
+          left_sep = " ",
           icon = icons.lsp,
           hl = { fg = colors.yellow },
         },
         git = {
           branch = {
-            provider = 'git_branch',
+            provider = "git_branch",
             icon = icons.git,
-            left_sep = ' ',
-            hl = { fg = colors.violet, style = 'bold' },
+            left_sep = " ",
+            hl = { fg = colors.violet, style = "bold" },
           },
           add = {
-            provider = 'git_diff_added',
+            provider = "git_diff_added",
             hl = { fg = colors.green },
           },
           change = {
-            provider = 'git_diff_changed',
+            provider = "git_diff_changed",
             hl = { fg = colors.orange },
           },
           remove = {
-            provider = 'git_diff_removed',
+            provider = "git_diff_removed",
             hl = { fg = colors.red },
           },
         },
         gps = {
           provider = function()
-            return require('nvim-gps').get_location()
+            return require("nvim-gps").get_location()
           end,
           enabled = function()
-            return require('nvim-gps').is_available()
+            return require("nvim-gps").is_available()
           end,
-          left_sep = ' ',
+          left_sep = " ",
           hl = { fg = colors.blue },
         },
       }
 
       local force_inactive = {
         filetypes = {
-          'NvimTree',
-          'dbui',
-          'packer',
-          'startify',
-          'fugitive',
-          'fugitiveblame',
+          "NvimTree",
+          "dbui",
+          "packer",
+          "startify",
+          "fugitive",
+          "fugitiveblame",
         },
-        buftypes = { 'terminal' },
+        buftypes = { "terminal" },
         bufnames = {},
       }
 
@@ -299,7 +299,7 @@ function M.configure_packer(use)
         inactive = { { comps.vi_mode.left, comps.file.info }, {} },
       }
 
-      require('feline').setup({
+      require("feline").setup({
         colors = { bg = colors.bg, fg = colors.fg },
         vi_mode_colors = vi_mode_colors,
         force_inactive = force_inactive,

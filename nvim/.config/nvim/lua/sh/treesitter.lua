@@ -2,11 +2,11 @@ local M = {}
 
 function M.configure_packer(use)
   use({
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
     config = function()
-      require('nvim-treesitter.configs').setup({
-        ensure_installed = 'all',
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = "all",
         highlight = {
           enable = true,
           use_languagetree = true,
@@ -16,32 +16,32 @@ function M.configure_packer(use)
         incremental_selection = {
           enable = true,
           keymaps = {
-            init_selection = 'gnn',
-            node_incremental = 'grn',
-            scope_incremental = 'grc',
-            node_decremental = 'grm',
+            init_selection = "gnn",
+            node_incremental = "grn",
+            scope_incremental = "grc",
+            node_decremental = "grm",
           },
         },
         autopairs = { enable = true },
-        indent = { enable = true, disable = { 'python' } },
+        indent = { enable = true, disable = { "python" } },
         refactor = {
           highlight_definitions = { enable = true },
           highlight_current_scope = { enable = false },
           smart_rename = {
             enable = true,
-            keymaps = { smart_rename = 'grr' },
+            keymaps = { smart_rename = "grr" },
           },
         },
         pyfold = { enable = true, custom_foldtext = true },
         endwise = { enable = true },
       })
-      vim.opt.foldmethod = 'expr'
-      vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     end,
   })
-  use({ 'eddiebergman/nvim-treesitter-pyfold' })
-  use({ 'nvim-treesitter/nvim-treesitter-refactor' })
-  use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
-  use({ 'RRethy/nvim-treesitter-endwise' })
+  use({ "eddiebergman/nvim-treesitter-pyfold" })
+  use({ "nvim-treesitter/nvim-treesitter-refactor" })
+  use({ "nvim-treesitter/nvim-treesitter-textobjects" })
+  use({ "RRethy/nvim-treesitter-endwise" })
 end
 return M

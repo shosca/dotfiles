@@ -1,4 +1,4 @@
-local lsputil = require('lspconfig/util')
+local lsputil = require("lspconfig/util")
 
 local M = {}
 
@@ -7,14 +7,14 @@ function M.get_python_venv()
     return vim.env.VIRTUAL_ENV
   end
 
-  local match = vim.fn.glob(lsputil.path.join(vim.fn.getcwd(), 'Pipfile'))
-  if match ~= '' then
-    return vim.fn.trim(vim.fn.system('PIPENV_PIPFILE=' .. match .. ' pipenv --venv'))
+  local match = vim.fn.glob(lsputil.path.join(vim.fn.getcwd(), "Pipfile"))
+  if match ~= "" then
+    return vim.fn.trim(vim.fn.system("PIPENV_PIPFILE=" .. match .. " pipenv --venv"))
   end
 
-  match = vim.fn.glob(lsputil.path.join(vim.fn.getcwd(), 'poetry.lock'))
-  if match ~= '' then
-    return vim.fn.trim(vim.fn.system('poetry env info -p'))
+  match = vim.fn.glob(lsputil.path.join(vim.fn.getcwd(), "poetry.lock"))
+  if match ~= "" then
+    return vim.fn.trim(vim.fn.system("poetry env info -p"))
   end
 end
 

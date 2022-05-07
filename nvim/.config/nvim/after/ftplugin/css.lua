@@ -1,9 +1,9 @@
-local lsp = require('sh.lsp')
-local lspconfig = require('lspconfig')
+local lsp = require("sh.lsp")
+local lspconfig = require("lspconfig")
 
-if not lsp.is_client_active('cssls') then
+if not lsp.is_client_active("cssls") then
   lspconfig.cssls.setup({
-    cmd = { 'css-languageserver', '--stdio' },
+    cmd = { "css-languageserver", "--stdio" },
     on_attach = lsp.common_on_attach,
     capabilities = lsp.capabilities,
   })

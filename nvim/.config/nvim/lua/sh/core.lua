@@ -1,44 +1,44 @@
 local M = {}
 
 function M.configure_packer(use)
-  use('bfredl/nvim-luadev')
-  use('tpope/vim-eunuch')
-  use('benizi/vim-automkdir')
-  use('sgur/vim-editorconfig')
+  use("bfredl/nvim-luadev")
+  use("tpope/vim-eunuch")
+  use("benizi/vim-automkdir")
+  use("sgur/vim-editorconfig")
   use({
-    'karb94/neoscroll.nvim',
+    "karb94/neoscroll.nvim",
     config = function()
-      require('neoscroll').setup()
+      require("neoscroll").setup()
     end,
   })
-  use('vladdoster/remember.nvim')
+  use("vladdoster/remember.nvim")
   use({
-    'rainbowhxch/accelerated-jk.nvim',
+    "rainbowhxch/accelerated-jk.nvim",
     config = function()
-      local ajk = require('accelerated-jk')
-      local nmap = require('sh.keymap').nmap
+      local ajk = require("accelerated-jk")
+      local nmap = require("sh.keymap").nmap
 
       ajk.setup({})
       nmap({
-        'j',
+        "j",
         function()
-          ajk.move_to('gj')
+          ajk.move_to("gj")
         end,
         { silent = true },
       })
       nmap({
-        'k',
+        "k",
         function()
-          ajk.move_to('gk')
+          ajk.move_to("gk")
         end,
         { silent = true },
       })
     end,
   })
   use({
-    'stevearc/qf_helper.nvim',
+    "stevearc/qf_helper.nvim",
     config = function()
-      return require('qf_helper').setup({
+      return require("qf_helper").setup({
         prefer_loclist = true, -- Used for QNext/QPrev (see Commands below)
         sort_lsp_diagnostics = true, -- Sort LSP diagnostic results
         quickfix = {
@@ -47,7 +47,7 @@ function M.configure_packer(use)
           default_options = true, -- Set recommended buffer and window options
           max_height = 10, -- Max qf height when using open() or toggle()
           min_height = 1, -- Min qf height when using open() or toggle()
-          track_location = 'cursor', -- Keep qf updated with your current location
+          track_location = "cursor", -- Keep qf updated with your current location
           -- Use `true` to update position as well
         },
         loclist = { -- The same options, but for the loclist
@@ -56,71 +56,71 @@ function M.configure_packer(use)
           default_options = true,
           max_height = 10,
           min_height = 1,
-          track_location = 'cursor',
+          track_location = "cursor",
         },
       })
     end,
   })
-  use('voldikss/vim-floaterm')
+  use("voldikss/vim-floaterm")
   use({
-    'CantoroMC/slimux',
+    "CantoroMC/slimux",
     config = function()
-      local nmap = require('sh.keymap').nmap
-      local vmap = require('sh.keymap').vmap
-      vim.g.slimux_buffer_filetype = 'slimux'
-      nmap({ '<leader>s', ':SlimuxREPLSendLine<CR>' })
-      vmap({ '<leader>s ', ':SlimuxREPLSendSelection<CR>' })
-      nmap({ '<leader>b', ':SlimuxREPLSendBuffer<CR>' })
-      nmap({ '<C-l><C-l>', ':SlimuxSendKeysLast<CR>' })
-      nmap({ '<C-c><C-c>', ':SlimuxREPLSendLine<CR>' })
-      vmap({ '<C-c><C-c>', ':SlimuxREPLSendSelection<CR>' })
+      local nmap = require("sh.keymap").nmap
+      local vmap = require("sh.keymap").vmap
+      vim.g.slimux_buffer_filetype = "slimux"
+      nmap({ "<leader>s", ":SlimuxREPLSendLine<CR>" })
+      vmap({ "<leader>s ", ":SlimuxREPLSendSelection<CR>" })
+      nmap({ "<leader>b", ":SlimuxREPLSendBuffer<CR>" })
+      nmap({ "<C-l><C-l>", ":SlimuxSendKeysLast<CR>" })
+      nmap({ "<C-c><C-c>", ":SlimuxREPLSendLine<CR>" })
+      vmap({ "<C-c><C-c>", ":SlimuxREPLSendSelection<CR>" })
     end,
   })
   use({
-    'ThePrimeagen/harpoon',
+    "ThePrimeagen/harpoon",
     config = function()
-      local nmap = require('sh.keymap').nmap
-      require('harpoon').setup({ projects = {} })
+      local nmap = require("sh.keymap").nmap
+      require("harpoon").setup({ projects = {} })
       nmap({
-        '<leader>a',
+        "<leader>a",
         function()
-          require('harpoon.mark').add_file()
+          require("harpoon.mark").add_file()
         end,
       })
       nmap({
-        '<C-e>',
+        "<C-e>",
         function()
-          require('harpoon.ui').toggle_quick_menu()
+          require("harpoon.ui").toggle_quick_menu()
         end,
       })
       nmap({
-        '<leader>tc',
+        "<leader>tc",
         function()
-          require('harpoon.cmd-ui').toggle_quick_menu()
+          require("harpoon.cmd-ui").toggle_quick_menu()
         end,
       })
       nmap({
-        '<C-h>',
+        "<C-h>",
         function()
-          require('harpoon.ui').nav_file(1)
+          require("harpoon.ui").nav_file(1)
         end,
       })
       nmap({
-        '<C-t>',
+        "<C-t>",
         function()
-          require('harpoon.ui').nav_file(2)
+          require("harpoon.ui").nav_file(2)
         end,
       })
       nmap({
-        '<C-n>',
+        "<C-n>",
         function()
-          require('harpoon.ui').nav_file(3)
+          require("harpoon.ui").nav_file(3)
         end,
       })
       nmap({
-        '<C-s>',
+        "<C-s>",
         function()
-          require('harpoon.ui').nav_file(4)
+          require("harpoon.ui").nav_file(4)
         end,
       })
     end,

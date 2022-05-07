@@ -1,5 +1,5 @@
-local Job = require('plenary.job')
-local cmp = require('cmp')
+local Job = require("plenary.job")
+local cmp = require("cmp")
 
 local source = {}
 
@@ -10,7 +10,7 @@ source.new = function()
 end
 
 function source:is_available()
-  return vim.bo.filetype == 'gitcommit'
+  return vim.bo.filetype == "gitcommit"
 end
 
 function source:complete(_, callback)
@@ -24,31 +24,31 @@ function source:complete(_, callback)
     Job
       :new({
         -- Uses `gh` executable to request the issues from the remote repository.
-        'gh',
-        'issue',
-        'list',
-        '--limit',
-        '1000',
-        '--json',
-        'title,number,body',
+        "gh",
+        "issue",
+        "list",
+        "--limit",
+        "1000",
+        "--json",
+        "title,number,body",
 
         on_exit = function(job)
           local result = job:result()
-          local ok, parsed = pcall(vim.json.decode, table.concat(result, ''))
+          local ok, parsed = pcall(vim.json.decode, table.concat(result, ""))
           if not ok then
-            vim.notify('Failed to parse gh result')
+            vim.notify("Failed to parse gh result")
             return
           end
 
           local items = {}
           for _, gh_item in ipairs(parsed) do
-            gh_item.body = string.gsub(gh_item.body or '', '\r', '')
+            gh_item.body = string.gsub(gh_item.body or "", "\r", "")
 
             table.insert(items, {
-              label = string.format('#%s', gh_item.number),
+              label = string.format("#%s", gh_item.number),
               documentation = {
-                kind = 'markdown',
-                value = string.format('# %s\n\n%s', gh_item.title, gh_item.body),
+                kind = "markdown",
+                value = string.format("# %s\n\n%s", gh_item.title, gh_item.body),
               },
             })
           end
@@ -64,9 +64,9 @@ function source:complete(_, callback)
 end
 
 source.get_trigger_characters = function()
-  return { '#' }
+  return { "#" }
 end
 
-cmp.register_source('gh_issues', source.new())
+cmp.register_source("gh_issues", source.new())
 
 return source
