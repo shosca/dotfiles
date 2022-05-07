@@ -12,7 +12,7 @@ if not lsp.is_client_active("pylsp") then
     path = lsputil.path.join(venv, "bin") .. ":" .. path
   end
   lspconfig.pylsp.setup({
-    cmd = { "pylsp", "-v" },
+    cmd = { "pylsp", "-vvv" },
     cmd_env = { VIRTUAL_ENV = venv, PATH = path },
     on_attach = lsp.common_on_attach,
     capabilities = lsp.capabilities,

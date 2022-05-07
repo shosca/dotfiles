@@ -3,27 +3,27 @@ local wezterm = require("wezterm")
 local foreground = "#a9b1d6"
 local background = "#0f111a"
 -- local regular0 = "#32344a" -- black
-local regular0 = background -- black
-local regular1 = "#f7768e" -- red
-local regular2 = "#9ece6a" -- green
-local regular3 = "#e0af68" -- yellow
-local regular4 = "#7aa2f7" -- blue
-local regular5 = "#ad8ee6" -- magenta
-local regular6 = "#449dab" -- cyan
--- local regular7 = "#787c99" -- white
-local regular7 = foreground -- white
-local bright0 = "#444b6a" -- bright black
-local bright1 = "#ff7a93" -- bright red
-local bright2 = "#b9f27c" -- bright green
-local bright3 = "#ff9e64" -- bright yellow
-local bright4 = "#7da6ff" -- bright blue
-local bright5 = "#bb9af7" -- bright magenta
-local bright6 = "#0db9d7" -- bright cyan
-local bright7 = "#acb0d0" -- bright white
+local black = background -- black
+local red = "#f7768e" -- red
+local green = "#9ece6a" -- green
+local yellow = "#e0af68" -- yellow
+local blue = "#7aa2f7" -- blue
+local magenta = "#ad8ee6" -- magenta
+local cyan = "#449dab" -- cyan
+local white = foreground -- white
+--
+local black_bright = "#444b6a" -- bright black
+local red_bright = "#ff7a93" -- bright red
+local green_bright = "#b9f27c" -- bright green
+local yellow_bright = "#ff9e64" -- bright yellow
+local blue_bright = "#7da6ff" -- bright blue
+local magenta_bright = "#bb9af7" -- bright magenta
+local cyan_bright = "#0db9d7" -- bright cyan
+local white_bright = "#acb0d0" -- bright white
 
 return {
   enable_wayland = true,
-  -- window_decorations = "NONE",
+  --window_decorations = "NONE",
   colors = {
     foreground = foreground,
     background = background,
@@ -32,8 +32,17 @@ return {
     cursor_fg = "#0f111a",
     selection_bg = "#1f2233",
     selection_fg = "#8f93a2",
-    ansi = { regular0, regular1, regular2, regular3, regular4, regular5, regular6, regular7 },
-    brights = { bright0, bright1, bright2, bright3, bright4, bright5, bright6, bright7 },
+    ansi = { black, red, green, yellow, blue, magenta, cyan, white },
+    brights = {
+      black_bright,
+      red_bright,
+      green_bright,
+      yellow_bright,
+      blue_bright,
+      magenta_bright,
+      cyan_bright,
+      white_bright,
+    },
   },
   warn_about_missing_glyphs = false,
   --  font = wezterm.font("Liga SFMono Nerd Font"),
