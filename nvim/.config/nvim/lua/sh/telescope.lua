@@ -45,57 +45,12 @@ function M.configure_packer(use)
 
       telescope.setup({
         defaults = {
-          borderchars = {
-            '─',
-            '│',
-            '─',
-            '│',
-            '╭',
-            '╮',
-            '╯',
-            '╰',
-          },
+          file_sorter = require('telescope.sorters').get_fzy_sorter,
           color_devicons = true,
-          extensions = {
-            fzy_native = {
-              override_generic_sorter = false,
-              override_file_sorter = true,
-            },
-            ['ui-select'] = { themes.get_dropdown({}) },
-          },
           file_previewer = require('telescope.previewers').vim_buffer_cat.new,
           grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
-          initial_mode = 'insert',
-          layout_config = {
-            width = 0.95,
-            height = 0.85,
-            prompt_position = 'top',
-            horizontal = {
-              preview_width = function(_, cols, _)
-                if cols > 200 then
-                  return math.floor(cols * 0.4)
-                else
-                  return math.floor(cols * 0.6)
-                end
-              end,
-            },
-            vertical = {
-              width = 0.9,
-              height = 0.95,
-              preview_height = 0.5,
-            },
-            flex = { horizontal = { preview_width = 0.9 } },
-          },
-          layout_strategy = 'horizontal',
-          path_display = { shorten = 5 },
           prompt_prefix = '❯ ',
           qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
-          scroll_strategy = 'cycle',
-          selection_caret = '❯ ',
-          selection_strategy = 'reset',
-          sorting_strategy = 'descending',
-          use_less = true,
-          winblend = 0,
           mappings = {
             i = {
               ['<C-j>'] = actions.move_selection_next,
@@ -115,7 +70,13 @@ function M.configure_packer(use)
             },
           },
         },
-        pickers = { live_grep = { only_sort_text = true } },
+        extensions = {
+          fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+          },
+          ['ui-select'] = { themes.get_dropdown({}) },
+        },
       })
       telescope.load_extension('ui-select')
       -- fzy native extension
@@ -124,6 +85,7 @@ function M.configure_packer(use)
       telescope.load_extension('dap')
       telescope.load_extension('gh')
       telescope.load_extension('packer')
+      telescope.load_extension('git_worktree')
 
       local nmap = require('sh.keymap').nmap
       nmap({
@@ -143,28 +105,12 @@ function M.configure_packer(use)
       })
       nmap({
         '<Leader>fp',
-        function()
-          require('telescope.builtin').find_files(themes.get_dropdown({
-            winblend = 10,
-            layout_strategy = 'vertical',
-            border = true,
-            previewer = false,
-            shorten_path = false,
-          }))
-        end,
+        require('telescope.builtin').find_files,
         { silent = true },
       })
       nmap({
         '<Leader>ft',
-        function()
-          require('telescope.builtin').git_files(themes.get_dropdown({
-            cwd = vim.fn.expand('%:p:h'),
-            winblend = 10,
-            border = true,
-            previewer = false,
-            shorten_path = false,
-          }))
-        end,
+        require('telescope.builtin').git_files,
         { silent = true },
       })
       nmap({
