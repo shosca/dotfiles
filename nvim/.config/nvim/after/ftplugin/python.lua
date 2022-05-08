@@ -4,16 +4,12 @@ local dap = require("dap")
 local lsp = require("sh.lsp")
 local secrets = require("sh.secrets")
 
-local venv = require("sh.utils").get_python_venv()
+local python_env = require("sh.utils").get_python_env()
 
 if not lsp.is_client_active("pylsp") then
-  local path = vim.env.PATH
-  if venv then
-    path = lsputil.path.join(venv, "bin") .. ":" .. path
-  end
   lspconfig.pylsp.setup({
-    cmd = { "pylsp", "-vvv" },
-    cmd_env = { VIRTUAL_ENV = venv, PATH = path },
+    cmd = { "pylsp" },
+    cmd_env = python_env,
     on_attach = lsp.common_on_attach,
     capabilities = lsp.capabilities,
     settings = {
@@ -38,8 +34,8 @@ if not lsp.is_client_active("sourcery") then
 end
 
 local dapcmd = "python"
-if venv then
-  dapcmd = lsputil.path.join(venv, "bin", "python")
+if python_env.VIRTUAL_ENV then
+  dapcmd = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", "python")
 end
 
 dap.adapters.python = { type = "executable", command = dapcmd, args = { "-m", "debugpy.adapter" } }

@@ -5,12 +5,6 @@ function M.configure_packer(use)
   use("tpope/vim-eunuch")
   use("benizi/vim-automkdir")
   use("sgur/vim-editorconfig")
-  use({
-    "karb94/neoscroll.nvim",
-    config = function()
-      require("neoscroll").setup()
-    end,
-  })
   use("vladdoster/remember.nvim")
   use({
     "rainbowhxch/accelerated-jk.nvim",

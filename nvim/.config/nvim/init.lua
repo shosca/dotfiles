@@ -1,16 +1,26 @@
 pcall(require, "impatient")
 
 local disabled_builtins = {
+  "2html_plugin",
+  "getscript",
+  "getscriptPlugin",
   "gzip",
+  "logipat",
   "man",
   "matchit",
   "matchparen",
-  "shada_plugin",
-  "tarPlugin",
-  "tar",
-  "zipPlugin",
-  "zip",
+  "netrw",
+  "netrwFileHandlers",
   "netrwPlugin",
+  "netrwSettings",
+  "rrhelper",
+  "spellfile_plugin",
+  "tar",
+  "tarPlugin",
+  "vimball",
+  "vimballPlugin",
+  "zip",
+  "zipPlugin",
 }
 for _, v in pairs(disabled_builtins) do
   vim.g["loaded_" .. v] = 1
@@ -23,10 +33,17 @@ vim.g.maplocalleader = " "
 local backupdir = vim.fn.stdpath("data") .. "/backup"
 local swapdir = vim.fn.stdpath("data") .. "/swap"
 local undodir = vim.fn.stdpath("data") .. "/undo"
+local shadadir = vim.fn.stdpath("data") .. "/shada"
 
 vim.fn.mkdir(backupdir, "p")
 vim.fn.mkdir(swapdir, "p")
 vim.fn.mkdir(undodir, "p")
+vim.fn.mkdir(shadadir, "p")
+
+vim.schedule(function()
+  vim.opt.shadafile = shadadir .. "/shada/main.shada"
+  vim.cmd([[ silent! rsh ]])
+end)
 
 vim.opt.backupdir = backupdir
 vim.opt.directory = swapdir
