@@ -1,29 +1,29 @@
 local wezterm = require("wezterm")
 
-local foreground = "#a9b1d6"
 local background = "#0f111a"
--- local regular0 = "#32344a" -- black
-local black = background -- black
-local red = "#f7768e" -- red
-local green = "#9ece6a" -- green
-local yellow = "#e0af68" -- yellow
-local blue = "#7aa2f7" -- blue
-local magenta = "#ad8ee6" -- magenta
-local cyan = "#449dab" -- cyan
-local white = foreground -- white
+local foreground = "#a9b1d6"
+
+local black = background
+local red = "#f7768e"
+local green = "#9ece6a"
+local yellow = "#e0af68"
+local blue = "#7aa2f7"
+local magenta = "#ad8ee6"
+local cyan = "#449dab"
+local white = foreground
 --
-local black_bright = "#444b6a" -- bright black
-local red_bright = "#ff7a93" -- bright red
-local green_bright = "#b9f27c" -- bright green
-local yellow_bright = "#ff9e64" -- bright yellow
-local blue_bright = "#7da6ff" -- bright blue
-local magenta_bright = "#bb9af7" -- bright magenta
-local cyan_bright = "#0db9d7" -- bright cyan
-local white_bright = "#acb0d0" -- bright white
+local black_bright = "#444b6a"
+local red_bright = "#ff7a93"
+local green_bright = "#b9f27c"
+local yellow_bright = "#ff9e64"
+local blue_bright = "#7da6ff"
+local magenta_bright = "#bb9af7"
+local cyan_bright = "#0db9d7"
+local white_bright = "#acb0d0"
 
 return {
   enable_wayland = true,
-  --window_decorations = "NONE",
+  window_decorations = "TITLE | RESIZE",
   colors = {
     foreground = foreground,
     background = background,
