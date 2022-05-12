@@ -23,6 +23,27 @@ local white_bright = "#acb0d0"
 
 return {
   enable_wayland = true,
+  window_frame = {
+    active_titlebar_bg = background,
+    active_titlebar_border_bottom = background,
+    active_titlebar_fg = foreground,
+
+    inactive_titlebar_bg = background,
+    inactive_titlebar_border_bottom = background,
+    inactive_titlebar_fg = black_bright,
+
+    button_fg = foreground,
+    button_bg = background,
+
+    button_hover_fg = background,
+    button_hover_bg = red,
+  },
+  window_padding = {
+    left = 1,
+    right = 1,
+    top = 0,
+    bottom = 0,
+  },
   window_decorations = "TITLE | RESIZE",
   colors = {
     foreground = foreground,
@@ -44,6 +65,7 @@ return {
       white_bright,
     },
   },
+  window_background_opacity = 0.90,
   warn_about_missing_glyphs = false,
   --  font = wezterm.font("Liga SFMono Nerd Font"),
   -- font = wezterm.font("Fira Code"),

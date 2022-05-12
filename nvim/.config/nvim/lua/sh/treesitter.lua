@@ -59,6 +59,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
           if input:match("\r") or input:match("y") or input:match("Y") then
             vim.notify("Installing treesitter for " .. lang)
             vim.cmd("TSInstall " .. lang)
+            vim.cmd("TSEnable " .. lang)
             installed[lang] = true
           else
             installed[lang] = false

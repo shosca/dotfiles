@@ -1,6 +1,54 @@
-local M = {}
-
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.g.material_style = "deep ocean"
+vim.g.transparent_enabled = true
 vim.opt.laststatus = 3
+vim.cmd([[colorscheme material]])
+
+local borders = {
+  bottom_left = "╰",
+  bottom_right = "╯",
+  line_horizontal = "─",
+  line_vertical = "│",
+  top_left = "╭",
+  top_right = "╮",
+}
+
+local M = {
+  borders = {
+    borders.top_left,
+    borders.line_horizontal,
+    borders.top_right,
+    borders.line_vertical,
+    borders.bottom_right,
+    borders.line_horizontal,
+    borders.bottom_left,
+    borders.line_vertical,
+  },
+  borderchars = {
+    borders.line_horizontal,
+    borders.line_vertical,
+    borders.line_horizontal,
+    borders.line_vertical,
+    borders.top_left,
+    borders.top_right,
+    borders.bottom_left,
+    borders.bottom_right,
+  },
+}
+
+function M.make_borders(hl_name)
+  return {
+    { borders.top_left, hl_name },
+    { borders.line_horizontal, hl_name },
+    { borders.top_right, hl_name },
+    { borders.line_vertical, hl_name },
+    { borders.bottom_right, hl_name },
+    { borders.line_horizontal, hl_name },
+    { borders.bottom_left, hl_name },
+    { borders.line_vertical, hl_name },
+  }
+end
 
 function M.configure_packer(use)
   use({
@@ -11,14 +59,11 @@ function M.configure_packer(use)
   })
   use({
     "marko-cerovac/material.nvim",
-    setup = function()
-      vim.opt.termguicolors = true
-      vim.opt.background = "dark"
-
-      vim.g.material_style = "deep ocean"
-      vim.cmd([[colorscheme material]])
-    end,
+    requires = {
+      "xiyaowong/nvim-transparent",
+    },
     config = function()
+      vim.cmd([[colorscheme material]])
       require("material").setup({
         contrast = {
           -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
@@ -53,6 +98,7 @@ function M.configure_packer(use)
         },
         custom_highlights = {}, -- Overwrite highlights with your own
       })
+      require("transparent").setup({})
     end,
   })
   use({ "kyazdani42/nvim-web-devicons" })
@@ -78,6 +124,12 @@ function M.configure_packer(use)
         },
         separator = " > ",
       })
+    end,
+  })
+  use({
+    "stevearc/dressing.nvim",
+    config = function()
+      require("dressing").setup({})
     end,
   })
   use({

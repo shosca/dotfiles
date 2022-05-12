@@ -32,7 +32,6 @@ function M.configure_packer(use)
     requires = {
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
       "nvim-telescope/telescope-cheat.nvim",
       "nvim-telescope/telescope-dap.nvim",
       "nvim-telescope/telescope-github.nvim",
@@ -42,6 +41,7 @@ function M.configure_packer(use)
       local actions = require("telescope.actions")
       local themes = require("telescope.themes")
       local telescope = require("telescope")
+      local ui = require("sh.ui")
 
       telescope.setup({
         defaults = {
@@ -80,7 +80,7 @@ function M.configure_packer(use)
           path_display = { "truncate" },
           winblend = 0,
           border = {},
-          borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+          borderchars = ui.borderchars,
           color_devicons = true,
           use_less = true,
 
@@ -100,6 +100,7 @@ function M.configure_packer(use)
               ["<CR>"] = actions.select_default + actions.center,
             },
             n = {
+              ["q"] = actions.close,
               ["<j>"] = actions.move_selection_next,
               ["<k>"] = actions.move_selection_previous,
               ["<C-n>"] = actions.cycle_history_next,
@@ -113,10 +114,8 @@ function M.configure_packer(use)
             override_generic_sorter = false,
             override_file_sorter = true,
           },
-          ["ui-select"] = { themes.get_dropdown({}) },
         },
       })
-      telescope.load_extension("ui-select")
       telescope.load_extension("notify")
       -- fzy native extension
       telescope.load_extension("fzy_native")
