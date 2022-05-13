@@ -65,7 +65,7 @@ return {
       white_bright,
     },
   },
-  window_background_opacity = 0.90,
+  window_background_opacity = 0.925,
   warn_about_missing_glyphs = false,
   --  font = wezterm.font("Liga SFMono Nerd Font"),
   -- font = wezterm.font("Fira Code"),

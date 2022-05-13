@@ -54,7 +54,18 @@ function M.configure_packer(use)
   use({
     "rcarriga/nvim-notify",
     config = function()
-      vim.notify = require("notify")
+      local notify = require("notify")
+      local colors = require("material.colors")
+      notify.setup({
+        background_colour = colors.bg,
+      })
+      vim.notify = notify
+    end,
+  })
+  use({
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup({ "*" })
     end,
   })
   use({
