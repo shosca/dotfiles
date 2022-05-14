@@ -177,202 +177,190 @@ function M.configure_packer(use)
         macos = " ",
         windows = " ",
 
-        errs = " ",
-        warns = " ",
-        infos = " ",
-        hints = " ",
+        error = " ",
+        warn = " ",
+        info = " ",
+        hint = " ",
 
         lsp = " ",
         git = "",
       }
 
-      local function file_osinfo()
-        local os = vim.bo.fileformat:upper()
-        local icon
-        if os == "UNIX" then
-          icon = icons.linux
-        elseif os == "MAC" then
-          icon = icons.macos
-        else
-          icon = icons.windows
-        end
-        return icon .. os
-      end
+      local diagnos = {
+        of = function(s)
+          local icon = icons[string.lower(s)]
+          return function()
+            local diag = lsp.get_diagnostics_count(s)
+            return icon .. diag
+          end
+        end,
+        enable = function(s)
+          return function()
+            local diag = lsp.get_diagnostics_count(s)
+            return diag and diag ~= 0
+          end
+        end,
+      }
+      diagnos.err = {
+        provider = diagnos.of("Error"),
+        left_sep = " ",
+        enabled = diagnos.enable("Error"),
+        hl = { fg = colors.red },
+      }
+      diagnos.warn = {
+        provider = diagnos.of("Warn"),
+        left_sep = " ",
+        enabled = diagnos.enable("Warn"),
+        hl = { fg = colors.yellow },
+      }
+      diagnos.info = {
+        provider = diagnos.of("Info"),
+        left_sep = " ",
+        enabled = diagnos.enable("Info"),
+        hl = { fg = colors.blue },
+      }
+      diagnos.hint = {
+        provider = diagnos.of("Hint"),
+        left_sep = " ",
+        enabled = diagnos.enable("Hint"),
+        hl = { fg = colors.cyan },
+      }
 
-      local function lsp_diagnostics_info()
-        return {
-          errs = lsp.get_diagnostics_count("Error"),
-          warns = lsp.get_diagnostics_count("Warn"),
-          infos = lsp.get_diagnostics_count("Info"),
-          hints = lsp.get_diagnostics_count("Hint"),
-        }
-      end
+      local vi_mode = {
+        hl = function()
+          return {
+            name = vi_mode_utils.get_mode_highlight_name(),
+            fg = vi_mode_utils.get_mode_color(),
+          }
+        end,
+      }
+      vi_mode.left = { provider = "▊", hl = vi_mode.hl, right_sep = " " }
+      vi_mode.right = { provider = "▊", hl = vi_mode.hl, left_sep = " " }
 
-      local function diag_enable(f, s)
-        return function()
-          local diag = f()[s]
-          return diag and diag ~= 0
-        end
-      end
-
-      local function diag_of(f, s)
-        local icon = icons[s]
-        return function()
-          local diag = f()[s]
-          return icon .. diag
-        end
-      end
-
-      local function vimode_hl()
-        return {
-          name = vi_mode_utils.get_mode_highlight_name(),
-          fg = vi_mode_utils.get_mode_color(),
-        }
-      end
-
-      local comps = {
-        vi_mode = {
-          left = { provider = "▊", hl = vimode_hl, right_sep = " " },
-          right = { provider = "▊", hl = vimode_hl, left_sep = " " },
-        },
-        file = {
-          info = {
-            provider = "file_info",
-            hl = { fg = colors.blue, style = "bold" },
-          },
-          encoding = {
-            provider = "file_encoding",
-            left_sep = " ",
-            hl = { fg = colors.violet, style = "bold" },
-          },
-          type = { provider = "file_type" },
-          os = {
-            provider = file_osinfo,
-            left_sep = " ",
-            hl = { fg = colors.violet, style = "bold" },
-          },
-        },
-        line_percentage = {
-          provider = "line_percentage",
-          left_sep = " ",
-          hl = { style = "bold" },
-        },
-        scroll_bar = {
-          provider = "scroll_bar",
-          left_sep = " ",
+      local file = {
+        info = {
+          provider = "file_info",
           hl = { fg = colors.blue, style = "bold" },
         },
-        diagnos = {
-          err = {
-            provider = diag_of(lsp_diagnostics_info, "errs"),
-            left_sep = " ",
-            enabled = diag_enable(lsp_diagnostics_info, "errs"),
-            hl = { fg = colors.red },
-          },
-          warn = {
-            provider = diag_of(lsp_diagnostics_info, "warns"),
-            left_sep = " ",
-            enabled = diag_enable(lsp_diagnostics_info, "warns"),
-            hl = { fg = colors.yellow },
-          },
-          info = {
-            provider = diag_of(lsp_diagnostics_info, "infos"),
-            left_sep = " ",
-            enabled = diag_enable(lsp_diagnostics_info, "infos"),
-            hl = { fg = colors.blue },
-          },
-          hint = {
-            provider = diag_of(lsp_diagnostics_info, "hints"),
-            left_sep = " ",
-            enabled = diag_enable(lsp_diagnostics_info, "hints"),
-            hl = { fg = colors.cyan },
-          },
-        },
-        lsp = {
-          provider = "lsp_client_names",
+        encoding = {
+          provider = "file_encoding",
           left_sep = " ",
-          icon = icons.lsp,
-          hl = { fg = colors.yellow },
+          hl = { fg = colors.violet, style = "bold" },
         },
-        git = {
-          branch = {
-            provider = "git_branch",
-            icon = icons.git,
-            left_sep = " ",
-            hl = { fg = colors.violet, style = "bold" },
-          },
-          add = {
-            provider = "git_diff_added",
-            hl = { fg = colors.green },
-          },
-          change = {
-            provider = "git_diff_changed",
-            hl = { fg = colors.orange },
-          },
-          remove = {
-            provider = "git_diff_removed",
-            hl = { fg = colors.red },
-          },
-        },
-        gps = {
+        type = { provider = "file_type" },
+        os = {
           provider = function()
-            return require("nvim-gps").get_location()
+            local os = vim.bo.fileformat:upper()
+            local icon
+            if os == "UNIX" then
+              icon = icons.linux
+            elseif os == "MAC" then
+              icon = icons.macos
+            else
+              icon = icons.windows
+            end
+            return icon .. os
           end,
-          enabled = function()
-            return require("nvim-gps").is_available()
-          end,
+
           left_sep = " ",
-          hl = { fg = colors.blue },
+          hl = { fg = colors.violet, style = "bold" },
         },
       }
 
-      local force_inactive = {
-        filetypes = {
-          "NvimTree",
-          "dbui",
-          "packer",
-          "startify",
-          "fugitive",
-          "fugitiveblame",
-        },
-        buftypes = { "terminal" },
-        bufnames = {},
+      local line_percentage = {
+        provider = "line_percentage",
+        left_sep = " ",
+        hl = { style = "bold" },
+      }
+      local scroll_bar = {
+        provider = "scroll_bar",
+        left_sep = " ",
+        hl = { fg = colors.blue, style = "bold" },
       }
 
-      local components = {
-        active = {
-          {
-            comps.vi_mode.left,
-            comps.file.info,
-            comps.diagnos.err,
-            comps.diagnos.warn,
-            comps.diagnos.hint,
-            comps.diagnos.info,
-            comps.gps,
-          },
-          {},
-          {
-            comps.git.add,
-            comps.git.change,
-            comps.git.remove,
-            comps.lsp,
-            comps.file.os,
-            comps.git.branch,
-            comps.line_percentage,
-            comps.scroll_bar,
-            comps.vi_mode.right,
-          },
+      local lsp_ = {
+        provider = "lsp_client_names",
+        left_sep = " ",
+        icon = icons.lsp,
+        hl = { fg = colors.yellow },
+      }
+
+      local gps = {
+        provider = function()
+          return require("nvim-gps").get_location()
+        end,
+        enabled = function()
+          return require("nvim-gps").is_available()
+        end,
+        left_sep = " ",
+        hl = { fg = colors.blue },
+      }
+
+      local git = {
+        branch = {
+          provider = "git_branch",
+          icon = icons.git,
+          left_sep = " ",
+          hl = { fg = colors.violet, style = "bold" },
         },
-        inactive = { { comps.vi_mode.left, comps.file.info }, {} },
+        add = {
+          provider = "git_diff_added",
+          hl = { fg = colors.green },
+        },
+        change = {
+          provider = "git_diff_changed",
+          hl = { fg = colors.orange },
+        },
+        remove = {
+          provider = "git_diff_removed",
+          hl = { fg = colors.red },
+        },
       }
 
       require("feline").setup({
         colors = { bg = colors.bg, fg = colors.fg },
         vi_mode_colors = vi_mode_colors,
-        force_inactive = force_inactive,
-        components = components,
+        force_inactive = {
+          filetypes = {
+            "NvimTree",
+            "dbui",
+            "packer",
+            "startify",
+            "fugitive",
+            "fugitiveblame",
+          },
+          buftypes = { "terminal" },
+          bufnames = {},
+        },
+        components = {
+          active = {
+            {
+              vi_mode.left,
+              file.info,
+              diagnos.err,
+              diagnos.warn,
+              diagnos.hint,
+              diagnos.info,
+              gps,
+            },
+            {},
+            {
+              git.add,
+              git.change,
+              git.remove,
+              lsp_,
+              file.os,
+              git.branch,
+              line_percentage,
+              scroll_bar,
+              vi_mode.right,
+            },
+          },
+          inactive = { { vi_mode.left, file.info }, {} },
+        },
       })
     end,
   })
 end
+
 return M
