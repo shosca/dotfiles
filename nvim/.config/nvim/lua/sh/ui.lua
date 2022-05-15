@@ -140,11 +140,7 @@ function M.configure_packer(use)
   use({
     "stevearc/dressing.nvim",
     config = function()
-      require("dressing").setup({
-        input = {
-          enabled = false,
-        },
-      })
+      require("dressing").setup({})
     end,
   })
   use({

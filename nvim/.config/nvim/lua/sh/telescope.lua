@@ -39,7 +39,6 @@ function M.configure_packer(use)
     },
     config = function()
       local actions = require("telescope.actions")
-      local themes = require("telescope.themes")
       local telescope = require("telescope")
       local ui = require("sh.ui")
 

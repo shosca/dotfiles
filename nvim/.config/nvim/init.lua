@@ -1,4 +1,7 @@
-pcall(require, "impatient")
+local present, impatient = pcall(require, "impatient")
+if present then
+  impatient.enable_profile()
+end
 
 local disabled_builtins = {
   "2html_plugin",

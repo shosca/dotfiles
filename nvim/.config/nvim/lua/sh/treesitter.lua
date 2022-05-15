@@ -54,20 +54,18 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     local lang = parsers.get_buf_lang()
     local parser_configs = parsers.get_parser_configs()
     if parser_configs[lang] ~= nil and not parsers.has_parser(lang) and installed[lang] ~= false then
-      vim.schedule(function()
-        vim.ui.input({ prompt = "Install tree-sitter for " .. lang .. "? (Y/n)" }, function(input)
-          if input == nil then
-            return
-          end
-          if input:match("y") or input:match("Y") then
-            vim.notify("Installing treesitter for " .. lang)
-            vim.cmd("TSInstall " .. lang)
-            vim.cmd("TSEnable " .. lang)
-            installed[lang] = true
-          else
-            installed[lang] = false
-          end
-        end)
+      vim.ui.input({ prompt = "Install tree-sitter for " .. lang .. "? (Y/n)" }, function(input)
+        if input == nil then
+          return
+        end
+        if input:match("y") or input:match("Y") then
+          vim.notify("Installing treesitter for " .. lang)
+          vim.cmd("TSInstall " .. lang)
+          vim.cmd("TSEnable " .. lang)
+          installed[lang] = true
+        else
+          installed[lang] = false
+        end
       end)
     end
   end,
