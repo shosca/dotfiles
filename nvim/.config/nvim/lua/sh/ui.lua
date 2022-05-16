@@ -140,7 +140,11 @@ function M.configure_packer(use)
   use({
     "stevearc/dressing.nvim",
     config = function()
-      require("dressing").setup({})
+      require("dressing").setup({
+        input = {
+          prompt_align = "center",
+        },
+      })
     end,
   })
   use({

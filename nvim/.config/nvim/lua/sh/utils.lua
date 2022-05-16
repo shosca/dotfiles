@@ -21,7 +21,9 @@ function M.get_python_env()
     env.VIRTUAL_ENV = vim.fn.trim(vim.fn.system("poetry env info -p"))
   end
 
-  env.PATH = lsputil.path.join(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
+  if env.VIRTUAL_ENV ~= nil then
+    env.PATH = lsputil.path.join(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
+  end
   return env
 end
 
