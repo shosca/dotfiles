@@ -136,6 +136,10 @@ function M.on_attach_lsp_keymaps(_, bufnr)
   xmap({ "ga", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
 end
 
+function M.on_attach_lsp_signature(client, bufnr)
+  require("lsp_signature").on_attach(client, bufnr)
+end
+
 local function starts_with(str, start)
   return str:sub(1, #start) == start
 end

@@ -1,22 +1,37 @@
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+local present, packer = pcall(require, "packer")
+if not present then
+  local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+  vim.notify("Cloning packer..")
+  vim.fn.delete(install_path, "rf")
   vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
   vim.api.nvim_command("packadd packer.nvim")
 end
 
-local packer = require("packer")
+packer = require("packer")
+packer.init({
+  display = {
+    open_fn = function()
+      return require("packer.util").float({ border = "double" })
+    end,
+  },
+  git = {
+    clone_timeout = 6000, -- seconds
+  },
+  auto_clean = true,
+  compile_on_sync = true,
+  snapshot = nil,
+})
 
 local packages = {
-  "sh.ui",
-  "sh.core",
-  "sh.treesitter",
-  "sh.telescope",
   "sh.comment",
-  "sh.lsp",
-  "sh.git",
+  "sh.core",
   "sh.dap",
+  "sh.git",
+  "sh.lsp",
   "sh.luasnip",
+  "sh.telescope",
+  "sh.treesitter",
+  "sh.ui",
 }
 
 packer.startup({
