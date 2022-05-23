@@ -1,27 +1,45 @@
 local lspconfig = require("lspconfig")
 local lsputil = require("lspconfig/util")
+local null_ls = require("null-ls")
 local dap = require("dap")
 local lsp = require("sh.lsp")
 local secrets = require("sh.secrets")
 
 local python_env = require("sh.utils").get_python_env()
 
+local register = function(typ, name)
+  if not null_ls.is_registered({ name = name }) then
+    local cmd = name
+    if python_env.VIRTUAL_ENV ~= nil then
+      cmd = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", cmd)
+    end
+    null_ls.register(null_ls.builtins[typ][name].with({
+      command = cmd,
+    }))
+  end
+end
+register("diagnostics", "flake8")
+-- register("diagnostics", "mypy")
+register("formatting", "black")
+
 if not lsp.is_client_active("pylsp") then
   lspconfig.pylsp.setup({
-    cmd = { "pylsp" },
+    cmd = { "pylsp", "-v", "--log-file", vim.fn.stdpath("cache") .. "/pylsp.log" },
     cmd_env = python_env,
     on_attach = lsp.common_on_attach,
     capabilities = lsp.capabilities,
     settings = {
       pylsp = {
         plugins = {
-          flake8 = { enabled = true },
+          flake8 = { enabled = false },
+          mccabe = { enabled = false },
+          pyflakes = { enabled = false },
+          pycodestyle = { enabled = false },
           jedi_completion = { include_params = true, fuzzy = true },
-          pylsp_black = { enabled = true },
-          pylsp_mypy = { enabled = true },
+          pylsp_black = { enabled = false },
+          pylsp_mypy = { enabled = false },
           rope_completion = { enabled = false },
           rope_rename = { enabled = true },
-          black = { enabled = true },
         },
       },
     },

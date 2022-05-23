@@ -20,7 +20,7 @@ function M.configure_packer(use)
   use("rhysd/conflict-marker.vim")
   use({
     "sindrets/diffview.nvim",
-    cmd = "DiffviewOpen",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
       require("diffview").setup()
     end,

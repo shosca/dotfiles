@@ -128,16 +128,14 @@ function M.on_attach_lsp_keymaps(_, bufnr)
   nmap({ "gD", vim.lsp.buf.declaration, { silent = true, buffer = bufnr } })
   nmap({ "gd", vim.lsp.buf.definition, { silent = true, buffer = bufnr } })
   nmap({ "gi", vim.lsp.buf.implementation, { silent = true, buffer = bufnr } })
+  nmap({ "gf", vim.lsp.buf.format, { silent = true, buffer = bufnr } })
   nmap({ "gr", vim.lsp.buf.references, { silent = true, buffer = bufnr } })
-  nmap({ "[d", vim.diagnostic.goto_prev, { silent = true, buffer = bufnr } })
-  nmap({ "]d", vim.diagnostic.goto_next, { silent = true, buffer = bufnr } })
   nmap({ "gl", vim.lsp.buf.hover, { silent = true, buffer = bufnr } })
+  nmap({ "gk", vim.lsp.buf.signature_help, { silent = true, buffer = bufnr } })
   nmap({ "ga", vim.lsp.buf.code_action, { silent = true, buffer = bufnr } })
   xmap({ "ga", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
-end
-
-function M.on_attach_lsp_signature(client, bufnr)
-  require("lsp_signature").on_attach(client, bufnr)
+  nmap({ "[d", vim.diagnostic.goto_prev, { silent = true, buffer = bufnr } })
+  nmap({ "]d", vim.diagnostic.goto_next, { silent = true, buffer = bufnr } })
 end
 
 local function starts_with(str, start)
@@ -167,6 +165,14 @@ function M.configure_packer(use)
   use("neovim/nvim-lspconfig")
   use("folke/lua-dev.nvim")
   use("nvim-lua/lsp-status.nvim")
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+    config = function()
+      require("null-ls").setup({
+        debounce = 600,
+      })
+    end,
+  })
   use({
     "hrsh7th/nvim-cmp",
     requires = {

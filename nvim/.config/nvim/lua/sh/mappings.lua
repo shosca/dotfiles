@@ -39,8 +39,8 @@ cmap({ "<Up>", "<C-p>" })
 cmap({ "<Down>", "<C-n>" })
 
 -- buffers {
-nmap({ "<Tab>", ":bnext<CR>" })
-nmap({ "<S-Tab>", ":bprevious<CR>" })
+-- nmap({ "<Tab>", ":bnext<CR>" })
+-- nmap({ "<S-Tab>", ":bprevious<CR>" })
 
 -- split management {
 nmap({ "sj", "<C-W>w<CR>" })

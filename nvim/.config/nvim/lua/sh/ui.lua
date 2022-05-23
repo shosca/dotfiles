@@ -143,6 +143,9 @@ function M.configure_packer(use)
       require("dressing").setup({
         input = {
           prompt_align = "center",
+          anchor = "NW",
+          max_width = { 140, 0.9 },
+          min_width = { 40, 0.6 },
         },
       })
     end,
@@ -336,12 +339,10 @@ function M.configure_packer(use)
           active = {
             {
               vi_mode.left,
-              file.info,
               diagnos.err,
               diagnos.warn,
               diagnos.hint,
               diagnos.info,
-              gps,
             },
             {},
             {
@@ -359,6 +360,35 @@ function M.configure_packer(use)
           inactive = { { vi_mode.left, file.info }, {} },
         },
       })
+      require("feline").winbar.setup({
+        components = {
+          active = {
+            {
+              gps,
+            },
+            {},
+            {
+              file.info,
+            },
+          },
+          inactive = {
+            {},
+            {},
+            {
+              file.info,
+            },
+          },
+        },
+      })
+    end,
+  })
+  use({
+    "ghillb/cybu.nvim",
+    config = function()
+      require("cybu").setup({})
+      local nmap = require("sh.keymap").nmap
+      nmap({ "<Tab>", "<Plug>(CybuNext)" })
+      nmap({ "<S-Tab>", "<Plug>(CybuPrev)" })
     end,
   })
 end
