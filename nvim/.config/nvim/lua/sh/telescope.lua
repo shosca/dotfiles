@@ -90,6 +90,8 @@ function M.configure_packer(use)
           buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
           mappings = {
             i = {
+              ["<Tab>"] = actions.move_selection_next,
+              ["<S-Tab>"] = actions.move_selection_previous,
               ["<C-j>"] = actions.move_selection_next,
               ["<C-k>"] = actions.move_selection_previous,
               ["<C-n>"] = actions.cycle_history_next,
@@ -131,7 +133,7 @@ function M.configure_packer(use)
         { silent = true },
       })
       nmap({
-        "<Leader>fb",
+        "<Tab>",
         function()
           require("telescope.builtin").buffers({
             shorten_path = false,

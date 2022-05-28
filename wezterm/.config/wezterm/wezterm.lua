@@ -21,6 +21,29 @@ local magenta_bright = "#bb9af7"
 local cyan_bright = "#0db9d7"
 local white_bright = "#acb0d0"
 
+local xcursor_size = nil
+local xcursor_theme = nil
+
+local success, stdout, stderr = wezterm.run_child_process({
+  "gsettings",
+  "get",
+  "org.gnome.desktop.interface",
+  "cursor-theme",
+})
+if success then
+  xcursor_theme = stdout:gsub("'(.+)'\n", "%1")
+end
+
+local success, stdout, stderr = wezterm.run_child_process({
+  "gsettings",
+  "get",
+  "org.gnome.desktop.interface",
+  "cursor-size",
+})
+if success then
+  xcursor_size = tonumber(stdout)
+end
+
 return {
   enable_wayland = true,
   window_frame = {
@@ -45,6 +68,8 @@ return {
     bottom = 0,
   },
   window_decorations = "TITLE | RESIZE",
+  animation_fps = 1,
+  -- window_decorations = "",
   colors = {
     foreground = foreground,
     background = background,
@@ -65,6 +90,8 @@ return {
       white_bright,
     },
   },
+  xcursor_size = xcursor_size,
+  xcursor_theme = xcursor_theme,
   window_background_opacity = 0.925,
   warn_about_missing_glyphs = false,
   --  font = wezterm.font("Liga SFMono Nerd Font"),

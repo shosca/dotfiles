@@ -53,18 +53,17 @@ vim.opt.directory = swapdir
 vim.opt.undodir = undodir
 
 -- Ignore compiled files
+vim.opt.wildmenu = true
+vim.opt.wildoptions = "pum"
+vim.opt.wildmode = { "longest", "full" }
+vim.opt.wildchar = ("\t"):byte()
+vim.opt.wildcharm = 26
+
 vim.opt.wildignorecase = true
 vim.opt.wildignore = { "__pycache__", "*.o", "*~", "*.pyc", "*pycache*" }
 
-vim.opt.wildmode = { "longest", "list", "full" }
-
 -- Cool floating window popup menu for completion on command line
 vim.opt.pumblend = 17
-
-vim.opt.wildmode = vim.opt.wildmode - "list"
-vim.opt.wildmode = vim.opt.wildmode + { "longest", "full" }
-
-vim.opt.wildoptions = "pum"
 
 vim.opt.showmode = false
 vim.opt.showcmd = true

@@ -339,6 +339,7 @@ function M.configure_packer(use)
           active = {
             {
               vi_mode.left,
+              gps,
               diagnos.err,
               diagnos.warn,
               diagnos.hint,
@@ -357,15 +358,13 @@ function M.configure_packer(use)
               vi_mode.right,
             },
           },
-          inactive = { { vi_mode.left, file.info }, {} },
+          inactive = { { vi_mode.left }, {} },
         },
       })
       require("feline").winbar.setup({
         components = {
           active = {
-            {
-              gps,
-            },
+            {},
             {},
             {
               file.info,
@@ -382,15 +381,15 @@ function M.configure_packer(use)
       })
     end,
   })
-  use({
-    "ghillb/cybu.nvim",
-    config = function()
-      require("cybu").setup({})
-      local nmap = require("sh.keymap").nmap
-      nmap({ "<Tab>", "<Plug>(CybuNext)" })
-      nmap({ "<S-Tab>", "<Plug>(CybuPrev)" })
-    end,
-  })
+  -- use({
+  --   "ghillb/cybu.nvim",
+  --   config = function()
+  --     require("cybu").setup({})
+  --     local nmap = require("sh.keymap").nmap
+  --     nmap({ "<Tab>", "<Plug>(CybuNext)" })
+  --     nmap({ "<S-Tab>", "<Plug>(CybuPrev)" })
+  --   end,
+  -- })
 end
 
 return M
