@@ -45,6 +45,7 @@ export WINE_FULLSCREEN_FSR=1
 export WINE_FULLSCREEN_FSR_STRENGTH=1
 export MANGOHUD=1
 export MANGOHUD_DLSYM=1
+export ENABLE_VKBASALT=1
 
 # disable buildkit cuz its terrible
 export DOCKER_BUILDKIT=0

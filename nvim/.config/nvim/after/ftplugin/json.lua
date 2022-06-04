@@ -141,4 +141,3 @@ if not lsp.is_client_active("jsonls") then
   })
   vim.cmd([[LspStart]])
 end
-vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]])
