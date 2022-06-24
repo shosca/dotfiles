@@ -113,28 +113,17 @@ clean-tilix: out
 python: in  ## install python/pdb config {
 	stow -R python
 
-pipx: in  ## installs pipx packages
-	pipx install --force pre-commit
-	pipx install --force pew
+sourcery: in  ## installs sourcery with pipx
 	pipx install --force sourcery-cli
-	pipx install --force poetry
-	pipx install --force invoke
-	pipx install --force mycli
-	pipx install --force pgcli
-	pipx install --force "python-lsp-server"
-	pipx inject python-lsp-server pylsp-rope
-	pipx install --force yawsso
-	pipx install --force dmypy-ls
 
-pipx-update:  ## update all pipx installs
-	pipx upgrade-all
+sourcery-update:  ## update sourcery
+	pipx upgrade sourcery-cli
 
-clean-pipx: out  ## uninstalls pipx packages
-	pipx uninstall-all
+clean-sourcery: out  ## uninstalls sourcery
+	pipx uninstall sourcery-cli
 
 python-rebuild:  ## installs user packages
 	pip3 freeze | xargs -r pip3 uninstall -y
-	$(MAKE) python-user
 
 clean-python: out  ## remove python/pdb config
 	stow -D python

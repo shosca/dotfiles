@@ -36,6 +36,9 @@ function M.configure_packer(use)
       "nvim-telescope/telescope-dap.nvim",
       "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-packer.nvim",
+      "nvim-telescope/telescope-symbols.nvim",
+      "nvim-telescope/telescope-project.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
     },
     config = function()
       local actions = require("telescope.actions")
@@ -118,6 +121,7 @@ function M.configure_packer(use)
         },
       })
       telescope.load_extension("notify")
+      telescope.load_extension("project")
       -- fzy native extension
       telescope.load_extension("fzy_native")
       telescope.load_extension("cheat")

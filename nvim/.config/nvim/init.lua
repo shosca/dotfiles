@@ -33,9 +33,9 @@ vim.g.do_filetype_lua = 1
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-local backupdir = vim.fn.stdpath("data") .. "/backup"
-local swapdir = vim.fn.stdpath("data") .. "/swap"
-local undodir = vim.fn.stdpath("data") .. "/undo"
+local backupdir = vim.fn.stdpath("cache") .. "/backup"
+local swapdir = vim.fn.stdpath("cache") .. "/swap"
+local undodir = vim.fn.stdpath("cache") .. "/undo"
 local shadadir = vim.fn.stdpath("data") .. "/shada"
 
 vim.fn.mkdir(backupdir, "p")
@@ -51,6 +51,7 @@ end)
 vim.opt.backupdir = backupdir
 vim.opt.directory = swapdir
 vim.opt.undodir = undodir
+vim.opt.undofile = true
 
 -- Ignore compiled files
 vim.opt.wildmenu = true
@@ -65,9 +66,10 @@ vim.opt.wildignore = { "__pycache__", "*.o", "*~", "*.pyc", "*pycache*" }
 -- Cool floating window popup menu for completion on command line
 vim.opt.pumblend = 17
 
+vim.opt.isfname:append("@-@")
 vim.opt.showmode = false
 vim.opt.showcmd = true
-vim.opt.cmdheight = 1 -- Height of the command bar
+vim.opt.cmdheight = 0 -- Height of the command bar
 vim.opt.incsearch = true -- Makes search act like search in modern browsers
 vim.opt.showmatch = true -- show matching brackets when text indicator is over them
 vim.opt.relativenumber = true -- Show line numbers

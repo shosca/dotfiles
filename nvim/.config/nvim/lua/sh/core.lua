@@ -7,29 +7,6 @@ function M.configure_packer(use)
   use("sgur/vim-editorconfig")
   use("vladdoster/remember.nvim")
   use({
-    "rainbowhxch/accelerated-jk.nvim",
-    config = function()
-      local ajk = require("accelerated-jk")
-      local nmap = require("sh.keymap").nmap
-
-      ajk.setup({})
-      nmap({
-        "j",
-        function()
-          ajk.move_to("gj")
-        end,
-        { silent = true },
-      })
-      nmap({
-        "k",
-        function()
-          ajk.move_to("gk")
-        end,
-        { silent = true },
-      })
-    end,
-  })
-  use({
     "stevearc/qf_helper.nvim",
     config = function()
       return require("qf_helper").setup({
@@ -68,55 +45,6 @@ function M.configure_packer(use)
       nmap({ "<C-l><C-l>", ":SlimuxSendKeysLast<CR>" })
       nmap({ "<C-c><C-c>", ":SlimuxREPLSendLine<CR>" })
       vmap({ "<C-c><C-c>", ":SlimuxREPLSendSelection<CR>" })
-    end,
-  })
-  use({
-    "ThePrimeagen/harpoon",
-    config = function()
-      local nmap = require("sh.keymap").nmap
-      require("harpoon").setup({ projects = {} })
-      nmap({
-        "<leader>a",
-        function()
-          require("harpoon.mark").add_file()
-        end,
-      })
-      nmap({
-        "<C-e>",
-        function()
-          require("harpoon.ui").toggle_quick_menu()
-        end,
-      })
-      nmap({
-        "<leader>tc",
-        function()
-          require("harpoon.cmd-ui").toggle_quick_menu()
-        end,
-      })
-      nmap({
-        "<C-h>",
-        function()
-          require("harpoon.ui").nav_file(1)
-        end,
-      })
-      nmap({
-        "<C-t>",
-        function()
-          require("harpoon.ui").nav_file(2)
-        end,
-      })
-      nmap({
-        "<C-n>",
-        function()
-          require("harpoon.ui").nav_file(3)
-        end,
-      })
-      nmap({
-        "<C-s>",
-        function()
-          require("harpoon.ui").nav_file(4)
-        end,
-      })
     end,
   })
 end
