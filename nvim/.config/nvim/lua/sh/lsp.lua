@@ -1,53 +1,5 @@
 local ui = require("sh.ui")
 
-vim.lsp.protocol.CompletionItemKind = {
-  "   (Text) ",
-  "   (Method)",
-  "   (Function)",
-  "   (Constructor)",
-  " ﴲ  (Field)",
-  "[] (Variable)",
-  "   (Class)",
-  " ﰮ  (Interface)",
-  "   (Module)",
-  " 襁 (Property)",
-  "   (Unit)",
-  "   (Value)",
-  " 練 (Enum)",
-  "   (Keyword)",
-  "   (Snippet)",
-  "   (Color)",
-  "   (File)",
-  "   (Reference)",
-  "   (Folder)",
-  "   (EnumMember)",
-  " ﲀ  (Constant)",
-  " ﳤ  (Struct)",
-  "   (Event)",
-  "   (Operator)",
-  "   (TypeParameter)",
-}
-vim.fn.sign_define("DiagnosticSignError", {
-  texthl = "DiagnosticSignError",
-  text = "",
-  numhl = "DiagnosticSignError",
-})
-vim.fn.sign_define("DiagnosticSignWarn", {
-  texthl = "DiagnosticSignWarn",
-  text = "",
-  numhl = "DiagnosticSignWarn",
-})
-vim.fn.sign_define("DiagnosticSignHint", {
-  texthl = "DiagnosticSignHint",
-  text = "",
-  numhl = "DiagnosticSignHint",
-})
-vim.fn.sign_define("DiagnosticSignInfo", {
-  texthl = "DiagnosticSignInfo",
-  text = "",
-  numhl = "DiagnosticSignInfo",
-})
-
 vim.lsp.handlers["textDocument/definition"] = function(_, result)
   if not result or vim.tbl_isempty(result) then
     print("[LSP] Could not find definition")
@@ -62,19 +14,6 @@ vim.lsp.handlers["textDocument/definition"] = function(_, result)
 end
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = ui.borders })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = ui.borders })
-vim.diagnostic.config({
-  virtual_text = false,
-  signs = true,
-  update_in_insert = false,
-  underline = true,
-  severity_sort = true,
-})
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  pattern = "*",
-  callback = function()
-    vim.diagnostic.open_float(nil, { focusable = false, border = ui.borders })
-  end,
-})
 
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.completion.completionItem.snippetSupport = true
@@ -209,7 +148,6 @@ function M.configure_packer(use)
       { "octaltree/cmp-look" },
     },
     config = function()
-      local ui = require("sh.ui")
       local cmp = require("cmp")
       require("sh.gh_issues")
       local lspkind = require("lspkind")
@@ -256,19 +194,24 @@ function M.configure_packer(use)
           }),
         },
         formatting = {
-          format = lspkind.cmp_format({
-            with_text = true,
-            menu = {
-              nvim_lua = "[nvim]",
-              nvim_lsp = "[lsp]",
-              emoji = "[emoji]",
-              path = "[path]",
-              calc = "[calc]",
-              luasnip = "[snip]",
-              buffer = "[buf]",
-              gh_issues = "[issues]",
-            },
-          }),
+          format = function(entry, vim_item)
+            local opts = {
+              menu = {
+                nvim_lua = "nvim",
+                nvim_lsp = "lsp",
+                emoji = "emoji",
+                path = "path",
+                calc = "calc",
+                luasnip = "snip",
+                buffer = "buf",
+                gh_issues = "issues",
+              },
+            }
+            if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
+              opts.menu.nvim_lsp = entry.completion_item.detail
+            end
+            return lspkind.cmp_format(opts)(entry, vim_item)
+          end,
         },
         sorting = {
           comparators = {
@@ -297,6 +240,7 @@ function M.configure_packer(use)
           { name = "gh_issues" },
           { name = "nvim_lua" },
           { name = "nvim_lsp" },
+          { name = "luasnip" },
           { name = "path" },
           { name = "buffer", keyword_length = 5, max_item_count = 5 },
           {
@@ -305,19 +249,19 @@ function M.configure_packer(use)
             max_item_count = 5,
             option = { all_panes = false },
           },
-          -- {
-          --   name = 'look',
-          --   keyword_length = 5,
-          --   max_item_count = 5,
-          --   option = { convert_case = true, loud = true },
-          -- },
+          {
+            name = "look",
+            keyword_length = 2,
+            max_item_count = 5,
+            option = { convert_case = true, loud = true },
+          },
           -- { name = 'zsh' },
           -- { name = 'calc' },
           -- { name = 'emoji' },
           -- { name = 'treesitter' },
           -- { name = 'crates' },
         },
-        experimental = { native_menu = false, ghost_text = false },
+        experimental = { native_menu = false, ghost_text = true },
       })
     end,
   })

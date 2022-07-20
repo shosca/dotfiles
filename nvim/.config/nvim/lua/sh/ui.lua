@@ -74,7 +74,6 @@ function M.configure_packer(use)
       "xiyaowong/nvim-transparent",
     },
     config = function()
-      vim.cmd([[colorscheme material]])
       require("material").setup({
         contrast = {
           -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
@@ -110,19 +109,21 @@ function M.configure_packer(use)
         custom_highlights = {}, -- Overwrite highlights with your own
       })
       require("transparent").setup({})
+      vim.cmd([[colorscheme material]])
     end,
   })
   use({ "kyazdani42/nvim-web-devicons" })
   use({
     "SmiteshP/nvim-gps",
     config = function()
-      local kind_icons = require("lspkind").presets.default
       require("nvim-gps").setup({
-        icons = {
-          ["class-name"] = kind_icons.Class .. " ",
-          ["function-name"] = kind_icons.Function .. " ",
-          ["method-name"] = kind_icons.Method .. " ",
-        },
+        -- icons = {
+        --   ["class-name"] = kind_icons.Class .. " ",
+        --   ["function-name"] = kind_icons.Function .. " ",
+        --   ["method-name"] = kind_icons.Method .. " ",
+        --   ["container-name"] = kind_icons.Module .. " ",
+        --   ["tag-name"] = kind_icons.Reference .. " ",
+        -- },
         languages = {
           ["c"] = true,
           ["cpp"] = true,
@@ -381,15 +382,14 @@ function M.configure_packer(use)
       })
     end,
   })
-  -- use({
-  --   "ghillb/cybu.nvim",
-  --   config = function()
-  --     require("cybu").setup({})
-  --     local nmap = require("sh.keymap").nmap
-  --     nmap({ "<Tab>", "<Plug>(CybuNext)" })
-  --     nmap({ "<S-Tab>", "<Plug>(CybuPrev)" })
-  --   end,
-  -- })
+  use({
+    "goolord/alpha-nvim",
+    requires = { "kyazdani42/nvim-web-devicons" },
+    config = function()
+      require("alpha").setup(require("alpha.themes.startify").config)
+      require("alpha").start(true)
+    end,
+  })
 end
 
 return M

@@ -4,7 +4,7 @@ function M.configure_packer(use)
   use("bfredl/nvim-luadev")
   use("tpope/vim-eunuch")
   use("benizi/vim-automkdir")
-  use("sgur/vim-editorconfig")
+  use("editorconfig/editorconfig-vim")
   use("vladdoster/remember.nvim")
   use({
     "stevearc/qf_helper.nvim",
@@ -45,6 +45,12 @@ function M.configure_packer(use)
       nmap({ "<C-l><C-l>", ":SlimuxSendKeysLast<CR>" })
       nmap({ "<C-c><C-c>", ":SlimuxREPLSendLine<CR>" })
       vmap({ "<C-c><C-c>", ":SlimuxREPLSendSelection<CR>" })
+    end,
+  })
+  use({
+    "kylechui/nvim-surround",
+    config = function()
+      require("nvim-surround").setup({})
     end,
   })
 end

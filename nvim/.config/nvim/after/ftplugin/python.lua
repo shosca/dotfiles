@@ -38,7 +38,7 @@ if not lsp.is_client_active("pylsp") then
           jedi_completion = { include_params = true, fuzzy = true },
           pylsp_black = { enabled = false },
           pylsp_mypy = { enabled = false },
-          rope_completion = { enabled = false },
+          rope_completion = { enabled = true },
           rope_rename = { enabled = true },
         },
       },

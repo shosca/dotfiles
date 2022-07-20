@@ -1,5 +1,5 @@
 local present, impatient = pcall(require, "impatient")
-if present then
+if present and impatient then
   impatient.enable_profile()
 end
 
@@ -110,7 +110,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.inccommand = "split"
 vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 
-vim.opt.mouse = "n"
+vim.opt.mouse = "nvi"
 vim.opt.diffopt = {
   "internal",
   "filler",
@@ -144,11 +144,13 @@ vim.opt.fillchars = { eob = "~" }
 -- invisible characters to use on ':set list'
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = "› ",
+  tab = "→―",
   eol = "¬",
-  nbsp = ".",
-  trail = "•",
-  extends = "#",
+  nbsp = "◇",
+  trail = "·",
+  extends = "▸",
+  precedes = "◂",
+  space = " ",
 }
 
 vim.opt.cursorline = true -- Highlight the current line
