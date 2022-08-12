@@ -123,11 +123,45 @@ function M.configure_packer(use)
   use("neovim/nvim-lspconfig")
   use("folke/lua-dev.nvim")
   use("nvim-lua/lsp-status.nvim")
+  -- use({
+  --   "glepnir/lspsaga.nvim",
+  --   branch = "main",
+  --   config = function()
+  --       local saga = require("lspsaga")
+  --       saga.init_lsp_saga({
+  --         symbol_in_winbar = {
+  --           enable = true,
+  --         }
+  --       })
+  --   end,
+  -- })
   use({
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
-      require("null-ls").setup({
+      local nullls = require("null-ls")
+      nullls.setup({
         debounce = 600,
+        sources = {
+          nullls.builtins.code_actions.gitrebase,
+          nullls.builtins.code_actions.gitsigns,
+
+          nullls.builtins.diagnostics.eslint_d,
+          nullls.builtins.code_actions.eslint_d,
+
+          nullls.builtins.formatting.shfmt.with({
+            extra_args = {
+              "-i",
+              "4", -- 4 spaces
+              "-ci", -- indent switch cases
+              "-sr", -- redirect operators are followed by space
+              "-bn", -- binary ops like && or | (pipe) start the line
+            },
+          }),
+
+          nullls.builtins.formatting.terraform_fmt.with({
+            filetypes = { "hcl", "terraform" },
+          }),
+        },
       })
     end,
   })
@@ -270,6 +304,12 @@ function M.configure_packer(use)
     "j-hui/fidget.nvim",
     config = function()
       require("fidget").setup({})
+    end,
+  })
+  use({
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
     end,
   })
 end

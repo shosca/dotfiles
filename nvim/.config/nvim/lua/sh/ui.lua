@@ -3,7 +3,11 @@ vim.opt.background = "dark"
 vim.g.material_style = "deep ocean"
 vim.g.transparent_enabled = true
 vim.opt.laststatus = 3
-vim.cmd([[colorscheme material]])
+
+local status, _ = pcall(require, "material")
+if status then
+  vim.cmd([[colorscheme material]])
+end
 
 local borders = {
   bottom_left = "╰",
@@ -116,14 +120,17 @@ function M.configure_packer(use)
   use({
     "SmiteshP/nvim-gps",
     config = function()
+      local kind_icons = require("lspkind").symbol_map
       require("nvim-gps").setup({
-        -- icons = {
-        --   ["class-name"] = kind_icons.Class .. " ",
-        --   ["function-name"] = kind_icons.Function .. " ",
-        --   ["method-name"] = kind_icons.Method .. " ",
-        --   ["container-name"] = kind_icons.Module .. " ",
-        --   ["tag-name"] = kind_icons.Reference .. " ",
-        -- },
+        icons = {
+          ["class-name"] = kind_icons.Class .. " ",
+          ["object-name"] = kind_icons.Variable .. " ",
+          ["array-name"] = kind_icons.Struct .. " ",
+          ["function-name"] = kind_icons.Function .. " ",
+          ["method-name"] = kind_icons.Method .. " ",
+          ["container-name"] = kind_icons.Module .. " ",
+          ["tag-name"] = kind_icons.Reference .. " ",
+        },
         languages = {
           ["c"] = true,
           ["cpp"] = true,

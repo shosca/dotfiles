@@ -12,10 +12,10 @@ vim.diagnostic.config({
     focusable = false,
   },
 })
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  pattern = "*",
-  callback = vim.diagnostic.open_float,
-})
+-- vim.api.nvim_create_autocmd({ "CursorHold" }, {
+--   pattern = "*",
+--   callback = vim.diagnostic.open_float,
+-- })
 vim.fn.sign_define("DiagnosticSignError", {
   texthl = "DiagnosticSignError",
   text = "",

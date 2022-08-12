@@ -1,61 +1,35 @@
-local lspconfig = require("lspconfig")
-local lsputil = require("lspconfig/util")
+vim.opt_local.autoindent = true
+vim.opt_local.cindent = true
+vim.opt_local.copyindent = true
+vim.opt_local.expandtab = true
+vim.opt_local.smartindent = true
+vim.opt_local.shiftwidth = 4
+vim.opt_local.smarttab = true
+vim.opt_local.softtabstop = 4
+vim.opt_local.tabstop = 8
+
 local null_ls = require("null-ls")
-local dap = require("dap")
-local lsp = require("sh.lsp")
-local secrets = require("sh.secrets")
 
-local python_env = require("sh.utils").get_python_env()
-
-local register = function(typ, name)
+local register = function(typ, name, cmd)
   if not null_ls.is_registered({ name = name }) then
-    local cmd = name
-    if python_env.VIRTUAL_ENV ~= nil then
-      cmd = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", cmd)
+    if cmd ~= nil then
+      cmd = name
     end
     null_ls.register(null_ls.builtins[typ][name].with({
-      command = cmd,
+      cmd = cmd,
+      env = require("sh.utils").get_python_env(),
     }))
   end
 end
-register("diagnostics", "flake8")
+register("diagnostics", "flake8", "flake8heavened")
 -- register("diagnostics", "mypy")
 register("formatting", "black")
 
-if not lsp.is_client_active("pylsp") then
-  lspconfig.pylsp.setup({
-    cmd = { "pylsp", "-v", "--log-file", vim.fn.stdpath("cache") .. "/pylsp.log" },
-    cmd_env = python_env,
-    on_attach = lsp.common_on_attach,
-    capabilities = lsp.capabilities,
-    settings = {
-      pylsp = {
-        plugins = {
-          flake8 = { enabled = false },
-          mccabe = { enabled = false },
-          pyflakes = { enabled = false },
-          pycodestyle = { enabled = false },
-          jedi_completion = { include_params = true, fuzzy = true },
-          pylsp_black = { enabled = false },
-          pylsp_mypy = { enabled = false },
-          rope_completion = { enabled = true },
-          rope_rename = { enabled = true },
-        },
-      },
-    },
-  })
-  vim.cmd([[LspStart]])
-end
-
-if not lsp.is_client_active("sourcery") then
-  lspconfig.sourcery.setup({ init_options = { token = secrets.sourcery.token } })
-  vim.cmd([[LspStart]])
-end
-
-local dapcmd = "python"
-if python_env.VIRTUAL_ENV then
-  dapcmd = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", "python")
-end
-
-dap.adapters.python = { type = "executable", command = dapcmd, args = { "-m", "debugpy.adapter" } }
-require("dap.ext.vscode").load_launchjs()
+-- local dap = require("dap")
+-- local dapcmd = "python"
+-- if python_env.VIRTUAL_ENV then
+--   dapcmd = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", "python")
+-- end
+--
+-- dap.adapters.python = { type = "executable", command = dapcmd, args = { "-m", "debugpy.adapter" } }
+-- require("dap.ext.vscode").load_launchjs()

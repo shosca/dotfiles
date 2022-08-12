@@ -2,7 +2,7 @@ local M = {}
 
 function M.configure_packer(use)
   use("bfredl/nvim-luadev")
-  use("tpope/vim-eunuch")
+  use("lambdalisue/suda.vim")
   use("benizi/vim-automkdir")
   use("editorconfig/editorconfig-vim")
   use("vladdoster/remember.nvim")
