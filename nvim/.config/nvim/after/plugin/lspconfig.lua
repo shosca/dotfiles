@@ -7,8 +7,8 @@ luadev.cmd = { "lua-language-server" }
 lspconfig.sumneko_lua.setup(luadev)
 
 lspconfig.pylsp.setup({
-  on_new_config = function(new_config, _)
-    new_config.python_env = require("sh.utils").get_python_env()
+  on_new_config = function(new_config, root)
+    new_config.python_env = require("sh.utils").get_python_env(root)
     return true
   end,
   cmd = { "pylsp", "-v", "--log-file", vim.fn.stdpath("cache") .. "/pylsp.log" },
