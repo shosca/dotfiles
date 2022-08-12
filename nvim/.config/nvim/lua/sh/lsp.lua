@@ -139,6 +139,7 @@ function M.configure_packer(use)
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
       local nullls = require("null-ls")
+      local lsputil = require("lspconfig/util")
       nullls.setup({
         debounce = 600,
         sources = {
@@ -158,6 +159,24 @@ function M.configure_packer(use)
             },
           }),
 
+          nullls.builtins.formatting.black.with({
+            dynamic_command = function(params)
+              local python_env = require("sh.utils").get_python_env(params.root)
+              if python_env.VIRTUAL_ENV ~= nil then
+                return lsputil.path.join(python_env.VIRTUAL_ENV, "bin", params.command)
+              end
+              return params.command
+            end,
+          }),
+          nullls.builtins.diagnostics.flake8.with({
+            dynamic_command = function(params)
+              local python_env = require("sh.utils").get_python_env(params.root)
+              if python_env.VIRTUAL_ENV ~= nil then
+                return lsputil.path.join(python_env.VIRTUAL_ENV, "bin", params.command)
+              end
+              return params.command
+            end,
+          }),
           nullls.builtins.formatting.terraform_fmt.with({
             filetypes = { "hcl", "terraform" },
           }),

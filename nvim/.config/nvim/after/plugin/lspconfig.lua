@@ -9,7 +9,6 @@ lspconfig.sumneko_lua.setup(luadev)
 lspconfig.pylsp.setup({
   on_new_config = function(new_config, _)
     new_config.python_env = require("sh.utils").get_python_env()
-    vim.notify("configured pylsp env")
     return true
   end,
   cmd = { "pylsp", "-v", "--log-file", vim.fn.stdpath("cache") .. "/pylsp.log" },
