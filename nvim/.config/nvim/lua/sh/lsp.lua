@@ -1,4 +1,5 @@
 local ui = require("sh.ui")
+local utils = require("sh.utils")
 
 vim.lsp.handlers["textDocument/definition"] = function(_, result)
   if not result or vim.tbl_isempty(result) then
@@ -96,13 +97,9 @@ function M.on_attach_lsp_keymaps(_, bufnr)
   nmap({ "]d", vim.diagnostic.goto_next, { silent = true, buffer = bufnr } })
 end
 
-local function starts_with(str, start)
-  return str:sub(1, #start) == start
-end
-
 function M.common_on_attach(client, bufnr)
   for key, value in pairs(M) do
-    if starts_with(key, "on_attach") then
+    if utils.starts_with(key, "on_attach") then
       value(client, bufnr)
     end
   end
