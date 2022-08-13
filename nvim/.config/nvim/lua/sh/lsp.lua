@@ -8,9 +8,9 @@ vim.lsp.handlers["textDocument/definition"] = function(_, result)
   end
 
   if vim.tbl_islist(result) then
-    vim.lsp.util.jump_to_location(result[1], "utf-8")
+    vim.lsp.util.jump_to_location(result[1], "utf-8", true)
   else
-    vim.lsp.util.jump_to_location(result, "utf-8")
+    vim.lsp.util.jump_to_location(result, "utf-8", true)
   end
 end
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = ui.borders })
@@ -158,20 +158,12 @@ function M.configure_packer(use)
 
           nullls.builtins.formatting.black.with({
             dynamic_command = function(params)
-              local python_env = require("sh.utils").get_python_env(params.root)
-              if python_env.VIRTUAL_ENV ~= nil then
-                return lsputil.path.join(python_env.VIRTUAL_ENV, "bin", params.command)
-              end
-              return params.command
+              return require("sh.utils").find_venv_command(params.root, params.command)
             end,
           }),
           nullls.builtins.diagnostics.flake8.with({
             dynamic_command = function(params)
-              local python_env = require("sh.utils").get_python_env(params.root)
-              if python_env.VIRTUAL_ENV ~= nil then
-                return lsputil.path.join(python_env.VIRTUAL_ENV, "bin", params.command)
-              end
-              return params.command
+              return require("sh.utils").find_venv_command(params.root, params.command)
             end,
           }),
           nullls.builtins.formatting.terraform_fmt.with({

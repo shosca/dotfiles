@@ -34,6 +34,17 @@ lspconfig.pylsp.setup({
 lspconfig.sourcery.setup({ init_options = { token = secrets.sourcery.token } })
 
 lspconfig.solargraph.setup({
+  cmd = { "bundle", "exec", "solargraph", "stdio" },
+  on_attach = lsp.common_on_attach,
+  capabilities = lsp.capabilities,
+})
+
+lspconfig.sorbet.setup({
+  cmd = { "bundle", "exec", "srb", "tc", "--lsp", "--disable-watchman" },
+  on_new_config = function(new_config, root)
+    table.insert(new_config.cmd, root)
+    return true
+  end,
   on_attach = lsp.common_on_attach,
   capabilities = lsp.capabilities,
 })
