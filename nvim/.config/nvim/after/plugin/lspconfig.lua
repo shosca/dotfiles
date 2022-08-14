@@ -48,7 +48,13 @@ local servers = {
       },
     },
   },
-  sourcery = { init_options = { token = secrets.sourcery.token } },
+  sourcery = {
+    on_new_config = function(new_config, root)
+      require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
+      new_config.cmd_env = require("sh.utils").get_python_env(root)
+    end,
+    init_options = { token = secrets.sourcery.token },
+  },
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },
   },
