@@ -68,7 +68,6 @@ function M.find_venv_command(root, cmd)
   if python_env.VIRTUAL_ENV ~= nil then
     local cmdpath = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", cmd)
     if vim.fn.filereadable(cmdpath) == 1 then
-      print(cmdpath)
       return cmdpath
     end
   end
