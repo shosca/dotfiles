@@ -279,12 +279,15 @@ local servers = {
   bashls = {},
 }
 
-for server, opts in pairs(servers) do
-  if opts.on_attach ~= nil then
-    opts.on_attach = lsp.common_on_attach
+vim.defer_fn(function()
+  for server, opts in pairs(servers) do
+    if opts.on_attach == nil then
+      opts.on_attach = lsp.common_on_attach
+    end
+    if opts.capabilities == nil then
+      opts.capabilities = lsp.capabilities
+    end
+    lspconfig[server].setup(opts)
   end
-  if opts.capabilities ~= nil then
-    opts.capabilities = lsp.capabilities
-  end
-  lspconfig[server].setup(opts)
-end
+  vim.cmd([[LspStart]])
+end, 1000)
