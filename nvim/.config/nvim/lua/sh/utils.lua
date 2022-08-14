@@ -41,7 +41,9 @@ end
 function M.get_venv_with_poetry(root)
   local poetry_lock = lsputil.path.join(root, "poetry.lock")
   if vim.fn.filereadable(poetry_lock) == 1 then
-    vim.notify("found " .. poetry_lock)
+    vim.defer_fn(function()
+      vim.notify("found " .. poetry_lock)
+    end, 1000)
     return vim.fn.trim(vim.fn.system(string.format("cd %s && poetry env info -p", root)))
   end
 end
@@ -49,7 +51,9 @@ end
 function M.get_venv_with_pipfile(root)
   local pipfile = lsputil.path.join(root, "Pipfile")
   if vim.fn.filereadable(pipfile) == 1 then
-    vim.notify("found " .. pipfile)
+    vim.defer_fn(function()
+      vim.notify("found " .. pipfile)
+    end, 1000)
     return vim.fn.trim(vim.fn.system("PIPENV_PIPFILE=" .. pipfile .. " pipenv --venv"))
   end
 end
@@ -58,7 +62,9 @@ function M.get_venv_with_project_dotvenv_dir(root)
   local venvdir = lsputil.path.join(root, ".venv")
   local python = lsputil.path.join(venvdir, "bin", "python")
   if vim.fn.filereadable(python) == 1 then
-    vim.notify("found " .. python)
+    vim.defer_fn(function()
+      vim.notify("found " .. python)
+    end, 1000)
     return venvdir
   end
 end

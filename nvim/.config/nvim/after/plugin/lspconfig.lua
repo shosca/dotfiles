@@ -27,7 +27,7 @@ local servers = {
         u.find_venv_command(root, "pylsp"),
         "-v",
         "--log-file",
-        vim.fn.stdpath("cache") .. "/pylsp.log",
+        vim.fn.stdpath("state") .. "/pylsp.log",
       }
       new_config.cmd_env = u.get_python_env(root)
       return true
@@ -285,15 +285,12 @@ local servers = {
   bashls = {},
 }
 
-vim.defer_fn(function()
-  for server, opts in pairs(servers) do
-    if opts.on_attach == nil then
-      opts.on_attach = lsp.common_on_attach
-    end
-    if opts.capabilities == nil then
-      opts.capabilities = lsp.capabilities
-    end
-    lspconfig[server].setup(opts)
+for server, opts in pairs(servers) do
+  if opts.on_attach == nil then
+    opts.on_attach = lsp.common_on_attach
   end
-  vim.cmd([[LspStart]])
-end, 1000)
+  if opts.capabilities == nil then
+    opts.capabilities = lsp.capabilities
+  end
+  lspconfig[server].setup(opts)
+end
