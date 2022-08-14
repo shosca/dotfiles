@@ -37,7 +37,7 @@ local packages = {
 packer.startup({
   function(use)
     use("wbthomason/packer.nvim")
-    --use({ "lewis6991/impatient.nvim", rocks = "mpack" })
+    use({ "lewis6991/impatient.nvim", rocks = "mpack" })
     for _, pkg in pairs(packages) do
       require(pkg).configure_packer(use)
     end

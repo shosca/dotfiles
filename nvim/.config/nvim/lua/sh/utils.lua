@@ -40,7 +40,7 @@ end
 
 function M.get_venv_with_poetry(root)
   local poetry_lock = lsputil.path.join(root, "poetry.lock")
-  if vim.fn.filereadable(poetry_lock) then
+  if vim.fn.filereadable(poetry_lock) == 1 then
     vim.notify("found " .. poetry_lock)
     return vim.fn.trim(vim.fn.system(string.format("cd %s && poetry env info -p", root)))
   end
@@ -48,16 +48,16 @@ end
 
 function M.get_venv_with_pipfile(root)
   local pipfile = lsputil.path.join(root, "Pipfile")
-  if vim.fn.filereadable(pipfile) then
+  if vim.fn.filereadable(pipfile) == 1 then
     vim.notify("found " .. pipfile)
     return vim.fn.trim(vim.fn.system("PIPENV_PIPFILE=" .. pipfile .. " pipenv --venv"))
   end
 end
 
 function M.get_venv_with_project_dotvenv_dir(root)
-  local venvdir = lsputil.path.join(root, ".venv", "bin")
-  local python = lsputil.path.join(venvdir, "python")
-  if vim.fn.filereadable(python) then
+  local venvdir = lsputil.path.join(root, ".venv")
+  local python = lsputil.path.join(venvdir, "bin", "python")
+  if vim.fn.filereadable(python) == 1 then
     vim.notify("found " .. python)
     return venvdir
   end
@@ -67,7 +67,8 @@ function M.find_venv_command(root, cmd)
   local python_env = require("sh.utils").get_python_env(root)
   if python_env.VIRTUAL_ENV ~= nil then
     local cmdpath = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", cmd)
-    if vim.fn.filereadable(cmdpath) then
+    if vim.fn.filereadable(cmdpath) == 1 then
+      print(cmdpath)
       return cmdpath
     end
   end
