@@ -1,6 +1,21 @@
+vim.o.exrc = false
+
 local M = {}
 
 function M.configure_packer(use)
+  use({
+    "MunifTanjim/exrc.nvim",
+    config = function()
+      require("exrc").setup({
+        files = {
+          ".nvimrc.lua",
+          ".nvimrc",
+          ".exrc.lua",
+          ".exrc",
+        },
+      })
+    end,
+  })
   use("bfredl/nvim-luadev")
   use("lambdalisue/suda.vim")
   use("benizi/vim-automkdir")
@@ -53,6 +68,27 @@ function M.configure_packer(use)
       require("nvim-surround").setup({})
     end,
   })
+  use({
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+    },
+    config = function()
+      local nmap = require("sh.keymap").nmap
+      local neotest = require("neotest")
+      nmap({ "<leader>tt", neotest.run.run })
+      nmap({
+        "<leader>tf",
+        function()
+          neotest.run.run(vim.fn.expand("%"))
+        end,
+      })
+      nmap({ "<leader>to", neotest.output.open })
+    end,
+  })
+  use("nvim-neotest/neotest-python")
 end
 
 return M

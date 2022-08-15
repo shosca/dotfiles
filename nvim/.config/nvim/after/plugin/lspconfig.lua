@@ -2,7 +2,9 @@ local lspconfig = require("lspconfig")
 local lsp = require("sh.lsp")
 local secrets = require("sh.secrets")
 local lspstatus = require("lsp-status")
-local luadev = require("lua-dev").setup({})
+local luadev = require("lua-dev").setup({
+  library = { plugins = { "neotest" }, types = true },
+})
 
 local servers = {
   sumneko_lua = luadev,
