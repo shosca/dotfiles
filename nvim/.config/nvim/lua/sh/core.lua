@@ -77,15 +77,24 @@ function M.configure_packer(use)
     },
     config = function()
       local nmap = require("sh.keymap").nmap
-      local neotest = require("neotest")
-      nmap({ "<leader>tt", neotest.run.run })
+      nmap({
+        "<leader>tt",
+        function()
+          require("neotest").run.run()
+        end,
+      })
       nmap({
         "<leader>tf",
         function()
-          neotest.run.run(vim.fn.expand("%"))
+          require("neotest").run.run(vim.fn.expand("%"))
         end,
       })
-      nmap({ "<leader>to", neotest.output.open })
+      nmap({
+        "<leader>to",
+        function()
+          require("neotest").output.open()
+        end,
+      })
     end,
   })
   use("nvim-neotest/neotest-python")

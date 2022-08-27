@@ -69,7 +69,7 @@ vim.opt.pumblend = 17
 vim.opt.isfname:append("@-@")
 vim.opt.showmode = false
 vim.opt.showcmd = true
-vim.opt.cmdheight = 0 -- Height of the command bar
+vim.opt.cmdheight = 1 -- Height of the command bar
 vim.opt.incsearch = true -- Makes search act like search in modern browsers
 vim.opt.showmatch = true -- show matching brackets when text indicator is over them
 vim.opt.relativenumber = true -- Show line numbers

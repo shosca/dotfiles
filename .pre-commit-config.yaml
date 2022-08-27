@@ -2,6 +2,6 @@
 
 repos:
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v0.14.0
+    rev: v0.14.3
     hooks:
     - id: stylua-system # or stylua-system / stylua-github

@@ -119,6 +119,7 @@ function M.configure_packer(use)
   use("antoinemadec/FixCursorHold.nvim")
   use("neovim/nvim-lspconfig")
   use("folke/lua-dev.nvim")
+  use("b0o/schemastore.nvim")
   use("nvim-lua/lsp-status.nvim")
   -- use({
   --   "glepnir/lspsaga.nvim",
@@ -136,7 +137,6 @@ function M.configure_packer(use)
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
       local nullls = require("null-ls")
-      local lsputil = require("lspconfig/util")
       nullls.setup({
         debounce = 600,
         sources = {
@@ -166,6 +166,7 @@ function M.configure_packer(use)
               return require("sh.utils").find_venv_command(params.root, params.command)
             end,
           }),
+
           nullls.builtins.formatting.terraform_fmt.with({
             filetypes = { "hcl", "terraform" },
           }),
