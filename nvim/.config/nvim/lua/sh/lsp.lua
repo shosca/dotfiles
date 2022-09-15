@@ -22,6 +22,10 @@ local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
   caps = cmp_nvim_lsp.update_capabilities(caps)
 end
+caps.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 
 local M = {
   capabilities = caps,
@@ -76,7 +80,9 @@ function M.on_attach_lsp_document_formatting(client, bufnr)
     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       group = au_lsp_doc_format,
       buffer = bufnr,
-      callback = vim.lsp.buf.format,
+      callback = function()
+        vim.lsp.buf.format({ timeout_ms = 20000 })
+      end,
     })
   end
 end

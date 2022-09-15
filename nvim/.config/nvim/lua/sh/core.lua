@@ -16,6 +16,7 @@ function M.configure_packer(use)
       })
     end,
   })
+  use("kevinhwang91/rnvimr")
   use("bfredl/nvim-luadev")
   use("lambdalisue/suda.vim")
   use("benizi/vim-automkdir")
@@ -98,6 +99,7 @@ function M.configure_packer(use)
     end,
   })
   use("nvim-neotest/neotest-python")
+  use("haydenmeade/neotest-jest")
 end
 
 return M

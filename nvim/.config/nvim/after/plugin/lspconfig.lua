@@ -48,7 +48,7 @@ local servers = {
           pycodestyle = { enabled = false },
           jedi_completion = { include_params = true, fuzzy = true },
           pylsp_black = { enabled = false },
-          pylsp_mypy = { enabled = false },
+          pylsp_mypy = { enabled = false, dmypy = true },
           rope_completion = { enabled = true },
           rope_rename = { enabled = true },
         },

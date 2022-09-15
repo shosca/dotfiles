@@ -99,8 +99,9 @@ vim.opt.breakindent = true
 vim.opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
 vim.opt.linebreak = true
 
-vim.opt.foldmethod = "marker"
-vim.opt.foldlevel = 3
+vim.opt.foldlevel = 1
+vim.opt.foldlevelstart = 1
+vim.opt.foldenable = true
 vim.opt.modelines = 1
 
 vim.opt.belloff = "all" -- Just turn the dang bell off
