@@ -45,6 +45,9 @@ return {
     bottom = 0,
   },
   window_decorations = "TITLE | RESIZE",
+  hide_tab_bar_if_only_one_tab = true,
+  use_fancy_tab_bar = false,
+  tab_bar_at_bottom = true,
   animation_fps = 1,
   -- window_decorations = "",
   colors = {
@@ -66,6 +69,21 @@ return {
       cyan_bright,
       white_bright,
     },
+    tab_bar = {
+      background = background,
+      active_tab = {
+        bg_color = cyan,
+        fg_color = background,
+      },
+      inactive_tab = {
+        bg_color = background,
+        fg_color = foreground,
+      },
+      new_tab = {
+        bg_color = background,
+        fg_color = foreground,
+      },
+    },
   },
   window_background_opacity = 0.925,
   warn_about_missing_glyphs = false,
@@ -76,19 +94,19 @@ return {
   -- font = wezterm.font("Lilex"),
   font = wezterm.font("Hasklig"),
   font_size = 10,
-  enable_tab_bar = false,
+  -- enable_tab_bar = false,
   exit_behavior = "Close",
   -- default_prog = {"tmux"},
   unzoom_on_switch_pane = true,
-  -- leader = {key = "`", mods = "", timeout_milliseconds = 500},
-  -- keys = {
-  --   {key = "`", mods = "LEADER", action = wezterm.action {SendString = "`"}},
-  --   {key = "\\", mods = "LEADER", action = wezterm.action {SplitHorizontal = {domain = "DefaultDomain"}}},
-  --   {key = "-", mods = "LEADER", action = wezterm.action {SplitVertical = {domain = "DefaultDomain"}}},
-  --   {key = "c", mods = "LEADER", action = wezterm.action {SpawnTab = "DefaultDomain"}},
-  --   {key = "j", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Next"}},
-  --   {key = "k", mods = "LEADER", action = wezterm.action {ActivatePaneDirection = "Prev"}},
-  --   {key = "n", mods = "LEADER", action = wezterm.action {ActivateTabRelative = 1}},
-  --   {key = "p", mods = "LEADER", action = wezterm.action {ActivateTabRelative = -1}}
-  -- }
+  leader = { key = "`", mods = "", timeout_milliseconds = 500 },
+  keys = {
+    { key = "`", mods = "LEADER", action = wezterm.action({ SendString = "`" }) },
+    { key = "\\", mods = "LEADER", action = wezterm.action({ SplitHorizontal = { domain = "DefaultDomain" } }) },
+    { key = "-", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "DefaultDomain" } }) },
+    { key = "c", mods = "LEADER", action = wezterm.action({ SpawnTab = "DefaultDomain" }) },
+    { key = "j", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Next" }) },
+    { key = "k", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Prev" }) },
+    { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
+    { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
+  },
 }
