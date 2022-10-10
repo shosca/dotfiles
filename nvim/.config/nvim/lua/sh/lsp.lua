@@ -98,7 +98,7 @@ function M.on_attach_lsp_keymaps(_, bufnr)
   nmap({ "gl", vim.lsp.buf.hover, { silent = true, buffer = bufnr } })
   nmap({ "gk", vim.lsp.buf.signature_help, { silent = true, buffer = bufnr } })
   nmap({ "ga", vim.lsp.buf.code_action, { silent = true, buffer = bufnr } })
-  xmap({ "la", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
+  --xmap({ "la", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
   nmap({ "[d", vim.diagnostic.goto_prev, { silent = true, buffer = bufnr } })
   nmap({ "]d", vim.diagnostic.goto_next, { silent = true, buffer = bufnr } })
 end

@@ -6,7 +6,7 @@ vim.opt.laststatus = 3
 
 local status, _ = pcall(require, "material")
 if status then
-  vim.cmd([[colorscheme material]])
+  vim.api.nvim_command("colorscheme material")
 end
 
 local borders = {
@@ -113,7 +113,7 @@ function M.configure_packer(use)
         custom_highlights = {}, -- Overwrite highlights with your own
       })
       require("transparent").setup({})
-      vim.cmd([[colorscheme material]])
+      vim.api.nvim_command("colorscheme material")
     end,
   })
   use({ "kyazdani42/nvim-web-devicons" })
@@ -395,6 +395,19 @@ function M.configure_packer(use)
     config = function()
       require("alpha").setup(require("alpha.themes.startify").config)
       require("alpha").start(true)
+    end,
+  })
+  use({
+    "anuvyklack/windows.nvim",
+    requires = {
+      "anuvyklack/middleclass",
+      "anuvyklack/animation.nvim",
+    },
+    config = function()
+      vim.o.winwidth = 20
+      vim.o.winminwidth = 20
+      vim.o.equalalways = false
+      require("windows").setup()
     end,
   })
 end

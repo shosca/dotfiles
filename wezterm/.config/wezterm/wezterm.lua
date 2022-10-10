@@ -108,5 +108,6 @@ return {
     { key = "k", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Prev" }) },
     { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
     { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
+    { key = "y", mods = "LEADER", action = wezterm.action.ActivateCopyMode },
   },
 }
