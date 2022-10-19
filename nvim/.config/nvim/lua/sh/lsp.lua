@@ -20,7 +20,7 @@ local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.completion.completionItem.snippetSupport = true
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
-  caps = cmp_nvim_lsp.update_capabilities(caps)
+  caps = cmp_nvim_lsp.default_capabilities(caps)
 end
 caps.textDocument.foldingRange = {
   dynamicRegistration = false,
@@ -124,7 +124,7 @@ end
 function M.configure_packer(use)
   use("antoinemadec/FixCursorHold.nvim")
   use("neovim/nvim-lspconfig")
-  use("folke/lua-dev.nvim")
+  use("folke/neodev.nvim")
   use("b0o/schemastore.nvim")
   use("nvim-lua/lsp-status.nvim")
   -- use({

@@ -7,11 +7,18 @@ function M.configure_packer(use)
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
       require("gitsigns").setup({
-        numhl = true,
+        signs = {
+          add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
+          change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr" },
+          delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr" },
+          topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr" },
+          changedelete = { hl = "GitSignsDelete", text = "~", numhl = "GitSignsChangeNr" },
+        },
+        --numhl = true,
+        linehl = false,
         current_line_blame_opts = {
-          virt_text = true,
-          virt_text_pos = "eol",
           delay = 2000,
+          virt_text_pos = "eol",
         },
       })
     end,
@@ -26,6 +33,7 @@ function M.configure_packer(use)
     end,
   })
   use({
+
     "ruifm/gitlinker.nvim",
     config = function()
       require("gitlinker").setup()

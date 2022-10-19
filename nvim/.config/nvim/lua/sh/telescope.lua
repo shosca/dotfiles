@@ -32,12 +32,6 @@ function M.configure_packer(use)
     requires = {
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-cheat.nvim",
-      "nvim-telescope/telescope-dap.nvim",
-      "nvim-telescope/telescope-github.nvim",
-      "nvim-telescope/telescope-packer.nvim",
-      "nvim-telescope/telescope-symbols.nvim",
-      "nvim-telescope/telescope-project.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
     },
     config = function()
@@ -120,15 +114,6 @@ function M.configure_packer(use)
           },
         },
       })
-      telescope.load_extension("notify")
-      telescope.load_extension("project")
-      -- fzy native extension
-      telescope.load_extension("fzy_native")
-      telescope.load_extension("cheat")
-      telescope.load_extension("dap")
-      telescope.load_extension("gh")
-      telescope.load_extension("packer")
-      telescope.load_extension("git_worktree")
 
       local nmap = require("sh.keymap").nmap
       nmap({
@@ -177,6 +162,52 @@ function M.configure_packer(use)
         end,
         { silent = true },
       })
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-cheat.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("cheat")
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-dap.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("dap")
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-github.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("gh")
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-packer.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("packer")
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-symbols.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+  })
+  use({
+    "nvim-telescope/telescope-project.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("project")
+    end,
+  })
+  use({
+    "nvim-telescope/telescope-fzy-native.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("fzy_native")
     end,
   })
 end

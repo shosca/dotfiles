@@ -57,13 +57,12 @@ end
 function M.configure_packer(use)
   use({
     "rcarriga/nvim-notify",
+    requires = { "nvim-telescope/telescope.nvim" },
     config = function()
       local notify = require("notify")
-      local colors = require("material.colors")
-      notify.setup({
-        background_colour = colors.bg,
-      })
+      notify.setup()
       vim.notify = notify
+      require("telescope").load_extension("notify")
     end,
   })
   use({
@@ -83,23 +82,12 @@ function M.configure_packer(use)
           -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
           sidebars = true,
           floating_windows = true,
-          line_numbers = false,
-          sign_column = false,
-          cursor_line = false,
-          non_current_windows = false,
           popup_menu = true,
         },
-        italics = {
-          comments = true,
-          keywords = true,
-          functions = true,
-          strings = false,
-          variables = false,
-        },
-        contrast_windows = { -- Specify which windows get the contrasted (darker) background
-          "terminal", -- Darker terminal background
-          "packer", -- Darker packer background
-          "qf", -- Darker qf list background
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+          functions = { italic = true },
         },
         high_visibility = {
           lighter = false, -- Enable higher contrast text for lighter style
