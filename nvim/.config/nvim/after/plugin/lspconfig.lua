@@ -22,6 +22,7 @@ local servers = {
       },
     },
   },
+  eslint = {},
   clangd = {
     cmd = {
       "clangd",
@@ -36,34 +37,41 @@ local servers = {
     },
     handlers = lspstatus.extensions.clangd.setup(),
   },
-  pylsp = {
+  jedi_language_server = {
     on_new_config = function(new_config, root)
       local u = require("sh.utils")
-      new_config.cmd = {
-        u.find_venv_command(root, "pylsp"),
-        "-v",
-        "--log-file",
-        vim.fn.stdpath("state") .. "/pylsp.log",
-      }
       new_config.cmd_env = u.get_python_env(root)
       return true
     end,
-    settings = {
-      pylsp = {
-        plugins = {
-          flake8 = { enabled = false },
-          mccabe = { enabled = false },
-          pyflakes = { enabled = false },
-          pycodestyle = { enabled = false },
-          jedi_completion = { include_params = true, fuzzy = true },
-          pylsp_black = { enabled = false },
-          pylsp_mypy = { enabled = false, dmypy = true },
-          rope_completion = { enabled = true },
-          rope_rename = { enabled = true },
-        },
-      },
-    },
   },
+  -- pylsp = {
+  --   on_new_config = function(new_config, root)
+  --     local u = require("sh.utils")
+  --     new_config.cmd = {
+  --       u.find_venv_command(root, "pylsp"),
+  --       "-v",
+  --       "--log-file",
+  --       vim.fn.stdpath("state") .. "/pylsp.log",
+  --     }
+  --     new_config.cmd_env = u.get_python_env(root)
+  --     return true
+  --   end,
+  --   settings = {
+  --     pylsp = {
+  --       plugins = {
+  --         flake8 = { enabled = false },
+  --         mccabe = { enabled = false },
+  --         pyflakes = { enabled = false },
+  --         pycodestyle = { enabled = false },
+  --         jedi_completion = { include_params = true, fuzzy = true },
+  --         pylsp_black = { enabled = false },
+  --         pylsp_mypy = { enabled = false, dmypy = true },
+  --         rope_completion = { enabled = true },
+  --         rope_rename = { enabled = true },
+  --       },
+  --     },
+  --   },
+  -- },
   sourcery = {
     on_new_config = function(new_config, root)
       require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
@@ -86,14 +94,14 @@ local servers = {
     init_options = { usePlaceholders = true, completeUnimported = true },
     settings = { gopls = { analyses = { unusedparams = true }, staticcheck = true } },
   },
-  crystalline = { on_attach = lsp.common_on_attach, capabilities = lsp.capabilities },
+  crystalline = {},
   omnisharp = {
     cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
   },
   cssls = {
     cmd = { "vscode-css-languageserver", "--stdio" },
   },
-  dockerls = { on_attach = lsp.common_on_attach, capabilities = lsp.capabilities },
+  dockerls = {},
   terraformls = {
     filetypes = { "tf", "terraform", "hcl" },
   },
@@ -109,7 +117,7 @@ local servers = {
       "--add-opens java.base/java.lang=ALL-UNNAMED",
     },
   },
-  kotlin_language_server = { on_attach = lsp.on_attach, capabilities = lsp.capabilities },
+  kotlin_language_server = {},
   tsserver = {},
   jsonls = {
     cmd = { "vscode-json-languageserver", "--stdio" },
@@ -171,3 +179,38 @@ for server, opts in pairs(servers) do
   end
   lspconfig[server].setup(opts)
 end
+
+local nullls = require("null-ls")
+nullls.setup({
+  on_attach = lsp.common_on_attach,
+  debounce = 600,
+  sources = {
+    nullls.builtins.code_actions.gitrebase,
+    nullls.builtins.code_actions.gitsigns,
+
+    nullls.builtins.formatting.shfmt.with({
+      extra_args = {
+        "-i",
+        "4", -- 4 spaces
+        "-ci", -- indent switch cases
+        "-sr", -- redirect operators are followed by space
+        "-bn", -- binary ops like && or | (pipe) start the line
+      },
+    }),
+
+    nullls.builtins.formatting.black.with({
+      dynamic_command = function(params)
+        return require("sh.utils").find_venv_command(params.root, params.command)
+      end,
+    }),
+    nullls.builtins.diagnostics.flake8.with({
+      dynamic_command = function(params)
+        return require("sh.utils").find_venv_command(params.root, params.command)
+      end,
+    }),
+
+    nullls.builtins.formatting.terraform_fmt.with({
+      filetypes = { "hcl", "terraform" },
+    }),
+  },
+})

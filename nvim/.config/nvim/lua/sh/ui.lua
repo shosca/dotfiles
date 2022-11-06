@@ -36,8 +36,8 @@ local M = {
     borders.line_vertical,
     borders.top_left,
     borders.top_right,
-    borders.bottom_left,
     borders.bottom_right,
+    borders.bottom_left,
   },
 }
 
@@ -56,12 +56,17 @@ end
 
 function M.configure_packer(use)
   use({
-    "rcarriga/nvim-notify",
-    requires = { "nvim-telescope/telescope.nvim" },
+    "folke/noice.nvim",
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
     config = function()
+      require("noice").setup()
       local notify = require("notify")
-      notify.setup()
-      vim.notify = notify
+      notify.setup({
+        background_colour = "#000000",
+      })
       require("telescope").load_extension("notify")
     end,
   })

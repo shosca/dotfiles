@@ -126,60 +126,8 @@ function M.configure_packer(use)
   use("neovim/nvim-lspconfig")
   use("folke/neodev.nvim")
   use("b0o/schemastore.nvim")
+  use("jose-elias-alvarez/null-ls.nvim")
   use("nvim-lua/lsp-status.nvim")
-  -- use({
-  --   "glepnir/lspsaga.nvim",
-  --   branch = "main",
-  --   config = function()
-  --       local saga = require("lspsaga")
-  --       saga.init_lsp_saga({
-  --         symbol_in_winbar = {
-  --           enable = true,
-  --         }
-  --       })
-  --   end,
-  -- })
-  use({
-    "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      local nullls = require("null-ls")
-      nullls.setup({
-        debounce = 600,
-        sources = {
-          nullls.builtins.code_actions.gitrebase,
-          nullls.builtins.code_actions.gitsigns,
-
-          nullls.builtins.diagnostics.eslint_d,
-          nullls.builtins.code_actions.eslint_d,
-
-          nullls.builtins.formatting.shfmt.with({
-            extra_args = {
-              "-i",
-              "4", -- 4 spaces
-              "-ci", -- indent switch cases
-              "-sr", -- redirect operators are followed by space
-              "-bn", -- binary ops like && or | (pipe) start the line
-            },
-          }),
-
-          nullls.builtins.formatting.black.with({
-            dynamic_command = function(params)
-              return require("sh.utils").find_venv_command(params.root, params.command)
-            end,
-          }),
-          nullls.builtins.diagnostics.flake8.with({
-            dynamic_command = function(params)
-              return require("sh.utils").find_venv_command(params.root, params.command)
-            end,
-          }),
-
-          nullls.builtins.formatting.terraform_fmt.with({
-            filetypes = { "hcl", "terraform" },
-          }),
-        },
-      })
-    end,
-  })
   use({
     "hrsh7th/nvim-cmp",
     requires = {

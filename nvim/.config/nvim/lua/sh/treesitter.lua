@@ -4,8 +4,17 @@ function M.configure_packer(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
+  })
+  use({
+    "yioneko/nvim-yati",
+    tag = "*",
+    requires = "nvim-treesitter/nvim-treesitter",
     config = function()
       require("nvim-treesitter.configs").setup({
+        yati = {
+          enable = true,
+          default_lazy = true,
+        },
         highlight = {
           enable = true,
           use_languagetree = true,
@@ -22,7 +31,7 @@ function M.configure_packer(use)
           },
         },
         autopairs = { enable = true },
-        indent = { enable = true, disable = { "python" } },
+        indent = { enable = false }, --, disable = { "python" } },
         refactor = {
           highlight_definitions = { enable = true },
           highlight_current_scope = { enable = false },
@@ -35,9 +44,9 @@ function M.configure_packer(use)
       })
     end,
   })
-  use({ "nvim-treesitter/nvim-treesitter-refactor" })
-  use({ "nvim-treesitter/nvim-treesitter-textobjects" })
-  use({ "RRethy/nvim-treesitter-endwise" })
+  use({ "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter/nvim-treesitter" })
+  use({ "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter/nvim-treesitter" })
+  use({ "RRethy/nvim-treesitter-endwise", requires = "nvim-treesitter/nvim-treesitter" })
 end
 
 local asking = {}
