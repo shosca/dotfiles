@@ -23,15 +23,15 @@ packer.init({
 })
 
 local packages = {
-  "sh.comment",
-  "sh.core",
-  "sh.dap",
-  "sh.git",
-  "sh.lsp",
-  "sh.luasnip",
-  "sh.telescope",
-  "sh.treesitter",
-  "sh.ui",
+  "sh.plugins",
+  "sh.plugins.comment",
+  "sh.plugins.git",
+  "sh.plugins.ui",
+  "sh.plugins.telescope",
+  "sh.plugins.dap",
+  "sh.plugins.lsp",
+  "sh.plugins.luasnip",
+  "sh.plugins.treesitter",
 }
 
 packer.startup({
@@ -39,7 +39,10 @@ packer.startup({
     use("wbthomason/packer.nvim")
     use({ "lewis6991/impatient.nvim", rocks = "mpack" })
     for _, pkg in pairs(packages) do
-      require(pkg).configure_packer(use)
+      local configs = require(pkg).configure_packer()
+      for _, config in pairs(configs) do
+        use(config)
+      end
     end
   end,
   config = {
