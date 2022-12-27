@@ -1,15 +1,15 @@
 local utils = require("sh.utils")
 
 local caps = vim.lsp.protocol.make_client_capabilities()
+caps.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 caps.textDocument.completion.completionItem.snippetSupport = true
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
   caps = cmp_nvim_lsp.default_capabilities(caps)
 end
-caps.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
-}
 
 local M = {
   capabilities = caps,

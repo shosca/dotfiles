@@ -1,6 +1,15 @@
-local lsputil = require("lspconfig/util")
-
 local M = { venvs = {} }
+
+function M.require(mod, func)
+  local present, module = pcall(require, mod)
+  if present and module then
+    func(mod)
+  end
+end
+
+function M.path_join(...)
+  return table.concat(vim.tbl_flatten({ ... }), "/")
+end
 
 function M.starts_with(str, start)
   return str:sub(1, #start) == start
@@ -33,13 +42,13 @@ function M.get_python_env(root)
     end
   end
   if env.VIRTUAL_ENV ~= nil then
-    env.PATH = lsputil.path.join(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
+    env.PATH = M.path_join(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
   end
   return env
 end
 
 function M.get_venv_with_poetry(root)
-  local poetry_lock = lsputil.path.join(root, "poetry.lock")
+  local poetry_lock = M.path_join(root, "poetry.lock")
   if vim.fn.filereadable(poetry_lock) == 1 then
     vim.defer_fn(function()
       vim.notify("found " .. poetry_lock)
@@ -49,7 +58,7 @@ function M.get_venv_with_poetry(root)
 end
 
 function M.get_venv_with_pipfile(root)
-  local pipfile = lsputil.path.join(root, "Pipfile")
+  local pipfile = M.path_join(root, "Pipfile")
   if vim.fn.filereadable(pipfile) == 1 then
     vim.defer_fn(function()
       vim.notify("found " .. pipfile)
@@ -59,8 +68,8 @@ function M.get_venv_with_pipfile(root)
 end
 
 function M.get_venv_with_project_dotvenv_dir(root)
-  local venvdir = lsputil.path.join(root, ".venv")
-  local python = lsputil.path.join(venvdir, "bin", "python")
+  local venvdir = M.path_join(root, ".venv")
+  local python = M.path_join(venvdir, "bin", "python")
   if vim.fn.filereadable(python) == 1 then
     vim.defer_fn(function()
       vim.notify("found " .. python)
@@ -72,7 +81,7 @@ end
 function M.find_venv_command(root, cmd)
   local python_env = require("sh.utils").get_python_env(root)
   if python_env.VIRTUAL_ENV ~= nil then
-    local cmdpath = lsputil.path.join(python_env.VIRTUAL_ENV, "bin", cmd)
+    local cmdpath = M.path_join(python_env.VIRTUAL_ENV, "bin", cmd)
     if vim.fn.filereadable(cmdpath) == 1 then
       return cmdpath
     end

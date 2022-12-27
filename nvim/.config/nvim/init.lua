@@ -1,7 +1,8 @@
-local present, impatient = pcall(require, "impatient")
-if present and impatient then
+local utils = require("sh.utils")
+
+utils.require("impatient", function(impatient)
   impatient.enable_profile()
-end
+end)
 
 local disabled_builtins = {
   "2html_plugin",
@@ -155,6 +156,17 @@ vim.opt.listchars = {
   space = " ",
 }
 
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.g.material_style = "deep ocean"
+vim.g.transparent_enabled = true
+vim.opt.laststatus = 3
+
+utils.require("material", function()
+  vim.cmd.colorscheme("material")
+end)
+
 require("sh.filetypes")
 require("sh.mappings")
-require("sh.packer")
+--require("sh.packer")
+require("sh.lazy")
