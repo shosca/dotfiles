@@ -1,5 +1,8 @@
 local utils = require("sh.utils")
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 utils.require("impatient", function(impatient)
   impatient.enable_profile()
 end)
@@ -29,10 +32,6 @@ local disabled_builtins = {
 for _, v in pairs(disabled_builtins) do
   vim.g["loaded_" .. v] = 1
 end
-vim.g.do_filetype_lua = 1
-
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 local backupdir = vim.fn.stdpath("cache") .. "/backup"
 local swapdir = vim.fn.stdpath("cache") .. "/swap"
@@ -53,6 +52,27 @@ vim.opt.backupdir = backupdir
 vim.opt.directory = swapdir
 vim.opt.undodir = undodir
 vim.opt.undofile = true
+
+vim.opt.autowrite = true
+vim.opt.clipboard = "unnamedplus"
+vim.opt.conceallevel = 3
+vim.opt.confirm = true
+vim.opt.cursorline = true
+vim.opt.backup = true
+
+vim.opt.formatoptions = vim.opt.formatoptions
+  - "a" -- Auto formatting is BAD.
+  - "t" -- Don't auto format my code. I got linters for that.
+  + "c" -- In general, I like it when comments respect textwidth
+  + "q" -- Allow formatting comments w/ gq
+  - "o" -- O and o, don't continue comments
+  + "r" -- But do continue when pressing enter.
+  + "n" -- Indent past the formatlistpat, not underneath it.
+  + "j" -- Auto-remove comments if possible.
+  - "2" -- I'm not in gradeschool anymore
+
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- Ignore compiled files
 vim.opt.wildmenu = true
@@ -108,8 +128,6 @@ vim.opt.modelines = 1
 
 vim.opt.belloff = "all" -- Just turn the dang bell off
 
-vim.opt.clipboard = "unnamedplus"
-
 vim.opt.inccommand = "split"
 vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 
@@ -122,27 +140,14 @@ vim.opt.diffopt = {
   "algorithm:minimal",
 }
 
--- Helpful related items:
---   1. :center, :left, :right
---   2. gw{motion} - Put cursor back after formatting motion.
---
--- TODO: w, {v, b, l}
-vim.opt.formatoptions = vim.opt.formatoptions
-  - "a" -- Auto formatting is BAD.
-  - "t" -- Don't auto format my code. I got linters for that.
-  + "c" -- In general, I like it when comments respect textwidth
-  + "q" -- Allow formatting comments w/ gq
-  - "o" -- O and o, don't continue comments
-  + "r" -- But do continue when pressing enter.
-  + "n" -- Indent past the formatlistpat, not underneath it.
-  + "j" -- Auto-remove comments if possible.
-  - "2" -- I'm not in gradeschool anymore
-
 -- set joinspaces
 vim.opt.joinspaces = false -- Two spaces and grade school, we're done
 
--- set fillchars=eob:~
-vim.opt.fillchars = { eob = "~" }
+vim.opt.fillchars = {
+  eob = "~",
+  foldopen = "",
+  foldclose = "",
+}
 
 -- invisible characters to use on ':set list'
 vim.opt.list = true
@@ -160,11 +165,72 @@ vim.opt.termguicolors = true
 vim.opt.background = "dark"
 vim.g.material_style = "deep ocean"
 vim.g.transparent_enabled = true
+vim.g.material_disable_background = true
 vim.opt.laststatus = 3
 
 utils.require("material", function()
   vim.cmd.colorscheme("material")
 end)
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd("FocusGained", { command = "checktime" })
+
+-- Highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", { callback = vim.highlight.on_yank })
+
+-- show cursor line only in active window
+vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+  callback = function()
+    local ok, cl = pcall(vim.api.nvim_win_get_var, 0, "auto-cursorline")
+    if ok and cl then
+      vim.wo.cursorline = true
+      vim.api.nvim_win_del_var(0, "auto-cursorline")
+    end
+  end,
+})
+vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+  callback = function()
+    local cl = vim.wo.cursorline
+    if cl then
+      vim.api.nvim_win_set_var(0, "auto-cursorline", cl)
+      vim.wo.cursorline = false
+    end
+  end,
+})
+
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd("BufReadPre", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "<buffer>",
+      once = true,
+      callback = function()
+        vim.cmd(
+          [[if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif]]
+        )
+      end,
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = {
+    "qf",
+    "help",
+    "man",
+    "notify",
+    "lspinfo",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+    "PlenaryTestPopup",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+  end,
+})
 
 require("sh.filetypes")
 require("sh.mappings")

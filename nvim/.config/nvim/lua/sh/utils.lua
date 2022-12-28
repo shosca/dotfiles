@@ -3,7 +3,7 @@ local M = { venvs = {} }
 function M.require(mod, func)
   local present, module = pcall(require, mod)
   if present and module then
-    func(mod)
+    func(module)
   end
 end
 

@@ -1,35 +1,65 @@
 local M = {
   {
-    "ThePrimeagen/git-worktree.nvim",
-    config = function()
-      local nmap = require("sh.keymap").nmap
-      nmap({
-        "<Leader>gw",
-        require("telescope").extensions.git_worktree.git_worktrees,
-      })
-      nmap({
-        "<Leader>gm",
-        require("telescope").extensions.git_worktree.create_git_worktree,
-      })
-    end,
-  },
-  {
-    "pwntester/octo.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "kyazdani42/nvim-web-devicons",
-    },
-    config = function()
-      require("octo").setup()
-    end,
-  },
-  {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-file-browser.nvim",
+    },
+    keys = {
+      {
+        "<Leader>ff",
+        function()
+          require("telescope.builtin").resume()
+        end,
+        silent = true,
+      },
+      {
+        "<Tab>",
+        function()
+          require("telescope.builtin").buffers({
+            shorten_path = false,
+            preview = false,
+          })
+        end,
+        silent = true,
+      },
+      {
+        "<Leader>fp",
+        function()
+          require("telescope.builtin").find_files()
+        end,
+        { silent = true },
+      },
+      {
+        "<Leader>ft",
+        function()
+          require("telescope.builtin").git_files()
+        end,
+        { silent = true },
+      },
+      {
+        "<Leader>fg",
+        function()
+          require("telescope.builtin").grep_string()
+        end,
+        { silent = true },
+      },
+      {
+        "<Leader>fd",
+        function()
+          require("telescope.builtin").fd()
+        end,
+        { silent = true },
+      },
+      {
+        "<Leader>fw",
+        function()
+          require("telescope.builtin").find_files({
+            cwd = vim.fn.stdpath("data") .. "/site/pack/packer/start/",
+          })
+        end,
+        { silent = true },
+      },
     },
     config = function()
       local actions = require("telescope.actions")
@@ -108,54 +138,6 @@ local M = {
           },
         },
       })
-
-      local nmap = require("sh.keymap").nmap
-      nmap({
-        "<Leader>ff",
-        require("telescope.builtin").resume,
-        { silent = true },
-      })
-      nmap({
-        "<Tab>",
-        function()
-          require("telescope.builtin").buffers({
-            shorten_path = false,
-            preview = false,
-          })
-        end,
-        { silent = true },
-      })
-      nmap({
-        "<Leader>fp",
-        require("telescope.builtin").find_files,
-        { silent = true },
-      })
-      nmap({
-        "<Leader>ft",
-        require("telescope.builtin").git_files,
-        { silent = true },
-      })
-      nmap({
-        "<Leader>fg",
-        require("telescope.builtin").grep_string,
-        { silent = true },
-      })
-      nmap({
-        "<Leader>fd",
-        function()
-          require("telescope.builtin").fd()
-        end,
-        { silent = true },
-      })
-      nmap({
-        "<Leader>fw",
-        function()
-          require("telescope.builtin").find_files({
-            cwd = vim.fn.stdpath("data") .. "/site/pack/packer/start/",
-          })
-        end,
-        { silent = true },
-      })
     end,
   },
   {
@@ -195,6 +177,13 @@ local M = {
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
       require("telescope").load_extension("fzy_native")
+    end,
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("file_browser")
     end,
   },
 }
