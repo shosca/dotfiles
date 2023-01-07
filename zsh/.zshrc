@@ -116,3 +116,4 @@ if [ -f "${HOME}/.ssh/environment-" ]; then
 	source ${HOME}/.ssh/environment-
 fi
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
+[ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"

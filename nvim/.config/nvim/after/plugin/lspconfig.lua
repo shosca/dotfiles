@@ -52,6 +52,7 @@ local servers = {
       clangdFileStatus = true,
     },
     handlers = lspstatus.extensions.clangd.setup(),
+    capabilities = vim.tbl_deep_extend("force", vim.deepcopy(lsp.capabilities), { offsetEncoding = { "utf-16" } }),
   },
   jedi_language_server = {
     on_new_config = function(new_config, root)

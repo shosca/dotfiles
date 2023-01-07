@@ -1,0 +1,23 @@
+# Usage: layout poetry
+#
+# Similar to layout_python, but uses poetry to build a
+# virtualenv from the pyproject.toml located in the same directory.
+#
+layout_poetry() {
+    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
+    if [ ! -f "$PYPROJECT_TOML" ]; then
+        log_status "No pyproject.toml found. Execute \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
+        return
+    fi
+
+    VIRTUAL_ENV=$(poetry env info -p)
+
+    if [ -z "$VIRTUAL_ENV" ] || [ ! -d "$VIRTUAL_ENV" ]; then
+        log_status "No virtual environment exists. Executing \`poetry install\` to create one."
+        poetry install
+    fi
+
+    PATH_add "$VIRTUAL_ENV/bin"
+    export PDM_ACTIVE=1
+    export VIRTUAL_ENV
+}

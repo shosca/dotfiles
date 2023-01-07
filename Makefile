@@ -42,6 +42,14 @@ clean-profile:
 	stow -D profile
 
 # }
+#
+direnv:  ## Sets up direnv {
+	stow -R direnv
+
+clean-direnv:
+	stow -D direnv
+
+# }
 
 starship:  ## Sets up starship {
 	stow -R starship
