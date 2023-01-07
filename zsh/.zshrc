@@ -1,8 +1,6 @@
 export DOTFILES="${HOME}/dotfiles"
 export DISABLE_MAGIC_FUNCTIONS=true
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
-export PEW_DEFAULT_REQUIREMENTS="${DOTFILES}/autoswitch_requires.txt"
-export DISABLE_PEW_AUTOACTIVATE="1"
 
 [ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
 
@@ -93,11 +91,6 @@ if ! zgenom saved; then
     zgenom load zsh-users/zsh-history-substring-search
     zgenom load zsh-users/zsh-syntax-highlighting
 
-    if [ -d "${HOME}/src/zsh-pew" ]; then
-      zgenom load $HOME/src/zsh-pew
-    else
-      zgenom load shosca/zsh-pew
-    fi
     zgenom compile ${HOME}/.zshrc
 fi
 
@@ -113,7 +106,7 @@ bindkey '^b' backward-word
 bindkey '^f' forward-word
 
 if [ -f "${HOME}/.ssh/environment-" ]; then
-	source ${HOME}/.ssh/environment-
+    source ${HOME}/.ssh/environment-
 fi
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
