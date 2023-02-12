@@ -52,6 +52,12 @@ setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
 REPORTTIME=2
 TIMEFMT="%U user %S system %P cpu %*Es total"
 
+# Speed up autocomplete, force prefix mapping
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+
 source_sh ${HOME}/.aliases
 alias resrc='source ~/.zshrc'
 
