@@ -6,11 +6,11 @@
 layout_poetry() {
     PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
     if [ ! -f "$PYPROJECT_TOML" ]; then
-        log_status "No pyproject.toml found. Execute \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
-        return
+        log_error "No pyproject.toml found. Execute \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
+        exit 2
     fi
 
-    VIRTUAL_ENV=$(poetry env info -p)
+    VIRTUAL_ENV="$(poetry env info --path 2>/dev/null ; true)"
 
     if [ -z "$VIRTUAL_ENV" ] || [ ! -d "$VIRTUAL_ENV" ]; then
         log_status "No virtual environment exists. Executing \`poetry install\` to create one."
@@ -18,6 +18,6 @@ layout_poetry() {
     fi
 
     PATH_add "$VIRTUAL_ENV/bin"
-    export PDM_ACTIVE=1
+    export POETRY_ACTIVE=1
     export VIRTUAL_ENV
 }

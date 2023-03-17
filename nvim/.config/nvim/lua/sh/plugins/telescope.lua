@@ -67,6 +67,9 @@ local M = {
 
       telescope.setup({
         defaults = {
+          preview = {
+            treesitter = false,
+          },
           vimgrep_arguments = {
             "rg",
             "--color=never",
