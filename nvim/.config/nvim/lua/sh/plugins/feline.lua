@@ -1,5 +1,5 @@
 return {
-  "feline-nvim/feline.nvim",
+  "freddiehaddad/feline.nvim",
   dependencies = { "marko-cerovac/material.nvim" },
   config = function()
     local colors = require("material.colors")
@@ -27,12 +27,10 @@ return {
       linux = " ",
       macos = " ",
       windows = " ",
-
       error = " ",
       warn = " ",
       info = " ",
       hint = " ",
-
       lsp = " ",
       git = "",
     }
@@ -112,7 +110,6 @@ return {
           end
           return icon .. os
         end,
-
         left_sep = " ",
         hl = { fg = colors.violet, style = "bold" },
       },
@@ -138,10 +135,10 @@ return {
 
     local gps = {
       provider = function()
-        return require("nvim-gps").get_location()
+        return require("nvim-navic").get_location()
       end,
       enabled = function()
-        return require("nvim-gps").is_available()
+        return require("nvim-navic").is_available()
       end,
       left_sep = " ",
       hl = { fg = colors.blue },
