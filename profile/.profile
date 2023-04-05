@@ -3,6 +3,9 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_LOCAL="${XDG_LOCAL:-$HOME/.local}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export XDG_RUNTIME_DIR="${HOME}/run"
+fi
 
 if [ -x "$(command -v keychain)" ]; then
     keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
@@ -44,6 +47,7 @@ fi
 
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
+export RADV_PERFTEST=gpl
 export MANGOHUD=1
 export MANGOHUD_DLSYM=1
 
