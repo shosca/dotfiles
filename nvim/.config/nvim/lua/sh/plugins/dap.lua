@@ -1,6 +1,6 @@
 return {
   "mfussenegger/nvim-dap",
-  dependencies = { "theHamsta/nvim-dap-virtual-text" },
+  dependencies = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap-python" },
   config = function()
     vim.fn.sign_define("DapBreakpoint", { text = "ß", texthl = "", linehl = "", numhl = "" })
     vim.fn.sign_define("DapBreakpointCondition", { text = "ü", texthl = "", linehl = "", numhl = "" })

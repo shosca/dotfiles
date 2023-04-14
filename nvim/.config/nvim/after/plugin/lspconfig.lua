@@ -132,7 +132,7 @@ local servers = {
   },
   html = {
     cmd = { "vscode-html-languageserver", "--stdio" },
-    filetypes = { "html", "htmldjango" },
+    filetypes = { "html" },
   },
   jdtls = {
     cmd = {
@@ -144,6 +144,9 @@ local servers = {
   },
   kotlin_language_server = {},
   tsserver = {
+    on_attach = function(client)
+      require("nvim-lsp-ts-utils").setup_client(client)
+    end,
     settings = {
       javascript = {
         inlayHints = {

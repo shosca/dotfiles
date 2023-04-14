@@ -125,6 +125,7 @@ vim.opt.foldlevel = 1
 vim.opt.foldlevelstart = 1
 vim.opt.foldenable = true
 vim.opt.modelines = 1
+vim.opt.exrc = true
 
 vim.opt.belloff = "all" -- Just turn the dang bell off
 
