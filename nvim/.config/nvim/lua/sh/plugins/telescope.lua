@@ -63,6 +63,7 @@ return {
   config = function()
     local actions = require("telescope.actions")
     local telescope = require("telescope")
+    local ui = require("sh.ui")
 
     telescope.setup({
       defaults = {
@@ -78,6 +79,7 @@ return {
           "--column",
           "--smart-case",
         },
+        borderchars = ui.borderchars,
         prompt_prefix = "   ",
         selection_caret = "  ",
         entry_prefix = "  ",

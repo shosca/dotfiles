@@ -1,3 +1,5 @@
+local utils = require("sh.utils")
+
 return {
   "SmiteshP/nvim-navic",
   config = function()
@@ -36,5 +38,10 @@ return {
       depth_limit_indicator = "..",
       safe_output = true,
     })
+    utils.lsp_attach(function(client, bufnr)
+      if client.server_capabilities.documentSymbolProvider then
+        require("nvim-navic").attach(client, bufnr)
+      end
+    end)
   end,
 }

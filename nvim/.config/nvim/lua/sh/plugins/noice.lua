@@ -4,8 +4,32 @@ return {
   "folke/noice.nvim",
   dependencies = {
     "MunifTanjim/nui.nvim",
-    "rcarriga/nvim-notify",
-    "stevearc/dressing.nvim",
+    {
+      "rcarriga/nvim-notify",
+      config = function()
+        local notify = require("notify")
+        notify.setup({
+          background_colour = "#000000",
+        })
+        utils.require("telescope", function(m)
+          m.load_extension("notify")
+        end)
+      end,
+    },
+    {
+      "stevearc/dressing.nvim",
+      lazy = true,
+      init = function()
+        vim.ui.select = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.select(...)
+        end
+        vim.ui.input = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.input(...)
+        end
+      end,
+    },
   },
   config = function()
     require("noice").setup({
@@ -26,12 +50,5 @@ return {
         lsp_doc_border = false, -- add a border to hover docs and signature help
       },
     })
-    local notify = require("notify")
-    notify.setup({
-      background_colour = "#000000",
-    })
-    utils.require("telescope", function(m)
-      m.load_extension("notify")
-    end)
   end,
 }
