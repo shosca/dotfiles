@@ -107,18 +107,16 @@ end)
 
 return {
   enable_wayland = true,
+  front_end = "WebGpu",
   window_frame = {
     active_titlebar_bg = background,
     active_titlebar_border_bottom = background,
     active_titlebar_fg = foreground,
-
     inactive_titlebar_bg = background,
     inactive_titlebar_border_bottom = background,
     inactive_titlebar_fg = black_bright,
-
     button_fg = foreground,
     button_bg = background,
-
     button_hover_fg = background,
     button_hover_bg = red,
   },
@@ -169,6 +167,7 @@ return {
       },
     },
   },
+  default_cursor_style = "BlinkingBar",
   xcursor_theme = "Adwaita",
   window_background_opacity = 0.925,
   warn_about_missing_glyphs = false,
@@ -179,6 +178,15 @@ return {
   -- font = wezterm.font("Lilex"),
   font = wezterm.font("Hasklig"),
   font_size = 10,
+  harfbuzz_features = {
+    "cv06=1",
+    "cv14=1",
+    "cv32=1",
+    "ss04=1",
+    "ss07=1",
+    "ss09=1",
+  },
+  freetype_load_target = "Light",
   -- enable_tab_bar = false,
   exit_behavior = "Close",
   -- default_prog = {"tmux"},

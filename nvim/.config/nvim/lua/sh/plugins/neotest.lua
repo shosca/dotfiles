@@ -22,7 +22,7 @@ return {
       nmap({
         "<leader>to",
         function()
-          require("neotest").output.open()
+          require("neotest").output_panel.toggle()
         end,
       })
     end,

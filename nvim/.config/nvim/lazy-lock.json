@@ -60,6 +60,7 @@
   "octo.nvim": { "branch": "master", "commit": "f37efab489a99b4a104e5ee18c73453d5e828b62" },
   "plenary.nvim": { "branch": "master", "commit": "9ac3e9541bbabd9d73663d757e4fe48a675bb054" },
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
+  "pretty_hover": { "branch": "master", "commit": "f136f5ddf7df3893817d90e4866e0250c378eace" },
   "schemastore.nvim": { "branch": "main", "commit": "a592fbe98959d13014b022ec1b1418498309019c" },
   "sg.nvim": { "branch": "master", "commit": "2748c52e9bef39702941d3171670810e9d2dcace" },
   "slimux": { "branch": "master", "commit": "7304b09740cf6a313b405ad42ac934e45502bfe6" },
