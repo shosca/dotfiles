@@ -1,25 +1,34 @@
 local wezterm = require("wezterm")
 
 local background = "#0f111a"
-local foreground = "#a9b1d6"
+local foreground = "#c0caf5"
+local cursor_bg = "#c0caf5"
+local cursor_border = "#c0caf5"
+local cursor_fg = "#1a1b26"
+local selection_bg = "#283457"
+local selection_fg = "#c0caf5"
 
 local black = background
 local red = "#f7768e"
 local green = "#9ece6a"
 local yellow = "#e0af68"
 local blue = "#7aa2f7"
-local magenta = "#ad8ee6"
-local cyan = "#449dab"
-local white = foreground
+local magenta = "#bb9af7"
+local cyan = "#7dcfff"
+local white = "#a9b1d6"
+
+-- ansi = { black,   white },
+-- ansi = [, "]
+-- brights = ["", ", "", "", "", "", "", ""]
 --
-local black_bright = "#444b6a"
-local red_bright = "#ff7a93"
-local green_bright = "#b9f27c"
-local yellow_bright = "#ff9e64"
-local blue_bright = "#7da6ff"
+local black_bright = "#414868"
+local red_bright = "#f7768e"
+local green_bright = "#9ece6a"
+local yellow_bright = "#e0af68"
+local blue_bright = "#7aa2f7"
 local magenta_bright = "#bb9af7"
-local cyan_bright = "#0db9d7"
-local white_bright = "#acb0d0"
+local cyan_bright = "#7dcfff"
+local white_bright = "#c0caf5"
 
 wezterm.on("update-right-status", function(window, pane)
   -- Each element holds the text for a cell in a "powerline" style << fade
@@ -135,11 +144,11 @@ return {
   colors = {
     foreground = foreground,
     background = background,
-    cursor_bg = "#ffcc00",
-    cursor_border = "#ffcc00",
-    cursor_fg = "#0f111a",
-    selection_bg = "#1f2233",
-    selection_fg = "#8f93a2",
+    cursor_bg = cursor_bg,
+    cursor_border = cursor_border,
+    cursor_fg = cursor_fg,
+    selection_bg = selection_bg,
+    selection_fg = selection_fg,
     ansi = { black, red, green, yellow, blue, magenta, cyan, white },
     brights = {
       black_bright,

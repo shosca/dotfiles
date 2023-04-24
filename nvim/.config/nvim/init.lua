@@ -1,11 +1,5 @@
-local utils = require("sh.utils")
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-
-utils.require("impatient", function(impatient)
-  impatient.enable_profile()
-end)
 
 local disabled_builtins = {
   "2html_plugin",
@@ -121,8 +115,9 @@ vim.opt.breakindent = true
 vim.opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
 vim.opt.linebreak = true
 
-vim.opt.foldlevel = 1
-vim.opt.foldlevelstart = 1
+vim.opt.foldcolumn = "1"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 vim.opt.modelines = 1
 vim.opt.exrc = true
@@ -168,10 +163,6 @@ vim.g.material_style = "deep ocean"
 vim.g.transparent_enabled = true
 vim.g.material_disable_background = true
 vim.opt.laststatus = 3
-
-utils.require("material", function()
-  vim.cmd.colorscheme("material")
-end)
 
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd("FocusGained", { command = "checktime" })
@@ -235,5 +226,4 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 require("sh.filetypes")
 require("sh.mappings")
---require("sh.packer")
 require("sh.lazy")

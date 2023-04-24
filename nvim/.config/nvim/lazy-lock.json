@@ -55,12 +55,14 @@
   "nvim-treesitter-endwise": { "branch": "master", "commit": "0cf4601c330cf724769a2394df555a57d5fd3f34" },
   "nvim-treesitter-refactor": { "branch": "master", "commit": "65ad2eca822dfaec2a3603119ec3cc8826a7859e" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "8673926519ea61069f9c1366d1ad1949316d250e" },
+  "nvim-ufo": { "branch": "main", "commit": "9e829d5cfa3de6a2ff561d86399772b0339ae49d" },
   "nvim-web-devicons": { "branch": "master", "commit": "4ec26d67d419c12a4abaea02f1b6c57b40c08d7e" },
   "nvim-yati": { "branch": "main", "commit": "c4307e6855f17ff89f0132787e2daba27495d254" },
   "octo.nvim": { "branch": "master", "commit": "f37efab489a99b4a104e5ee18c73453d5e828b62" },
   "plenary.nvim": { "branch": "master", "commit": "9ac3e9541bbabd9d73663d757e4fe48a675bb054" },
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
   "pretty_hover": { "branch": "master", "commit": "f136f5ddf7df3893817d90e4866e0250c378eace" },
+  "promise-async": { "branch": "main", "commit": "e94f35161b8c5d4a4ca3b6ff93dd073eb9214c0e" },
   "schemastore.nvim": { "branch": "main", "commit": "a592fbe98959d13014b022ec1b1418498309019c" },
   "sg.nvim": { "branch": "master", "commit": "2748c52e9bef39702941d3171670810e9d2dcace" },
   "slimux": { "branch": "master", "commit": "7304b09740cf6a313b405ad42ac934e45502bfe6" },
@@ -74,5 +76,6 @@
   "telescope-symbols.nvim": { "branch": "master", "commit": "f2060117d965df4a626f068a4ebbd8ee051aa076" },
   "telescope.nvim": { "branch": "master", "commit": "6258d50b09f9ae087317e392efe7c05a7323492d" },
   "todo-comments.nvim": { "branch": "main", "commit": "8febc60a76feefd8203077ef78b6a262ea1a41f9" },
+  "tokyonight.nvim": { "branch": "main", "commit": "ab0ac67f4f32f44c3480f4b81ed90e11cb4f3763" },
   "windows.nvim": { "branch": "main", "commit": "c7492552b23d0ab30325e90b56066ec51242adc8" }
 }
