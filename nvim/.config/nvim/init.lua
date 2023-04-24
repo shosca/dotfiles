@@ -159,9 +159,6 @@ vim.opt.listchars = {
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.g.material_style = "deep ocean"
-vim.g.transparent_enabled = true
-vim.g.material_disable_background = true
 vim.opt.laststatus = 3
 
 -- Check if we need to reload the file when it changed
