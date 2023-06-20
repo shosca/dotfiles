@@ -20,6 +20,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
     if not require("cmp").visible() then
       local hover_fixed = function()
+        local h_util = require("pretty_hover.util")
+        local client = h_util.get_current_active_clent()
+        if not client then
+          return
+        end
         vim.api.nvim_command("set eventignore=CursorHold")
         vim.api.nvim_command("autocmd CursorMoved ++once set eventignore=\" \" ")
         require("pretty_hover").hover()

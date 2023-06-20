@@ -15,7 +15,7 @@ local M = {
         highlight = {
           enable = true,
           use_languagetree = true,
-          disable = {}, -- list of language that will be disabled
+          disable = { "" }, -- list of language that will be disabled
         },
         rainbow = { enable = true, extended_mode = true },
         incremental_selection = {

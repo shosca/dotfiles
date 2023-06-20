@@ -1,3 +1,4 @@
+.envrc
 .nvim.lua
 .nvimrc
 .exrc.lua

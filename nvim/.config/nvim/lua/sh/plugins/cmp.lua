@@ -12,7 +12,6 @@ return {
     { "tamago324/cmp-zsh" },
     { "lukas-reineke/cmp-under-comparator" },
     { "lukas-reineke/cmp-rg" },
-    { "octaltree/cmp-look" },
     { "onsails/lspkind-nvim" },
   },
   config = function()
@@ -109,6 +108,7 @@ return {
         { name = "nvim_lua" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
+        { name = "copilot" },
         { name = "path" },
         { name = "buffer", keyword_length = 5, max_item_count = 5 },
         {

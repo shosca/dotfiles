@@ -31,7 +31,7 @@ local servers = {
       },
     },
   },
-  eslint = {},
+  zls = {},
   clangd = {
     cmd = {
       "clangd",
@@ -47,41 +47,41 @@ local servers = {
     handlers = lspstatus.extensions.clangd.setup(),
     capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
   },
-  jedi_language_server = {
-    on_new_config = function(new_config, root)
-      local u = require("sh.utils")
-      new_config.cmd_env = u.get_python_env(root)
-      return true
-    end,
-  },
-  -- pylsp = {
+  -- jedi_language_server = {
   --   on_new_config = function(new_config, root)
   --     local u = require("sh.utils")
-  --     new_config.cmd = {
-  --       u.find_venv_command(root, "pylsp"),
-  --       "-v",
-  --       "--log-file",
-  --       vim.fn.stdpath("state") .. "/pylsp.log",
-  --     }
   --     new_config.cmd_env = u.get_python_env(root)
   --     return true
   --   end,
-  --   settings = {
-  --     pylsp = {
-  --       plugins = {
-  --         flake8 = { enabled = false },
-  --         mccabe = { enabled = false },
-  --         pyflakes = { enabled = false },
-  --         pycodestyle = { enabled = false },
-  --         jedi_completion = { include_params = true, fuzzy = true },
-  --         pylsp_black = { enabled = false },
-  --         pylsp_mypy = { enabled = false, dmypy = true },
-  --         rope_completion = { enabled = true },
-  --         rope_rename = { enabled = true },
-  --       },
-  --     },
-  --   },
   -- },
+  pylsp = {
+    on_new_config = function(new_config, root)
+      local u = require("sh.utils")
+      new_config.cmd = {
+        u.find_venv_command(root, "pylsp"),
+        "-v",
+        "--log-file",
+        vim.fn.stdpath("state") .. "/pylsp.log",
+      }
+      new_config.cmd_env = u.get_python_env(root)
+      return true
+    end,
+    --  settings = {
+    --     pylsp = {
+    --       plugins = {
+    --         flake8 = { enabled = false },
+    --         mccabe = { enabled = false },
+    --         pyflakes = { enabled = false },
+    --         pycodestyle = { enabled = false },
+    --         jedi_completion = { include_params = true, fuzzy = true },
+    --         pylsp_black = { enabled = false },
+    --         pylsp_mypy = { enabled = false, dmypy = true },
+    --         rope_completion = { enabled = true },
+    --         rope_rename = { enabled = true },
+    --       },
+    --     },
+    --   },
+  },
   sourcery = {
     on_new_config = function(new_config, root)
       require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
@@ -189,37 +189,38 @@ local servers = {
       },
     },
   },
-  yamlls = {
-    settings = {
-      yaml = {
-        hover = true,
-        completion = true,
-        validate = true,
-        customTags = {
-          "!Base64",
-          "!Cidr",
-          "!FindInMap sequence",
-          "!GetAtt",
-          "!GetAZs",
-          "!ImportValue",
-          "!Join sequence",
-          "!Ref",
-          "!Select sequence",
-          "!Split sequence",
-          "!Sub sequence",
-          "!Sub",
-          "!And sequence",
-          "!Condition",
-          "!Equals sequence",
-          "!If sequence",
-          "!Not sequence",
-          "!Or sequence",
-        },
-        editor = { formatOnType = true },
-        schemas = yaml_schemas,
-      },
-    },
-  },
+  -- yamlls = {
+  --   capabilities = {},
+  --   settings = {
+  --     yaml = {
+  --       hover = true,
+  --       completion = true,
+  --       validate = true,
+  --       customTags = {
+  --         "!Base64",
+  --         "!Cidr",
+  --         "!FindInMap sequence",
+  --         "!GetAtt",
+  --         "!GetAZs",
+  --         "!ImportValue",
+  --         "!Join sequence",
+  --         "!Ref",
+  --         "!Select sequence",
+  --         "!Split sequence",
+  --         "!Sub sequence",
+  --         "!Sub",
+  --         "!And sequence",
+  --         "!Condition",
+  --         "!Equals sequence",
+  --         "!If sequence",
+  --         "!Not sequence",
+  --         "!Or sequence",
+  --       },
+  --       editor = { formatOnType = true },
+  --       schemas = yaml_schemas,
+  --     },
+  --   },
+  -- },
   bashls = {},
 }
 

@@ -1,7 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
-    "nvim-lua/popup.nvim",
     "nvim-lua/plenary.nvim",
   },
   keys = {
@@ -63,7 +62,6 @@ return {
   config = function()
     local actions = require("telescope.actions")
     local telescope = require("telescope")
-    local ui = require("sh.ui")
 
     telescope.setup({
       defaults = {
@@ -79,7 +77,6 @@ return {
           "--column",
           "--smart-case",
         },
-        borderchars = ui.borderchars,
         prompt_prefix = "   ",
         selection_caret = "  ",
         entry_prefix = "  ",
@@ -112,6 +109,11 @@ return {
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
         buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+        pickers = {
+          buffers = {
+            sort_lastused = true,
+          },
+        },
         mappings = {
           i = {
             ["<Tab>"] = actions.move_selection_next,

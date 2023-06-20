@@ -5,8 +5,9 @@ vim.diagnostic.config({
   virtual_text = false,
   signs = true,
   severity_sort = true,
-  update_in_insert = false,
+  update_in_insert = true,
   float = {
+    style = "minimal",
     show_header = true,
     border = ui.borders,
     focusable = false,

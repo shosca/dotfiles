@@ -10,5 +10,6 @@ return {
     vim.keymap.set("n", "zM", ufo.closeAllFolds)
     vim.keymap.set("n", "zr", ufo.openFoldsExceptKinds)
     vim.keymap.set("n", "zm", ufo.closeFoldsWith)
+    vim.keymap.set("n", "zp", ufo.peekFoldedLinesUnderCursor)
   end,
 }

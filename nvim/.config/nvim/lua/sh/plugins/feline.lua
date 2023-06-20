@@ -184,7 +184,7 @@ return {
         active = {
           {
             vi_mode.left,
-            gps,
+            -- gps,
             diagnos.err,
             diagnos.warn,
             diagnos.hint,

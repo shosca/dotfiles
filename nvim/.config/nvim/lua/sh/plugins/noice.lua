@@ -7,8 +7,7 @@ return {
     {
       "rcarriga/nvim-notify",
       config = function()
-        local notify = require("notify")
-        notify.setup({
+        require("notify").setup({
           background_colour = "#000000",
         })
         utils.require("telescope", function(m)
@@ -34,6 +33,9 @@ return {
   config = function()
     require("noice").setup({
       lsp = {
+        hover = {
+          silent = true,
+        },
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -50,5 +52,8 @@ return {
         lsp_doc_border = false, -- add a border to hover docs and signature help
       },
     })
+    utils.require("telescope", function(m)
+      m.load_extension("noice")
+    end)
   end,
 }

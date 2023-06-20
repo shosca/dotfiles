@@ -4,6 +4,9 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 [ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
 
+mkdir -p ~/.zfunc
+fpath+=~/.zfunc
+
 source_sh() {
   emulate -LR sh
   . "$@"
@@ -12,11 +15,6 @@ source_sh() {
 
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
-
-mkdir -p ~/.zfunc
-fpath+=~/.zfunc
-[ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
-[ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 
 # For ZSH users, uncomment the following two lines:
 setopt append_history
@@ -114,5 +112,7 @@ bindkey '^f' forward-word
 if [ -f "${HOME}/.ssh/environment-" ]; then
     source ${HOME}/.ssh/environment-
 fi
+[ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
+[ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
