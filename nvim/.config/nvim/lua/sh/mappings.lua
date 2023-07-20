@@ -1,9 +1,3 @@
-local nmap = require("sh.keymap").nmap
-local imap = require("sh.keymap").nmap
-local vmap = require("sh.keymap").vmap
-local cmap = require("sh.keymap").cmap
-local xmap = require("sh.keymap").xmap
-
 -- common typos
 vim.cmd([[
 cnoreabbrev W! w!
@@ -20,50 +14,44 @@ cnoreabbrev Qa qa
 cnoreabbrev Qall qall
 ]])
 
-nmap({ "*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", { silent = true } })
+vim.keymap.set("n", "*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", { silent = true })
 
-nmap({ "Y", "yg$" })
-nmap({ "n", "nzzzv" })
-nmap({ "N", "Nzzzv" })
-nmap({ "J", "mzJ`z" })
+vim.keymap.set("n", "Y", "yg$")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "J", "mzJ`z")
 -- Switch history search pairs, matching my bash shell
 for _, c in ipairs({ ".", "_", ",", "!", "?" }) do
-  imap({ c, string.format("%s<c-g>u", c) })
+  vim.keymap.set("i", c, string.format("%s<c-g>u", c))
 end
-vmap({ "J", ":m '>+1<CR>gv=gv" })
-vmap({ "K", ":m '<-2<CR>gv=gv" })
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-cmap({ "<C-p>", "<Up>" })
-cmap({ "<C-n>", "<Down>" })
-cmap({ "<Up>", "<C-p>" })
-cmap({ "<Down>", "<C-n>" })
-
--- buffers {
--- nmap({ "<Tab>", ":bnext<CR>" })
--- nmap({ "<S-Tab>", ":bprevious<CR>" })
+vim.keymap.set("c", "<C-p>", "<Up>")
+vim.keymap.set("c", "<C-n>", "<Down>")
+vim.keymap.set("c", "<Up>", "<C-p>")
+vim.keymap.set("c", "<Down>", "<C-n>")
 
 -- split management {
-nmap({ "sj", "<C-W>w<CR>" })
-nmap({ "sk", "<C-W>W<CR>" })
-nmap({ "ss", ":split<Space>" })
-nmap({ "sv", ":vsplit<Space>" })
+vim.keymap.set("n", "sj", "<C-W>w<CR>")
+vim.keymap.set("n", "sk", "<C-W>W<CR>")
+vim.keymap.set("n", "ss", ":split<Space>")
+vim.keymap.set("n", "sv", ":vsplit<Space>")
 
 -- arrow key resize
-nmap({ "<Up>", ":resize +2<CR>" })
-nmap({ "<Down>", ":resize -2<CR>" })
-nmap({ "<Left>", ":vertical resize +2<CR>" })
-nmap({ "<Right>", ":vertical resize -2<CR>" })
+vim.keymap.set("n", "<Up>", ":resize +2<CR>")
+vim.keymap.set("n", "<Down>", ":resize -2<CR>")
+vim.keymap.set("n", "<Left>", ":vertical resize +2<CR>")
+vim.keymap.set("n", "<Right>", ":vertical resize -2<CR>")
 
 -- Easier horizontal scrolling
-nmap({ "zl", "zL" })
-nmap({ "zh", "zH" })
+vim.keymap.set("n", "zl", "zL")
+vim.keymap.set("n", "zh", "zH")
 
 -- Select blocks after indenting
-xmap({ "<", "<gv" })
-xmap({ ">", ">gv|" })
+vim.keymap.set("x", "<", "<gv")
+vim.keymap.set("x", ">", ">gv|")
 
 -- Use tab for indenting in visual mode
-vmap({ "<Tab>", ">gv|" })
-vmap({ "<S-Tab>", "<gv" })
--- nnoremap('>', '>>_')
--- nnoremap('<', '<<_')
+vim.keymap.set("v", "<Tab>", ">gv|")
+vim.keymap.set("v", "<S-Tab>", "<gv")

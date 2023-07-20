@@ -2,6 +2,7 @@ local lspconfig = require("lspconfig")
 local secrets = require("sh.secrets")
 local lspstatus = require("lsp-status")
 local json_schemas = require("schemastore").json.schemas({})
+
 local yaml_schemas = {}
 vim.tbl_map(function(schema)
   yaml_schemas[schema.url] = schema.fileMatch
@@ -66,21 +67,23 @@ local servers = {
       new_config.cmd_env = u.get_python_env(root)
       return true
     end,
-    --  settings = {
-    --     pylsp = {
-    --       plugins = {
-    --         flake8 = { enabled = false },
-    --         mccabe = { enabled = false },
-    --         pyflakes = { enabled = false },
-    --         pycodestyle = { enabled = false },
-    --         jedi_completion = { include_params = true, fuzzy = true },
-    --         pylsp_black = { enabled = false },
-    --         pylsp_mypy = { enabled = false, dmypy = true },
-    --         rope_completion = { enabled = true },
-    --         rope_rename = { enabled = true },
-    --       },
-    --     },
-    --   },
+    settings = {
+      pylsp = {
+        plugins = {
+          flake8 = {
+            enabled = false,
+          },
+          black = {
+            enabled = false,
+          },
+          pylsp_mypy = {
+            enabled = false,
+            live_mode = true,
+            dmypy = false,
+          },
+        },
+      },
+    },
   },
   sourcery = {
     on_new_config = function(new_config, root)
@@ -143,35 +146,35 @@ local servers = {
     },
   },
   kotlin_language_server = {},
-  tsserver = {
-    on_attach = function(client)
-      require("nvim-lsp-ts-utils").setup_client(client)
-    end,
-    settings = {
-      javascript = {
-        inlayHints = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-      },
-      typescript = {
-        inlayHints = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-      },
-    },
-  },
+  -- tsserver = {
+  --   -- on_attach = function(client)
+  --   --   require("nvim-lsp-ts-utils").setup_client(client)
+  --   -- end,
+  --   settings = {
+  --     javascript = {
+  --       inlayHints = {
+  --         includeInlayEnumMemberValueHints = true,
+  --         includeInlayFunctionLikeReturnTypeHints = true,
+  --         includeInlayFunctionParameterTypeHints = true,
+  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+  --         includeInlayPropertyDeclarationTypeHints = true,
+  --         includeInlayVariableTypeHints = true,
+  --       },
+  --     },
+  --     typescript = {
+  --       inlayHints = {
+  --         includeInlayEnumMemberValueHints = true,
+  --         includeInlayFunctionLikeReturnTypeHints = true,
+  --         includeInlayFunctionParameterTypeHints = true,
+  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+  --         includeInlayPropertyDeclarationTypeHints = true,
+  --         includeInlayVariableTypeHints = true,
+  --       },
+  --     },
+  --   },
+  -- },
   jsonls = {
     cmd = { "vscode-json-languageserver", "--stdio" },
     commands = {
@@ -189,38 +192,38 @@ local servers = {
       },
     },
   },
-  -- yamlls = {
-  --   capabilities = {},
-  --   settings = {
-  --     yaml = {
-  --       hover = true,
-  --       completion = true,
-  --       validate = true,
-  --       customTags = {
-  --         "!Base64",
-  --         "!Cidr",
-  --         "!FindInMap sequence",
-  --         "!GetAtt",
-  --         "!GetAZs",
-  --         "!ImportValue",
-  --         "!Join sequence",
-  --         "!Ref",
-  --         "!Select sequence",
-  --         "!Split sequence",
-  --         "!Sub sequence",
-  --         "!Sub",
-  --         "!And sequence",
-  --         "!Condition",
-  --         "!Equals sequence",
-  --         "!If sequence",
-  --         "!Not sequence",
-  --         "!Or sequence",
-  --       },
-  --       editor = { formatOnType = true },
-  --       schemas = yaml_schemas,
-  --     },
-  --   },
-  -- },
+  yamlls = {
+    capabilities = {},
+    settings = {
+      yaml = {
+        hover = true,
+        completion = true,
+        validate = true,
+        customTags = {
+          "!Base64",
+          "!Cidr",
+          "!FindInMap sequence",
+          "!GetAtt",
+          "!GetAZs",
+          "!ImportValue",
+          "!Join sequence",
+          "!Ref",
+          "!Select sequence",
+          "!Split sequence",
+          "!Sub sequence",
+          "!Sub",
+          "!And sequence",
+          "!Condition",
+          "!Equals sequence",
+          "!If sequence",
+          "!Not sequence",
+          "!Or sequence",
+        },
+        editor = { formatOnType = true },
+        schemas = yaml_schemas,
+      },
+    },
+  },
   bashls = {},
 }
 

@@ -13,6 +13,9 @@ return {
         nullls.builtins.code_actions.gitsigns,
         nullls.builtins.code_actions.refactoring,
 
+        nullls.builtins.formatting.terraform_fmt.with({
+          filetypes = { "hcl", "terraform" },
+        }),
         nullls.builtins.formatting.stylua,
         nullls.builtins.formatting.shfmt.with({
           extra_args = {
@@ -23,22 +26,15 @@ return {
             "-bn", -- binary ops like && or | (pipe) start the line
           },
         }),
+        nullls.builtins.formatting.black,
 
-        nullls.builtins.diagnostics.buf,
-        nullls.builtins.diagnostics.eslint,
-        nullls.builtins.diagnostics.flake8.with({
-          dynamic_command = function(params)
-            return require("sh.utils").find_venv_command(params.root, params.command)
-          end,
-        }),
-        nullls.builtins.formatting.black.with({
-          dynamic_command = function(params)
-            return require("sh.utils").find_venv_command(params.root, params.command)
-          end,
-        }),
-        nullls.builtins.formatting.terraform_fmt.with({
-          filetypes = { "hcl", "terraform" },
-        }),
+        -- nullls.builtins.diagnostics.buf,
+        -- nullls.builtins.diagnostics.eslint,
+        -- nullls.builtins.diagnostics.flake8.with({
+        --   dynamic_command = function(params)
+        --     return require("sh.utils").find_venv_command(params.root, params.command)
+        --   end,
+        -- }),
       },
     })
   end,

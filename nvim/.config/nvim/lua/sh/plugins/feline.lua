@@ -1,8 +1,8 @@
 return {
   "freddiehaddad/feline.nvim",
-  dependencies = { "marko-cerovac/material.nvim" },
+  dependencies = { "folke/tokyonight.nvim" },
   config = function()
-    local colors = require("material.colors")
+    local colors = require("tokyonight.colors").setup()
     local lsp = require("feline.providers.lsp")
     local vi_mode_utils = require("feline.providers.vi_mode")
 
@@ -131,17 +131,6 @@ return {
       left_sep = " ",
       icon = icons.lsp,
       hl = { fg = colors.yellow },
-    }
-
-    local gps = {
-      provider = function()
-        return require("nvim-navic").get_location()
-      end,
-      enabled = function()
-        return require("nvim-navic").is_available()
-      end,
-      left_sep = " ",
-      hl = { fg = colors.blue },
     }
 
     local git = {
