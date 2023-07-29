@@ -8,12 +8,28 @@ return {
       "rcarriga/nvim-notify",
       config = function()
         require("notify").setup({
+          timeout = 3000,
           background_colour = "#000000",
+          max_height = function()
+            return math.floor(vim.o.lines * 0.75)
+          end,
+          max_width = function()
+            return math.floor(vim.o.columns * 0.75)
+          end,
         })
         utils.require("telescope", function(m)
           m.load_extension("notify")
         end)
       end,
+      keys = {
+        {
+          "<leader>un",
+          function()
+            require("notify").dismiss({ silent = true, pending = true })
+          end,
+          desc = "Dismiss all Notifications",
+        },
+      },
     },
     {
       "stevearc/dressing.nvim",
@@ -43,13 +59,25 @@ return {
           ["cmp.entry.get_documentation"] = true,
         },
       },
-      -- you can enable a preset for easier configuration
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
+          },
+          view = "mini",
+        },
+      },
       presets = {
-        bottom_search = true, -- use a classic bottom cmdline for search
-        command_palette = true, -- position the cmdline and popupmenu together
-        long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
       },
     })
     utils.require("telescope", function(m)

@@ -161,6 +161,8 @@ vim.opt.termguicolors = true
 vim.opt.background = "dark"
 vim.opt.laststatus = 3
 
+vim.g.python3_host_prog = "/usr/bin/python3"
+
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd("FocusGained", { command = "checktime" })
 

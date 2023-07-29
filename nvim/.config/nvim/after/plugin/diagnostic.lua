@@ -17,23 +17,8 @@ vim.diagnostic.config({
 --   pattern = "*",
 --   callback = vim.diagnostic.open_float,
 -- })
-vim.fn.sign_define("DiagnosticSignError", {
-  texthl = "DiagnosticSignError",
-  text = "",
-  numhl = "DiagnosticSignError",
-})
-vim.fn.sign_define("DiagnosticSignWarn", {
-  texthl = "DiagnosticSignWarn",
-  text = "",
-  numhl = "DiagnosticSignWarn",
-})
-vim.fn.sign_define("DiagnosticSignHint", {
-  texthl = "DiagnosticSignHint",
-  text = "",
-  numhl = "DiagnosticSignHint",
-})
-vim.fn.sign_define("DiagnosticSignInfo", {
-  texthl = "DiagnosticSignInfo",
-  text = "",
-  numhl = "DiagnosticSignInfo",
-})
+
+for name, icon in pairs(require("sh.ui").diagnostics) do
+  name = "DiagnosticSign" .. name
+  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+end

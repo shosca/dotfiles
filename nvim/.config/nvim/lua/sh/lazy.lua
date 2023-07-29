@@ -13,18 +13,6 @@ vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup("sh.plugins", {
   ui = {
-    icons = {
-      cmd = "⌘",
-      config = "🛠",
-      event = "📅",
-      ft = "📂",
-      init = "⚙",
-      keys = "🗝",
-      plugin = "🔌",
-      runtime = "💻",
-      source = "📄",
-      start = "🚀",
-      task = "📌",
-    },
+    icons = require("sh.ui").icons,
   },
 })
