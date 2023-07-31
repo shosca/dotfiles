@@ -116,7 +116,7 @@ end)
 
 return {
   enable_wayland = true,
-  front_end = "WebGpu",
+  --front_end = "WebGpu",
   window_frame = {
     active_titlebar_bg = background,
     active_titlebar_border_bottom = background,

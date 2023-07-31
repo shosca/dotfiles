@@ -1,3 +1,4 @@
+local utils = require("sh.utils")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -27,18 +28,20 @@ for _, v in pairs(disabled_builtins) do
   vim.g["loaded_" .. v] = 1
 end
 
-local backupdir = vim.fn.stdpath("cache") .. "/backup"
-local swapdir = vim.fn.stdpath("cache") .. "/swap"
-local undodir = vim.fn.stdpath("cache") .. "/undo"
-local shadadir = vim.fn.stdpath("data") .. "/shada"
+local backupdir = utils.path_join(vim.fn.stdpath("cache"), "backup")
+local swapdir = utils.path_join(vim.fn.stdpath("cache"), "swap")
+local undodir = utils.path_join(vim.fn.stdpath("cache"), "undo")
+local shadadir = utils.path_join(vim.fn.stdpath("data"), "shada")
+local viewdir = utils.path_join(vim.fn.stdpath("state"), "view")
 
 vim.fn.mkdir(backupdir, "p")
 vim.fn.mkdir(swapdir, "p")
 vim.fn.mkdir(undodir, "p")
 vim.fn.mkdir(shadadir, "p")
+vim.fn.mkdir(viewdir, "p")
 
 vim.schedule(function()
-  vim.opt.shadafile = shadadir .. "/shada/main.shada"
+  vim.opt.shadafile = utils.path_join(shadadir, "shada", "main.shada")
   vim.cmd([[ silent! rsh ]])
 end)
 
@@ -46,6 +49,7 @@ vim.opt.backupdir = backupdir
 vim.opt.directory = swapdir
 vim.opt.undodir = undodir
 vim.opt.undofile = true
+vim.opt.viewdir = viewdir
 
 vim.opt.autowrite = true
 vim.opt.clipboard = "unnamedplus"

@@ -1,4 +1,6 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local utils = require("sh.utils")
+
+local lazypath = utils.path_join(vim.fn.stdpath("data"), "lazy", "lazy.nvim")
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
