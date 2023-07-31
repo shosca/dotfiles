@@ -94,7 +94,7 @@ wezterm.on("update-right-status", function(window, pane)
   local num_cells = 0
 
   -- Translate a cell into elements
-  function push(text, is_last)
+  local function _push(text, is_last)
     local cell_no = num_cells + 1
     table.insert(elements, { Foreground = { Color = text_fg } })
     table.insert(elements, { Background = { Color = colors[cell_no] } })
@@ -108,7 +108,7 @@ wezterm.on("update-right-status", function(window, pane)
 
   while #cells > 0 do
     local cell = table.remove(cells, 1)
-    push(cell, #cells == 0)
+    _push(cell, #cells == 0)
   end
 
   window:set_right_status(wezterm.format(elements))
@@ -116,7 +116,7 @@ end)
 
 return {
   enable_wayland = true,
-  -- front_end = "WebGpu",
+  front_end = "WebGpu",
   window_frame = {
     active_titlebar_bg = background,
     active_titlebar_border_bottom = background,
