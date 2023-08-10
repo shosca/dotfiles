@@ -49,6 +49,7 @@ local tools = {
     lintFormats = {
       "%f:%l:%c: %m",
     },
+    lintDebounce = "1s",
   },
   mypy = {
     lintCommand = table.concat({
@@ -63,6 +64,7 @@ local tools = {
       "%f:%l:%c: %tarning: %m",
       "%f:%l:%c: %tote: %m",
     },
+    lintDebounce = "1s",
   },
   hadolint = {
     lintCommand = "hadolint --no-color -",
@@ -71,36 +73,36 @@ local tools = {
   },
 }
 return {
-  -- lua = {
-  --   tools.luacheck,
-  -- },
-  -- sh = {
-  --   tools.shfmt,
-  -- },
-  -- terraform = {
-  --   tools.terraform_fmt,
-  -- },
-  -- hcl = {
-  --   tools.terraform_fmt,
-  -- },
-  -- python = {
-  --   tools.black,
-  --   tools.flake8,
-  --   tools.mypy,
-  -- },
-  -- dockerfile = {
-  --   tools.hadolint,
-  -- },
-  -- javascript = {
-  --   tools.prettierd,
-  -- },
-  -- javascriptreact = {
-  --   tools.prettierd,
-  -- },
-  -- typescript = {
-  --   tools.prettierd,
-  -- },
-  -- typescriptreact = {
-  --   tools.prettierd,
-  -- },
+  lua = {
+    tools.luacheck,
+  },
+  sh = {
+    tools.shfmt,
+  },
+  terraform = {
+    tools.terraform_fmt,
+  },
+  hcl = {
+    tools.terraform_fmt,
+  },
+  python = {
+    tools.black,
+    tools.flake8,
+    tools.mypy,
+  },
+  dockerfile = {
+    tools.hadolint,
+  },
+  javascript = {
+    tools.prettierd,
+  },
+  javascriptreact = {
+    tools.prettierd,
+  },
+  typescript = {
+    tools.prettierd,
+  },
+  typescriptreact = {
+    tools.prettierd,
+  },
 }

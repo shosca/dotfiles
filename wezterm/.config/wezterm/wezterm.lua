@@ -137,6 +137,7 @@ return {
   },
   window_decorations = "TITLE | RESIZE",
   hide_tab_bar_if_only_one_tab = false,
+  enable_scroll_bar = false,
   use_fancy_tab_bar = false,
   tab_bar_at_bottom = true,
   animation_fps = 1,

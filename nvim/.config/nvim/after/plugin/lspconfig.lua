@@ -19,12 +19,22 @@ if ok then
   caps = cmp_nvim_lsp.default_capabilities(caps)
 end
 
+require("lspconfig.configs").ast_grep = {
+  default_config = {
+    cmd = { "asg", "lsp" },
+    filetypes = { "go", "rust", "python", "typescript", "javascript", "typescriptreact", "javascriptreact" },
+    single_file_support = true,
+    root_dir = require("lspconfig.util").root_pattern(".git", "sgconfig.yml"),
+  },
+}
+
 local servers = {
+  ast_grep = {},
   lua_ls = {
     settings = {
       Lua = {
-        hint = {
-          enable = true,
+        workspace = {
+          checkThirdParty = false,
         },
         completion = {
           callSnippet = "Replace",
@@ -226,7 +236,6 @@ local servers = {
   },
   bashls = {},
   efm = {
-    cmd = { "efm-langserver", "-loglevel", "0", "-logfile", vim.fn.stdpath("state") .. "/efm.log" },
     init_options = { documentFormatting = true },
     settings = {
       rootMarkers = { ".git/" },

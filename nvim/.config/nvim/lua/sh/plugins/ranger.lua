@@ -1,12 +1,13 @@
 return {
   "kelly-lin/ranger.nvim",
-  config = function()
-    require("ranger-nvim").setup({ replace_netrw = true })
-    vim.api.nvim_set_keymap("n", "<leader>ef", "", {
-      noremap = true,
-      callback = function()
+  opts = { replace_netrw = true },
+  keys = {
+    {
+      "<leader>ef",
+      function()
         require("ranger-nvim").open(true)
       end,
-    })
-  end,
+      desc = "Open ranger",
+    },
+  },
 }

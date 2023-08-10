@@ -3,13 +3,42 @@ return {
   dependencies = {
     { "kevinhwang91/promise-async" },
   },
-  config = function()
-    local ufo = require("ufo")
-    ufo.setup()
-    vim.keymap.set("n", "zR", ufo.openAllFolds)
-    vim.keymap.set("n", "zM", ufo.closeAllFolds)
-    vim.keymap.set("n", "zr", ufo.openFoldsExceptKinds)
-    vim.keymap.set("n", "zm", ufo.closeFoldsWith)
-    vim.keymap.set("n", "zp", ufo.peekFoldedLinesUnderCursor)
-  end,
+  opts = {},
+  keys = {
+    {
+      "zR",
+      function()
+        require("ufo").openAllFolds()
+      end,
+      desc = "Open all folds",
+    },
+    {
+      "zM",
+      function()
+        require("ufo").closeAllFolds()
+      end,
+      desc = "Open all folds",
+    },
+    {
+      "zr",
+      function()
+        require("ufo").openFoldsExceptKinds()
+      end,
+      desc = "Open folds except kinds",
+    },
+    {
+      "zm",
+      function()
+        require("ufo").closeFoldsWith()
+      end,
+      desc = "Close folds with",
+    },
+    {
+      "zp",
+      function()
+        require("ufo").peekFoldedLinesUnderCursor()
+      end,
+      desc = "Peek folded lines",
+    },
+  },
 }
