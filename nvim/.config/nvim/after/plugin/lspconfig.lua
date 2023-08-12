@@ -28,8 +28,18 @@ require("lspconfig.configs").ast_grep = {
   },
 }
 
+require("lspconfig.configs").dmypyls = {
+  default_config = {
+    cmd = { "python", "-m", "dmypy_ls" },
+    filetypes = { "python" },
+    root_dir = require("lspconfig.util").root_pattern(".git", "pyproject.toml", "setup.py", "setup.cfg"),
+    single_file_support = true,
+  },
+}
+
 local servers = {
   ast_grep = {},
+  dmypyls = {},
   lua_ls = {
     settings = {
       Lua = {

@@ -88,7 +88,7 @@ return {
   python = {
     tools.black,
     tools.flake8,
-    tools.mypy,
+    -- tools.mypy,
   },
   dockerfile = {
     tools.hadolint,
