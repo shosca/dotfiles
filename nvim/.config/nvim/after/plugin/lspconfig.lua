@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local secrets = require("sh.secrets")
 local lspstatus = require("lsp-status")
 local json_schemas = require("schemastore").json.schemas({})
 
@@ -68,49 +67,49 @@ local servers = {
     handlers = lspstatus.extensions.clangd.setup(),
     capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
   },
-  jedi_language_server = {
-    on_new_config = function(new_config, root)
-      local u = require("sh.utils")
-      new_config.cmd_env = u.get_python_env({ root = root })
-      return true
-    end,
-  },
-  -- pylsp = {
+  -- jedi_language_server = {
   --   on_new_config = function(new_config, root)
   --     local u = require("sh.utils")
-  --     new_config.cmd = {
-  --       u.find_venv_command("pylsp"),
-  --       "-v",
-  --       "--log-file",
-  --       vim.fn.stdpath("state") .. "/pylsp.log",
-  --     }
-  --     new_config.cmd_env = u.get_python_env(root)
+  --     new_config.cmd_env = u.get_python_env({ root = root })
   --     return true
   --   end,
-  --   settings = {
-  --     pylsp = {
-  --       plugins = {
-  --         flake8 = {
-  --           enabled = false,
-  --         },
-  --         black = {
-  --           enabled = false,
-  --         },
-  --         pylsp_mypy = {
-  --           enabled = false,
-  --           live_mode = true,
-  --           dmypy = false,
-  --         },
-  --       },
-  --     },
-  --   },
   -- },
+  pylsp = {
+    --   on_new_config = function(new_config, root)
+    --     local u = require("sh.utils")
+    --     new_config.cmd = {
+    --       u.find_venv_command("pylsp"),
+    --       "-v",
+    --       "--log-file",
+    --       vim.fn.stdpath("state") .. "/pylsp.log",
+    --     }
+    --     new_config.cmd_env = u.get_python_env(root)
+    --     return true
+    --   end,
+    settings = {
+      pylsp = {
+        plugins = {
+          flake8 = {
+            enabled = true,
+          },
+          black = {
+            enabled = true,
+          },
+          pylsp_mypy = {
+            enabled = true,
+            live_mode = true,
+            dmypy = false,
+          },
+        },
+      },
+    },
+  },
   sourcery = {
     on_new_config = function(new_config, root)
       require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
       new_config.cmd_env = require("sh.utils").get_python_env(root)
     end,
-    init_options = { token = secrets.sourcery.token },
+    init_options = { token = os.getenv("SOURCERY_TOKEN") },
   },
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },

@@ -12,6 +12,7 @@ if [ -x "$(command -v keychain)" ]; then
     [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
     [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
+[ -f "${XDG_DATA_HOME}/.env" ] && source "${XDG_DATA_HOME}/.env"
 
 # Extend $PATH without duplicates
 function _extend_path {

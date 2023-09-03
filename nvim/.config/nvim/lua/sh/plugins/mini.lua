@@ -1,4 +1,6 @@
 return {
+  { "echasnovski/mini.align", opts = {} },
+  { "echasnovski/mini.basics", opts = {} },
   {
     "echasnovski/mini.bufremove",
     keys = {
@@ -18,19 +20,12 @@ return {
       },
     },
   },
-  {
-    "echasnovski/mini.starter",
-    opts = {},
-  },
-  {
-    "echasnovski/mini.comment",
-    opts = {},
-  },
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    opts = {},
-  },
+  { "echasnovski/mini.comment", opts = {} },
+  { "echasnovski/mini.indentscope", opts = {} },
+  { "echasnovski/mini.move", opts = {} },
+  { "echasnovski/mini.operators", opts = {} },
+  { "echasnovski/mini.pairs", opts = {} },
+  -- { "echasnovski/mini.starter",     opts = {}, },
   {
     "echasnovski/mini.surround",
     opts = {
@@ -45,4 +40,5 @@ return {
       },
     },
   },
+  { "echasnovski/mini.trailspace", opts = {} },
 }

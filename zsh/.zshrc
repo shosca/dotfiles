@@ -50,12 +50,6 @@ setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
 REPORTTIME=2
 TIMEFMT="%U user %S system %P cpu %*Es total"
 
-# Speed up autocomplete, force prefix mapping
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-
 source_sh ${HOME}/.aliases
 alias resrc='source ~/.zshrc'
 
@@ -75,15 +69,15 @@ fpath+=${DOTFILES}/zfunc
 
 if ! zgenom saved; then
     zgenom ohmyzsh lib/
-    zgenom ohmyzsh plugins/archlinux
-    zgenom ohmyzsh plugins/aws
-    zgenom ohmyzsh plugins/docker
-    zgenom ohmyzsh plugins/git
-    zgenom ohmyzsh plugins/invoke
-    zgenom ohmyzsh plugins/pyenv
-    zgenom ohmyzsh plugins/python
-    zgenom ohmyzsh plugins/ripgrep
-    zgenom ohmyzsh plugins/systemd
+    # zgenom ohmyzsh plugins/archlinux
+    # zgenom ohmyzsh plugins/aws
+    # zgenom ohmyzsh plugins/docker
+    # zgenom ohmyzsh plugins/git
+    # zgenom ohmyzsh plugins/invoke
+    # zgenom ohmyzsh plugins/pyenv
+    # zgenom ohmyzsh plugins/python
+    # zgenom ohmyzsh plugins/ripgrep
+    # zgenom ohmyzsh plugins/systemd
 
     zgenom load apachler/zsh-aws
     zgenom load hlissner/zsh-autopair
@@ -97,6 +91,13 @@ if ! zgenom saved; then
 
     zgenom compile ${HOME}/.zshrc
 fi
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+# Speed up autocomplete, force prefix mapping
+# zstyle ':completion:*' accept-exact '*(N)'
+# zstyle ':completion:*' fzf-search-display true
+# zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget

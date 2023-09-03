@@ -28,3 +28,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     end, 1000)
   end,
 })
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
