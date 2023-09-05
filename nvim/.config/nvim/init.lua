@@ -1,6 +1,5 @@
 vim.loader.enable()
 
-local utils = require("sh.utils")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 

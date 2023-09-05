@@ -14,6 +14,10 @@ INSTALL_TARGETS=$(shell grep ": in " Makefile | grep -v TARGET | cut -d':' -f1)
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | tr -d '{}' | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: list
+list:
+	@LC_ALL=C $(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | grep -E -v -e '^[^[:alnum:]]' -e '^$@$$'
+
 
 in:  # this is a dummy target for installers
 
@@ -121,15 +125,6 @@ clean-tilix: out
 python: in  ## install python/pdb config {
 	stow -R python
 
-sourcery: in  ## installs sourcery with pipx
-	pipx install --force sourcery-cli
-
-sourcery-update:  ## update sourcery
-	pipx upgrade sourcery-cli
-
-clean-sourcery: out  ## uninstalls sourcery
-	pipx uninstall sourcery-cli
-
 python-rebuild:  ## installs user packages
 	pip3 freeze | xargs -r pip3 uninstall -y
 
@@ -137,6 +132,44 @@ clean-python: out  ## remove python/pdb config
 	stow -D python
 
 # }
+#
+pipx-sourcery: clean-pipx-sourcery in  ## installs sourcery with pipx
+	pipx install sourcery-cli
+
+clean-pipx-sourcery: out  ## installs sourcery with pipx
+	-pipx uninstall sourcery-cli
+
+pipx-jedi-language-server: clean-pipx-jedi-language-server in
+	pipx install jedi-language-server
+
+clean-pipx-jedi-language-server: out
+	-pipx uninstall jedi-language-server
+
+pipx-pew: clean-pipx-pew in
+	pipx install pew
+
+clean-pipx-pew: out
+	-pipx uninstall pew
+
+pipx-poetry: clean-pipx-poetry in
+	pipx install poetry
+
+clean-pipx-poetry: out
+	-pipx uninstall poetry
+
+pipx-pylsp: clean-pipx-pylsp in
+	pipx install python-lsp-server
+	pipx inject python-lsp-server pylsp-mypy python-lsp-black pylsp-rope
+
+clean-pipx-pylsp: pipx-pylsp out
+	-pipx uninstall python-lsp-server
+
+pipx-yawsso: clean-pipx-yawsso in
+	pipx install yawsso
+
+clean-pipx-yawsso: out
+	-pipx uninstall yawsso
+
 
 alacritty: in  ## install alacritty config {
 	stow -R alacritty

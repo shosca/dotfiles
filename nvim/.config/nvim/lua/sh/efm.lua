@@ -87,7 +87,7 @@ return {
   },
   python = {
     tools.black,
-    tools.flake8,
+    -- tools.flake8,
     -- tools.mypy,
   },
   dockerfile = {

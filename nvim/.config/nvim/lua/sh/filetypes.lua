@@ -1,7 +1,18 @@
-vim.filetype.add({ extension = { cr = "crystal" } })
-vim.filetype.add({ extension = { mk = "make" } })
-vim.filetype.add({ pattern = { ["Jenkinsfile*"] = "groovy" } })
-vim.filetype.add({ filename = { ["poetry.lock"] = "toml" } })
-vim.filetype.add({ pattern = { ["Dockerfile*"] = "dockerfile" } })
-vim.filetype.add({ filename = { ["poetry.lock"] = "toml" } })
-vim.filetype.add({ filename = { ["yarn.lock"] = "yaml" } })
+vim.filetype.add({
+  extension = {
+    cr = "crystal",
+    mk = "make",
+    fnl = "fennel",
+    wiki = "markdown",
+  },
+  filename = {
+    ["poetry.lock"] = "toml",
+    ["yarn.lock"] = "yaml",
+  },
+  pattern = {
+    ["Dockerfile*"] = "dockerfile",
+    ["Jenkinsfile*"] = "groovy",
+    ["go.sum"] = "gosum",
+    ["go.mod"] = "gomod",
+  },
+})

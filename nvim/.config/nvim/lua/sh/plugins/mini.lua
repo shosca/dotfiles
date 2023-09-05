@@ -22,6 +22,19 @@ return {
   },
   { "echasnovski/mini.comment", opts = {} },
   { "echasnovski/mini.indentscope", opts = {} },
+  {
+    "echasnovski/mini.files",
+    opts = {},
+    keys = {
+      {
+        "<leader>mo",
+        function()
+          require("mini.files").open()
+        end,
+        desc = "Minifiles open",
+      },
+    },
+  },
   { "echasnovski/mini.move", opts = {} },
   { "echasnovski/mini.operators", opts = {} },
   { "echasnovski/mini.pairs", opts = {} },

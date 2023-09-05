@@ -38,7 +38,7 @@ require("lspconfig.configs").dmypyls = {
 
 local servers = {
   ast_grep = {},
-  dmypyls = {},
+  --dmypyls = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -97,7 +97,7 @@ local servers = {
           },
           pylsp_mypy = {
             enabled = true,
-            live_mode = true,
+            live_mode = false,
             dmypy = false,
           },
         },

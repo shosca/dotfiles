@@ -1,8 +1,21 @@
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.cmd.set("filetype=term")
+  end,
+})
+
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd("FocusGained", { command = "checktime" })
 
 -- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", { callback = vim.highlight.on_yank })
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = "*",
+})
 
 -- show cursor line only in active window
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
@@ -21,22 +34,6 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
       vim.api.nvim_win_set_var(0, "auto-cursorline", cl)
       vim.wo.cursorline = false
     end
-  end,
-})
-
--- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPre", {
-  pattern = "*",
-  callback = function()
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "<buffer>",
-      once = true,
-      callback = function()
-        vim.cmd(
-          [[if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif]]
-        )
-      end,
-    })
   end,
 })
 
