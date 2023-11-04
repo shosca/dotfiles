@@ -132,7 +132,7 @@ clean-python: out  ## remove python/pdb config
 	stow -D python
 
 # }
-#
+
 pipx-sourcery: clean-pipx-sourcery in  ## installs sourcery with pipx
 	pipx install sourcery-cli
 
@@ -169,6 +169,15 @@ pipx-yawsso: clean-pipx-yawsso in
 
 clean-pipx-yawsso: out
 	-pipx uninstall yawsso
+
+pipx-ruff-lsp: clean-pipx-ruff-lsp in
+	pipx install ruff-lsp
+
+clean-pipx-ruff-lsp: out
+	-pipx uninstall ruff-lsp
+
+pipx: in
+	$(MAKE) $(shell grep "^pipx-" Makefile | cut -d':' -f1)
 
 
 alacritty: in  ## install alacritty config {

@@ -1,11 +1,5 @@
 local lspconfig = require("lspconfig")
 local lspstatus = require("lsp-status")
-local json_schemas = require("schemastore").json.schemas({})
-
-local yaml_schemas = {}
-vim.tbl_map(function(schema)
-  yaml_schemas[schema.url] = schema.fileMatch
-end, json_schemas)
 
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.foldingRange = {
@@ -45,6 +39,8 @@ local servers = {
         workspace = {
           checkThirdParty = false,
         },
+        telemetry = { enable = false },
+        hint = { enable = true },
         completion = {
           callSnippet = "Replace",
         },
@@ -90,7 +86,7 @@ local servers = {
       pylsp = {
         plugins = {
           flake8 = {
-            enabled = true,
+            enabled = false,
           },
           black = {
             enabled = true,
@@ -104,12 +100,16 @@ local servers = {
       },
     },
   },
+  ruff_lsp = {},
   sourcery = {
     on_new_config = function(new_config, root)
       require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
       new_config.cmd_env = require("sh.utils").get_python_env(root)
     end,
-    init_options = { token = os.getenv("SOURCERY_TOKEN") },
+    init_options = {
+      extension_version = "vim.lsp",
+      editor_version = "vim",
+    },
   },
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },
@@ -206,7 +206,7 @@ local servers = {
     settings = {
       json = {
         format = { enable = true },
-        schemas = json_schemas,
+        schemas = require("schemastore").json.schemas(),
         validate = { enable = true },
       },
     },
@@ -239,7 +239,7 @@ local servers = {
           "!Or sequence",
         },
         editor = { formatOnType = true },
-        schemas = yaml_schemas,
+        schemas = require("schemastore").yaml.schemas(),
       },
     },
   },

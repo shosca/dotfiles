@@ -189,7 +189,7 @@ return {
   },
   default_cursor_style = "BlinkingBar",
   xcursor_theme = "Adwaita",
-  window_background_opacity = 0.925,
+  window_background_opacity = 0.900,
   warn_about_missing_glyphs = false,
   -- font = wezterm.font("Liga SFMono Nerd Font"),
   -- font = wezterm.font("Fira Code"),

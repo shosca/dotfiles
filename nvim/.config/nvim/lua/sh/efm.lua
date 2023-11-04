@@ -85,11 +85,11 @@ return {
   hcl = {
     tools.terraform_fmt,
   },
-  python = {
-    tools.black,
-    -- tools.flake8,
-    -- tools.mypy,
-  },
+  -- python = {
+  --   tools.black,
+  --   tools.flake8,
+  --   tools.mypy,
+  -- },
   dockerfile = {
     tools.hadolint,
   },
