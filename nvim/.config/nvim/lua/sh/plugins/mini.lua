@@ -1,6 +1,7 @@
 return {
   { "echasnovski/mini.align", opts = {} },
   { "echasnovski/mini.basics", opts = {} },
+  { "echasnovski/mini.notify", opts = {} },
   {
     "echasnovski/mini.bufremove",
     keys = {

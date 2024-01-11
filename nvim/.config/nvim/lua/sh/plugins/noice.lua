@@ -5,35 +5,7 @@ return {
   dependencies = {
     "MunifTanjim/nui.nvim",
     {
-      "rcarriga/nvim-notify",
-      config = function()
-        require("notify").setup({
-          timeout = 3000,
-          background_colour = "#000000",
-          max_height = function()
-            return math.floor(vim.o.lines * 0.75)
-          end,
-          max_width = function()
-            return math.floor(vim.o.columns * 0.75)
-          end,
-        })
-        utils.require("telescope", function(m)
-          m.load_extension("notify")
-        end)
-      end,
-      keys = {
-        {
-          "<leader>un",
-          function()
-            require("notify").dismiss({ silent = true, pending = true })
-          end,
-          desc = "Dismiss all Notifications",
-        },
-      },
-    },
-    {
       "stevearc/dressing.nvim",
-      lazy = true,
       init = function()
         vim.ui.select = function(...)
           require("lazy").load({ plugins = { "dressing.nvim" } })
