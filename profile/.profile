@@ -1,49 +1,49 @@
+# Locale
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_LOCAL="${XDG_LOCAL:-$HOME/.local}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    export XDG_RUNTIME_DIR="${HOME}/run"
-fi
+export DOTFILES="${HOME}/dotfiles"
 
-if [ -x "$(command -v keychain)" ]; then
-    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
-    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
-    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export XDG_RUNTIME_DIR="${HOME}/run"
 fi
-[ -f "${XDG_DATA_HOME}/.env" ] && source "${XDG_DATA_HOME}/.env"
 
 # Extend $PATH without duplicates
 function _extend_path {
-    case ":$PATH:" in
-        *":$1:"*) : ;;        # already there
-        *) PATH="$1:$PATH" ;; # or PATH="$PATH:$1"
-    esac
+  case ":$PATH:" in
+    *":$1:"*) : ;;        # already there
+    *) PATH="$1:$PATH" ;; # or PATH="$PATH:$1"
+  esac
 }
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias nproc="sysctl -n hw.logicalcpu"
-    # handle mac stupidity
-    if [ -f /usr/libexec/path_helper ]; then
-        export PATH=""
-        source /etc/profile
-        export PATH="/usr/local/sbin:${PATH}"
-    fi
-    for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
-        _extend_path $_p
-    done
-    export PKG_CONFIG_PATH=""
-    for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
-        export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
-    done
+  alias nproc="sysctl -n hw.logicalcpu"
+  # handle mac stupidity
+  if [ -f /usr/libexec/path_helper ]; then
+    export PATH=""
+    source /etc/profile
+    export PATH="/usr/local/sbin:${PATH}"
+  fi
+  for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
+    _extend_path $_p
+  done
+  export PKG_CONFIG_PATH=""
+  for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
+    export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
+  done
 
-    if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
-        export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
-        export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
-        export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
-    fi
-    export XDG_RUNTIME_DIR="${TMPDIR}"
+  if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
+    export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+    export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+    export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
+  fi
+  export XDG_RUNTIME_DIR="${TMPDIR}"
 fi
 
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
@@ -55,12 +55,6 @@ export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export MOZ_ENABLE_WAYLAND=1
 export MOZ_USE_XINPUT2=1
-# Locale
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-export DOTFILES="${HOME}/dotfiles"
 
 export GOPATH="${XDG_DATA_HOME}/go"
 
@@ -84,16 +78,16 @@ export PAGER='less'
 
 # less options
 less_opts=(
-    # Quit if entire file fits on first screen.
-    --quit-if-one-screen
-    # Ignore case in searches that do not contain uppercase.
-    --ignore-case
-    # Allow ANSI colour escapes, but no other escapes.
-    --RAW-CONTROL-CHARS
-    # Quiet the terminal bell. (when trying to scroll past the end of the buffer)
-    --quiet
-    # Do not complain when we are on a dumb terminal.
-    --dumb
+  # Quit if entire file fits on first screen.
+  --quit-if-one-screen
+  # Ignore case in searches that do not contain uppercase.
+  --ignore-case
+  # Allow ANSI colour escapes, but no other escapes.
+  --RAW-CONTROL-CHARS
+  # Quiet the terminal bell. (when trying to scroll past the end of the buffer)
+  --quiet
+  # Do not complain when we are on a dumb terminal.
+  --dumb
 )
 export LESS="${less_opts[*]}"
 
@@ -121,41 +115,35 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
 export JAVA_FONTS=/usr/share/fonts/TTF
 
-export EDITOR=vim
-export WHICHVIM=vim
-if [ -x "$(command -v nvim)" ]; then
-    export EDITOR=nvim
-    export WHICHVIM=nvim
-    alias vim=nvim
-fi
+export EDITOR=nvim
 
 case "${TERM}" in
-    xterm*)
-        export TERM=xterm-256color
-        cache_term_colors=256
-        if [[ -f "/usr/bin/dircolors" ]]; then
-            eval "$(dircolors -b)"
-        fi
-        ;;
-    screen)
-        cache_term_colors=256
-        if [[ -f "/usr/bin/dircolors" ]]; then
-            eval "$(dircolors -b)"
-        fi
-        ;;
-    dumb)
-        cache_term_colors=2
-        ;;
-    *)
-        cache_term_colors=16
-        if [[ -f "/usr/bin/dircolors" ]]; then
-            eval "$(dircolors -b)"
-        fi
-        ;;
+  xterm*)
+    export TERM=xterm-256color
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
+  screen)
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
+  dumb)
+    cache_term_colors=2
+    ;;
+  *)
+    cache_term_colors=16
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
 esac
 
 if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
-    eval $(dircolors -b ${HOME}/.dircolors)
+  eval $(dircolors -b ${HOME}/.dircolors)
 fi
 
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"

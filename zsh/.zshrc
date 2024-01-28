@@ -110,8 +110,10 @@ bindkey -M emacs '^N' history-substring-search-down
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
-if [ -f "${HOME}/.ssh/environment-" ]; then
-    source ${HOME}/.ssh/environment-
+if [ -x "$(command -v keychain)" ]; then
+    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
+    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
 fi
 [ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"

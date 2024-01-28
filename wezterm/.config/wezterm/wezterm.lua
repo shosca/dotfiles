@@ -146,6 +146,7 @@ return {
     bottom = 0,
   },
   window_decorations = "TITLE | RESIZE",
+  max_fps = 144,
   hide_tab_bar_if_only_one_tab = false,
   enable_scroll_bar = false,
   use_fancy_tab_bar = false,

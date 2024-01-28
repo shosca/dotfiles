@@ -1,7 +1,16 @@
 return {
   { "echasnovski/mini.align", opts = {} },
   { "echasnovski/mini.basics", opts = {} },
-  { "echasnovski/mini.notify", opts = {} },
+  {
+    "echasnovski/mini.notify",
+    opts = {
+      lsp_progress = { enable = true },
+      window = {
+        anchor = "NE",
+        relative = "win",
+      },
+    },
+  },
   {
     "echasnovski/mini.bufremove",
     keys = {
