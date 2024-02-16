@@ -1,82 +1,92 @@
 [alias]
-  biggest = "!f() { git rev-list --objects --all \
+    biggest = "!f() { git rev-list --objects --all \
     | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
     | sed -n 's/^blob //p' \
     | sort --numeric-sort --key=2 -r \
     | head -n 25 \
     | cut -c 1-12,41- \
     | numfmt --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest ; }; f"
-  network = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-  ammend = commit -a --amend
-  br = branch
-  thrust = "!f() { until git push $@; do sleep 0.5; done; }; f"
-  branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
-  recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
-  ci = commit
-  co = checkout
-  clr = "!f() { git status -s | grep '??' | cut -d' ' -f2 | xargs -r rm -rf; }; f"
-  clearbranches = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
-  cleanup = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D ; }; f"
-  d = difftool
-  diffr = "!f() { git diff "$1"^.."$1"; }; f"
-  dl = "!git ll -1"
-  dlc = diff --cached HEAD^
-  dr  = "!f() { git diff "$1"^.."$1"; }; f"
-  f = "!git ls-files | grep -i"
-  filelog = log -u
-  fl = log -u
-  gr = grep -Ii
-  gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
-  grep = grep -Ii
-  lc  = "!f() { git ll "$1"^.."$1"; }; f"
-  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-  news = log -p HEAD@{1}..HEAD@{0}
-  r = reset
-  r1 = reset HEAD^
-  r2 = reset HEAD^^
-  rh = reset --hard
-  rh1 = reset HEAD^ --hard
-  rh2 = reset HEAD^^ --hard
-  st = status -s
+    network = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+    ammend = commit -a --amend
+    br = branch
+    thrust = "!f() { until git push $@; do sleep 0.5; done; }; f"
+    branchdates = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/heads
+    recent = for-each-ref --sort='-committerdate:iso8601' --format=' %(committerdate:relative)%09%(refname:short)' refs/heads
+    ci = commit
+    co = checkout
+    clr = "!f() { git status -s | grep '??' | cut -d' ' -f2 | xargs -r rm -rf; }; f"
+    clearbranches = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
+    cleanup = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D ; }; f"
+    d = difftool
+    diffr = "!f() { git diff "$1"^.."$1"; }; f"
+    dl = "!git ll -1"
+    dlc = diff --cached HEAD^
+    dr  = "!f() { git diff "$1"^.."$1"; }; f"
+    f = "!git ls-files | grep -i"
+    filelog = log -u
+    fl = log -u
+    gr = grep -Ii
+    gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+    grep = grep -Ii
+    lc  = "!f() { git ll "$1"^.."$1"; }; f"
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    news = log -p HEAD@{1}..HEAD@{0}
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
+    st = status -s
 [user]
-  name = Serkan Hosca
-  email = serkan@hosca.com
+    name = Serkan Hosca
+    email = serkan@hosca.com
+[advice]
+    skippedCherryPicks = false
 [color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  status = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+[pull]
+    ff = true
+    rebase = true
 [core]
-  fileMode = false
-  autocrlf = false
-[merge]
-  stat = true
-[credential]
-  helper = cache --timeout=3600
-[push]
-  default = current
-[url "https://github.com/"]
-  insteadOf = git://github.com/
+    fileMode = false
+    autocrlf = false
 [pager]
-  show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
-  diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
-[difftool]
-  prompt = false
-[diff]
-  tool = nvimdiff
+    show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+    diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+[credential]
+    helper = cache --timeout=3600
+[push]
+    default = current
+[url "https://github.com/"]
+    insteadOf = git://github.com/
 [merge]
-  tool = nvimdiff
-  ff = only
+    tool = nvimdiff
+    ff = only
+    stat = true
+    conflictstyle = zdiff3
+[diff]
+    tool = nvimdiff
+    algorithm = histogram
 [mergetool "nvimdiff"]
-  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
 [branch]
-  autosetuprebase = always
+    autosetuprebase = always
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [fetch]
-  prune = true
+    prune = true
+[rebase]
+    autoStash = true
+[rerere]
+    enabled = true
+[help]
+    autocorrect = 10
