@@ -1,6 +1,5 @@
 local lspconfig = require("lspconfig")
 local lspstatus = require("lsp-status")
-
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.foldingRange = {
   dynamicRegistration = false,
@@ -31,7 +30,6 @@ require("lspconfig.configs").dmypyls = {
 }
 
 local servers = {
-  ast_grep = {},
   --dmypyls = {},
   lua_ls = {
     settings = {
@@ -70,6 +68,12 @@ local servers = {
       return true
     end,
   },
+  sourcery = {
+    init_options = {
+      extension_version = "vim.lsp",
+      editor_version = "vim",
+    },
+  },
   -- pylsp = {
   --   settings = {
   --     pylsp = {
@@ -90,16 +94,6 @@ local servers = {
   --   },
   -- },
   ruff_lsp = {},
-  sourcery = {
-    on_new_config = function(new_config, root)
-      require("lspconfig.server_configurations.sourcery").default_config.on_new_config(new_config, root)
-      new_config.cmd_env = require("sh.utils").get_python_env(root)
-    end,
-    init_options = {
-      extension_version = "vim.lsp",
-      editor_version = "vim",
-    },
-  },
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },
   },
@@ -233,14 +227,6 @@ local servers = {
     },
   },
   bashls = {},
-  efm = {
-    init_options = { documentFormatting = true },
-    settings = {
-      rootMarkers = { ".git/" },
-      languages = require("sh.efm"),
-    },
-    languages = vim.tbl_keys(require("sh.efm")),
-  },
 }
 
 for server, opts in pairs(servers) do

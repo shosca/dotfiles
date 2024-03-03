@@ -134,10 +134,10 @@ clean-python: out  ## remove python/pdb config
 # }
 
 pipx-sourcery: clean-pipx-sourcery in  ## installs sourcery with pipx
-	pipx install sourcery-cli
+	pipx install sourcery
 
 clean-pipx-sourcery: out  ## installs sourcery with pipx
-	-pipx uninstall sourcery-cli
+	-pipx uninstall sourcery
 
 pipx-jedi-language-server: clean-pipx-jedi-language-server in
 	pipx install jedi-language-server

@@ -1,3 +1,5 @@
+local utils = require("sh.utils")
+
 return {
   "folke/todo-comments.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },
@@ -7,16 +9,12 @@ return {
   keys = {
     {
       "]t",
-      function()
-        require("todo-comments").jump_next()
-      end,
+      utils.bind("todo-comments", "jump_next"),
       desc = "Next todo comment",
     },
     {
       "[t",
-      function()
-        require("todo-comments").jump_prev()
-      end,
+      utils.bind("todo-comments", "jump_prev"),
       desc = "Previous todo comment",
     },
     { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },

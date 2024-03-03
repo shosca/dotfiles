@@ -1,3 +1,4 @@
+local utils = require("sh.utils")
 return {
 
   {
@@ -6,68 +7,14 @@ return {
       "nvim-lua/plenary.nvim",
     },
     keys = {
-      {
-        "<Leader>ff",
-        function()
-          require("telescope.builtin").resume()
-        end,
-        desc = "Telescope resume",
-      },
-      {
-        "<leader>:",
-        function()
-          require("telescope.builtin").command_history()
-        end,
-        desc = "Command History",
-      },
-      {
-        "<Leader>,",
-        function()
-          require("telescope.builtin").buffers({
-            show_all_buffers = true,
-            shorten_path = false,
-            preview = false,
-          })
-        end,
-        desc = "Telescope buffers",
-      },
-      {
-        "<Leader>fp",
-        function()
-          require("telescope.builtin").find_files()
-        end,
-        desc = "Telescope find files",
-      },
-      {
-        "<Leader>ft",
-        function()
-          require("telescope.builtin").git_files()
-        end,
-        { silent = true },
-      },
-      {
-        "<Leader>fg",
-        function()
-          require("telescope.builtin").grep_string()
-        end,
-        { silent = true },
-      },
-      {
-        "<Leader>fd",
-        function()
-          require("telescope.builtin").fd()
-        end,
-        { silent = true },
-      },
-      {
-        "<Leader>fw",
-        function()
-          require("telescope.builtin").find_files({
-            cwd = vim.fn.stdpath("data") .. "/site/pack/packer/start/",
-          })
-        end,
-        { silent = true },
-      },
+      { "<Leader>sk", utils.bind("telescope.builtin", "keymaps"), desc = "[S]earch [K]eymaps" },
+      { "<Leader>sd", utils.bind("telescope.builtin", "diagnostics"), desc = "[S]earch [D]iagnostics" },
+      { "<Leader>sf", utils.bind("telescope.builtin", "find_files"), desc = "[S]earch [F]iles" },
+      { "<leader>st", utils.bind("telescope.builtin", "builtin"), desc = "[S]earch [S]elect Telescope" },
+      { "<Leader>sg", utils.bind("telescope.builtin", "grep_string"), desc = "[S]earch current [W]ord" },
+      { "<leader>sl", utils.bind("telescope.builtin", "live_grep"), desc = "[S]earch by [G]rep" },
+      { "<leader>ss", utils.bind("telescope.builtin", "resume"), desc = "[S]earch [R]esume" },
+      { "<Leader><leader>", utils.bind("telescope.builtin", "buffers"), desc = "[ ] Find existing buffers" },
     },
     config = function()
       local actions = require("telescope.actions")
@@ -75,6 +22,9 @@ return {
 
       telescope.setup({
         defaults = {
+          cache_picker = {
+            ignore_empty_propt = false,
+          },
           preview = {
             treesitter = false,
           },

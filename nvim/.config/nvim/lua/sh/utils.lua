@@ -7,6 +7,13 @@ function M.require(mod, func)
   end
 end
 
+function M.bind(mod, func, args)
+  local function f()
+    require(mod)[func](args)
+  end
+  return f
+end
+
 function M.lsp_attach(func)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)

@@ -5,6 +5,10 @@ return {
   config = function()
     local hints = require("inlay-hints")
     hints.setup({})
-    utils.lsp_attach(hints.on_attach)
+    utils.lsp_attach(function(client, bufnr)
+      if client.server_capabilities.inlayHintProvider then
+        hints.on_attach(client, bufnr)
+      end
+    end)
   end,
 }
