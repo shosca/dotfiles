@@ -159,7 +159,7 @@ clean-pipx-poetry: out
 
 pipx-pylsp: clean-pipx-pylsp in
 	pipx install python-lsp-server
-	pipx inject python-lsp-server pylsp-mypy python-lsp-black pylsp-rope
+	pipx inject python-lsp-server pylsp-mypy python-lsp-ruff pylsp-rope
 
 clean-pipx-pylsp: pipx-pylsp out
 	-pipx uninstall python-lsp-server

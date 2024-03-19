@@ -1,3 +1,4 @@
+local utils = require("sh.utils")
 local lspconfig = require("lspconfig")
 local lspstatus = require("lsp-status")
 local caps = vim.lsp.protocol.make_client_capabilities()
@@ -11,26 +12,7 @@ if ok then
   caps = cmp_nvim_lsp.default_capabilities(caps)
 end
 
-require("lspconfig.configs").ast_grep = {
-  default_config = {
-    cmd = { "asg", "lsp" },
-    filetypes = { "go", "rust", "python", "typescript", "javascript", "typescriptreact", "javascriptreact" },
-    single_file_support = true,
-    root_dir = require("lspconfig.util").root_pattern(".git", "sgconfig.yml"),
-  },
-}
-
-require("lspconfig.configs").dmypyls = {
-  default_config = {
-    cmd = { "python", "-m", "dmypy_ls" },
-    filetypes = { "python" },
-    root_dir = require("lspconfig.util").root_pattern(".git", "pyproject.toml", "setup.py", "setup.cfg"),
-    single_file_support = true,
-  },
-}
-
 local servers = {
-  --dmypyls = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -61,39 +43,44 @@ local servers = {
     handlers = lspstatus.extensions.clangd.setup(),
     capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
   },
-  jedi_language_server = {
-    on_new_config = function(new_config, root)
-      local u = require("sh.utils")
-      new_config.cmd_env = u.get_python_env({ root = root })
-      return true
-    end,
-  },
   sourcery = {
     init_options = {
       extension_version = "vim.lsp",
       editor_version = "vim",
     },
   },
-  -- pylsp = {
-  --   settings = {
-  --     pylsp = {
-  --       plugins = {
-  --         flake8 = {
-  --           enabled = false,
-  --         },
-  --         black = {
-  --           enabled = true,
-  --         },
-  --         pylsp_mypy = {
-  --           enabled = true,
-  --           live_mode = false,
-  --           dmypy = false,
-  --         },
-  --       },
-  --     },
-  --   },
+  -- jedi_language_server = {
+  --   on_new_config = function(new_config, root)
+  --     local u = require("sh.utils")
+  --     new_config.cmd_env = u.get_python_env({ root = root })
+  --     return true
+  --   end,
   -- },
-  ruff_lsp = {},
+  pylsp = {
+    cmd = { "pylsp", "-v", "--log-file", utils.path_join(vim.fn.stdpath("state"), "pylsp.log") },
+    settings = {
+      pylsp = {
+        plugins = {
+          ruff = {
+            enabled = true,
+            formatEnabled = true,
+          },
+          flake8 = {
+            enabled = false,
+          },
+          black = {
+            enabled = true,
+          },
+          pylsp_mypy = {
+            enabled = true,
+            live_mode = true,
+            dmypy = false,
+          },
+        },
+      },
+    },
+  },
+  --ruff_lsp = {},
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },
   },
@@ -148,34 +135,35 @@ local servers = {
     },
   },
   kotlin_language_server = {},
+  eslint = {},
   tsserver = {
     --   -- on_attach = function(client)
     --   --   require("nvim-lsp-ts-utils").setup_client(client)
     --   -- end,
-    --   settings = {
-    --     javascript = {
-    --       inlayHints = {
-    --         includeInlayEnumMemberValueHints = true,
-    --         includeInlayFunctionLikeReturnTypeHints = true,
-    --         includeInlayFunctionParameterTypeHints = true,
-    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-    --         includeInlayPropertyDeclarationTypeHints = true,
-    --         includeInlayVariableTypeHints = true,
-    --       },
-    --     },
-    --     typescript = {
-    --       inlayHints = {
-    --         includeInlayEnumMemberValueHints = true,
-    --         includeInlayFunctionLikeReturnTypeHints = true,
-    --         includeInlayFunctionParameterTypeHints = true,
-    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-    --         includeInlayPropertyDeclarationTypeHints = true,
-    --         includeInlayVariableTypeHints = true,
-    --       },
-    --     },
-    --   },
+    settings = {
+      javascript = {
+        inlayHints = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = true,
+        },
+      },
+      typescript = {
+        inlayHints = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = true,
+        },
+      },
+    },
   },
   jsonls = {
     cmd = { "vscode-json-languageserver", "--stdio" },

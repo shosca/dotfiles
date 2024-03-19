@@ -1,3 +1,4 @@
+local utils = require("sh.utils")
 return {
   "nvim-pack/nvim-spectre",
   cmd = "Spectre",
@@ -5,9 +6,7 @@ return {
   keys = {
     {
       "<leader>sr",
-      function()
-        require("spectre").open()
-      end,
+      utils.bind("spectre", "open"),
       desc = "Replace in files (Spectre)",
     },
   },

@@ -76,10 +76,6 @@ wezterm.on("update-right-status", function(window, pane)
     table.insert(cells, hostname)
   end
 
-  -- I like my date/time in this style: "Wed Mar 3 08:14"
-  local date = wezterm.strftime("%a %b %-d %H:%M")
-  table.insert(cells, date)
-
   -- An entry for each battery (typically 0 or 1 battery)
   for _, b in ipairs(wezterm.battery_info()) do
     table.insert(cells, string.format("%.0f%%", b.state_of_charge * 100))
@@ -145,14 +141,13 @@ return {
     top = 0,
     bottom = 0,
   },
-  window_decorations = "TITLE | RESIZE",
+  window_decorations = "RESIZE",
   max_fps = 144,
   hide_tab_bar_if_only_one_tab = false,
   enable_scroll_bar = false,
   use_fancy_tab_bar = false,
-  tab_bar_at_bottom = true,
+  --tab_bar_at_bottom = true,
   animation_fps = 1,
-  -- window_decorations = "",
   colors = {
     foreground = foreground,
     background = background,

@@ -1,0 +1,227 @@
+#!/usr/bin/env python
+# https://gist.github.com/DanCardin/5026d42d57f33c051e454eb9d58efa5d
+from __future__ import annotations
+
+import logging
+import time
+from typing import Any
+
+from lsprotocol.types import TEXT_DOCUMENT_INLAY_HINT
+from lsprotocol.types import InlayHint
+from lsprotocol.types import InlayHintKind
+from lsprotocol.types import InlayHintParams
+from lsprotocol.types import Position
+import mypy.build
+from mypy.dmypy_server import Server
+from mypy.dmypy_server import find_all_sources_in_build
+from mypy.find_sources import create_source_list
+from mypy.fscache import FileSystemCache
+from mypy.fswatcher import FileData
+from mypy.fswatcher import FileSystemWatcher
+from mypy.inspections import InspectionEngine
+from mypy.inspections import node_ends_before
+from mypy.inspections import node_starts_after
+from mypy.messages import format_type_bare
+from mypy.nodes import Expression
+from mypy.options import Options
+from mypy.server.update import FineGrainedBuildManager
+from mypy.traverser import ExtendedTraverserVisitor
+from mypy.util import hash_digest
+from pygls.server import LanguageServer
+
+server = LanguageServer("mytie", "v0.1")
+options = Options()
+
+
+@server.feature(TEXT_DOCUMENT_INLAY_HINT)
+def inlay_hints(params: InlayHintParams) -> list[InlayHint]:
+    uri = params.text_document.uri.removeprefix("file:/").replace("//", "/")
+    change(mypy_server, uri)
+    return inspect(mypy_server, uri, force_reload=True)
+
+
+def inspect(server: Server, file: str, force_reload: bool = True) -> list[InlayHint]:
+    assert server.fine_grained_manager
+    print(file)
+    engine = InspectionEngine(
+        server.fine_grained_manager,
+        include_span=True,
+        include_kind=True,
+        include_object_attrs=True,
+        force_reload=force_reload,
+    )
+
+    state, err_dict = engine.find_module(file)
+    if state is None:
+        raise Exception(err_dict)
+
+    tree = state.tree
+
+    # Force reloading to load from cache, account for any edits, etc.
+    if not tree or tree.is_cache_skeleton or engine.force_reload:
+        engine.reload_module(state)
+    assert tree is not None
+
+    visitor = SearchVisitor(0, 0, 1000, 0)
+    tree.accept(visitor)
+    expressions = visitor.result
+
+    result = []
+    for expression in expressions:
+        expr_type = engine.fg_manager.manager.all_types.get(expression)
+        if expr_type is None:
+            continue
+
+        result.append(
+            InlayHint(
+                position=Position(expression.line - 1, expression.column),
+                label=format_type_bare(expr_type, server.options),
+                kind=InlayHintKind.Type,
+            )
+        )
+
+    return result
+
+
+# Below this are largely things that are primarily mypy internals that I've needed to extract/modify somewhat
+# to work in this system. Mostly because dmypy_server doesn't expose APIs at an appropriate granularity.
+
+
+class LspCache(FileSystemCache):
+    # Read from the LSP cache on behalf of mypy's fscache system.
+    def __init__(self, lsp_server: LanguageServer):
+        super().__init__()
+        self.lsp_server = lsp_server
+
+    def read(self, path: str) -> Any:
+        data = self.lsp_server.workspace.get_document(f"file://{path}").source.encode()
+        self.hash_cache[path] = hash_digest(data)
+        return data
+
+
+def change(server: Server, file: str) -> Any:
+    # Piecemeal copy of dmypy_server internals
+
+    sources = create_source_list([file], options, fscache=server.fscache)
+    if not server.fine_grained_manager:
+        res = init_manager(server, sources)
+        # res = server.initialize_fine_grained(sources, False, 1000)
+    else:
+        messages = server.fine_grained_increment_follow_imports(sources)
+        res = server.increment_output(messages, sources, False, 1000)
+
+    server.flush_caches()
+    server.update_stats(res)
+    return res
+
+
+def init_manager(server: Server, sources: list) -> Any:
+    # Largely piecemeal extracted from the mypy server code, excluding things that fail due
+    # to not being able to change mypy's internal functions. Imports inlined to make it clearly what's copied
+    # and what's not.
+
+    server.fswatcher = FileSystemWatcher(server.fscache)
+    t0 = time.time()
+    server.update_sources(sources)
+    t1 = time.time()
+
+    try:
+        result = mypy.build.build(
+            sources=sources, options=options, fscache=server.fscache
+        )
+    except Exception:
+        return None
+
+    messages = result.errors
+    server.fine_grained_manager = FineGrainedBuildManager(result)
+
+    sources = find_all_sources_in_build(server.fine_grained_manager.graph, sources)
+    server.update_sources(sources)
+
+    server.previous_sources = sources
+
+    # If we are using the fine-grained cache, build hasn't actually done
+    # the typechecking on the updated files yet.
+    # Run a fine-grained update starting from the cached data
+    if result.used_cache:
+        t2 = time.time()
+        # Pull times and hashes out of the saved_cache and stick them into
+        # the fswatcher, so we pick up the changes.
+        for state in server.fine_grained_manager.graph.values():
+            meta = state.meta
+            if meta is None:
+                continue
+            assert state.path is not None
+            server.fswatcher.set_file_data(
+                state.path,
+                FileData(st_mtime=float(meta.mtime), st_size=meta.size, hash=meta.hash),
+            )
+
+        changed, removed = server.find_changed(sources)
+        changed += server.find_added_suppressed(
+            server.fine_grained_manager.graph,
+            set(),
+            server.fine_grained_manager.manager.search_paths,
+        )
+
+        # Find anything that has had its dependency list change
+        for state in server.fine_grained_manager.graph.values():
+            if not state.is_fresh():
+                assert state.path is not None
+                changed.append((state.id, state.path))
+
+        t3 = time.time()
+        # Run an update
+        messages = server.fine_grained_manager.update(changed, removed)
+
+        # We need to do another update to any new files found by following imports.
+        messages = server.fine_grained_increment_follow_imports(sources)
+
+        t4 = time.time()
+        server.fine_grained_manager.manager.add_stats(
+            update_sources_time=t1 - t0,
+            build_time=t2 - t1,
+            find_changes_time=t3 - t2,
+            fg_update_time=t4 - t3,
+            files_changed=len(removed) + len(changed),
+        )
+
+    status = bool(messages)
+    messages = server.pretty_messages(messages, len(sources), False, 1000)
+    return {"out": "".join(s + "\n" for s in messages), "err": "", "status": status}
+
+
+class SearchVisitor(ExtendedTraverserVisitor):
+    # Reimplement mypy's `SearchVisitor`, but allows returning all matches rather than just the first one.
+    def __init__(self, line: int, column: int, end_line: int, end_column: int) -> None:
+        self.line = line
+        self.column = column
+        self.end_line = end_line
+        self.end_column = end_column
+        self.result: list[Expression] = []
+
+    def visit(self, o: Any) -> bool:
+        if node_ends_before(o, self.line, self.column):
+            return False
+        if node_starts_after(o, self.end_line, self.end_column):
+            return False
+
+        if isinstance(o, Expression):
+            self.result.append(o)
+            return False
+
+        return True
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level="DEBUG")
+
+    options.inspections = True
+    options.export_types = True
+    options.fine_grained_incremental = True
+    options.cache_fine_grained = True
+    options.use_fine_grained_cache = True
+
+    mypy_server = Server(options, "")
+    mypy_server.fscache = LspCache(server)
+    server.start_io()

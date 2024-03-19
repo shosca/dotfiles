@@ -7,14 +7,46 @@ return {
       "nvim-lua/plenary.nvim",
     },
     keys = {
-      { "<Leader>sk", utils.bind("telescope.builtin", "keymaps"), desc = "[S]earch [K]eymaps" },
-      { "<Leader>sd", utils.bind("telescope.builtin", "diagnostics"), desc = "[S]earch [D]iagnostics" },
-      { "<Leader>sf", utils.bind("telescope.builtin", "find_files"), desc = "[S]earch [F]iles" },
-      { "<leader>st", utils.bind("telescope.builtin", "builtin"), desc = "[S]earch [S]elect Telescope" },
-      { "<Leader>sg", utils.bind("telescope.builtin", "grep_string"), desc = "[S]earch current [W]ord" },
-      { "<leader>sl", utils.bind("telescope.builtin", "live_grep"), desc = "[S]earch by [G]rep" },
-      { "<leader>ss", utils.bind("telescope.builtin", "resume"), desc = "[S]earch [R]esume" },
-      { "<Leader><leader>", utils.bind("telescope.builtin", "buffers"), desc = "[ ] Find existing buffers" },
+      {
+        "<Leader>sk",
+        utils.bind("telescope.builtin", "keymaps"),
+        desc = "[S]earch [K]eymaps",
+      },
+      {
+        "<Leader>sd",
+        utils.bind("telescope.builtin", "diagnostics", { previewer = false }),
+        desc = "[S]earch [D]iagnostics",
+      },
+      {
+        "<Leader>sf",
+        utils.bind("telescope.builtin", "find_files"),
+        desc = "[S]earch [F]iles",
+      },
+      {
+        "<leader>st",
+        utils.bind("telescope.builtin", "builtin"),
+        desc = "[S]earch [S]elect Telescope",
+      },
+      {
+        "<Leader>sg",
+        utils.bind("telescope.builtin", "grep_string"),
+        desc = "[S]earch current [W]ord",
+      },
+      {
+        "<leader>sl",
+        utils.bind("telescope.builtin", "live_grep"),
+        desc = "[S]earch by [G]rep",
+      },
+      {
+        "<leader>ss",
+        utils.bind("telescope.builtin", "resume"),
+        desc = "[S]earch [R]esume",
+      },
+      {
+        "<Leader><leader>",
+        utils.bind("telescope.builtin", "buffers"),
+        desc = "[ ] Find existing buffers",
+      },
     },
     config = function()
       local actions = require("telescope.actions")
