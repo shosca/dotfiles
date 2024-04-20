@@ -1,5 +1,16 @@
 local utils = require("sh.utils")
 
+local g = {
+  mapleader = " ",
+  maplocalleader = " ",
+  python3_host_prog = "/usr/bin/python3",
+  autoformat = true,
+  markdown_recommended_style = 0,
+}
+for k, v in pairs(g) do
+  vim.g[k] = v
+end
+
 local opts = {
   ai = true,
   autoindent = true,
@@ -21,10 +32,17 @@ local opts = {
   equalalways = true,
   expandtab = true,
   exrc = true,
-  fillchars = { eob = "~", foldopen = "", foldclose = "" },
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = "~",
+  },
   foldcolumn = "1",
   foldenable = true,
-  foldlevel = 9,
+  foldlevel = 99,
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
   hidden = true, -- I like having buffers stay around
@@ -47,46 +65,40 @@ local opts = {
   },
   modelines = 1,
   --mouse = "nvi",
-  mouse = "a", -- allow the mouse to be used in neovim
-  number = true, -- But show the actual number for the line we're on
-  pumblend = 10, -- Cool floating window popup menu for completion on command line
+  mouse = "a",
+  number = true,
+  pumblend = 10,
   pumheight = 10,
-  redrawtime = 10000, -- for syntax loading on large files
-  relativenumber = true, -- Show line numbers
-  scrolloff = 10, -- Make it so there are always ten lines below my cursor
-  shiftwidth = 4,
-  showbreak = string.rep(" ", 3), -- Make it so that long lines wrap smartly
-  showcmd = true,
-  showmatch = true, -- show matching brackets when text indicator is over them
+  redrawtime = 10000,
+  relativenumber = true,
+  scrolloff = 4,
+  sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
+  shiftwidth = 2,
   showmode = false,
-  signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
-  smartcase = true, -- ... unless there is a capital letter in the query
+  signcolumn = "yes",
+  smartcase = true,
   smartindent = true,
-  smarttab = true,
-  softtabstop = 4,
-  splitbelow = true, -- Prefer windows splitting to the bottom
-  splitright = true, -- Prefer windows splitting to the right
-  tabstop = 4,
+  splitbelow = true,
+  splitright = true,
+  tabstop = 2,
   termguicolors = true,
-  timeout = true,
   timeoutlen = 300,
+  undolevels = 10000,
   undodir = utils.path_join(vim.fn.stdpath("state"), "undo"),
   undofile = true,
-  updatetime = 250,
+  updatetime = 200, -- Save swap file and trigger CursorHold
   viewdir = utils.path_join(vim.fn.stdpath("state"), "view"),
-  wildchar = ("\t"):byte(),
-  wildcharm = 26,
-  wildignore = { "__pycache__", "*.o", "*~", "*.pyc", "*pycache*" },
-  wildignorecase = true,
   wildmenu = true,
   wildmode = { "longest", "full" },
   wildoptions = "pum",
+  winminwidth = 5,
   wrap = false,
 }
 
 for k, v in pairs(opts) do
   vim.opt[k] = v
 end
+vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.schedule(function()
   local shadadir = utils.path_join(vim.fn.stdpath("state"), "shada")

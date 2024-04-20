@@ -27,7 +27,7 @@ return {
       highlight_definitions = { enable = true },
       highlight_current_scope = { enable = false },
       smart_rename = {
-        enable = true,
+        enable = false,
         keymaps = { smart_rename = "grr" },
       },
     },
@@ -48,23 +48,10 @@ return {
       },
       move = {
         enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        goto_next_start = {
-          ["]m"] = "@function.outer",
-          ["]]"] = "@class.outer",
-        },
-        goto_next_end = {
-          ["]M"] = "@function.outer",
-          ["]["] = "@class.outer",
-        },
-        goto_previous_start = {
-          ["[m"] = "@function.outer",
-          ["[["] = "@class.outer",
-        },
-        goto_previous_end = {
-          ["[M"] = "@function.outer",
-          ["[]"] = "@class.outer",
-        },
+        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
       },
       swap = {
         enable = true,

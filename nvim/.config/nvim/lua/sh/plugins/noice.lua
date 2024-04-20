@@ -33,6 +33,7 @@ return {
       },
       routes = {
         {
+          view = "mini",
           filter = {
             event = "msg_show",
             any = {
@@ -41,7 +42,12 @@ return {
               { find = "; before #%d+" },
             },
           },
-          view = "mini",
+        },
+        {
+          view = "notify",
+          filter = {
+            event = "msg_showmode",
+          },
         },
       },
       presets = {

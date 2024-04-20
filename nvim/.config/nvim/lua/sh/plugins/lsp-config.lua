@@ -26,5 +26,14 @@ return {
         end
       end)
     end,
+    keys = {
+      {
+        "<Leader>ii",
+        function()
+          vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+        end,
+        desc = "Toggle inlay hints",
+      },
+    },
   },
 }

@@ -93,6 +93,7 @@ export LESS="${less_opts[*]}"
 
 export MAKEFLAGS="-j$(nproc)"
 
+#export SDL_VIDEO_DRIVER=wayland
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ANSIBLE_NOCOWS=1
 export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
@@ -116,35 +117,6 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
 export JAVA_FONTS=/usr/share/fonts/TTF
 
 export EDITOR=nvim
-
-case "${TERM}" in
-  xterm*)
-    export TERM=xterm-256color
-    cache_term_colors=256
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-  screen)
-    cache_term_colors=256
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-  dumb)
-    cache_term_colors=2
-    ;;
-  *)
-    cache_term_colors=16
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-esac
-
-if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
-  eval $(dircolors -b ${HOME}/.dircolors)
-fi
 
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
 [[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"

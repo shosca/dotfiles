@@ -58,6 +58,7 @@ local servers = {
   -- },
   pylsp = {
     cmd = { "pylsp", "-v", "--log-file", utils.path_join(vim.fn.stdpath("state"), "pylsp.log") },
+    flags = { debounce_text_changes = 200 },
     settings = {
       pylsp = {
         plugins = {
@@ -75,6 +76,10 @@ local servers = {
             enabled = true,
             live_mode = true,
             dmypy = false,
+            report_progress = true,
+          },
+          rope_autoimport = {
+            enabled = false,
           },
         },
       },
@@ -135,7 +140,9 @@ local servers = {
     },
   },
   kotlin_language_server = {},
-  eslint = {},
+  eslint = {
+    format = false,
+  },
   tsserver = {
     --   -- on_attach = function(client)
     --   --   require("nvim-lsp-ts-utils").setup_client(client)

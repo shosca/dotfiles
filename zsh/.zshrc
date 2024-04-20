@@ -105,8 +105,8 @@ bindkey '^R' fzf-history-widget
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
@@ -119,3 +119,33 @@ fi
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+[ -f /opt/asdf-vm/asdf.sh ] && . /opt/asdf-vm/asdf.sh
+
+case "${TERM}" in
+  xterm*)
+    export TERM=xterm-256color
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
+  screen)
+    cache_term_colors=256
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
+  dumb)
+    cache_term_colors=2
+    ;;
+  *)
+    cache_term_colors=16
+    if [[ -f "/usr/bin/dircolors" ]]; then
+      eval "$(dircolors -b)"
+    fi
+    ;;
+esac
+
+if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
+  eval $(dircolors -b ${HOME}/.dircolors)
+fi
