@@ -1,23 +1,18 @@
 local utils = require("sh.utils")
 
-local g = {
-  mapleader = " ",
-  maplocalleader = " ",
+utils.set(vim.g, {
   python3_host_prog = "/usr/bin/python3",
   autoformat = true,
   markdown_recommended_style = 0,
-}
-for k, v in pairs(g) do
-  vim.g[k] = v
-end
+})
 
-local opts = {
+utils.set(vim.opt, {
   ai = true,
   autoindent = true,
   autowrite = true,
   background = "dark",
   backup = true,
-  backupdir = utils.path_join(vim.fn.stdpath("state"), "backup"),
+  backupdir = vim.fs.joinpath(vim.fn.stdpath("state"), "backup"),
   belloff = "all",
   breakindent = true,
   cindent = true,
@@ -28,7 +23,7 @@ local opts = {
   cursorline = true,
   fileencoding = "utf-8",
   diffopt = { "internal", "filler", "closeoff", "hiddenoff", "algorithm:minimal" },
-  directory = utils.path_join(vim.fn.stdpath("state"), "swap"),
+  directory = vim.fs.joinpath(vim.fn.stdpath("state"), "swap"),
   equalalways = true,
   expandtab = true,
   exrc = true,
@@ -84,26 +79,22 @@ local opts = {
   termguicolors = true,
   timeoutlen = 300,
   undolevels = 10000,
-  undodir = utils.path_join(vim.fn.stdpath("state"), "undo"),
+  undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo"),
   undofile = true,
   updatetime = 200, -- Save swap file and trigger CursorHold
-  viewdir = utils.path_join(vim.fn.stdpath("state"), "view"),
+  viewdir = vim.fs.joinpath(vim.fn.stdpath("state"), "view"),
   wildmenu = true,
   wildmode = { "longest", "full" },
   wildoptions = "pum",
   winminwidth = 5,
   wrap = false,
-}
-
-for k, v in pairs(opts) do
-  vim.opt[k] = v
-end
+})
 vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.schedule(function()
-  local shadadir = utils.path_join(vim.fn.stdpath("state"), "shada")
+  local shadadir = vim.fs.joinpath(vim.fn.stdpath("state"), "shada")
   vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
-  vim.opt.shadafile = utils.path_join(shadadir, "main.shada")
+  vim.opt.shadafile = vim.fs.joinpath(shadadir, "main.shada")
   vim.cmd([[ silent! rsh ]])
 end)
 

@@ -21,7 +21,7 @@ return {
       require("inlay-hints").setup({})
       utils.lsp_attach(function(client, bufnr)
         if client.server_capabilities.inlayHintProvider and bufnr then
-          vim.lsp.inlay_hint.enable(bufnr, true)
+          vim.lsp.inlay_hint.enable(true)
           require("inlay-hints").on_attach(client, bufnr)
         end
       end)
@@ -30,7 +30,7 @@ return {
       {
         "<Leader>ii",
         function()
-          vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end,
         desc = "Toggle inlay hints",
       },

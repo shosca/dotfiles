@@ -57,7 +57,7 @@ local servers = {
   --   end,
   -- },
   pylsp = {
-    cmd = { "pylsp", "-v", "--log-file", utils.path_join(vim.fn.stdpath("state"), "pylsp.log") },
+    cmd = { "pylsp", "-v", "--log-file", vim.fs.joinpath(vim.fn.stdpath("state"), "pylsp.log") },
     flags = { debounce_text_changes = 200 },
     settings = {
       pylsp = {

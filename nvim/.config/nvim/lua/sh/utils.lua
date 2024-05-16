@@ -7,6 +7,15 @@ function M.require(mod, func)
   end
 end
 
+function M.set(target, opts)
+  for k, v in pairs(opts) do
+    if target[k] == v then
+      vim.notify("Remove " .. k .. " from config")
+    end
+    target[k] = v
+  end
+end
+
 function M.bind(mod, func, args)
   local function f()
     require(mod)[func](args)
@@ -25,10 +34,6 @@ function M.lsp_attach(func)
       func(client, bufnr)
     end,
   })
-end
-
-function M.path_join(...)
-  return table.concat(vim.tbl_flatten({ ... }), "/")
 end
 
 function M.starts_with(str, start)
@@ -62,28 +67,28 @@ function M.get_python_env(args)
     end
   end
   if env.VIRTUAL_ENV ~= nil then
-    env.PATH = M.path_join(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
+    env.PATH = vim.fs.joinpath(env.VIRTUAL_ENV, "bin") .. ":" .. env.PATH
   end
   return env
 end
 
 function M.get_venv_with_poetry(args)
-  local poetry_lock = M.path_join(args.root, "poetry.lock")
+  local poetry_lock = vim.fs.joinpath(args.root, "poetry.lock")
   if vim.fn.filereadable(poetry_lock) == 1 then
     return vim.fn.trim(vim.fn.system(string.format("cd %s && poetry env info -p", args.root)))
   end
 end
 
 function M.get_venv_with_pipfile(args)
-  local pipfile = M.path_join(args.root, "Pipfile")
+  local pipfile = vim.fs.joinpath(args.root, "Pipfile")
   if vim.fn.filereadable(pipfile) == 1 then
     return vim.fn.trim(vim.fn.system("PIPENV_PIPFILE=" .. pipfile .. " pipenv --venv"))
   end
 end
 
 function M.get_venv_with_project_dotvenv_dir(args)
-  local venvdir = M.path_join(args.root, ".venv")
-  local python = M.path_join(venvdir, "bin", "python")
+  local venvdir = vim.fs.joinpath(args.root, ".venv")
+  local python = vim.fs.joinpath(venvdir, "bin", "python")
   if vim.fn.filereadable(python) == 1 then
     return venvdir
   end
@@ -92,7 +97,7 @@ end
 function M.find_venv_command(args)
   local python_env = M.get_python_env(args)
   if python_env.VIRTUAL_ENV ~= nil then
-    local cmdpath = M.path_join(python_env.VIRTUAL_ENV, "bin", args.cmd)
+    local cmdpath = vim.fs.joinpath(python_env.VIRTUAL_ENV, "bin", args.cmd)
     if vim.fn.filereadable(cmdpath) == 1 then
       return cmdpath
     end
@@ -104,7 +109,7 @@ function M.find_node_command(args)
   if args.root == nil then
     args.root = vim.fn.getcwd()
   end
-  return M.path_join(args.root, "node_modules", ".bin", args.cmd)
+  return vim.fs.joinpath(args.root, "node_modules", ".bin", args.cmd)
 end
 
 return M

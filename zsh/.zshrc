@@ -119,6 +119,7 @@ fi
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+[ -x "$(command -v mise)" ] && eval "$(mise activate zsh)"
 [ -f /opt/asdf-vm/asdf.sh ] && . /opt/asdf-vm/asdf.sh
 
 case "${TERM}" in
