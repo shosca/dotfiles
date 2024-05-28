@@ -18,7 +18,7 @@ vim.diagnostic.config({
 --   callback = vim.diagnostic.open_float,
 -- })
 
-for name, icon in pairs(require("sh.ui").diagnostics) do
-  name = "DiagnosticSign" .. name
-  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-end
+-- for name, icon in pairs(require("sh.ui").diagnostics) do
+--   name = "DiagnosticSign" .. name
+--   vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+-- end

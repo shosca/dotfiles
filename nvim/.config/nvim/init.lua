@@ -1,3 +1,4 @@
+-- vim.deprecate = function() end
 vim.loader.enable()
 
 vim.g.mapleader = " "
