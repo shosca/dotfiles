@@ -7,8 +7,7 @@ return {
     { "hrsh7th/cmp-nvim-lua" },
     { "hrsh7th/cmp-path" },
   },
-  opts = function()
-    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+  opts = function(_, opts)
     local cmp = require("cmp")
     local defaults = require("cmp.config.default")()
     return {
@@ -61,5 +60,6 @@ return {
       source.group_index = source.group_index or 1
     end
     require("cmp").setup(opts)
+    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
   end,
 }
