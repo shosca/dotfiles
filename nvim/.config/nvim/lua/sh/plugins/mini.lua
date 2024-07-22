@@ -1,7 +1,5 @@
 return {
-  {
-    "echasnovski/mini.animate",
-  },
+  { "echasnovski/mini.animate", opts = {} },
   { "echasnovski/mini.align", opts = {} },
   { "echasnovski/mini.basics", opts = {} },
   -- {
@@ -34,6 +32,7 @@ return {
     },
   },
   { "echasnovski/mini.indentscope", opts = {} },
+  { "echasnovski/mini.hipatterns", opts = {} },
   {
     "echasnovski/mini.files",
     opts = {},

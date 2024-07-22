@@ -1,9 +1,11 @@
 return {
   {
     "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
     config = function()
       require("tokyonight").setup({
-        stype = "night",
+        style = "night",
         transparent = true,
         styles = {
           -- Style to be applied to different syntax groups
@@ -49,13 +51,5 @@ return {
       })
       vim.cmd([[colorscheme tokyonight-night]])
     end,
-  },
-  {
-    "diegoulloao/neofusion.nvim",
-    priority = 1000,
-    config = true,
-    opts = {
-      transparent_mode = true,
-    },
   },
 }

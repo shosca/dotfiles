@@ -17,8 +17,8 @@ fi
 # Extend $PATH without duplicates
 function _extend_path {
   case ":$PATH:" in
-    *":$1:"*) : ;;        # already there
-    *) PATH="$1:$PATH" ;; # or PATH="$PATH:$1"
+  *":$1:"*) : ;;        # already there
+  *) PATH="$1:$PATH" ;; # or PATH="$PATH:$1"
   esac
 }
 
@@ -38,11 +38,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
   done
 
-  if [ -d "/usr/local/opt/openssl@1.1/lib" ]; then
-    export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
-    export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
-    export DYLD_LIBRARY_PATH="/usr/local/opt/openssl/lib:${DYLD_LIBRARY_PATH}"
-  fi
   export XDG_RUNTIME_DIR="${TMPDIR}"
 fi
 
