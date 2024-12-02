@@ -91,13 +91,6 @@ export MAKEFLAGS="-j$(nproc)"
 #export SDL_VIDEO_DRIVER=wayland
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ANSIBLE_NOCOWS=1
-export PYLINTHOME="${XDG_CACHE_HOME}/pylint"
-export PYENV_ROOT="${XDG_CONFIG_HOME}/pyenv"
-export PYTHONUSERBASE=${XDG_LOCAL}/python
-export PYTHONPATH=$PYTHONPATH:$PYTHONUSERBASE
-export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
-export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
-export PYTHON_EGG_CACHE="${XDG_CACHE_HOME}/python-eggs"
 export WORKON_HOME="${XDG_LOCAL}/share/virtualenvs"
 export PIP_VIRUTALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
 export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
@@ -121,5 +114,3 @@ export EDITOR=nvim
 [[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"
-[[ -d "$PYENV_ROOT/bin" ]] && _extend_path "$PYENV_ROOT/bin"
-[[ -x "$(command -v pyenv)" ]] && eval "$(pyenv init --path)"

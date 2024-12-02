@@ -143,7 +143,7 @@ local servers = {
   eslint = {
     format = false,
   },
-  tsserver = {
+  ts_ls = {
     --   -- on_attach = function(client)
     --   --   require("nvim-lsp-ts-utils").setup_client(client)
     --   -- end,

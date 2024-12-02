@@ -1,7 +1,7 @@
 local utils = require("sh.utils")
 return {
   "andythigpen/nvim-coverage",
-  event = "VimEnter",
+  --event = "VimEnter",
   dependencies = {
     "nvim-lua/plenary.nvim",
   },

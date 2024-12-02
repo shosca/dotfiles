@@ -1,34 +1,34 @@
 local wezterm = require("wezterm")
 
-local background = "#0f111a"
-local foreground = "#c0caf5"
-local cursor_bg = "#c0caf5"
-local cursor_border = "#c0caf5"
-local cursor_fg = "#1a1b26"
+local background = "#020202"
+local foreground = "#C5C5C5"
+local cursor_bg = "#C0CAF5"
+local cursor_border = "#C0CAF5"
+local cursor_fg = "#1A1B26"
 local selection_bg = "#283457"
-local selection_fg = "#c0caf5"
+local selection_fg = "#C0CAF5"
 
 local black = background
-local red = "#f7768e"
-local green = "#9ece6a"
-local yellow = "#e0af68"
-local blue = "#7aa2f7"
-local magenta = "#bb9af7"
-local cyan = "#7dcfff"
-local white = "#a9b1d6"
+local red = "#F7768E"
+local green = "#9ECE6A"
+local yellow = "#E0AF68"
+local blue = "#7AA2F7"
+local magenta = "#BB9AF7"
+local cyan = "#7DCFFF"
+local white = "#A9B1D6"
 
 -- ansi = { black,   white },
 -- ansi = [, "]
 -- brights = ["", ", "", "", "", "", "", ""]
 --
 local black_bright = "#414868"
-local red_bright = "#f7768e"
-local green_bright = "#9ece6a"
-local yellow_bright = "#e0af68"
-local blue_bright = "#7aa2f7"
-local magenta_bright = "#bb9af7"
-local cyan_bright = "#7dcfff"
-local white_bright = "#c0caf5"
+local red_bright = "#F7768E"
+local green_bright = "#9ECE6A"
+local yellow_bright = "#E0AF68"
+local blue_bright = "#7AA2F7"
+local magenta_bright = "#BB9AF7"
+local cyan_bright = "#7DCFFF"
+local white_bright = "#C0CAF5"
 
 wezterm.on("update-right-status", function(window, pane)
   -- Each element holds the text for a cell in a "powerline" style << fade
@@ -170,7 +170,7 @@ return {
   },
   default_cursor_style = "BlinkingBar",
   xcursor_theme = "Adwaita",
-  window_background_opacity = 0.990,
+  window_background_opacity = 0.940,
   warn_about_missing_glyphs = false,
   font = wezterm.font({
     -- family = "Liga SFMono Nerd Font",
@@ -179,14 +179,14 @@ return {
     -- family = "JetBrains Mono",
     -- family = "Lilex",
     family = "Hasklig",
-    harfbuzz_features = {
-      "liga",
-    },
+    -- harfbuzz_features = {
+    --   "liga",
+    -- },
   }),
   font_size = 10,
-  freetype_load_target = "Normal",
-  freetype_load_flags = "FORCE_AUTOHINT",
-  freetype_render_target = "Light",
+  --freetype_load_target = "Normal",
+  --freetype_load_flags = "FORCE_AUTOHINT",
+  --freetype_render_target = "Light",
   -- enable_tab_bar = false,
   exit_behavior = "Close",
   -- default_prog = {"tmux"},

@@ -1,5 +1,5 @@
 return {
-  { "echasnovski/mini.animate", opts = {} },
+  --{ "echasnovski/mini.animate", opts = {} },
   { "echasnovski/mini.align", opts = {} },
   { "echasnovski/mini.basics", opts = {} },
   -- {

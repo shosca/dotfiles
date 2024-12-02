@@ -69,7 +69,6 @@
     tool = nvimdiff
     ff = only
     stat = true
-    conflictstyle = zdiff3
 [diff]
     tool = nvimdiff
     algorithm = histogram
@@ -90,3 +89,5 @@
     enabled = true
 [help]
     autocorrect = 10
+[pack]
+	usePathWalk = true

@@ -15,23 +15,4 @@ return {
     history = true,
     delete_check_events = "TextChanged",
   },
-  keys = {
-    {
-      "<tab>",
-      utils.bind("luasnip", "jumpable", 1),
-      expr = true,
-      silent = true,
-      mode = "i",
-    },
-    {
-      "<tab>",
-      utils.bind("luasnip", "jump", 1),
-      mode = "s",
-    },
-    {
-      "<s-tab>",
-      utils.bind("luasnip", "jump", -1),
-      mode = { "i", "s" },
-    },
-  },
 }
