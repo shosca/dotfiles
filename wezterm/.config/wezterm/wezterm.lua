@@ -1,4 +1,4 @@
-local wezterm = require("wezterm")
+local wezterm = require "wezterm"
 
 local background = "#020202"
 local foreground = "#C5C5C5"
@@ -53,7 +53,7 @@ wezterm.on("update-right-status", function(window, pane)
       -- an older version of wezterm, 20230712-072601-f4abf8fd or earlier,
       -- which doesn't have the Url object
       cwd_uri = cwd_uri:sub(8)
-      local slash = cwd_uri:find("/")
+      local slash = cwd_uri:find "/"
       if slash then
         hostname = cwd_uri:sub(1, slash - 1)
         -- and extract the cwd from the uri, decoding %-encoding
@@ -64,7 +64,7 @@ wezterm.on("update-right-status", function(window, pane)
     end
 
     -- Remove the domain name portion of the hostname
-    local dot = hostname:find("[.]")
+    local dot = hostname:find "[.]"
     if dot then
       hostname = hostname:sub(1, dot - 1)
     end
@@ -170,9 +170,9 @@ return {
   },
   default_cursor_style = "BlinkingBar",
   xcursor_theme = "Adwaita",
-  window_background_opacity = 0.940,
+  window_background_opacity = 0.850,
   warn_about_missing_glyphs = false,
-  font = wezterm.font({
+  font = wezterm.font {
     -- family = "Liga SFMono Nerd Font",
     -- family = "Fira Code",
     -- family = "Cascadia Code",
@@ -182,7 +182,7 @@ return {
     -- harfbuzz_features = {
     --   "liga",
     -- },
-  }),
+  },
   font_size = 10,
   --freetype_load_target = "Normal",
   --freetype_load_flags = "FORCE_AUTOHINT",
@@ -193,14 +193,14 @@ return {
   unzoom_on_switch_pane = true,
   leader = { key = "`", mods = "", timeout_milliseconds = 500 },
   keys = {
-    { key = "`", mods = "LEADER", action = wezterm.action({ SendString = "`" }) },
-    { key = "\\", mods = "LEADER", action = wezterm.action({ SplitHorizontal = { domain = "DefaultDomain" } }) },
-    { key = "-", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "DefaultDomain" } }) },
-    { key = "c", mods = "LEADER", action = wezterm.action({ SpawnTab = "DefaultDomain" }) },
-    { key = "j", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Next" }) },
-    { key = "k", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Prev" }) },
-    { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
-    { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
+    { key = "`", mods = "LEADER", action = wezterm.action { SendString = "`" } },
+    { key = "\\", mods = "LEADER", action = wezterm.action { SplitHorizontal = { domain = "DefaultDomain" } } },
+    { key = "-", mods = "LEADER", action = wezterm.action { SplitVertical = { domain = "DefaultDomain" } } },
+    { key = "c", mods = "LEADER", action = wezterm.action { SpawnTab = "DefaultDomain" } },
+    { key = "j", mods = "LEADER", action = wezterm.action { ActivatePaneDirection = "Next" } },
+    { key = "k", mods = "LEADER", action = wezterm.action { ActivatePaneDirection = "Prev" } },
+    { key = "n", mods = "LEADER", action = wezterm.action { ActivateTabRelative = 1 } },
+    { key = "p", mods = "LEADER", action = wezterm.action { ActivateTabRelative = -1 } },
     { key = "y", mods = "LEADER", action = wezterm.action.ActivateCopyMode },
   },
 }

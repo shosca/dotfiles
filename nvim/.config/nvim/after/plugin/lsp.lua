@@ -1,6 +1,6 @@
-local utils = require("sh.utils")
-local lspconfig = require("lspconfig")
-local lspstatus = require("lsp-status")
+local utils = require "sh.utils"
+local lspconfig = require "lspconfig"
+local lspstatus = require "lsp-status"
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.foldingRange = {
   dynamicRegistration = false,
@@ -43,12 +43,12 @@ local servers = {
     handlers = lspstatus.extensions.clangd.setup(),
     capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
   },
-  sourcery = {
-    init_options = {
-      extension_version = "vim.lsp",
-      editor_version = "vim",
-    },
-  },
+  -- sourcery = {
+  --   init_options = {
+  --     extension_version = "vim.lsp",
+  --     editor_version = "vim",
+  --   },
+  -- },
   -- jedi_language_server = {
   --   on_new_config = function(new_config, root)
   --     local u = require("sh.utils")
@@ -57,7 +57,7 @@ local servers = {
   --   end,
   -- },
   pylsp = {
-    cmd = { "pylsp", "-v", "--log-file", vim.fs.joinpath(vim.fn.stdpath("state"), "pylsp.log") },
+    cmd = { "pylsp", "-v", "--log-file", vim.fs.joinpath(vim.fn.stdpath "state", "pylsp.log") },
     flags = { debounce_text_changes = 200 },
     settings = {
       pylsp = {
@@ -140,9 +140,9 @@ local servers = {
     },
   },
   kotlin_language_server = {},
-  eslint = {
-    format = false,
-  },
+  -- eslint = {
+  --   format = false,
+  -- },
   ts_ls = {
     --   -- on_attach = function(client)
     --   --   require("nvim-lsp-ts-utils").setup_client(client)
@@ -177,7 +177,7 @@ local servers = {
     commands = {
       Format = {
         function()
-          vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line("$"), 0 })
+          vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line "$", 0 })
         end,
       },
     },
@@ -234,12 +234,12 @@ end
 local au_lsp_doc_format = vim.api.nvim_create_augroup("au_lsp_doc_format", { clear = true })
 utils.lsp_attach(function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_clear_autocmds({ group = au_lsp_doc_format, buffer = bufnr, event = { "BufWritePre" } })
+    vim.api.nvim_clear_autocmds { group = au_lsp_doc_format, buffer = bufnr, event = { "BufWritePre" } }
     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       group = au_lsp_doc_format,
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format({ timeout_ms = 20000 })
+        vim.lsp.buf.format { timeout_ms = 20000 }
       end,
     })
   end

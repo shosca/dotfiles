@@ -1,6 +1,6 @@
-local ui = require("sh.ui")
+local ui = require "sh.ui"
 
-vim.diagnostic.config({
+vim.diagnostic.config {
   underline = true,
   virtual_text = false,
   signs = true,
@@ -12,7 +12,7 @@ vim.diagnostic.config({
     border = ui.borders,
     focusable = false,
   },
-})
+}
 -- vim.api.nvim_create_autocmd({ "CursorHold" }, {
 --   pattern = "*",
 --   callback = vim.diagnostic.open_float,

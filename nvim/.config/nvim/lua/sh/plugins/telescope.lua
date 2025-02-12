@@ -1,4 +1,4 @@
-local utils = require("sh.utils")
+local utils = require "sh.utils"
 return {
 
   {
@@ -49,10 +49,10 @@ return {
       },
     },
     config = function()
-      local actions = require("telescope.actions")
-      local telescope = require("telescope")
+      local actions = require "telescope.actions"
+      local telescope = require "telescope"
 
-      telescope.setup({
+      telescope.setup {
         defaults = {
           cache_picker = {
             ignore_empty_propt = false,
@@ -133,28 +133,28 @@ return {
             override_file_sorter = true,
           },
         },
-      })
+      }
     end,
   },
   {
     "nvim-telescope/telescope-cheat.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("telescope").load_extension("cheat")
+      require("telescope").load_extension "cheat"
     end,
   },
   {
     "nvim-telescope/telescope-dap.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("telescope").load_extension("dap")
+      require("telescope").load_extension "dap"
     end,
   },
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("telescope").load_extension("file_browser")
+      require("telescope").load_extension "file_browser"
     end,
   },
   {
@@ -162,24 +162,24 @@ return {
     dependencies = { "nvim-telescope/telescope.nvim" },
     build = "make",
     cond = function()
-      return vim.fn.executable("make") == 1
+      return vim.fn.executable "make" == 1
     end,
     config = function()
-      require("telescope").load_extension("fzf")
+      require("telescope").load_extension "fzf"
     end,
   },
   {
     "nvim-telescope/telescope-github.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("telescope").load_extension("gh")
+      require("telescope").load_extension "gh"
     end,
   },
   {
     "nvim-telescope/telescope-project.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("telescope").load_extension("project")
+      require("telescope").load_extension "project"
     end,
   },
   {

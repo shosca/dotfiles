@@ -1,4 +1,4 @@
-local utils = require("sh.utils")
+local utils = require "sh.utils"
 return {
   "rcarriga/nvim-notify",
   keys = {
@@ -21,6 +21,6 @@ return {
     end,
   },
   init = function()
-    vim.notify = require("notify")
+    vim.notify = require "notify"
   end,
 }

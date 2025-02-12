@@ -1,4 +1,4 @@
-local utils = require("sh.utils")
+local utils = require "sh.utils"
 
 return {
   {
@@ -17,7 +17,7 @@ return {
   {
     "simrat39/inlay-hints.nvim",
     config = function()
-      require("inlay-hints").setup({})
+      require("inlay-hints").setup {}
       utils.lsp_attach(function(client, bufnr)
         if client.server_capabilities.inlayHintProvider and bufnr then
           vim.lsp.inlay_hint.enable(true)

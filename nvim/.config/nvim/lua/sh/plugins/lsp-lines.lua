@@ -7,7 +7,7 @@ return {
       "<Leader>dd",
       function()
         enable = not enable
-        vim.diagnostic.config({ virtual_lines = enable })
+        vim.diagnostic.config { virtual_lines = enable }
       end,
       desc = "Toggle [d]iagnostics",
     },

@@ -1,4 +1,4 @@
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     cr = "crystal",
     mk = "make",
@@ -15,4 +15,4 @@ vim.filetype.add({
     ["go.sum"] = "gosum",
     ["go.mod"] = "gomod",
   },
-})
+}

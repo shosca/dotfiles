@@ -1,4 +1,4 @@
-local utils = require("sh.utils")
+local utils = require "sh.utils"
 return {
   "andythigpen/nvim-coverage",
   --event = "VimEnter",

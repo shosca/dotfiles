@@ -1,4 +1,4 @@
-local utils = require("sh.utils")
+local utils = require "sh.utils"
 
 return {
   "folke/todo-comments.nvim",

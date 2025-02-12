@@ -12,7 +12,7 @@ return {
     {
       "<leader>tt",
       function()
-        require("neotest").run.run(vim.fn.expand("%"))
+        require("neotest").run.run(vim.fn.expand "%")
       end,
       desc = "Run File",
     },
@@ -54,7 +54,7 @@ return {
     {
       "<leader>to",
       function()
-        require("neotest").output.open({ enter = true, auto_close = true })
+        require("neotest").output.open { enter = true, auto_close = true }
       end,
       desc = "Show Output",
     },
@@ -74,14 +74,14 @@ return {
     },
   },
   config = function()
-    require("neotest").setup({
+    require("neotest").setup {
       termOpts = {
         direction = "horizontal",
       },
       adapters = {
-        require("neotest-jest"),
-        require("neotest-python"),
+        require "neotest-jest",
+        require "neotest-python",
       },
-    })
+    }
   end,
 }
