@@ -170,7 +170,7 @@ return {
   },
   default_cursor_style = "BlinkingBar",
   xcursor_theme = "Adwaita",
-  window_background_opacity = 0.850,
+  window_background_opacity = 0.980,
   warn_about_missing_glyphs = false,
   font = wezterm.font {
     -- family = "Liga SFMono Nerd Font",
@@ -178,6 +178,7 @@ return {
     -- family = "Cascadia Code",
     -- family = "JetBrains Mono",
     -- family = "Lilex",
+    -- family = "NeoSpleen Nerd Font",
     family = "Hasklig",
     -- harfbuzz_features = {
     --   "liga",

@@ -63,7 +63,7 @@ local servers = {
       pylsp = {
         plugins = {
           ruff = {
-            enabled = true,
+            enabled = false,
             formatEnabled = true,
           },
           flake8 = {
@@ -85,7 +85,7 @@ local servers = {
       },
     },
   },
-  --ruff_lsp = {},
+  ruff = {},
   solargraph = {
     cmd = { "bundle", "exec", "solargraph", "stdio" },
   },

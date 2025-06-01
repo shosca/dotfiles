@@ -1,6 +1,8 @@
 local utils = require "sh.utils"
 
 utils.set(vim.g, {
+  mapleader = " ",
+  maplocalleader = " ",
   python3_host_prog = "/usr/bin/python3",
   autoformat = true,
   markdown_recommended_style = 0,
