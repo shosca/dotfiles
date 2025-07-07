@@ -1,2 +1,4 @@
-vim.opt_local.shiftwidth = 2
-vim.opt_local.expandtab = true
+require("sh.utils").set(vim.opt_local, {
+  shiftwidth = 2,
+  expandtab = true,
+})

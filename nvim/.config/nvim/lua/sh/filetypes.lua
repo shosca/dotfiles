@@ -8,6 +8,10 @@ vim.filetype.add {
   filename = {
     ["poetry.lock"] = "toml",
     ["yarn.lock"] = "yaml",
+    [".env"] = "sh",
+    [".envrc"] = "sh",
+    ["*.env"] = "sh",
+    ["*.envrc"] = "sh",
   },
   pattern = {
     ["Dockerfile*"] = "dockerfile",

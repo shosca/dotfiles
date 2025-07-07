@@ -43,12 +43,6 @@ local servers = {
     handlers = lspstatus.extensions.clangd.setup(),
     capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
   },
-  -- sourcery = {
-  --   init_options = {
-  --     extension_version = "vim.lsp",
-  --     editor_version = "vim",
-  --   },
-  -- },
   -- jedi_language_server = {
   --   on_new_config = function(new_config, root)
   --     local u = require("sh.utils")
@@ -143,6 +137,7 @@ local servers = {
   -- eslint = {
   --   format = false,
   -- },
+  biome = { cmd = { "yarn", "biome", "lsp-proxy" } },
   ts_ls = {
     --   -- on_attach = function(client)
     --   --   require("nvim-lsp-ts-utils").setup_client(client)
@@ -183,7 +178,7 @@ local servers = {
     },
     settings = {
       json = {
-        format = { enable = true },
+        format = { enable = false },
         schemas = require("schemastore").json.schemas(),
         validate = { enable = true },
       },

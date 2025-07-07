@@ -4,6 +4,13 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 [ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
 
+if [ -x "$(command -v keychain)" ]; then
+    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
+    [[ -f ${XDG_RUNTIME_DIR}/keychain/$HOST-sh ]] && source ${XDG_RUNTIME_DIR}/keychain/$HOST-sh
+    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
+fi
+
 mkdir -p ~/.zfunc
 fpath+=~/.zfunc
 
@@ -110,12 +117,6 @@ bindkey '^N' history-substring-search-down
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
-if [ -x "$(command -v keychain)" ]; then
-    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
-    [[ -f ${XDG_RUNTIME_DIR}/keychain/$HOST-sh ]] && source ${XDG_RUNTIME_DIR}/keychain/$HOST-sh
-    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
-    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
-fi
 [ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
