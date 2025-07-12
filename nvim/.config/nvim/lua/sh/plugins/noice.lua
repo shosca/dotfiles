@@ -20,6 +20,7 @@ return {
   },
   config = function()
     require("noice").setup {
+      notify = { enabled = false },
       lsp = {
         hover = {
           silent = true,
@@ -44,7 +45,6 @@ return {
           },
         },
         {
-          view = "notify",
           filter = {
             event = "msg_showmode",
           },
@@ -58,8 +58,5 @@ return {
         lsp_doc_border = false,
       },
     }
-    utils.require("telescope", function(m)
-      m.load_extension "noice"
-    end)
   end,
 }

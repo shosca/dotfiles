@@ -139,9 +139,6 @@ local servers = {
   -- },
   biome = { cmd = { "yarn", "biome", "lsp-proxy" } },
   ts_ls = {
-    --   -- on_attach = function(client)
-    --   --   require("nvim-lsp-ts-utils").setup_client(client)
-    --   -- end,
     settings = {
       javascript = {
         inlayHints = {
@@ -155,6 +152,11 @@ local servers = {
         },
       },
       typescript = {
+        preferences = {
+          includeCompletionsForModuleExports = true,
+          includeCompletionsForImportStatements = true,
+          importModuleSpecifierPreference = "relative",
+        },
         inlayHints = {
           includeInlayEnumMemberValueHints = true,
           includeInlayFunctionLikeReturnTypeHints = true,

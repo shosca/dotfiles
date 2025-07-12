@@ -1,93 +1,10 @@
 return {
-  --{ "echasnovski/mini.animate", opts = {} },
   { "echasnovski/mini.align", opts = {} },
   { "echasnovski/mini.basics", opts = {} },
-  -- {
-  --   "echasnovski/mini.notify",
-  --   opts = {
-  --     lsp_progress = { enable = true },
-  --     window = {
-  --       anchor = "NE",
-  --       relative = "win",
-  --     },
-  --   },
-  -- },
-  {
-    "echasnovski/mini.bufremove",
-    keys = {
-      {
-        "<leader>bd",
-        function()
-          require("mini.bufremove").delete(0, false)
-        end,
-        desc = "Delete Buffer",
-      },
-      {
-        "<leader>bD",
-        function()
-          require("mini.bufremove").delete(0, true)
-        end,
-        desc = "Delete Buffer (Force)",
-      },
-    },
-  },
-  { "echasnovski/mini.indentscope", opts = {} },
   { "echasnovski/mini.hipatterns", opts = {} },
-  {
-    "echasnovski/mini.files",
-    opts = {},
-    keys = {
-      {
-        "<leader>mo",
-        function()
-          require("mini.files").open()
-        end,
-        desc = "Minifiles open",
-      },
-    },
-  },
   { "echasnovski/mini.move", opts = {} },
   { "echasnovski/mini.operators", opts = {} },
   { "echasnovski/mini.pairs", opts = {} },
-  {
-    "echasnovski/mini.starter",
-    event = "VimEnter",
-    opts = function()
-      local new_section = function(name, action, section)
-        return { name = name, action = action, section = " " .. section }
-      end
-
-      return {
-        header = table.concat({
-          "      ,l;             c,      ",
-          "   .:ooool'           loo:.   ",
-          " .,oooooooo:.         looooc, ",
-          "l:,loooooooool,       looooool",
-          "llll,;ooooooooc.      looooooo",
-          "lllllc,coooooooo;     looooooo",
-          "lllllll;,loooooool'   looooooo",
-          "lllllllc .:oooooooo:. looooooo",
-          "lllllllc   'loooooool,:ooooooo",
-          "lllllllc     ;ooooooooc,cooooo",
-          "lllllllc      .coooooooo;;looo",
-          "lllllllc        ,loooooool,:ol",
-          " 'cllllc         .:oooooooo;. ",
-          "   .;llc           .loooo:.   ",
-          "      ,;             ;l;      ",
-          "                              ",
-        }, "\n"),
-        evaluate_single = true,
-        items = {
-          new_section("Find file", "Telescope find_files", "Telescope"),
-          new_section("Recent files", "Telescope oldfiles", "Telescope"),
-          new_section("Grep text", "Telescope live_grep", "Telescope"),
-          new_section("Lazy", "Lazy", "Config"),
-          new_section("New file", "ene | startinsert", "Built-in"),
-          new_section("Quit", "qa", "Built-in"),
-        },
-      }
-    end,
-  },
   {
     "echasnovski/mini.statusline",
     config = function()
@@ -133,5 +50,5 @@ return {
       },
     },
   },
-  { "echasnovski/mini.trailspace", opts = {} },
+  -- { "echasnovski/mini.trailspace", opts = {} },
 }

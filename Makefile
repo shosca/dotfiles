@@ -133,51 +133,35 @@ clean-python: out  ## remove python/pdb config
 
 # }
 
-pipx-sourcery: clean-pipx-sourcery in  ## installs sourcery with pipx
-	pipx install sourcery
+uvx-jedi-language-server: in
+	uv tool install jedi-language-server
 
-clean-pipx-sourcery: out  ## installs sourcery with pipx
-	-pipx uninstall sourcery
+clean-uvx-jedi-language-server: out
+	uv tool uninstall jedi-language-server
 
-pipx-jedi-language-server: clean-pipx-jedi-language-server in
-	pipx install jedi-language-server
+uvx-pylsp: in
+	uv tool install --with pylsp-mypy --with pylsp-rope python-lsp-server
 
-clean-pipx-jedi-language-server: out
-	-pipx uninstall jedi-language-server
+clean-uvx-pylsp: out
+	uv tool uninstall python-lsp-server
 
-pipx-pew: clean-pipx-pew in
-	pipx install pew
+uvx-yawsso: in
+	uv tool install yawsso
 
-clean-pipx-pew: out
-	-pipx uninstall pew
+clean-uvx-yawsso: out
+	uv tool uninstall yawsso
 
-pipx-poetry: clean-pipx-poetry in
-	pipx install poetry
+uvx-ruff-lsp: in
+	uv tool install ruff-lsp
 
-clean-pipx-poetry: out
-	-pipx uninstall poetry
+clean-uvx-ruff-lsp: out
+	uv tool uninstall ruff-lsp
 
-pipx-pylsp: clean-pipx-pylsp in
-	pipx install python-lsp-server
-	pipx inject python-lsp-server pylsp-mypy python-lsp-ruff pylsp-rope
+uvx: in
+	$(MAKE) $(shell grep "^uvx-" Makefile | cut -d':' -f1)
 
-clean-pipx-pylsp: pipx-pylsp out
-	-pipx uninstall python-lsp-server
-
-pipx-yawsso: clean-pipx-yawsso in
-	pipx install yawsso
-
-clean-pipx-yawsso: out
-	-pipx uninstall yawsso
-
-pipx-ruff-lsp: clean-pipx-ruff-lsp in
-	pipx install ruff-lsp
-
-clean-pipx-ruff-lsp: out
-	-pipx uninstall ruff-lsp
-
-pipx: in
-	$(MAKE) $(shell grep "^pipx-" Makefile | cut -d':' -f1)
+clean-uvx: out
+	$(MAKE) $(shell grep "^clean-uvx-" Makefile | cut -d':' -f1)
 
 
 alacritty: in  ## install alacritty config {

@@ -1,35 +1,37 @@
 local wezterm = require "wezterm"
 
-local background = "#020202"
-local foreground = "#C5C5C5"
-local cursor_bg = "#C0CAF5"
-local cursor_border = "#C0CAF5"
-local cursor_fg = "#1A1B26"
-local selection_bg = "#283457"
-local selection_fg = "#C0CAF5"
-
-local black = background
-local red = "#F7768E"
-local green = "#9ECE6A"
-local yellow = "#E0AF68"
-local blue = "#7AA2F7"
-local magenta = "#BB9AF7"
-local cyan = "#7DCFFF"
-local white = "#A9B1D6"
+local colors = {
+  background = "#020202",
+  foreground = "#C5C5C5",
+  cursor_bg = "#C0CAF5",
+  cursor_border = "#C0CAF5",
+  cursor_fg = "#1A1B26",
+  selection_bg = "#283457",
+  selection_fg = "#C0CAF5",
+  --
+  black = "#020202",
+  red = "#F7768E",
+  green = "#9ECE6A",
+  yellow = "#E0AF68",
+  blue = "#7AA2F7",
+  magenta = "#BB9AF7",
+  cyan = "#7DCFFF",
+  white = "#A9B1D6",
+  --
+  black_bright = "#414868",
+  red_bright = "#F7768E",
+  green_bright = "#9ECE6A",
+  yellow_bright = "#E0AF68",
+  blue_bright = "#7AA2F7",
+  magenta_bright = "#BB9AF7",
+  cyan_bright = "#7DCFFF",
+  white_bright = "#C0CAF5",
+}
 
 -- ansi = { black,   white },
 -- ansi = [, "]
 -- brights = ["", ", "", "", "", "", "", ""]
 --
-local black_bright = "#414868"
-local red_bright = "#F7768E"
-local green_bright = "#9ECE6A"
-local yellow_bright = "#E0AF68"
-local blue_bright = "#7AA2F7"
-local magenta_bright = "#BB9AF7"
-local cyan_bright = "#7DCFFF"
-local white_bright = "#C0CAF5"
-
 wezterm.on("update-right-status", function(window, pane)
   -- Each element holds the text for a cell in a "powerline" style << fade
   local cells = {}
@@ -85,13 +87,13 @@ wezterm.on("update-right-status", function(window, pane)
   local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
 
   -- Color palette for the backgrounds of each cell
-  local colors = {
-    background,
-    cyan,
-    green,
-    yellow,
-    red,
-    blue,
+  local _colors = {
+    colors.background,
+    colors.cyan,
+    colors.green,
+    colors.yellow,
+    colors.red,
+    colors.blue,
   }
 
   -- The elements to be formatted
@@ -102,11 +104,11 @@ wezterm.on("update-right-status", function(window, pane)
   -- Translate a cell into elements
   function insert(text, is_last)
     local cell_no = num_cells + 1
-    table.insert(elements, { Foreground = { Color = background } })
-    table.insert(elements, { Background = { Color = colors[cell_no] } })
+    table.insert(elements, { Foreground = { Color = _colors[1] } })
+    table.insert(elements, { Background = { Color = _colors[cell_no] } })
     table.insert(elements, { Text = " " .. text .. " " })
     if not is_last then
-      table.insert(elements, { Foreground = { Color = colors[cell_no + 1] } })
+      table.insert(elements, { Foreground = { Color = _colors[cell_no + 1] } })
       table.insert(elements, { Text = SOLID_LEFT_ARROW })
     end
     num_cells = num_cells + 1
@@ -134,37 +136,46 @@ return {
   --tab_bar_at_bottom = true,
   animation_fps = 1,
   colors = {
-    foreground = foreground,
-    background = background,
-    cursor_bg = cursor_bg,
-    cursor_border = cursor_border,
-    cursor_fg = cursor_fg,
-    selection_bg = selection_bg,
-    selection_fg = selection_fg,
-    ansi = { black, red, green, yellow, blue, magenta, cyan, white },
+    foreground = colors.foreground,
+    background = colors.background,
+    cursor_bg = colors.cursor_bg,
+    cursor_border = colors.cursor_border,
+    cursor_fg = colors.cursor_fg,
+    selection_bg = colors.selection_bg,
+    selection_fg = colors.selection_fg,
+    ansi = {
+      colors.black,
+      colors.red,
+      colors.green,
+      colors.yellow,
+      colors.blue,
+      colors.magenta,
+      colors.cyan,
+      colors.white,
+    },
     brights = {
-      black_bright,
-      red_bright,
-      green_bright,
-      yellow_bright,
-      blue_bright,
-      magenta_bright,
-      cyan_bright,
-      white_bright,
+      colors.black_bright,
+      colors.red_bright,
+      colors.green_bright,
+      colors.yellow_bright,
+      colors.blue_bright,
+      colors.magenta_bright,
+      colors.cyan_bright,
+      colors.white_bright,
     },
     tab_bar = {
-      background = background,
+      background = colors.background,
       active_tab = {
-        bg_color = cyan,
-        fg_color = background,
+        bg_color = colors.cyan,
+        fg_color = colors.background,
       },
       inactive_tab = {
-        bg_color = background,
-        fg_color = foreground,
+        bg_color = colors.background,
+        fg_color = colors.foreground,
       },
       new_tab = {
-        bg_color = background,
-        fg_color = foreground,
+        bg_color = colors.background,
+        fg_color = colors.foreground,
       },
     },
   },
