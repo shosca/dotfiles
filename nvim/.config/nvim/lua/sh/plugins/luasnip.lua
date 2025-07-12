@@ -1,4 +1,4 @@
-local utils = require "sh.utils"
+local utils = require("sh.utils")
 
 return {
   "L3MON4D3/LuaSnip",

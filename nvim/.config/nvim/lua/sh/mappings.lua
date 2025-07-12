@@ -1,5 +1,5 @@
 -- common typos
-vim.cmd [[
+vim.cmd([[
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
 cnoreabbrev Qa! qa!
@@ -12,7 +12,7 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qa qa
 cnoreabbrev Qall qall
-]]
+]])
 
 vim.keymap.set("n", "*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", { silent = true })
 

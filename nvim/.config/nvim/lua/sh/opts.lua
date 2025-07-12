@@ -1,4 +1,4 @@
-local utils = require "sh.utils"
+local utils = require("sh.utils")
 
 utils.set(vim.g, {
   mapleader = " ",
@@ -14,7 +14,7 @@ utils.set(vim.opt, {
   autowrite = true,
   background = "dark",
   backup = true,
-  backupdir = vim.fs.joinpath(vim.fn.stdpath "state", "backup"),
+  backupdir = vim.fs.joinpath(vim.fn.stdpath("state"), "backup"),
   belloff = "all",
   breakindent = true,
   cindent = true,
@@ -25,7 +25,7 @@ utils.set(vim.opt, {
   cursorline = true,
   fileencoding = "utf-8",
   diffopt = { "internal", "filler", "closeoff", "hiddenoff", "algorithm:minimal" },
-  directory = vim.fs.joinpath(vim.fn.stdpath "state", "swap"),
+  directory = vim.fs.joinpath(vim.fn.stdpath("state"), "swap"),
   equalalways = true,
   expandtab = true,
   exrc = true,
@@ -81,23 +81,23 @@ utils.set(vim.opt, {
   termguicolors = true,
   timeoutlen = 300,
   undolevels = 10000,
-  undodir = vim.fs.joinpath(vim.fn.stdpath "state", "undo"),
+  undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo"),
   undofile = true,
   updatetime = 200, -- Save swap file and trigger CursorHold
-  viewdir = vim.fs.joinpath(vim.fn.stdpath "state", "view"),
+  viewdir = vim.fs.joinpath(vim.fn.stdpath("state"), "view"),
   wildmenu = true,
   wildmode = { "longest", "full" },
   wildoptions = "pum",
   winminwidth = 5,
   wrap = false,
 })
-vim.opt.shortmess:append { W = true, I = true, c = true, C = true }
+vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.schedule(function()
-  local shadadir = vim.fs.joinpath(vim.fn.stdpath "state", "shada")
+  local shadadir = vim.fs.joinpath(vim.fn.stdpath("state"), "shada")
   vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
   vim.opt.shadafile = vim.fs.joinpath(shadadir, "main.shada")
-  vim.cmd [[ silent! rsh ]]
+  vim.cmd([[ silent! rsh ]])
 end)
 
 vim.opt.formatoptions = vim.opt.formatoptions

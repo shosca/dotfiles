@@ -1,4 +1,4 @@
-local utils = require "sh.utils"
+local utils = require("sh.utils")
 
 return {
   "folke/noice.nvim",
@@ -8,18 +8,18 @@ return {
       "stevearc/dressing.nvim",
       init = function()
         vim.ui.select = function(...)
-          require("lazy").load { plugins = { "dressing.nvim" } }
+          require("lazy").load({ plugins = { "dressing.nvim" } })
           return vim.ui.select(...)
         end
         vim.ui.input = function(...)
-          require("lazy").load { plugins = { "dressing.nvim" } }
+          require("lazy").load({ plugins = { "dressing.nvim" } })
           return vim.ui.input(...)
         end
       end,
     },
   },
   config = function()
-    require("noice").setup {
+    require("noice").setup({
       notify = { enabled = false },
       lsp = {
         hover = {
@@ -57,6 +57,6 @@ return {
         inc_rename = false,
         lsp_doc_border = false,
       },
-    }
+    })
   end,
 }
