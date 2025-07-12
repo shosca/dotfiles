@@ -1,8 +1,177 @@
----@module 'lazy'
+local utils = require("sh.utils")
 
 return {
   {
-    "snacks.nvim",
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
+  {
+    "anuvyklack/windows.nvim",
+    dependencies = {
+      "anuvyklack/middleclass",
+      "anuvyklack/animation.nvim",
+    },
+    event = "VeryLazy",
+    config = function()
+      vim.o.winwidth = 20
+      vim.o.winminwidth = 20
+      vim.o.equalalways = true
+      require("windows").setup()
+    end,
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    cmd = "Spectre",
+    opts = { open_cmd = "noswapfile vnew" },
+    keys = {
+      {
+        "<leader>sr",
+        utils.bind("spectre", "open"),
+        desc = "Replace in files (Spectre)",
+      },
+    },
+  },
+  {
+    -- https://github.com/utilyre/barbecue.nvim
+    -- Visual Studio Code inspired breadcrumbs plugin for the Neovim editor
+    "utilyre/barbecue.nvim",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {},
+  },
+  {
+    -- https://github.com/hrsh7th/nvim-cmp
+    -- A completion plugin for neovim coded in Lua.
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      { "hrsh7th/cmp-cmdline" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-nvim-lua" },
+      { "hrsh7th/cmp-path" },
+    },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
+      return {
+        completion = { completeopt = "menu,menuone,noselect" },
+        snippet = {
+          expand = function(args)
+            vim.snippet.expand(args.body)
+          end,
+        },
+        mapping = {
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        },
+        formatting = {
+          format = function(entry, item)
+            local icons = require("sh.ui").kinds
+            if icons[item.kind] then
+              item.kind = icons[item.kind] .. item.kind
+            end
+            return item
+          end,
+        },
+        sorting = defaults.sorting,
+        view = {
+          entries = { follow_cursor = true },
+        },
+        window = { documentation = cmp.config.window.bordered() },
+        sources = cmp.config.sources({
+          { name = "nvim_lua" },
+          { name = "nvim_lsp" },
+          { name = "path" },
+          { name = "buffer" },
+        }),
+        experimental = {
+          native_menu = false,
+          ghost_text = {
+
+            hl_group = "CmpGhostText",
+          },
+        },
+      }
+    end,
+    config = function(_, opts)
+      for _, source in ipairs(opts.sources) do
+        source.group_index = source.group_index or 1
+      end
+      require("cmp").setup(opts)
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+    end,
+  },
+  {
+    -- https://github.com/folke/noice.nvim
+    -- Highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu.
+    "folke/noice.nvim",
+    dependencies = {
+      {
+        -- https://github.com/MunifTanjim/nui.nvim
+        -- UI Component Library for Neovim.
+        "MunifTanjim/nui.nvim",
+      },
+    },
+    opts = {
+      notify = { enabled = false },
+      lsp = {
+        hover = {
+          silent = true,
+        },
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      routes = {
+        {
+          view = "mini",
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
+          },
+        },
+        {
+          filter = {
+            event = "msg_showmode",
+          },
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
+      },
+    },
+  },
+  {
+    -- https://github.com/folke/snacks.nvim
+    -- A collection of QoL plugins for Neovim
+    "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
     opts = {
