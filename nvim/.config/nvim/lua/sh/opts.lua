@@ -95,8 +95,10 @@ vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.schedule(function()
   local shadadir = vim.fs.joinpath(vim.fn.stdpath("state"), "shada")
-  vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
-  vim.opt.shadafile = vim.fs.joinpath(shadadir, "main.shada")
+  utils.set(vim.opt, {
+    shada = { "!", "'1000", "<50", "s10", "h" },
+    shadafile = vim.fs.joinpath(shadadir, "main.shada"),
+  })
   vim.cmd([[ silent! rsh ]])
 end)
 

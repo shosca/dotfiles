@@ -1,77 +1,80 @@
 local utils = require("sh.utils")
-local enable = true
 
 return {
   {
-    -- https://github.com/pmizio/typescript-tools.nvim
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
-  },
-  {
+    -- https://github.com/neovim/nvim-lspconfig
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
+      {
+        -- https://github.com/folke/lazydev.nvim
+        "folke/lazydev.nvim",
+        ft = "lua",
+        dependencies = {
+          {
+            -- https://github.com/Bilal2453/luvit-meta
+            -- optional `vim.uv` typings
+            "Bilal2453/luvit-meta",
+            lazy = true,
+          },
+        },
+        opts = {
+          library = {
+            { path = "luvit-meta/library", words = { "vim%.uv" } },
+          },
+        },
+      },
+      {
+        -- https://github.com/b0o/SchemaStore.nvim
+        "b0o/schemastore.nvim",
+      },
     },
-    -- opts = {
-    --   inlay_hints = {
-    --     enabled = true,
-    --   }
-    -- }
   },
-  { "nvim-lua/lsp-status.nvim" },
   {
+    -- https://github.com/nvim-lua/lsp-status.nvim
+    "nvim-lua/lsp-status.nvim",
+  },
+  {
+    -- https://github.com/hasansujon786/nvim-navbuddy
+    "hasansujon786/nvim-navbuddy",
+    lazy = true,
+    opts = {
+      icons = require("sh.ui").kinds,
+      lsp = {
+        auto_attach = true,
+      },
+    },
+    keys = {
+      {
+        "<leader>q",
+        utils.bind("nvim-navbuddy", "open"),
+      },
+    },
+  },
+  {
+    -- https://github.com/SmiteshP/nvim-navic
     "SmiteshP/nvim-navic",
+    opts = {
+      icons = require("sh.ui").kinds,
+      highlight = false,
+      separator = " > ",
+      depth_limit = 0,
+      depth_limit_indicator = "..",
+      safe_output = true,
+      lsp = {
+        auto_attach = true,
+      },
+    },
+  },
+  {
+    -- https://github.com/rachartier/tiny-inline-diagnostic.nvim
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
     config = function()
-      require("nvim-navic").setup({
-        icons = require("sh.ui").kinds,
-        highlight = false,
-        separator = " > ",
-        depth_limit = 0,
-        depth_limit_indicator = "..",
-        safe_output = true,
+      require("tiny-inline-diagnostic").setup({
+        preset = "modern",
       })
-      utils.lsp_attach(function(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, bufnr)
-        end
-      end)
+      vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
     end,
-  },
-  {
-    "simrat39/inlay-hints.nvim",
-    config = function()
-      require("inlay-hints").setup({})
-      utils.lsp_attach(function(client, bufnr)
-        if client.server_capabilities.inlayHintProvider and bufnr then
-          vim.lsp.inlay_hint.enable(true)
-          require("inlay-hints").on_attach(client, bufnr)
-        end
-      end)
-    end,
-    keys = {
-      {
-        "<Leader>ii",
-        function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-        end,
-        desc = "Toggle inlay hints",
-      },
-    },
-  },
-  {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    opts = {},
-    keys = {
-      {
-        "<Leader>dd",
-        function()
-          enable = not enable
-          vim.diagnostic.config({ virtual_lines = enable })
-        end,
-        desc = "Toggle [d]iagnostics",
-      },
-    },
   },
 }

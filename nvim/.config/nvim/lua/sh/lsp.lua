@@ -114,9 +114,9 @@ local servers = {
   omnisharp = {
     cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
   },
-  cssls = {
-    cmd = { "vscode-css-languageserver", "--stdio" },
-  },
+  -- cssls = {
+  --   cmd = { "vscode-css-languageserver", "--stdio" },
+  -- },
   dockerls = {},
   terraformls = {
     filetypes = { "tf", "terraform", "hcl" },
@@ -138,37 +138,42 @@ local servers = {
   --   format = false,
   -- },
   biome = { cmd = { "yarn", "biome", "lsp-proxy" } },
-  ts_ls = {
-    settings = {
-      javascript = {
-        inlayHints = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-      },
-      typescript = {
-        preferences = {
-          includeCompletionsForModuleExports = true,
-          includeCompletionsForImportStatements = true,
-          importModuleSpecifierPreference = "relative",
-        },
-        inlayHints = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-      },
+  vtsls = {
+    server_capabilities = {
+      documentFormattingProvider = false,
     },
   },
+  -- ts_ls = {
+  --   settings = {
+  --     javascript = {
+  --       inlayHints = {
+  --         includeInlayEnumMemberValueHints = true,
+  --         includeInlayFunctionLikeReturnTypeHints = true,
+  --         includeInlayFunctionParameterTypeHints = true,
+  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+  --         includeInlayPropertyDeclarationTypeHints = true,
+  --         includeInlayVariableTypeHints = true,
+  --       },
+  --     },
+  --     typescript = {
+  --       preferences = {
+  --         includeCompletionsForModuleExports = true,
+  --         includeCompletionsForImportStatements = true,
+  --         importModuleSpecifierPreference = "relative",
+  --       },
+  --       inlayHints = {
+  --         includeInlayEnumMemberValueHints = true,
+  --         includeInlayFunctionLikeReturnTypeHints = true,
+  --         includeInlayFunctionParameterTypeHints = true,
+  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+  --         includeInlayPropertyDeclarationTypeHints = true,
+  --         includeInlayVariableTypeHints = true,
+  --       },
+  --     },
+  --   },
+  -- },
   jsonls = {
     cmd = { "vscode-json-languageserver", "--stdio" },
     commands = {

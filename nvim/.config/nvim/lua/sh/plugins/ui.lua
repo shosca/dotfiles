@@ -5,8 +5,10 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
+      utils.set(vim.o, {
+        timeout = true,
+        timeoutlen = 300,
+      })
     end,
     opts = {
       -- your configuration comes here
@@ -15,6 +17,7 @@ return {
     },
   },
   {
+    -- https://github.com/anuvyklack/windows.nvim
     "anuvyklack/windows.nvim",
     dependencies = {
       "anuvyklack/middleclass",
@@ -22,13 +25,16 @@ return {
     },
     event = "VeryLazy",
     config = function()
-      vim.o.winwidth = 20
-      vim.o.winminwidth = 20
-      vim.o.equalalways = true
+      utils.set(vim.o, {
+        winwidth = 15,
+        winminwidth = 15,
+        equalalways = true,
+      })
       require("windows").setup()
     end,
   },
   {
+    -- https://github.com/nvim-pack/nvim-spectre
     "nvim-pack/nvim-spectre",
     cmd = "Spectre",
     opts = { open_cmd = "noswapfile vnew" },

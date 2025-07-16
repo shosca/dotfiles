@@ -155,16 +155,6 @@ return {
       { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
     },
   },
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        "luvit-meta/library",
-      },
-    },
-  },
-  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
   { -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -261,5 +251,4 @@ return {
       })
     end,
   },
-  { "b0o/schemastore.nvim" },
 }

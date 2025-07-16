@@ -43,3 +43,17 @@ vim.keymap.set("x", ">", ">gv|")
 
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<cr>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<cr>")
+
+vim.keymap.set("n", "<C-S-j>", function()
+  local success = pcall(vim.cmd, "cnext")
+  if not success then
+    vim.cmd("cfirst")
+  end
+end)
+
+vim.keymap.set("n", "<C-S-k>", function()
+  local success = pcall(vim.cmd, "cprev")
+  if not success then
+    vim.cmd("clast")
+  end
+end)
