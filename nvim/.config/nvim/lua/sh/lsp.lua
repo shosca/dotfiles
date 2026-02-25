@@ -1,5 +1,4 @@
 local utils = require("sh.utils")
-local lspconfig = require("lspconfig")
 local lspstatus = require("lsp-status")
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.foldingRange = {
@@ -19,7 +18,13 @@ local servers = {
         workspace = {
           checkThirdParty = false,
         },
+        runtime = {
+          version = "LuaJIT",
+        },
         telemetry = { enable = false },
+        diagnostics = {
+          globals = { "vim" },
+        },
         hint = { enable = true },
         completion = {
           callSnippet = "Replace",
@@ -64,7 +69,7 @@ local servers = {
             enabled = false,
           },
           black = {
-            enabled = true,
+            enabled = false,
           },
           pylsp_mypy = {
             enabled = true,
@@ -230,7 +235,8 @@ for server, opts in pairs(servers) do
   if opts.capabilities == nil then
     opts.capabilities = caps
   end
-  lspconfig[server].setup(opts)
+  vim.lsp.config(server, opts)
+  vim.lsp.enable(server)
 end
 
 local au_lsp_doc_format = vim.api.nvim_create_augroup("au_lsp_doc_format", { clear = true })

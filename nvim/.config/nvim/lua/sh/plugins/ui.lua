@@ -2,6 +2,58 @@ local utils = require("sh.utils")
 
 return {
   {
+    "chrisgrieser/nvim-origami",
+    event = "VeryLazy",
+    opts = {},
+    init = function()
+      vim.opt.foldenable = true
+      vim.opt.foldlevel = 99
+      vim.opt.foldlevelstart = 99
+    end,
+  },
+  {
+    -- https://github.com/oribarilan/lensline.nvim
+    "oribarilan/lensline.nvim",
+    event = "LspAttach",
+    enabled = false,
+    config = function()
+      require("lensline").setup()
+    end,
+  },
+  {
+    -- https://github.com/stevedylandev/ansi-nvim
+    "stevedylandev/ansi-nvim",
+    enabled = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme("ansi")
+      vim.opt.termguicolors = false
+    end,
+  },
+  {
+    -- https://github.com/folke/tokyonight.nvim
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        style = "night",
+        transparent = true,
+      })
+      vim.opt.termguicolors = true
+      vim.cmd.colorscheme("tokyonight-night")
+    end,
+  },
+  {
+    -- https://github.com/MeanderingProgrammer/render-markdown.nvim
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+      file_types = { "markdown", "Avante" },
+    },
+    ft = { "markdown", "Avante" },
+  },
+  {
     "folke/which-key.nvim",
     event = "VeryLazy",
     init = function()
@@ -28,7 +80,6 @@ return {
       utils.set(vim.o, {
         winwidth = 15,
         winminwidth = 15,
-        equalalways = true,
       })
       require("windows").setup()
     end,
@@ -47,14 +98,48 @@ return {
     },
   },
   {
-    -- https://github.com/utilyre/barbecue.nvim
-    -- Visual Studio Code inspired breadcrumbs plugin for the Neovim editor
-    "utilyre/barbecue.nvim",
+    -- https://github.com/b0o/incline.nvim
+    "b0o/incline.nvim",
     dependencies = {
-      "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
+      "SmiteshP/nvim-navic",
     },
-    opts = {},
+    config = function()
+      local helpers = require("incline.helpers")
+      local navic = require("nvim-navic")
+      local devicons = require("nvim-web-devicons")
+      require("incline").setup({
+        window = {
+          padding = 0,
+          margin = { horizontal = 0, vertical = 0 },
+        },
+        render = function(props)
+          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+          if filename == "" then
+            filename = "[No Name]"
+          end
+          local ft_icon, ft_color = devicons.get_icon_color(filename)
+          local modified = vim.bo[props.buf].modified
+          local res = {
+            ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
+            " ",
+            { filename, gui = modified and "bold,italic" or "bold" },
+            guibg = "#44406e",
+          }
+          if props.focused then
+            for _, item in ipairs(navic.get_data(props.buf) or {}) do
+              table.insert(res, {
+                { " > ", group = "NavicSeparator" },
+                { item.icon, group = "NavicIcons" .. item.type },
+                { item.name, group = "NavicText" },
+              })
+            end
+          end
+          table.insert(res, " ")
+          return res
+        end,
+      })
+    end,
   },
   {
     -- https://github.com/hrsh7th/nvim-cmp
@@ -196,6 +281,7 @@ return {
             keys = {
               ["<C-n>"] = { "history_forward", mode = { "i", "n" } },
               ["<C-p>"] = { "history_back", mode = { "i", "n" } },
+              ["<C-CR>"] = { "edit_vsplit", mode = { "i", "n" } },
             },
           },
         },

@@ -1,12 +1,13 @@
 return {
-  { "echasnovski/mini.align", opts = {} },
-  { "echasnovski/mini.basics", opts = {} },
-  { "echasnovski/mini.hipatterns", opts = {} },
-  { "echasnovski/mini.move", opts = {} },
-  { "echasnovski/mini.operators", opts = {} },
-  { "echasnovski/mini.pairs", opts = {} },
+  { "nvim-mini/mini.align", opts = {} },
+  { "nvim-mini/mini.basics", opts = {} },
+  { "nvim-mini/mini.hipatterns", opts = {} },
+  { "nvim-mini/mini.move", opts = {} },
+  { "nvim-mini/mini.operators", opts = {} },
+  { "nvim-mini/mini.pairs", opts = {} },
+  { "nvim-mini/mini.diff", opts = {} },
   {
-    "echasnovski/mini.statusline",
+    "nvim-mini/mini.statusline",
     config = function()
       local m = require("mini.statusline")
       m.setup({
@@ -37,7 +38,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     opts = {
       mappings = {
         add = "gza", -- Add surrounding in Normal and Visual modes
@@ -50,5 +51,5 @@ return {
       },
     },
   },
-  -- { "echasnovski/mini.trailspace", opts = {} },
+  -- { "nvim-mini/mini.trailspace", opts = {} },
 }

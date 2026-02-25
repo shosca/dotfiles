@@ -26,7 +26,6 @@ utils.set(vim.opt, {
   fileencoding = "utf-8",
   diffopt = { "internal", "filler", "closeoff", "hiddenoff", "algorithm:minimal" },
   directory = vim.fs.joinpath(vim.fn.stdpath("state"), "swap"),
-  equalalways = true,
   expandtab = true,
   exrc = true,
   fillchars = {
@@ -38,8 +37,6 @@ utils.set(vim.opt, {
     eob = "~",
   },
   foldcolumn = "1",
-  foldenable = true,
-  foldlevel = 99,
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
   hidden = true, -- I like having buffers stay around
@@ -78,7 +75,6 @@ utils.set(vim.opt, {
   splitbelow = true,
   splitright = true,
   tabstop = 2,
-  termguicolors = true,
   timeoutlen = 300,
   undolevels = 10000,
   undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo"),

@@ -132,6 +132,18 @@ clean-python: out  ## remove python/pdb config
 	stow -D python
 
 # }
+#
+uvx-pre-commit: in
+	uv tool install pre-commit
+
+clean-uvx-poetry: in
+	uv tool uninstall pre-commit
+
+uvx-poetry: in
+	uv tool install poetry
+
+clean-uvx-poetry: in
+	uv tool uninstall poetry
 
 uvx-jedi-language-server: in
 	uv tool install jedi-language-server

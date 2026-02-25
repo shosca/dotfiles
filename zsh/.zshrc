@@ -1,29 +1,19 @@
 export DOTFILES="${HOME}/dotfiles"
 export DISABLE_MAGIC_FUNCTIONS=true
 export ZSH_AUTOSUGGEST_STRATEGY=(history)
-
-[ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
-
-if [ -x "$(command -v keychain)" ]; then
-    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
-    [[ -f ${XDG_RUNTIME_DIR}/keychain/$HOST-sh ]] && source ${XDG_RUNTIME_DIR}/keychain/$HOST-sh
-    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
-    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
-fi
-
-mkdir -p ~/.zfunc
-fpath+=~/.zfunc
-
-source_sh() {
-  emulate -LR sh
-  . "$@"
-  emulate -LR zsh
-}
+export HISTSIZE=100000
+export SAVEHIST=100000
+export HISTFILE=~/.zsh_history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+export REPORTTIME=2
+export TIMEFMT="%U user %S system %P cpu %*Es total"
 
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
-# For ZSH users, uncomment the following two lines:
+[ -x "$(command -v fzf)" ] && source <(fzf --zsh)
+[ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
+
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
@@ -35,14 +25,9 @@ setopt hist_save_no_dups
 setopt hist_verify
 setopt INC_APPEND_HISTORY
 unsetopt HIST_BEEP
-
 setopt share_history
-HISTSIZE=100000
-SAVEHIST=100000
-HISTFILE=~/.zsh_history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+setopt EXTENDED_HISTORY
 setopt pushd_ignore_dups
-
 setopt AUTO_CD              # If a command is issued that can’t be executed as a normal command,
                             # and the command is the name of a directory, perform the cd command
                             # to that directory.
@@ -54,8 +39,47 @@ setopt AUTO_PARAM_SLASH     # If completed parameter is a directory, add a trail
 setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
 unsetopt MENU_COMPLETE      # Do not autoselect the first completion entry.
 setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
-REPORTTIME=2
-TIMEFMT="%U user %S system %P cpu %*Es total"
+
+# Completion styling
+fzf_file_or_dir_preview="if [ -d {} ]; then eza -1 -a --color=always {} | head -200; else bat --style=header-filename,grid --color=always --line-range :500 {}; fi"
+dir_or_file_preview='if [ -d $realpath ]; then eza -1 -a --color=always $realpath | head -200; else bat --style=header-filename,grid --color=always --line-range :500 $realpath; fi'
+dir_preview='eza --color=always -1 -a --icons=always $realpath'
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview $dir_preview
+zstyle ':fzf-tab:complete:bat:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:cat:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:eza:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:lsd:*' fzf-preview $dir_preview
+zstyle ':fzf-tab:complete:nvim:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:less:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:head:*' fzf-preview $dir_or_file_preview
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview $dir_preview
+
+# Speed up autocomplete, force prefix mapping
+# zstyle ':completion:*' accept-exact '*(N)'
+# zstyle ':completion:*' fzf-search-display true
+# zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+
+mkdir -p ~/.zfunc
+fpath+=~/.zfunc
+
+# Extend $PATH without duplicates
+_extend_path() {
+  case ":$PATH:" in
+  *":$1:"*) : ;;        # already there
+  *) PATH="$1:$PATH" ;; # or PATH="$PATH:$1"
+  esac
+}
+
+source_sh() {
+  emulate -LR sh
+  . "$@"
+  emulate -LR zsh
+}
 
 source_sh ${HOME}/.aliases
 alias resrc='source ~/.zshrc'
@@ -89,8 +113,6 @@ if ! zgenom saved; then
     zgenom load apachler/zsh-aws
     zgenom load hlissner/zsh-autopair
     zgenom load lukechilds/zsh-better-npm-completion
-    zgenom load pbar1/zsh-terraform
-    zgenom load unixorn/fzf-zsh-plugin
     zgenom load zsh-users/zsh-autosuggestions
     zgenom load zsh-users/zsh-completions src
     zgenom load zsh-users/zsh-history-substring-search
@@ -98,13 +120,6 @@ if ! zgenom saved; then
 
     zgenom compile ${HOME}/.zshrc
 fi
-
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-# Speed up autocomplete, force prefix mapping
-# zstyle ':completion:*' accept-exact '*(N)'
-# zstyle ':completion:*' fzf-search-display true
-# zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
@@ -117,12 +132,29 @@ bindkey '^N' history-substring-search-down
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
+if [ -x "$(command -v keychain)" ]; then
+    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
+    [[ -f ${XDG_RUNTIME_DIR}/keychain/$HOST-sh ]] && source ${XDG_RUNTIME_DIR}/keychain/$HOST-sh
+    [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
+    [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg
+fi
+
+[[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
+[[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
+[[ -d "$GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
+[[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
+[[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
+[[ -d "$CARGO_HOME/bin" ]] && _extend_path "$CARGO_HOME/bin"
+[[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
+[[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"
+
 [ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
 [ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
 [ -x "$(command -v uv)" ] && eval "$(uv generate-shell-completion zsh)"
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 [ -x "$(command -v mise)" ] && eval "$(mise activate)"
+
 
 case "${TERM}" in
   xterm*)
@@ -151,4 +183,28 @@ esac
 
 if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
   eval $(dircolors -b ${HOME}/.dircolors)
+fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/serkan/.lmstudio/bin"
+# End of LM Studio CLI section
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export XDG_RUNTIME_DIR="${HOME}/run"
+  alias nproc="sysctl -n hw.logicalcpu"
+  # handle mac stupidity
+  if [ -f /usr/libexec/path_helper ]; then
+    export PATH=""
+    source /etc/profile
+    export PATH="/usr/local/sbin:${PATH}"
+  fi
+  for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
+    _extend_path $_p
+  done
+  export PKG_CONFIG_PATH=""
+  for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
+    export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
+  done
+
+  export XDG_RUNTIME_DIR="${TMPDIR}"
 fi

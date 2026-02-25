@@ -45,3 +45,8 @@ if [[ -d "$HOME/.local/share/bash-completion" ]]; then
 	done
 fi
 source ${HOME}/.aliases
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/serkan/.lmstudio/bin"
+# End of LM Studio CLI section
+

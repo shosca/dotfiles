@@ -20,6 +20,7 @@ return {
     -- https://github.com/andythigpen/nvim-coverage
     -- Displays test coverage data in the sign column
     "andythigpen/nvim-coverage",
+    cmd = { "CoverageShow", "CoverageHide", "CoverageLoad", "CoverageSummary" },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -168,11 +169,19 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
-      "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
-      "olimorris/neotest-rspec",
-      "haydenmeade/neotest-jest",
+      "nvim-neotest/neotest-go",
       "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-vim-test",
+      "nvim-neotest/nvim-nio",
+      "nvim-treesitter/nvim-treesitter",
+      "rcasia/neotest-java",
+      "weilbith/neotest-gradle",
+      "haydenmeade/neotest-jest",
+      "nvim-lua/plenary.nvim",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/nvim-nio",
+      "olimorris/neotest-rspec",
     },
     keys = {
       {
@@ -246,7 +255,22 @@ return {
         },
         adapters = {
           require("neotest-jest"),
-          require("neotest-python"),
+          require("neotest-python")({
+            dap = { justMyCode = false },
+          }),
+          require("neotest-go")({
+            experimental = {
+              test_table = true,
+            },
+            args = { "-count=1", "-timeout=60s" },
+          }),
+          require("neotest-java")({
+            ignore_wrapper = false, -- whether to ignore maven/gradle wrapper
+          }),
+          require("neotest-vim-test")({
+            ignore_file_types = { "python", "vim", "lua", "go", "java" },
+          }),
+          require("neotest-gradle"),
         },
       })
     end,

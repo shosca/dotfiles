@@ -3,7 +3,6 @@ local ui = require("sh.ui")
 vim.diagnostic.config({
   underline = true,
   virtual_text = false,
-  signs = true,
   severity_sort = true,
   update_in_insert = true,
   float = {
@@ -12,13 +11,12 @@ vim.diagnostic.config({
     border = ui.borders,
     focusable = false,
   },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = ui.diagnostics.Error,
+      [vim.diagnostic.severity.WARN] = ui.diagnostics.Warn,
+      [vim.diagnostic.severity.HINT] = ui.diagnostics.Hint,
+      [vim.diagnostic.severity.INFO] = ui.diagnostics.Info,
+    },
+  },
 })
--- vim.api.nvim_create_autocmd({ "CursorHold" }, {
---   pattern = "*",
---   callback = vim.diagnostic.open_float,
--- })
-
--- for name, icon in pairs(require("sh.ui").diagnostics) do
---   name = "DiagnosticSign" .. name
---   vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
--- end
