@@ -21,17 +21,6 @@ return {
     end,
   },
   {
-    -- https://github.com/stevedylandev/ansi-nvim
-    "stevedylandev/ansi-nvim",
-    enabled = false,
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("ansi")
-      vim.opt.termguicolors = false
-    end,
-  },
-  {
     -- https://github.com/folke/tokyonight.nvim
     "folke/tokyonight.nvim",
     lazy = false,
@@ -49,19 +38,14 @@ return {
     -- https://github.com/MeanderingProgrammer/render-markdown.nvim
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
-      file_types = { "markdown", "Avante" },
+      anti_conceal = { enabled = false },
+      file_types = { "markdown", "Avante", "opencode_output" },
     },
-    ft = { "markdown", "Avante" },
+    ft = { "markdown", "Avante", "opencode_output" },
   },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    init = function()
-      utils.set(vim.o, {
-        timeout = true,
-        timeoutlen = 300,
-      })
-    end,
     opts = {
       -- your configuration comes here
       -- or leave it empty to use the default settings
@@ -276,9 +260,15 @@ return {
           diff = { builtin = false },
           git = { builtin = false },
         },
+        actions = {
+          sidekick_send = function(...)
+            return require("sidekick.cli.picker.snacks").send(...)
+          end,
+        },
         win = {
           input = {
             keys = {
+              ["<a-a>"] = { "sidekick_send", mode = { "n", "i" } },
               ["<C-n>"] = { "history_forward", mode = { "i", "n" } },
               ["<C-p>"] = { "history_back", mode = { "i", "n" } },
               ["<C-CR>"] = { "edit_vsplit", mode = { "i", "n" } },

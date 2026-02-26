@@ -21,11 +21,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- set term filetype
-vim.api.nvim_create_autocmd("TermOpen", {
-  callback = function()
-    vim.cmd.set("filetype=term")
-  end,
-})
+-- vim.api.nvim_create_autocmd("TermOpen", {
+--   callback = function()
+--     vim.cmd.set("filetype=term")
+--   end,
+-- })
 
 -- show cursor line only in active window
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {

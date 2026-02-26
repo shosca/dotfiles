@@ -14,7 +14,7 @@ cnoreabbrev Qa qa
 cnoreabbrev Qall qall
 ]])
 
-vim.keymap.set("n", "*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", { silent = true })
+--vim.keymap.set("n", "*", ":let @/='\\<<c-r><c-w>\\>'<CR>:set hls<CR>", { silent = true })
 
 vim.keymap.set("c", "<C-p>", "<Up>")
 vim.keymap.set("c", "<C-n>", "<Down>")
@@ -43,6 +43,7 @@ vim.keymap.set("x", ">", ">gv|")
 
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<cr>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<cr>")
+vim.keymap.set("t", "<S-esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<C-S-j>", function()
   local success = pcall(vim.cmd, "cnext")

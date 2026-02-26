@@ -75,7 +75,6 @@ utils.set(vim.opt, {
   splitbelow = true,
   splitright = true,
   tabstop = 2,
-  timeoutlen = 300,
   undolevels = 10000,
   undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo"),
   undofile = true,
