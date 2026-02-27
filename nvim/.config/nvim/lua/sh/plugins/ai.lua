@@ -13,7 +13,9 @@ return {
     "folke/sidekick.nvim",
     opts = {
       win = {
-        keys = {},
+        split = {
+          width = 80,
+        },
       },
     },
     keys = {
@@ -34,12 +36,42 @@ return {
         desc = "Sidekick SelectlPrompt",
       },
       {
+        "<leader>af",
+        function()
+          require("sidekick.cli").send({ msg = "{file}" })
+        end,
+        desc = "Sidekick Send file",
+      },
+      {
+        "<leader>av",
+        function()
+          require("sidekick.cli").send({ msg = "{selection}" })
+        end,
+        mode = { "x" },
+        desc = "Sidekick Send visual selection content",
+      },
+      {
+        "<leader>ad",
+        function()
+          require("sidekick.cli").send({ msg = "{diagnostics}" })
+        end,
+        mode = { "x" },
+        desc = "Sidekick Send selected diagnostics",
+      },
+      {
         "<leader>ap",
         function()
           require("sidekick.cli").prompt()
         end,
         mode = { "n", "x" },
         desc = "Sidekick Select Prompt",
+      },
+      {
+        "<leader>ao",
+        function()
+          require("sidekick.cli").toggle({ name = "opencode", focus = true })
+        end,
+        desc = "Sidekick toggle opencode",
       },
     },
   },

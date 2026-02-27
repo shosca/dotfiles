@@ -59,13 +59,19 @@ return {
       "anuvyklack/middleclass",
       "anuvyklack/animation.nvim",
     },
-    event = "VeryLazy",
     config = function()
       utils.set(vim.o, {
         winwidth = 15,
         winminwidth = 15,
+        equalalways = false,
+        require("windows").setup({
+          animation = { enable = false },
+          ignore = {
+            buftype = { "quickfix", "term", "terminal", "fish", "nvim_terminal_emulator", "Terminal" },
+            filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "Telescope", "telescope", "sidekick_terminal" },
+          },
+        }),
       })
-      require("windows").setup()
     end,
   },
   {

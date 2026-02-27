@@ -43,6 +43,8 @@ vim.keymap.set("x", ">", ">gv|")
 
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<cr>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<cr>")
+
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>")
 vim.keymap.set("t", "<S-esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<C-S-j>", function()
