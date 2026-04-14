@@ -3,3 +3,4 @@
 .nvimrc
 .exrc.lua
 temp.py
+uv.lock

@@ -1,1 +1,5 @@
-return { "lambdalisue/suda.vim" }
+return {
+  "lambdalisue/suda.vim",
+  cmd = { "SudaWrite" },
+  lazy = true,
+}

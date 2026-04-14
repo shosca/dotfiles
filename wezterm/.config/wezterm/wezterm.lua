@@ -87,10 +87,9 @@ return {
   },
   --dpi = 192,
   default_cursor_style = "BlinkingBar",
-  xcursor_theme = "Adwaita",
   window_background_opacity = 0.900,
   warn_about_missing_glyphs = false,
-  font = wezterm.font({
+  font = wezterm.font_with_fallback({
     -- family = "Liga SFMono Nerd Font",
     -- family = "Fira Code",
     -- family = "Cascadia Code",
@@ -118,5 +117,12 @@ return {
     { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
     { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
     { key = "y", mods = "LEADER", action = wezterm.action.ActivateCopyMode },
+    { key = "1", mods = "LEADER", action = wezterm.action.ActivateTab(0) },
+    { key = "2", mods = "LEADER", action = wezterm.action.ActivateTab(1) },
+    { key = "3", mods = "LEADER", action = wezterm.action.ActivateTab(2) },
+    { key = "4", mods = "LEADER", action = wezterm.action.ActivateTab(3) },
+    { key = "5", mods = "LEADER", action = wezterm.action.ActivateTab(4) },
+    { key = "6", mods = "LEADER", action = wezterm.action.ActivateTab(5) },
+    { key = "7", mods = "LEADER", action = wezterm.action.ActivateTab(6) },
   },
 }

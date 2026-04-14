@@ -1,5 +1,4 @@
-# Locale
-
+export DO_NOT_TRACK=1
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_LOCAL="${XDG_LOCAL:-$HOME/.local}"
@@ -71,3 +70,14 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
 export JAVA_FONTS=/usr/share/fonts/TTF
 
 export EDITOR=nvim
+
+export ANTHROPIC_BASE_URL="http://127.0.0.1:8012"
+export ANTHROPIC_API_KEY="not-set"
+export ANTHROPIC_AUTH_TOKEN="not-set"
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+export CLAUDE_CODE_ENABLE_TELEMETRY=0
+export DISABLE_AUTOUPDATER=1
+export DISABLE_TELEMETRY=1
+export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=4096
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=32768

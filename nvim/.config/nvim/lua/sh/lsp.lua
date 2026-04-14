@@ -1,5 +1,4 @@
 local utils = require("sh.utils")
-local lspstatus = require("lsp-status")
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps.textDocument.foldingRange = {
   dynamicRegistration = false,
@@ -10,232 +9,35 @@ local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
   caps = cmp_nvim_lsp.default_capabilities(caps)
 end
+vim.lsp.config("*", { capabilities = caps })
 
 local servers = {
-  lua_ls = {
-    settings = {
-      Lua = {
-        workspace = {
-          checkThirdParty = false,
-        },
-        runtime = {
-          version = "LuaJIT",
-        },
-        telemetry = { enable = false },
-        diagnostics = {
-          globals = { "vim" },
-        },
-        hint = { enable = true },
-        completion = {
-          callSnippet = "Replace",
-        },
-      },
-    },
-  },
-  zls = {},
-  clangd = {
-    cmd = {
-      "clangd",
-      "--background-index",
-      "--suggest-missing-includes",
-      "--clang-tidy",
-      "--header-insertion=iwyu",
-    },
-    -- Required for lsp-status
-    init_options = {
-      clangdFileStatus = true,
-    },
-    handlers = lspstatus.extensions.clangd.setup(),
-    capabilities = vim.tbl_deep_extend("force", vim.deepcopy(caps), { offsetEncoding = { "utf-16" } }),
-  },
-  -- jedi_language_server = {
-  --   on_new_config = function(new_config, root)
-  --     local u = require("sh.utils")
-  --     new_config.cmd_env = u.get_python_env({ root = root })
-  --     return true
-  --   end,
-  -- },
-  pylsp = {
-    cmd = { "pylsp", "-v", "--log-file", vim.fs.joinpath(vim.fn.stdpath("state"), "pylsp.log") },
-    flags = { debounce_text_changes = 200 },
-    settings = {
-      pylsp = {
-        plugins = {
-          ruff = {
-            enabled = false,
-            formatEnabled = true,
-          },
-          flake8 = {
-            enabled = false,
-          },
-          black = {
-            enabled = false,
-          },
-          pylsp_mypy = {
-            enabled = true,
-            live_mode = true,
-            dmypy = false,
-            report_progress = true,
-          },
-          rope_autoimport = {
-            enabled = false,
-          },
-        },
-      },
-    },
-  },
-  ruff = {},
-  solargraph = {
-    cmd = { "bundle", "exec", "solargraph", "stdio" },
-  },
-  sorbet = {
-    cmd = { "bundle", "exec", "srb", "tc", "--lsp", "--disable-watchman" },
-    on_new_config = function(new_config, root)
-      table.insert(new_config.cmd, root)
-      return true
-    end,
-  },
-  rust_analyzer = {},
-  gopls = {
-    init_options = { usePlaceholders = true, completeUnimported = true },
-    settings = {
-      gopls = {
-        codelenses = { test = true },
-        hints = {
-          assignVariableTypes = true,
-          compositeLiteralFields = true,
-          compositeLiteralTypes = true,
-          constantValues = true,
-          functionTypeParameters = true,
-          parameterNames = true,
-          rangeVariableTypes = true,
-        },
-        analyses = { unusedparams = true },
-        staticcheck = true,
-      },
-    },
-  },
-  crystalline = {},
-  omnisharp = {
-    cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
-  },
-  -- cssls = {
-  --   cmd = { "vscode-css-languageserver", "--stdio" },
-  -- },
-  dockerls = {},
-  terraformls = {
-    filetypes = { "tf", "terraform", "hcl" },
-  },
-  html = {
-    cmd = { "vscode-html-languageserver", "--stdio" },
-    filetypes = { "html" },
-  },
-  jdtls = {
-    cmd = {
-      "jdtls",
-      "--add-modules=ALL-SYSTEM",
-      "--add-opens java.base/java.util=ALL-UNNAMED",
-      "--add-opens java.base/java.lang=ALL-UNNAMED",
-    },
-  },
-  kotlin_language_server = {},
-  -- eslint = {
-  --   format = false,
-  -- },
-  biome = { cmd = { "yarn", "biome", "lsp-proxy" } },
-  vtsls = {
-    server_capabilities = {
-      documentFormattingProvider = false,
-    },
-  },
-  -- ts_ls = {
-  --   settings = {
-  --     javascript = {
-  --       inlayHints = {
-  --         includeInlayEnumMemberValueHints = true,
-  --         includeInlayFunctionLikeReturnTypeHints = true,
-  --         includeInlayFunctionParameterTypeHints = true,
-  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-  --         includeInlayPropertyDeclarationTypeHints = true,
-  --         includeInlayVariableTypeHints = true,
-  --       },
-  --     },
-  --     typescript = {
-  --       preferences = {
-  --         includeCompletionsForModuleExports = true,
-  --         includeCompletionsForImportStatements = true,
-  --         importModuleSpecifierPreference = "relative",
-  --       },
-  --       inlayHints = {
-  --         includeInlayEnumMemberValueHints = true,
-  --         includeInlayFunctionLikeReturnTypeHints = true,
-  --         includeInlayFunctionParameterTypeHints = true,
-  --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-  --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-  --         includeInlayPropertyDeclarationTypeHints = true,
-  --         includeInlayVariableTypeHints = true,
-  --       },
-  --     },
-  --   },
-  -- },
-  jsonls = {
-    cmd = { "vscode-json-languageserver", "--stdio" },
-    commands = {
-      Format = {
-        function()
-          vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line("$"), 0 })
-        end,
-      },
-    },
-    settings = {
-      json = {
-        format = { enable = false },
-        schemas = require("schemastore").json.schemas(),
-        validate = { enable = true },
-      },
-    },
-  },
-  yamlls = {
-    capabilities = {},
-    settings = {
-      yaml = {
-        hover = true,
-        completion = true,
-        validate = true,
-        customTags = {
-          "!Base64",
-          "!Cidr",
-          "!FindInMap sequence",
-          "!GetAtt",
-          "!GetAZs",
-          "!ImportValue",
-          "!Join sequence",
-          "!Ref",
-          "!Select sequence",
-          "!Split sequence",
-          "!Sub sequence",
-          "!Sub",
-          "!And sequence",
-          "!Condition",
-          "!Equals sequence",
-          "!If sequence",
-          "!Not sequence",
-          "!Or sequence",
-        },
-        editor = { formatOnType = true },
-        schemas = require("schemastore").yaml.schemas(),
-      },
-    },
-  },
-  bashls = {},
+  "bashls",
+  "biome",
+  "clang",
+  "crystalline",
+  "dockerls",
+  "gopls",
+  "html",
+  "jsonls",
+  "kotlin_language_server",
+  "omnisharp",
+  "pyrefly",
+  "ruff",
+  "rust_analyzer",
+  "solargraph",
+  "sorbet",
+  "terraformls",
+  "tombi",
+  "tsgo",
+  "yamlls",
+  "zls",
+  -- "pylsp",
+  -- "ts_ls",
+  -- "vtsls",
+  -- "zubanls",
 }
-
-for server, opts in pairs(servers) do
-  if opts.capabilities == nil then
-    opts.capabilities = caps
-  end
-  vim.lsp.config(server, opts)
+for _, server in pairs(servers) do
   vim.lsp.enable(server)
 end
 
@@ -254,7 +56,7 @@ utils.lsp_attach(function(client, bufnr)
 end)
 
 utils.lsp_attach(function(_, bufnr)
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, buffer = bufnr })
+  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, buffer = bufnr, desc = "Go to declaration" })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { silent = true, buffer = bufnr })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
@@ -264,6 +66,35 @@ utils.lsp_attach(function(_, bufnr)
   vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, { silent = true, buffer = bufnr })
   vim.keymap.set("n", "<leader>ga", vim.lsp.buf.code_action, { silent = true, buffer = bufnr })
   --xmap({ "la", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, buffer = bufnr })
+  vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({ count = 1 })
+  end, { silent = true, buffer = bufnr })
+  vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({ count = -1 })
+  end, { silent = true, buffer = bufnr })
+end)
+
+utils.lsp_attach(function(client, bufnr)
+  if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+    local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      buffer = bufnr,
+      group = highlight_augroup,
+      callback = vim.lsp.buf.document_highlight,
+    })
+
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      buffer = bufnr,
+      group = highlight_augroup,
+      callback = vim.lsp.buf.clear_references,
+    })
+
+    vim.api.nvim_create_autocmd("LspDetach", {
+      group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+      callback = function(e)
+        vim.lsp.buf.clear_references()
+        vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = e.buf })
+      end,
+    })
+  end
 end)

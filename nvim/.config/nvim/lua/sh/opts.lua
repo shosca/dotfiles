@@ -10,6 +10,7 @@ utils.set(vim.g, {
 
 utils.set(vim.opt, {
   ai = true,
+  termguicolors = true,
   autoindent = true,
   autowrite = true,
   background = "dark",
@@ -35,14 +36,23 @@ utils.set(vim.opt, {
     foldsep = " ",
     diff = "╱",
     eob = "~",
+    -- thicc borders
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vert = "┃",
+    vertleft = "┫",
+    vertright = "┣",
+    verthoriz = "╋",
   },
   foldcolumn = "1",
+  foldlevel = 99,
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
   hidden = true, -- I like having buffers stay around
   hlsearch = true, -- I wouldn't use this without my DoNoHL function
   ignorecase = true, -- Ignore case when searching...
-  inccommand = "split",
+  inccommand = "nosplit",
   incsearch = true, -- Makes search act like search in modern browsers
   joinspaces = false, -- Two spaces and grade school, we're done
   laststatus = 3, -- Height of the command bar

@@ -163,12 +163,6 @@ uvx-yawsso: in
 clean-uvx-yawsso: out
 	uv tool uninstall yawsso
 
-uvx-ruff-lsp: in
-	uv tool install ruff-lsp
-
-clean-uvx-ruff-lsp: out
-	uv tool uninstall ruff-lsp
-
 uvx: in
 	$(MAKE) $(shell grep "^uvx-" Makefile | cut -d':' -f1)
 

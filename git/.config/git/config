@@ -21,11 +21,12 @@ wco = worktree checkout
 clr = "!f() { git status -s | grep '??' | cut -d' ' -f2 | xargs -r rm -rf; }; f"
 clearbranches = "!f() { git for-each-ref --format='%(refname:short)' refs/heads | grep shosca | xargs -r git branch -D ; }; f"
 cleanup = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D ; }; f"
-d = difftool
-diffr = "!f() { git diff "$1"^.."$1"; }; f"
-dl = "!git ll -1"
-dlc = diff --cached HEAD^
-dr  = "!f() { git diff "$1"^.."$1"; }; f"
+dlog = -c diff.external=difft log --ext-diff
+dshow = -c diff.external=difft show --ext-diff
+ddiff = -c diff.external=difft diff
+dl = -c diff.external=difft log -p --ext-diff
+ds = -c diff.external=difft show --ext-diff
+dft = -c diff.external=difft diff
 f = "!git ls-files | grep -i"
 filelog = log -u
 fl = log -u
@@ -44,55 +45,72 @@ rh = reset --hard
 rh1 = reset HEAD^ --hard
 rh2 = reset HEAD^^ --hard
 st = status -s
+
 [user]
 name = Serkan Hosca
 email = serkan@hosca.com
+
 [advice]
 skippedCherryPicks = false
 detachedHead = false
+
 [color]
 branch = auto
 diff = auto
 interactive = auto
 status = auto
+
 [pull]
 ff = true
 rebase = true
+
 [core]
 fileMode = false
 autocrlf = false
+
 [pager]
 show = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
-diff = nvim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'setlocal buftype=nofile' -
+
 [credential]
 helper = cache --timeout=3600
+
 [push]
 default = current
+
 [url "https://github.com/"]
 insteadOf = git://github.com/
+
 [merge]
 tool = nvimdiff
 ff = only
 stat = true
+
 [diff]
-tool = nvimdiff
-algorithm = histogram
+external=difft
+
 [mergetool "nvimdiff"]
 cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
+
 [branch]
 autosetuprebase = always
+
 [filter "lfs"]
 clean = git-lfs clean -- %f
 smudge = git-lfs smudge -- %f
 process = git-lfs filter-process
 required = true
+
 [fetch]
 prune = true
+
 [rebase]
 autoStash = true
+
 [rerere]
 enabled = true
+
 [help]
 autocorrect = 10
+
 [pack]
 usePathWalk = true

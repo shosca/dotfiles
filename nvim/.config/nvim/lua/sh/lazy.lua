@@ -20,7 +20,6 @@ require("lazy").setup("sh.plugins", {
   ui = {
     icons = require("sh.ui").icons,
   },
-  install = { colorscheme = { "tokyonight" } },
   rocks = { hererocks = true },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {

@@ -1,0 +1,31 @@
+return {
+  settings = {
+    yaml = {
+      hover = true,
+      completion = true,
+      validate = true,
+      customTags = {
+        "!Base64",
+        "!Cidr",
+        "!FindInMap sequence",
+        "!GetAtt",
+        "!GetAZs",
+        "!ImportValue",
+        "!Join sequence",
+        "!Ref",
+        "!Select sequence",
+        "!Split sequence",
+        "!Sub sequence",
+        "!Sub",
+        "!And sequence",
+        "!Condition",
+        "!Equals sequence",
+        "!If sequence",
+        "!Not sequence",
+        "!Or sequence",
+      },
+      editor = { formatOnType = true },
+      schemas = require("schemastore").yaml.schemas(),
+    },
+  },
+}

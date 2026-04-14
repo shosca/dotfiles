@@ -2,22 +2,18 @@ local utils = require("sh.utils")
 
 return {
   {
-    "chrisgrieser/nvim-origami",
-    event = "VeryLazy",
-    opts = {},
-    init = function()
-      vim.opt.foldenable = true
-      vim.opt.foldlevel = 99
-      vim.opt.foldlevelstart = 99
-    end,
-  },
-  {
-    -- https://github.com/oribarilan/lensline.nvim
-    "oribarilan/lensline.nvim",
-    event = "LspAttach",
+    "ember-theme/nvim",
+    name = "ember",
     enabled = false,
+    priority = 1000,
     config = function()
-      require("lensline").setup()
+      require("ember").setup({
+        variant = "ember", -- "ember" | "ember-soft" | "ember-light"
+        on_colors = function(palette)
+          palette.bg = "#141616"
+        end,
+      })
+      --vim.cmd("colorscheme ember")
     end,
   },
   {
@@ -29,8 +25,10 @@ return {
       require("tokyonight").setup({
         style = "night",
         transparent = true,
+        on_colors = function(colors)
+          colors.border = colors.magenta
+        end,
       })
-      vim.opt.termguicolors = true
       vim.cmd.colorscheme("tokyonight-night")
     end,
   },
@@ -39,7 +37,7 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
       anti_conceal = { enabled = false },
-      file_types = { "markdown", "Avante", "opencode_output" },
+      file_types = { "markdown", "Avante", "copilot-chat", "opencode_output" },
     },
     ft = { "markdown", "Avante", "opencode_output" },
   },
@@ -67,8 +65,27 @@ return {
         require("windows").setup({
           animation = { enable = false },
           ignore = {
-            buftype = { "quickfix", "term", "terminal", "fish", "nvim_terminal_emulator", "Terminal" },
-            filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "Telescope", "telescope", "sidekick_terminal" },
+            buftype = {
+              "quickfix",
+              "term",
+              "terminal",
+              "fish",
+              "nvim_terminal_emulator",
+              "Terminal",
+              "opencode",
+              "opencode_output",
+            },
+            filetype = {
+              "NvimTree",
+              "neo-tree",
+              "undotree",
+              "gundo",
+              "Telescope",
+              "telescope",
+              "sidekick_terminal",
+              "opencode",
+              "opencode_output",
+            },
           },
         }),
       })
@@ -86,50 +103,6 @@ return {
         desc = "Replace in files (Spectre)",
       },
     },
-  },
-  {
-    -- https://github.com/b0o/incline.nvim
-    "b0o/incline.nvim",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      "SmiteshP/nvim-navic",
-    },
-    config = function()
-      local helpers = require("incline.helpers")
-      local navic = require("nvim-navic")
-      local devicons = require("nvim-web-devicons")
-      require("incline").setup({
-        window = {
-          padding = 0,
-          margin = { horizontal = 0, vertical = 0 },
-        },
-        render = function(props)
-          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-          if filename == "" then
-            filename = "[No Name]"
-          end
-          local ft_icon, ft_color = devicons.get_icon_color(filename)
-          local modified = vim.bo[props.buf].modified
-          local res = {
-            ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
-            " ",
-            { filename, gui = modified and "bold,italic" or "bold" },
-            guibg = "#44406e",
-          }
-          if props.focused then
-            for _, item in ipairs(navic.get_data(props.buf) or {}) do
-              table.insert(res, {
-                { " > ", group = "NavicSeparator" },
-                { item.icon, group = "NavicIcons" .. item.type },
-                { item.name, group = "NavicText" },
-              })
-            end
-          end
-          table.insert(res, " ")
-          return res
-        end,
-      })
-    end,
   },
   {
     -- https://github.com/hrsh7th/nvim-cmp
@@ -275,8 +248,8 @@ return {
           input = {
             keys = {
               ["<a-a>"] = { "sidekick_send", mode = { "n", "i" } },
-              ["<C-n>"] = { "history_forward", mode = { "i", "n" } },
-              ["<C-p>"] = { "history_back", mode = { "i", "n" } },
+              ["<C-l>"] = { "history_forward", mode = { "i", "n" } },
+              ["<C-h>"] = { "history_back", mode = { "i", "n" } },
               ["<C-CR>"] = { "edit_vsplit", mode = { "i", "n" } },
             },
           },

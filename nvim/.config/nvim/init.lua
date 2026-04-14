@@ -6,7 +6,7 @@ require("sh.mappings")
 require("sh.autocmds")
 require("sh.filetypes")
 
-require("sh.treesitter")
 require("sh.lsp")
+require("sh.treesitter")
 require("sh.diagnostic")
 require("sh.osc52")

@@ -20,3 +20,5 @@ alias awsedit="e $AWS_CONFIG_FILE $AWS_SHARED_CREDENTIALS_FILE"
 alias pipupdate='pip3 install -U $(pip3 freeze | cut -d"=" -f1 | grep -v "git@")'
 alias open="xdg-open"
 alias sudovim="nvim -u NONE"
+alias opencode="opencode --port"
+alias lls="llama-swap -watch-config -config ~/.config/llama-swap/config.yaml -listen 127.0.0.1:8012"
