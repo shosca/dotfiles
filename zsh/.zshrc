@@ -148,12 +148,13 @@ fi
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"
 
-[ -x "$(command -v poetry)" ] && poetry completions zsh > ~/.zfunc/_poetry
-[ -x "$(command -v pipx)" ] && eval "$(register-python-argcomplete pipx)"
-[ -x "$(command -v uv)" ] && eval "$(uv generate-shell-completion zsh)"
-[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
-[ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
-[ -x "$(command -v mise)" ] && eval "$(mise activate)"
+[[ $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
+[[ $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
+[[ $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
+[[ $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
+[[ $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
+[[ $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 
 case "${TERM}" in
   xterm*)
