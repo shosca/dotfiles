@@ -50,3 +50,7 @@ source ${HOME}/.aliases
 export PATH="$PATH:/home/serkan/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+alias claude-mem='bun "/home/serkan/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi

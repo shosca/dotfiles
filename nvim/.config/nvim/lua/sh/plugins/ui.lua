@@ -2,6 +2,14 @@ local utils = require("sh.utils")
 
 return {
   {
+    "BYUignite/forsake-repent",
+    lazy = false, -- load at startup (recommended for colorschemes)
+    priority = 1000, -- make sure it loads before other UI plugins
+    config = function()
+      vim.cmd("colorscheme forsake") -- or forsake
+    end,
+  },
+  {
     "ember-theme/nvim",
     name = "ember",
     enabled = false,
@@ -20,6 +28,7 @@ return {
     -- https://github.com/folke/tokyonight.nvim
     "folke/tokyonight.nvim",
     lazy = false,
+    enabled = false,
     priority = 1000,
     config = function()
       require("tokyonight").setup({
@@ -29,7 +38,7 @@ return {
           colors.border = colors.magenta
         end,
       })
-      vim.cmd.colorscheme("tokyonight-night")
+      --vim.cmd.colorscheme("tokyonight-night")
     end,
   },
   {
@@ -119,6 +128,7 @@ return {
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
       return {
+        preselect = cmp.PreselectMode.None,
         completion = { completeopt = "menu,menuone,noselect" },
         snippet = {
           expand = function(args)

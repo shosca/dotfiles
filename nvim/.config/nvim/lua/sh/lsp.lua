@@ -1,13 +1,10 @@
 local utils = require("sh.utils")
-local caps = vim.lsp.protocol.make_client_capabilities()
-caps.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
-}
-caps.textDocument.completion.completionItem.snippetSupport = true
+local wk = require("which-key")
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
-  caps = cmp_nvim_lsp.default_capabilities(caps)
+  capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 end
 vim.lsp.config("*", { capabilities = caps })
 
@@ -57,14 +54,20 @@ end)
 
 utils.lsp_attach(function(_, bufnr)
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, buffer = bufnr, desc = "Go to declaration" })
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
-  vim.keymap.set("n", "gf", vim.lsp.buf.format, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "gl", vim.lsp.buf.hover, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, { silent = true, buffer = bufnr })
-  vim.keymap.set("n", "<leader>ga", vim.lsp.buf.code_action, { silent = true, buffer = bufnr })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buffer = bufnr, desc = "Go to definition" })
+  vim.keymap.set(
+    "n",
+    "gi",
+    vim.lsp.buf.implementation,
+    { silent = true, buffer = bufnr, desc = "Go to implementation" }
+  )
+  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Type definition" })
+  vim.keymap.set("n", "gf", vim.lsp.buf.format, { silent = true, buffer = bufnr, desc = "Format" })
+  vim.keymap.set("n", "gu", vim.lsp.buf.references, { silent = true, buffer = bufnr, desc = "References" })
+  vim.keymap.set("n", "gr", vim.lsp.buf.rename, { silent = true, buffer = bufnr, desc = "Rename" })
+  vim.keymap.set("n", "gl", vim.lsp.buf.hover, { silent = true, buffer = bufnr, desc = "Hover" })
+  vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, { silent = true, buffer = bufnr, desc = "Signature help" })
+  vim.keymap.set("n", "<leader>ga", vim.lsp.buf.code_action, { silent = true, buffer = bufnr, desc = "Code action" })
   --xmap({ "la", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
   vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = 1 })

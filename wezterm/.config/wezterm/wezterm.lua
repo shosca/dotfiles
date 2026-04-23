@@ -89,14 +89,15 @@ return {
   default_cursor_style = "BlinkingBar",
   window_background_opacity = 0.900,
   warn_about_missing_glyphs = false,
-  font = wezterm.font_with_fallback({
+  font = wezterm.font({
     -- family = "Liga SFMono Nerd Font",
     -- family = "Fira Code",
     -- family = "Cascadia Code",
     -- family = "JetBrains Mono",
     -- family = "Lilex",
     -- family = "NeoSpleen Nerd Font",
-    family = "Hasklig",
+    -- family = "Hasklig",
+    family = "Iosevka Term SS18",
     -- family = "0xProto Nerd Font",
     -- family = "Google Sans Regular",
     -- weight = 100,

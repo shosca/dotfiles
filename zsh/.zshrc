@@ -103,7 +103,7 @@ if ! zgenom saved; then
     # zgenom ohmyzsh plugins/archlinux
     # zgenom ohmyzsh plugins/aws
     # zgenom ohmyzsh plugins/docker
-    # zgenom ohmyzsh plugins/git
+    zgenom ohmyzsh plugins/git
     # zgenom ohmyzsh plugins/invoke
     # zgenom ohmyzsh plugins/pyenv
     # zgenom ohmyzsh plugins/python
@@ -154,7 +154,6 @@ fi
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 [ -x "$(command -v mise)" ] && eval "$(mise activate)"
-
 
 case "${TERM}" in
   xterm*)
@@ -208,3 +207,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   export XDG_RUNTIME_DIR="${TMPDIR}"
 fi
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
