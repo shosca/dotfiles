@@ -1,21 +1,39 @@
 export DOTFILES="${HOME}/dotfiles"
 export DISABLE_MAGIC_FUNCTIONS=true
-export ZSH_AUTOSUGGEST_STRATEGY=(history)
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
+export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+export SHOW_AWS_PROMPT=false
+export LS_FLAGS="--all --group-directories-first --time-style=long-iso --sort=name --icons=always"
 
-autoload -U +X compinit && compinit
-autoload -U +X bashcompinit && bashcompinit
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
-[ -x "$(command -v fzf)" ] && source <(fzf --zsh)
-[ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
+setopt always_to_end
 setopt append_history
+setopt auto_cd
+setopt auto_list
+setopt auto_menu
+setopt auto_param_slash
+setopt case_glob
+setopt complete_in_word
+setopt extended_glob
 setopt extended_history
+setopt extended_history
+setopt glob_dots
 setopt hist_expire_dups_first
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
@@ -23,22 +41,12 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
-setopt INC_APPEND_HISTORY
-unsetopt HIST_BEEP
-setopt share_history
-setopt EXTENDED_HISTORY
+setopt inc_append_history
+setopt interactive_comments
 setopt pushd_ignore_dups
-setopt AUTO_CD              # If a command is issued that can’t be executed as a normal command,
-                            # and the command is the name of a directory, perform the cd command
-                            # to that directory.
-                            #
-setopt ALWAYS_TO_END        # Move cursor to the end of a completed word.
-setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
-setopt AUTO_MENU            # Show completion menu on a successive tab press.
-setopt AUTO_PARAM_SLASH     # If completed parameter is a directory, add a trailing slash.
-setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
-unsetopt MENU_COMPLETE      # Do not autoselect the first completion entry.
-setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
+setopt share_history
+unsetopt hist_beep
+unsetopt menu_complete
 
 # Completion styling
 fzf_file_or_dir_preview="if [ -d {} ]; then eza -1 -a --color=always {} | head -200; else bat --style=header-filename,grid --color=always --line-range :500 {}; fi"
@@ -60,12 +68,9 @@ zstyle ':fzf-tab:complete:head:*' fzf-preview $dir_or_file_preview
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview $dir_preview
 
 # Speed up autocomplete, force prefix mapping
-# zstyle ':completion:*' accept-exact '*(N)'
-# zstyle ':completion:*' fzf-search-display true
-# zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-
-mkdir -p ~/.zfunc
-fpath+=~/.zfunc
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' fzf-search-display true
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
 # Extend $PATH without duplicates
 _extend_path() {
@@ -81,50 +86,28 @@ source_sh() {
   emulate -LR zsh
 }
 
-source_sh ${HOME}/.aliases
-alias resrc='source ~/.zshrc'
+zinit pack for dircolors-material
+zinit pack for ls_colors
 
-if [ ! -e ~/.bash-my-aws ]; then
-  git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
-fi
-export PATH="$PATH:$HOME/.bash-my-aws/bin"
-source_sh ~/.bash-my-aws/aliases
-source_sh ~/.bash-my-aws/bash_completion.sh
+zinit light junegunn/fzf
+zinit load zdharma-continuum/history-search-multi-word
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma-continuum/fast-syntax-highlighting
 
-if [ ! -e ${HOME}/.zgenom ]; then
-  git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom"
-fi
-source "${HOME}/.zgenom/zgenom.zsh"
+zinit load zsh-users/zsh-completions
+zinit load zsh-users/zsh-history-substring-search
+zinit load zsh-users/zsh-syntax-highlighting
 
-fpath+=${DOTFILES}/zfunc
+zinit light apachler/zsh-aws
+zinit light hlissner/zsh-autopair
 
-if ! zgenom saved; then
-    zgenom ohmyzsh lib/
-    # zgenom ohmyzsh plugins/archlinux
-    # zgenom ohmyzsh plugins/aws
-    # zgenom ohmyzsh plugins/docker
-    zgenom ohmyzsh plugins/git
-    # zgenom ohmyzsh plugins/invoke
-    # zgenom ohmyzsh plugins/pyenv
-    # zgenom ohmyzsh plugins/python
-    # zgenom ohmyzsh plugins/ripgrep
-    # zgenom ohmyzsh plugins/systemd
-
-    zgenom load apachler/zsh-aws
-    zgenom load hlissner/zsh-autopair
-    zgenom load lukechilds/zsh-better-npm-completion
-    zgenom load zsh-users/zsh-autosuggestions
-    zgenom load zsh-users/zsh-completions src
-    zgenom load zsh-users/zsh-history-substring-search
-    zgenom load zsh-users/zsh-syntax-highlighting
-
-    zgenom compile ${HOME}/.zshrc
-fi
 
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
 bindkey '^R' fzf-history-widget
 
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '^P' history-substring-search-up
@@ -148,65 +131,55 @@ fi
 [[ -d "/usr/lib/ccache/bin" ]] && _extend_path "/usr/lib/ccache/bin"
 [[ -d "/usr/lib/distcc/bin" ]] && _extend_path "/usr/lib/distcc/bin"
 
-[[ $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
-[[ $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
-[[ $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
-[[ $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
-[[ $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
-[[ $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
-[[ $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
+[[ -x "$(command -v fzf)" ]] && source <(fzf --zsh)
+[[ -x "$(command -v starship)" ]] && eval "$(starship init zsh)"
+[[ -x "$(command -v zoxide)" ]] && eval "$(zoxide init zsh)"
 
-case "${TERM}" in
-  xterm*)
-    export TERM=xterm-256color
-    cache_term_colors=256
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-  screen)
-    cache_term_colors=256
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-  dumb)
-    cache_term_colors=2
-    ;;
-  *)
-    cache_term_colors=16
-    if [[ -f "/usr/bin/dircolors" ]]; then
-      eval "$(dircolors -b)"
-    fi
-    ;;
-esac
+[[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
+[[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
+[[ -x $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
+[[ -x $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
+[[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
+[[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 
-if [[ -f "/usr/bin/dircolors" ]] && [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
-  eval $(dircolors -b ${HOME}/.dircolors)
+if [[ -f ~/.dir_colors ]] ; then
+    eval $(dircolors -b ~/.dir_colors)
+elif [[ -f /etc/DIR_COLORS ]] ; then
+    eval $(dircolors -b /etc/DIR_COLORS)
 fi
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/serkan/.lmstudio/bin"
-# End of LM Studio CLI section
+source_sh ${HOME}/.aliases
+alias z='__zoxide_z'
+alias zi='__zoxide_zi'
+alias resrc='source ~/.zshrc'
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export XDG_RUNTIME_DIR="${HOME}/run"
-  alias nproc="sysctl -n hw.logicalcpu"
-  # handle mac stupidity
-  if [ -f /usr/libexec/path_helper ]; then
-    export PATH=""
-    source /etc/profile
-    export PATH="/usr/local/sbin:${PATH}"
-  fi
-  for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
-    _extend_path $_p
-  done
-  export PKG_CONFIG_PATH=""
-  for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
-    export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
-  done
-
-  export XDG_RUNTIME_DIR="${TMPDIR}"
+if [ ! -e ~/.bash-my-aws ]; then
+  git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
 fi
+export PATH="$PATH:$HOME/.bash-my-aws/bin"
+source_sh ~/.bash-my-aws/aliases
+source_sh ~/.bash-my-aws/bash_completion.sh
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   export XDG_RUNTIME_DIR="${HOME}/run"
+#   alias nproc="sysctl -n hw.logicalcpu"
+#   # handle mac stupidity
+#   if [ -f /usr/libexec/path_helper ]; then
+#     export PATH=""
+#     source /etc/profile
+#     export PATH="/usr/local/sbin:${PATH}"
+#   fi
+#   for _p in $(/usr/bin/find -f /usr/local/Cellar | /usr/bin/grep 'gnubin$' | sort); do
+#     _extend_path $_p
+#   done
+#   export PKG_CONFIG_PATH=""
+#   for _p in /usr/local/Cellar/*/*/lib/pkgconfig; do
+#     export PKG_CONFIG_PATH="$_p:${PKG_CONFIG_PATH}"
+#   done
+#
+#   export XDG_RUNTIME_DIR="${TMPDIR}"
+# fi
+
+# if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+#
