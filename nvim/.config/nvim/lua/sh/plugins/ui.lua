@@ -2,17 +2,6 @@ local utils = require("sh.utils")
 
 return {
   {
-    "cfbender/claret.nvim",
-    priority = 1000,
-    config = function()
-      require("claret").setup({
-        variant = "dark",
-        transparent = true,
-      })
-      vim.cmd.colorscheme("claret")
-    end,
-  },
-  {
     "BYUignite/forsake-repent",
     lazy = false, -- load at startup (recommended for colorschemes)
     enabled = false,
@@ -25,7 +14,6 @@ return {
     "ember-theme/nvim",
     name = "ember",
     priority = 1000,
-    enabled = false,
     config = function()
       require("ember").setup({
         variant = "ember", -- "ember" | "ember-soft" | "ember-light"
@@ -33,7 +21,7 @@ return {
           palette.bg = "#000000"
         end,
       })
-      --vim.cmd("colorscheme ember")
+      vim.cmd("colorscheme ember")
     end,
   },
   {

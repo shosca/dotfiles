@@ -143,11 +143,30 @@ fi
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 
-if [[ -f ~/.dir_colors ]] ; then
-    eval $(dircolors -b ~/.dir_colors)
-elif [[ -f /etc/DIR_COLORS ]] ; then
-    eval $(dircolors -b /etc/DIR_COLORS)
+if [[ -f "/usr/bin/dircolors" ]]; then
+  case "${TERM}" in
+    xterm*)
+      export TERM=xterm-256color
+      cache_term_colors=256
+      eval "$(dircolors -b)"
+      ;;
+    screen)
+      cache_term_colors=256
+      eval "$(dircolors -b)"
+      ;;
+    dumb)
+      cache_term_colors=2
+      ;;
+    *)
+      cache_term_colors=16
+      eval "$(dircolors -b)"
+      ;;
+  esac
+  if [[ -f ${HOME}/.dircolors ]] && [[ ${cache_term_colors} -ge 8 ]]; then
+    eval $(dircolors -b ${HOME}/.dircolors)
+  fi
 fi
+
 
 source_sh ${HOME}/.aliases
 alias z='__zoxide_z'
