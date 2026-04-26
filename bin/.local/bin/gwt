@@ -25,6 +25,19 @@ class NoWorktreesFound(GitError):
 
 
 @dataclass
+class CommandArg:
+    position: int
+    name: str
+    help: str = ""
+    source_type: str | None = None
+
+
+@dataclass
+class CommandMetadata:
+    args: tuple[CommandArg, ...] = ()
+
+
+@dataclass
 class WorktreeInfo:
     path: str
     branch: str
@@ -35,10 +48,14 @@ class WorktreeInfo:
 
 class Command(abc.ABC):
     aliases: tuple[str] = ()
+    help_text: str = ""
 
     def add_args(self, subparser) -> None: ...
 
     def run(self, args) -> None: ...
+
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata()
 
     @functools.cached_property
     def worktrees(self) -> list[WorktreeInfo]:
@@ -236,6 +253,7 @@ class Command(abc.ABC):
 
 class List(Command):
     aliases = ("ls",)
+    help_text = "List all worktrees with branch, age, and diff status."
 
     def add_args(self, subparser):
         # gwt list — list all worktrees
@@ -310,6 +328,17 @@ class List(Command):
 
 
 class Cleanup(Command):
+    help_text = "Delete worktrees with gone upstreams."
+
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata(
+            args=(
+                CompletionArg(position=1, name="-y", help="Skip confirmation prompt.", source_type="flags"),
+                CompletionArg(position=1, name="--yes", help="Skip confirmation prompt.", source_type="flags"),
+                CompletionArg(position=1, name="--dry-run", help="Show what would be deleted without making changes.", source_type="flags"),
+            )
+        )
+
     def add_args(self, subparser):
         # gwt cleanup — cleanup subcommand
         cleanup_parser = subparser.add_parser(
@@ -428,6 +457,16 @@ class Cleanup(Command):
 
 class Delete(Command):
     aliases = ("rm",)
+    help_text = "Delete a worktree by branch name or path."
+
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata(
+            args=(
+                CompletionArg(position=1, name="target", help="Branch name or worktree path to delete.", source_type="worktree_branches"),
+                CompletionArg(position=1, name="-y", help="Skip confirmation prompt.", source_type="flags"),
+                CompletionArg(position=1, name="--yes", help="Skip confirmation prompt.", source_type="flags"),
+            )
+        )
 
     def add_args(self, subparser):
         # gwt delete <branch|path> — delete a worktree
@@ -499,98 +538,192 @@ class Delete(Command):
 
 
 class Completions(Command):
-    COMPLETIONS = {
-        "zsh": (
-            """#compdef gwt
+    help_text = "Print shell completion scripts to stdout."
+    SHELL_TYPES = ("bash", "fish", "zsh")
 
-_gwt() {
-    local cur="$words[CURRENT]"
-    
-    if (( CURRENT == 2 )); then
-        _values 'subcommands' checkout cleanup delete list pr completions
-    elif (( CURRENT == 3 )); then
-        case $words[2] in
-            checkout)
-                local -a branches
-                branches=(${(f)"$(git branch --format='%(refname:short)' 2>/dev/null)"})
-                _describe 'branch' branches
-                ;;
-            cleanup)
-                _values 'flags' '-y[Skip confirmation prompt.]' '--yes[Skip confirmation prompt.]' '--dry-run[Show what would be deleted without making changes.]'
-                ;;
-            delete)
-                local -a branches
-                branches=(${(f)"$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')}"})
-                _describe 'branch_or_path' branches
-                ;;
-            pr)
-                _values 'flags' '--remote[Remote name (default: origin).]'
-                ;;
-            completions)
-                _values 'shell' bash fish zsh
-                ;;
-        esac
-    fi
-}
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata(
+            args=(
+                CompletionArg(position=1, name="shell", help="Shell type for completion script.", source_type="shell_types"),
+            )
+        )
 
-_gwt
-compdef _gwt gwt
-"""
-        ),
-        "bash": (
-            """__gwt() {
-    local cur prev words cword
-    _init_completion || return
+    def _get_commands_info(self):
+        """Collect command names, aliases, help_text from COMMANDS."""
+        commands = []
+        for cmd_cls in COMMANDS:
+            cmd = cmd_cls()
+            meta = cmd.get_completion_metadata()
+            main_name = cmd_cls.__name__.lower()
+            aliases = list(cmd.aliases)
+            help_text = getattr(cmd_cls, 'help_text', '') or ""
+            commands.append({
+                'main': main_name,
+                'aliases': aliases,
+                'metadata': meta,
+                'help': help_text,
+            })
+        return sorted(commands, key=lambda c: c['main'])
 
-    local subcommands="checkout cleanup delete list pr completions"
+    def _generate_zsh(self, commands_info):
+        lines = []
+        lines.append("#compdef gwt")
+        lines.append("")
+        lines.append("_gwt() {")
+        lines.append('    local cur="$words[CURRENT]"')
+        lines.append("")
+        lines.append("    if (( CURRENT == 2 )); then")
 
-    if [[ $cword -eq 1 ]]; then
-        COMPREPLY=( $(compgen -W "$subcommands" -- "$cur") )
-        return
-    fi
+        subcmd_list = []
+        for cmd in commands_info:
+            subcmd_list.append(cmd['main'])
+            for alias in cmd['aliases']:
+                subcmd_list.append(alias)
+        lines.append("        _values 'subcommands' " + " ".join(subcmd_list))
+        lines.append("    elif (( CURRENT == 3 )); then")
+        lines.append("        case $words[2] in")
 
-    prev="${words[cword-2]}"
-    if [[ "$prev" == "checkout" ]]; then
-        local branches
-        branches=$(git branch --format='%(refname:short)' 2>/dev/null)
-        COMPREPLY=( $(compgen -W "$branches" -- "$cur") )
-    elif [[ "$prev" == "delete" ]]; then
-        local wt_branches
-        wt_branches=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')
-        COMPREPLY=( $(compgen -W "$wt_branches" -- "$cur") )
-    elif [[ "$prev" == "pr" ]]; then
-        local flags="--remote"
-        COMPREPLY=( $(compgen -W "$flags" -- "$cur") )
-    elif [[ "$prev" == "cleanup" ]]; then
-        COMPREPLY=( $(compgen -W "--dry-run --yes" -- "$cur") )
-    elif [[ "$prev" == "completions" ]]; then
-        COMPREPLY=( $(compgen -W "bash fish zsh" -- "$cur") )
-    fi
-}
+        for cmd in commands_info:
+            all_names = [cmd['main']] + cmd['aliases']
+            meta = cmd['metadata']
+            flag_args = [a for a in meta.args if a.source_type == "flags"]
+            shell_arg = [a for a in meta.args if a.source_type == "shell_types"]
+            branch_arg = [a for a in meta.args if a.source_type == "branches"]
+            wt_arg = [a for a in meta.args if a.source_type == "worktree_branches"]
 
-complete -F __gwt gwt
-"""
-        ),
-        "fish": (
-            r"""
-complete -c gwt -s h -l help -d 'Show help'
-complete -c gwt -f -n '__fish_use_subcommand' -a checkout -d 'Create or switch to a git worktree.'
-complete -c gwt -f -n '__fish_use_subcommand' -a cleanup -d 'Delete worktrees with gone upstreams.'
-complete -c gwt -f -n '__fish_use_subcommand' -a completions -d 'Print shell completion scripts to stdout.'
-complete -c gwt -f -n '__fish_use_subcommand' -a delete -d 'Delete a worktree by branch name or path.'
-complete -c gwt -f -n '__fish_use_subcommand' -a list -d 'List all worktrees with branch, age, and diff status.'
-complete -c gwt -f -n '__fish_use_subcommand' -a pr -d 'Checkout a GitHub PR in a new worktree.'
-complete -c gwt -n '__fish_seen_subcommand checkout' -a "(git branch --format='%(refname:short)' 2>/dev/null)"
-complete -c gwt -n '__fish_seen_subcommand delete' -a "(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')"
-complete -c gwt -n '__fish_seen_subcommand delete' -s y -l yes -d 'Skip confirmation prompt.'
-complete -c gwt -n '__fish_seen_subcommand cleanup' -s y -l yes -d 'Skip confirmation prompt.'
-complete -c gwt -n '__fish_seen_subcommand cleanup' -l dry-run -d 'Show what would be deleted without making changes.'
-complete -c gwt -n '__fish_seen_subcommand pr' -l remote -d 'Remote name (default: origin).'
-complete -c gwt -n '__fish_seen_subcommand completions' -a "bash fish zsh" -d 'Shell type for completion script.'
+            for name in all_names:
+                lines.append("            " + name + ")")
 
-"""
-        ),
-    }
+                if shell_arg:
+                    types_str = " ".join(self.SHELL_TYPES)
+                    lines.append("                _values 'shell' " + types_str)
+                elif branch_arg:
+                    lines.append("                local -a branches")
+                    lines.append('                branches=(${(f)"$(git branch --format=\'%(refname:short)\' 2>/dev/null)"})')
+                    lines.append("                _describe 'branch' branches")
+                elif wt_arg:
+                    lines.append("                local -a wt_branches")
+                    lines.append('                wt_branches=(${(f)"$(git worktree list --porcelain 2>/dev/null | awk \'/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}\' | sed \'s|refs/heads/||\')"})')
+                    lines.append("                _describe 'branch_or_path' wt_branches")
+                elif flag_args:
+                    flags_str = " ".join(f'{a.name}[{a.help}]' for a in flag_args)
+                    lines.append("                _values 'flags' " + flags_str)
+
+                lines.append("                ;;")
+
+        lines.append("        esac")
+        lines.append("    fi")
+        lines.append("}")
+        lines.append("")
+        lines.append("_gwt")
+        lines.append("compdef _gwt gwt")
+        return "\n".join(lines) + "\n"
+
+    def _generate_bash(self, commands_info):
+        lines = []
+        lines.append("__gwt() {")
+        lines.append('    local cur prev words cword')
+        lines.append("    _init_completion || return")
+        lines.append("")
+
+        subcmd_list = " ".join(c['main'] for c in commands_info)
+        for cmd in commands_info:
+            for alias in cmd['aliases']:
+                subcmd_list += " " + alias
+        lines.append('    local subcommands="' + subcmd_list + '"')
+        lines.append("")
+        lines.append("    if [[ $cword -eq 1 ]]; then")
+        lines.append('        COMPREPLY=( $(compgen -W "$subcommands" -- "$cur") )')
+        lines.append("        return")
+        lines.append("    fi")
+        lines.append("")
+        lines.append('    prev="${words[cword-2]}"')
+        lines.append("")
+
+        all_pairs = []
+        for cmd in commands_info:
+            for name in [cmd['main']] + cmd['aliases']:
+                all_pairs.append((name, cmd['metadata']))
+
+        for i, (name, meta) in enumerate(all_pairs):
+            flag_args = [a for a in meta.args if a.source_type == "flags"]
+            shell_arg = [a for a in meta.args if a.source_type == "shell_types"]
+            branch_arg = [a for a in meta.args if a.source_type == "branches"]
+            wt_arg = [a for a in meta.args if a.source_type == "worktree_branches"]
+
+            prefix = "    if" if i == 0 else "    elif"
+
+            if shell_arg:
+                types_str = " ".join(self.SHELL_TYPES)
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append('        COMPREPLY=( $(compgen -W "' + types_str + '" -- "$cur") )')
+            elif branch_arg:
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append("        local branches")
+                lines.append("        branches=$(git branch --format='%(refname:short)' 2>/dev/null)")
+                lines.append('        COMPREPLY=( $(compgen -W "$branches" -- "$cur") )')
+            elif wt_arg:
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append("        local wt_branches")
+                lines.append("        wt_branches=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')")
+                lines.append('        COMPREPLY=( $(compgen -W "$wt_branches" -- "$cur") )')
+            elif flag_args:
+                flags_str = " ".join(a.name for a in flag_args)
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append('        COMPREPLY=( $(compgen -W "' + flags_str + '" -- "$cur") )')
+
+        lines.append("    fi")
+        lines.append("}")
+        lines.append("")
+        lines.append("complete -F __gwt gwt")
+        return "\n".join(lines) + "\n"
+
+    def _generate_fish(self, commands_info):
+        lines = []
+        lines.append("complete -c gwt -s h -l help -d 'Show help'")
+
+        for cmd in commands_info:
+            name = cmd['main']
+            help_text = cmd.get('help', '')
+            escaped_help = help_text.replace("'", "'\\''")
+            aliases_str = " ".join([name] + cmd['aliases'])
+            lines.append("complete -c gwt -f -n '__fish_use_subcommand' -a " + aliases_str + " -d '" + escaped_help + "'")
+
+        all_pairs = []
+        for cmd in commands_info:
+            for name in [cmd['main']] + cmd['aliases']:
+                all_pairs.append((name, cmd['metadata']))
+
+        for name, meta in all_pairs:
+            flag_args = [a for a in meta.args if a.source_type == "flags"]
+            shell_arg = [a for a in meta.args if a.source_type == "shell_types"]
+            branch_arg = [a for a in meta.args if a.source_type == "branches"]
+            wt_arg = [a for a in meta.args if a.source_type == "worktree_branches"]
+
+            if shell_arg:
+                types_str = " ".join(self.SHELL_TYPES)
+                lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -a \"" + types_str + "\" -d 'Shell type for completion script.'")
+            elif branch_arg:
+                lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -a \"(git branch --format='%(refname:short)' 2>/dev/null)\"")
+            elif wt_arg:
+                lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -a \"(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')\"")
+            elif flag_args:
+                for a in flag_args:
+                    short_opt = ""
+                    long_opt = a.name
+                    if a.name.startswith("-") and not a.name.startswith("--"):
+                        short_opt = a.name
+                        long_opt_name = a.name.lstrip("-").replace("-", "_")
+                        # Check if there's a --long version
+                        long_flag = [f for f in flag_args if f.name == "--" + long_opt_name]
+                        if long_flag:
+                            lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -s " + short_opt.lstrip("-") + " -l " + long_opt_name + " -d '" + a.help + "'")
+                        else:
+                            lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -s " + short_opt.lstrip("-") + " -d '" + a.help + "'")
+                    else:
+                        lines.append("complete -c gwt -n '__fish_seen_subcommand " + name + "' -l " + a.name.lstrip("-") + " -d '" + a.help + "'")
+
+        return "\n".join(lines) + "\n"
 
     def add_args(self, subparser):
         # gwt completions <shell> — print shell completion scripts
@@ -610,12 +743,23 @@ complete -c gwt -n '__fish_seen_subcommand completions' -a "bash fish zsh" -d 'S
         )
 
     def run(self, args):
-        print(self.COMPLETIONS[args.shell])
+        commands_info = self._get_commands_info()
+        gen_method = getattr(self, f'_generate_{args.shell}')
+        print(gen_method(commands_info))
         return
 
 
 class Checkout(Command):
     aliases = ("co",)
+    help_text = "Create or switch to a git worktree."
+
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata(
+            args=(
+                CompletionArg(position=1, name="branch", help="Branch name.", source_type="branches"),
+                CompletionArg(position=2, name="base", help="Base branch (auto-detected from origin/HEAD).", source_type="branches"),
+            )
+        )
 
     def add_args(self, subparser):
         # gwt checkout <branch> — explicit subcommand for worktree creation
@@ -697,6 +841,16 @@ class Checkout(Command):
 
 
 class Pr(Command):
+    help_text = "Checkout a GitHub PR in a new worktree."
+
+    def get_completion_metadata(self) -> CommandMetadata:
+        return CommandMetadata(
+            args=(
+                CompletionArg(position=1, name="number", help="Pull request number.", source_type="flags"),
+                CompletionArg(position=1, name="--remote", help="Remote name (default: origin).", source_type="flags"),
+            )
+        )
+
     def add_args(self, subparser):
         pr_parser = subparser.add_parser(
             "pr",
