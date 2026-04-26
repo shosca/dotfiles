@@ -1,8 +1,10 @@
 local wezterm = require("wezterm")
 
 local colors = {
-  background = "#000000",
+  background = "#030302",
   foreground = "#d8d0c0",
+  cursor_bg = "#e08060",
+  cursor_fg = "#030302",
   ansi = {
     black = "#1c1b19",
     red = "#e08060",
