@@ -109,8 +109,7 @@ return {
     -- family = "Monaco",
     -- family = "0xProto Nerd Font",
     -- family = "Google Sans Regular",
-    --weight = 400,
-    --harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
+    weight = 600,
     harfbuzz_features = {
       "calt=1",
       "clig=1",

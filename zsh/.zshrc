@@ -9,7 +9,7 @@ export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 export SHOW_AWS_PROMPT=false
-export LS_FLAGS="--all --group-directories-first --time-style=long-iso --sort=name --icons=always"
+export LS_FLAGS="--group-directories-first --time-style=long-iso --sort=name --icons=always"
 
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -21,6 +21,11 @@ autoload -Uz _zinit
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+autoload -U select-word-style
+
+select-word-style bash
 
 setopt always_to_end
 setopt append_history
@@ -104,6 +109,11 @@ zinit light hlissner/zsh-autopair
 
 typeset -A key
 
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey -e
+
 key[Home]="$terminfo[khome]"
 key[End]="$terminfo[kend]"
 key[Insert]="$terminfo[kich1]"
@@ -140,6 +150,7 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
+
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
 bindkey '^R' fzf-history-widget
@@ -147,10 +158,11 @@ bindkey ' ' magic-space
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
 bindkey '^b' backward-word
 bindkey '^f' forward-word
+bindkey '^P' up-line-or-beginning-search
+bindkey '^N' down-line-or-beginning-search
+
 
 if [ -x "$(command -v keychain)" ]; then
     keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
