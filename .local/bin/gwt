@@ -1,0 +1,1121 @@
+#!/usr/bin/env python3
+"""Create, switch to, or clean up git worktrees."""
+
+from typing import Any
+import abc
+import argparse
+import functools
+import os
+import re
+import subprocess
+import sys
+import tomllib
+from dataclasses import dataclass
+from pathlib import Path
+from datetime import datetime, timezone
+
+
+class GitError(Exception):
+    pass
+
+
+class NotAGitRepo(GitError):
+    pass
+
+
+class NoWorktreesFound(GitError):
+    pass
+
+
+@dataclass
+class CommandArg:
+    position: int
+    name: tuple[str, ...]
+    help: str = ""
+    source_type: str | None = None
+    action: str | None = None
+    default: Any | None = None
+    nargs: str | None = None
+    choices: tuple[str, ...] | None = None
+
+
+@dataclass
+class WorktreeInfo:
+    path: str
+    branch: str
+    diff_added: int = 0
+    diff_removed: int = 0
+    age_days: int = 0
+
+
+class Command(abc.ABC):
+    aliases: tuple[str] = ()
+    help_text: str = ""
+    description: str = ""
+    formatter_class: type[argparse.HelpFormatter] | None = None
+
+    command_args: tuple[CommandArg, ...] = ()
+
+    def add_args(self, subparser: argparse._SubParsersAction) -> None:
+        command_kwargs = {
+            "aliases": self.aliases,
+            "help": self.help_text,
+            "description": self.description,
+        }
+        if self.formatter_class is not None:
+            command_kwargs["formatter_class"] = self.formatter_class
+
+        command_parser = subparser.add_parser(
+            type(self).__name__.lower(), **command_kwargs
+        )
+        for arg in self.command_args:
+            kwargs = {"help": arg.help}
+            if arg.action:
+                kwargs["action"] = arg.action
+            if arg.default is not None:
+                kwargs["default"] = arg.default
+            if arg.nargs:
+                kwargs["nargs"] = arg.nargs
+            command_parser.add_argument(*arg.name, **kwargs)
+
+    def _write_cd_file(self, path: Path) -> None:
+        """Write a temp file for the shell hook to auto-cd into this path."""
+        fpath = f"/tmp/gwt-cd-{os.getuid()}"
+        try:
+            with open(fpath, "w") as f:
+                f.write(str(path))
+        except OSError:
+            pass
+
+    def run(self, args: argparse.Namespace) -> None: ...
+
+    @functools.cached_property
+    def worktrees(self) -> list[WorktreeInfo]:
+        """Parse git worktree list --porcelain into WorktreeInfo objects."""
+        try:
+            result = subprocess.run(
+                ["git", "worktree", "list", "--porcelain"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            raise GitError(f"Failed to list worktrees: {e}")
+
+        worktrees = []
+        current_path: str | None = None
+        current_branch: str | None = None
+
+        for line in result.stdout.strip().split("\n"):
+            line = line.rstrip()
+            if not line:
+                continue
+
+            if line.startswith("worktree "):
+                # Save previous worktree if exists
+                if current_path is not None:
+                    worktrees.append(
+                        WorktreeInfo(path=current_path, branch=current_branch or "")
+                    )
+                    current_path = None
+                    current_branch = None
+
+                wt_path = line[9:].strip()
+
+                # Skip the project root itself
+                if Path(wt_path).resolve() == Path(self.project_root).resolve():
+                    continue
+
+                # Skip .git directory
+                if Path(wt_path).name == ".git":
+                    continue
+
+                current_path = wt_path
+            elif line.startswith("branch "):
+                ref = line[7:].strip()
+                if ref.startswith("refs/heads/"):
+                    current_branch = ref[len("refs/heads/") :]
+                else:
+                    current_branch = ref
+            elif line.lower().startswith("head detached"):
+                current_branch = None
+
+        if current_path is not None:
+            worktrees.append(
+                WorktreeInfo(path=current_path, branch=current_branch or "")
+            )
+
+        # Enrich with diff stats and age
+        for wt in worktrees:
+            wt.diff_added, wt.diff_removed = self._shortstat(wt.path)
+            wt.age_days = self._age_days(wt.path)
+
+        return worktrees
+
+    @functools.cached_property
+    def project_root(self) -> str:
+        """Find the project root from git worktree list --porcelain."""
+        try:
+            result = subprocess.run(
+                ["git", "worktree", "list", "--porcelain"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            raise NotAGitRepo(f"Not a git repo: {e}")
+
+        lines = result.stdout.strip().split("\n")
+        if not lines:
+            raise NoWorktreesFound("No worktrees found.")
+
+        first_line = lines[0]
+        parts = first_line.split(None, 1)
+        if len(parts) < 2:
+            raise GitError("Unexpected output format.")
+        return parts[1].strip()
+
+    def _colored(self, value: str, color_code: int) -> str:
+        """Wrap value in ANSI color code if stdout is a TTY."""
+        if sys.stdout.isatty():
+            return f"\x1b[{color_code}m{value}\x1b[0m"
+        return value
+
+    def _shortstat(self, path: str) -> tuple[int, int]:
+        """Return (added, removed) lines from git diff --shortstat."""
+        try:
+            result = subprocess.run(
+                ["git", "diff", "--shortstat"],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=path,
+            )
+            output = result.stdout.strip()
+            if not output:
+                return 0, 0
+            added = removed = 0
+            for part in output.split(","):
+                part = part.strip()
+                if "insertion" in part:
+                    added = int("".join(c for c in part if c.isdigit()))
+                elif "deletion" in part:
+                    removed = int("".join(c for c in part if c.isdigit()))
+            return added, removed
+        except subprocess.CalledProcessError:
+            return 0, 0
+
+    def _default_branch(self) -> str:
+        """Detect the default remote branch (main or master)."""
+        try:
+            result = subprocess.run(
+                ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            return result.stdout.strip()
+        except subprocess.CalledProcessError:
+            return "origin/master"
+
+    def _age_days(self, path: str) -> int:
+        """Return age in days of the latest commit on the current branch."""
+        try:
+            result = subprocess.run(
+                ["git", "log", "-1", "--format=%ct"],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=path,
+            )
+            commit_ts = int(result.stdout.strip())
+            age = datetime.now(timezone.utc) - datetime.fromtimestamp(
+                commit_ts, tz=timezone.utc
+            )
+            return age.days
+        except (subprocess.CalledProcessError, ValueError):
+            return 0
+
+    def get_worktree_path_for_branch(self, branch_name: str) -> str | None:
+        """Return the worktree path for a branch, or None."""
+        for wt in self.worktrees:
+            if wt.branch == branch_name:
+                return wt.path
+        return None
+
+    def branch_exists(self, branch_name: str) -> bool:
+        """Check if a local branch exists."""
+        try:
+            subprocess.run(
+                ["git", "rev-parse", "--verify", branch_name],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            return True
+        except subprocess.CalledProcessError:
+            return False
+
+    def find_gone_upstreams(self) -> dict[str, str]:
+        """Find local branches whose upstream tracking branch is gone.
+
+        Returns {branch_name: remote_ref} for each branch with gone upstream.
+        """
+        git_dir = Path(self.project_root) / ".git"
+        try:
+            result = subprocess.run(
+                ["git", "--git-dir", git_dir, "branch", "-vv"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            raise GitError(f"Failed to list branches: {e}")
+
+        gone: dict[str, str] = {}
+        for vv_line in result.stdout.strip().split("\n"):
+            if not re.search(r"\[.*?: gone\]", vv_line):
+                continue
+            match = re.match(r"^[\+\*]\s*(\S+)\s+.*?\[(\S+?): gone\]", vv_line)
+            if match:
+                gone[match.group(1)] = match.group(2)
+
+        return gone
+
+
+class List(Command):
+    aliases = ("ls",)
+    help_text = "List all worktrees with branch, age, and diff status."
+    formatter_class = argparse.RawTextHelpFormatter
+    description = (
+        "Display a table of all git worktrees showing path, branch name,\n"
+        "age in days, and uncommitted changes (added/removed lines).\n"
+        "Worktrees are sorted by age (oldest first).\n"
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt list' subcommand."""
+
+        if not self.worktrees:
+            print("📭 No worktrees found.")
+            return
+
+        rows: list[tuple[str, str, str, int, int]] = []
+        for wt in sorted(self.worktrees, key=lambda w: w.age_days, reverse=True):
+            path_short = str(Path(wt.path).relative_to(self.project_root))
+            branch_display = wt.branch if wt.branch else "(detached)"
+            age = f"{wt.age_days}d" if wt.age_days > 0 else "current"
+            rows.append(
+                (path_short, branch_display, age, wt.diff_added, wt.diff_removed)
+            )
+
+        # Calculate dynamic column widths (with padding)
+        col0 = max(4, max(len(r[0]) for r in rows) + 2)
+        col1 = max(6, max(len(r[1]) for r in rows) + 2)
+        col2 = max(3, max(len(r[2]) for r in rows) + 2)
+        col3 = max(3, max(len(f"+{r[3]:,}" if r[3] else "-") for r in rows) + 2)
+        col4 = max(3, max(len(f"-{r[4]:,}" if r[4] else "-") for r in rows) + 2)
+
+        fmt = (
+            "{:"
+            + str(col0)
+            + "s}  {:<"
+            + str(col1)
+            + "s}  {:>"
+            + str(col2)
+            + "s}  {:>"
+            + str(col3)
+            + "s}  {:>"
+            + str(col4)
+            + "s}"
+        )
+        print(fmt.format("Path", "Branch", "Age", "+", "-"))
+        print("-" * (col0 + col1 + col2 + col3 + col4 + 8))
+
+        for path_short, branch_display, age, diff_added, diff_removed in rows:
+            added = f"+{diff_added:,}" if diff_added else "-"
+            removed = f"-{diff_removed:,}" if diff_removed else "-"
+            # Pad plain values first, then colorize only the value (preserving total width)
+            pad3 = " " * (col3 - len(added))
+            pad4 = " " * (col4 - len(removed))
+            if diff_added > 0:
+                added_str = pad3 + self._colored(added, 32)
+            else:
+                added_str = pad3 + self._colored(added, 90)
+            if diff_removed > 0:
+                removed_str = pad4 + self._colored(removed, 31)
+            else:
+                removed_str = pad4 + self._colored(removed, 90)
+            print(
+                f"{path_short:<{col0}}  {branch_display:<{col1}}  {age:>{col2}}  {added_str}  {removed_str}"
+            )
+
+
+class Cleanup(Command):
+    help_text = "Delete worktrees with gone upstreams."
+    command_args = (
+        CommandArg(
+            position=1,
+            name=("-y", "--yes"),
+            help="Skip confirmation prompt.",
+            source_type="flags",
+            action="store_true",
+        ),
+        CommandArg(
+            position=1,
+            name=("--dry-run",),
+            help="Show what would be deleted without making changes.",
+            source_type="flags",
+            action="store_true",
+        ),
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt cleanup' subcommand."""
+        gone_upstreams = self.find_gone_upstreams()
+
+        # Cross-reference: only show worktrees that have gone upstreams
+        candidates = [wt for wt in self.worktrees if wt.branch in gone_upstreams]
+        others = [
+            wt for wt in self.worktrees if wt.branch and wt.branch not in gone_upstreams
+        ]
+
+        gone_count = len(candidates)
+        active_count = len(others)
+
+        # Print skipped worktrees (detached / no branch)
+        detached = [wt for wt in self.worktrees if not wt.branch]
+        detached_count = len(detached)
+        total_worktrees = gone_count + active_count + detached_count
+        for wt in detached:
+            print(f"⏺️  {Path(wt.path).name} (no branch — skip)")
+
+        # Print summary
+        print()
+        print(
+            f"  📊 Total: {total_worktrees} worktrees "
+            f"| Gone upstream: {gone_count} "
+            f"| Active: {active_count} "
+            f"| Detached: {detached_count}"
+        )
+        print()
+
+        if gone_count == 0:
+            print("🛡️  No worktrees have gone upstreams. Nothing to clean.")
+            return
+
+        print(f"  ✅ Can clean ({gone_count}):")
+        for wt in candidates:
+            remote_ref = gone_upstreams[wt.branch]
+            print(f"     • {wt.branch} (upstream {remote_ref})")
+        print()
+
+        if others:
+            print("  🟢 Active (keeping):")
+            for wt in others:
+                print(f"     • {wt.branch}")
+            print()
+
+        print("=" * 50)
+
+        if args.dry_run:
+            print("\n🔍 Dry run — no changes were made.")
+            return
+
+        # Skip prompt with -y flag
+        if args.yes:
+            answer = "y"
+        else:
+            answer = (
+                input(f"\nDelete {gone_count} worktree(s)? (y/n) [n]: ").strip().lower()
+            )
+
+        if answer not in ("y", "yes"):
+            print("❌ Cancelled.")
+            return
+
+        deleted = 0
+        failed = 0
+
+        for wt in candidates:
+            remote_ref = gone_upstreams[wt.branch]
+            print(f"  🗑️  {wt.branch} (upstream {remote_ref} is gone)")
+
+            try:
+                subprocess.run(
+                    ["git", "worktree", "remove", wt.path],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                print(f"     ⚠️  Failed to remove worktree: {e.stderr.strip()}")
+                failed += 1
+                continue
+
+            try:
+                subprocess.run(
+                    ["git", "branch", "-D", wt.branch],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+                deleted += 1
+            except subprocess.CalledProcessError as e:
+                print(f"     ⚠️  Failed to delete branch: {e.stderr.strip()}")
+                failed += 1
+
+        print()
+        print(f"  🗑️  Deleted: {deleted} | Failed: {failed}")
+
+
+class Delete(Command):
+    aliases = ("rm",)
+    help_text = "Delete a worktree by branch name or path."
+    formatter_class = argparse.RawTextHelpFormatter
+    description = (
+        "Remove an existing worktree and its branch.\n"
+        "\n"
+        "Accepts either the branch name or the worktree directory basename.\n"
+        "Cannot delete the main worktree (project root).\n"
+    )
+    command_args = (
+        CommandArg(
+            position=1,
+            name=("target",),
+            help="Branch name or worktree path to delete.",
+            source_type="worktree_branches",
+        ),
+        CommandArg(
+            position=1,
+            name=("-y", "--yes"),
+            help="Skip confirmation prompt.",
+            source_type="flags",
+            action="store_true",
+        ),
+        CommandArg(
+            position=1,
+            name=("--and-branch",),
+            help="Delete the branch after removing worktree.",
+            source_type="flags",
+            action="store_true",
+        ),
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt delete' subcommand."""
+        target = args.target
+
+        # Resolve target to a worktree entry — match by branch or path basename
+        matched: WorktreeInfo | None = None
+        for wt in self.worktrees:
+            if wt.branch == target or Path(wt.path).name == target:
+                matched = wt
+                break
+
+        if not matched:
+            print(f"❌ No worktree found matching: {target}")
+            print("   Use 'gwt list' to see available worktrees.")
+            return
+
+        # Refuse to delete the main worktree (project root)
+        if Path(matched.path).resolve() == Path(self.project_root).resolve():
+            print(f"❌ Cannot delete the main worktree: {matched.path}")
+            return
+
+        print(f"Deleting: {matched.branch} ({matched.path})")
+
+        if not args.yes:
+            answer = input("Continue? (y/n) [n]: ").strip().lower()
+            if answer not in ("y", "yes"):
+                print("❌ Cancelled.")
+                return
+
+        # Remove worktree
+        try:
+            subprocess.run(
+                ["git", "worktree", "remove", matched.path],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to remove worktree: {e.stderr.strip()}")
+            sys.exit(1)
+
+        print(f"✅ Worktree removed: {matched.path}")
+
+        if args.and_branch:
+            try:
+                subprocess.run(
+                    ["git", "branch", "-D", matched.branch],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+                print(f"✅ Branch deleted: {matched.branch}")
+            except subprocess.CalledProcessError as e:
+                print(f"⚠️  Failed to delete branch: {e.stderr.strip()}")
+
+
+class Completions(Command):
+    help_text = "Print shell completion scripts to stdout."
+    formatter_class = argparse.RawTextHelpFormatter
+    description = (
+        "Prints the auto-completion script for bash, fish, or zsh to stdout.\n"
+        "Source it in your shell config to enable tab-completion for gwt.\n"
+    )
+    SHELL_TYPES = ("bash", "fish", "zsh")
+    command_args = (
+        CommandArg(
+            position=1,
+            name=("shell",),
+            help="Shell type for completion script.",
+            source_type="shell_types",
+            choices=SHELL_TYPES,
+        ),
+    )
+
+    def _get_commands_info(self) -> list[dict[str, Any]]:
+        """Collect command names, aliases, help_text from COMMANDS."""
+        commands = []
+        for cmd_cls in COMMANDS:
+            cmd = cmd_cls()
+            args = cmd.command_args
+            main_name = cmd_cls.__name__.lower()
+            aliases = list(cmd.aliases)
+            help_text = getattr(cmd_cls, "help_text", "") or ""
+            commands.append(
+                {
+                    "main": main_name,
+                    "aliases": aliases,
+                    "command_args": args,
+                    "help": help_text,
+                }
+            )
+        return sorted(commands, key=lambda c: c["main"])
+
+    def _generate_zsh(self, commands_info: list[dict[str, Any]]) -> str:
+        lines = []
+        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
+_gwt_cd() {
+    local _gwt_path="/tmp/gwt-cd-$(id -u)"
+    if [[ -f "$_gwt_path" ]]; then
+        local _gwt_dir
+        _gwt_dir=$(cat "$_gwt_path")
+        rm -f "$_gwt_path"
+        if [[ -d "$_gwt_dir" ]]; then
+            cd "$_gwt_dir" || return
+        fi
+    fi
+}
+precmd_functions+=(_gwt_cd)
+
+"""
+        lines.append(hook)
+        lines.append("#compdef gwt")
+        lines.append("")
+        lines.append("_gwt() {")
+        lines.append('    local cur="$words[CURRENT]"')
+        lines.append("")
+        lines.append("    if (( CURRENT == 2 )); then")
+
+        subcmd_list = []
+        for cmd in commands_info:
+            subcmd_list.append(cmd["main"])
+            for alias in cmd["aliases"]:
+                subcmd_list.append(alias)
+        lines.append("        _values 'subcommands' " + " ".join(subcmd_list))
+        lines.append("    elif (( CURRENT == 3 )); then")
+        lines.append("        case $words[2] in")
+
+        for cmd in commands_info:
+            all_names = [cmd["main"]] + cmd["aliases"]
+            args = cmd["command_args"]
+            flag_args = [a for a in args if a.source_type == "flags"]
+            shell_arg = [a for a in args if a.source_type == "shell_types"]
+            branch_arg = [a for a in args if a.source_type == "branches"]
+            wt_arg = [a for a in args if a.source_type == "worktree_branches"]
+
+            for name in all_names:
+                lines.append("            " + name + ")")
+                if shell_arg:
+                    types_str = " ".join(self.SHELL_TYPES)
+                    lines.append("                _values 'shell' " + types_str)
+                elif branch_arg:
+                    lines.append("                local -a branches")
+                    lines.append(
+                        "                branches=(${(f)\"$(git branch --format='%(refname:short)' 2>/dev/null)\"})"
+                    )
+                    lines.append("                _describe 'branch' branches")
+                elif wt_arg:
+                    lines.append("                local -a wt_branches")
+                    lines.append(
+                        "                wt_branches=(${(f)\"$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')\"})"
+                    )
+                    lines.append(
+                        "                _describe 'branch_or_path' wt_branches"
+                    )
+                elif flag_args:
+                    flag_entries = []
+                    for a in flag_args:
+                        names = " ".join(f"'{n}[{a.help}]'" for n in a.name)
+                        flag_entries.append(names)
+                    flags_str = " ".join(flag_entries)
+                    lines.append("                _values 'flags' " + flags_str)
+                lines.append("                ;;")
+
+        lines.append("        esac")
+        lines.append("    fi")
+        lines.append("}")
+        lines.append("")
+        lines.append("_gwt")
+        lines.append("compdef _gwt gwt")
+        return "\n".join(lines) + "\n"
+
+    def _generate_bash(self, commands_info: list[dict[str, Any]]) -> str:
+        lines = []
+        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
+_gwt_cd() {
+    local _gwt_path="/tmp/gwt-cd-$(id -u)"
+    if [[ -f "$_gwt_path" ]]; then
+        local _gwt_dir
+        _gwt_dir=$(cat "$_gwt_path")
+        rm -f "$_gwt_path"
+        if [[ -d "$_gwt_dir" ]]; then
+            cd "$_gwt_dir" || return
+        fi
+    fi
+}
+PROMPT_COMMAND="_gwt_cd; ${PROMPT_COMMAND:-}"
+
+"""
+        lines.append(hook)
+        lines.append("__gwt() {")
+        lines.append("    local cur prev words cword")
+        lines.append("    _init_completion || return")
+        lines.append("")
+
+        subcmd_list = " ".join(c["main"] for c in commands_info)
+        for cmd in commands_info:
+            for alias in cmd["aliases"]:
+                subcmd_list += " " + alias
+        lines.append('    local subcommands="' + subcmd_list + '"')
+        lines.append("")
+        lines.append("    if [[ $cword -eq 1 ]]; then")
+        lines.append('        COMPREPLY=( $(compgen -W "$subcommands" -- "$cur") )')
+        lines.append("        return")
+        lines.append("    fi")
+        lines.append("")
+        lines.append('    prev="${words[cword-2]}"')
+        lines.append("")
+
+        all_pairs = []
+        for cmd in commands_info:
+            for name in [cmd["main"]] + cmd["aliases"]:
+                all_pairs.append((name, cmd["command_args"]))
+
+        for i, (name, args) in enumerate(all_pairs):
+            flag_args = [a for a in args if a.source_type == "flags"]
+            shell_arg = [a for a in args if a.source_type == "shell_types"]
+            branch_arg = [a for a in args if a.source_type == "branches"]
+            wt_arg = [a for a in args if a.source_type == "worktree_branches"]
+
+            prefix = "    if" if i == 0 else "    elif"
+
+            if shell_arg:
+                types_str = " ".join(self.SHELL_TYPES)
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append(
+                    '        COMPREPLY=( $(compgen -W "' + types_str + '" -- "$cur") )'
+                )
+            elif branch_arg:
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append("        local branches")
+                lines.append(
+                    "        branches=$(git branch --format='%(refname:short)' 2>/dev/null)"
+                )
+                lines.append(
+                    '        COMPREPLY=( $(compgen -W "$branches" -- "$cur") )'
+                )
+            elif wt_arg:
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append("        local wt_branches")
+                lines.append(
+                    "        wt_branches=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')"
+                )
+                lines.append(
+                    '        COMPREPLY=( $(compgen -W "$wt_branches" -- "$cur") )'
+                )
+            elif flag_args:
+                all_flags = []
+                for a in flag_args:
+                    all_flags.extend(a.name)
+                flags_str = " ".join(all_flags)
+                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+                lines.append(
+                    '        COMPREPLY=( $(compgen -W "' + flags_str + '" -- "$cur") )'
+                )
+
+        lines.append("    fi")
+        lines.append("}")
+        lines.append("")
+        lines.append("complete -F __gwt gwt")
+        return "\n".join(lines) + "\n"
+
+    def _generate_fish(self, commands_info: list[dict[str, Any]]) -> str:
+        lines = []
+        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
+function _gwt_cd --on-event fish_prompt
+    set _gwt_path "/tmp/gwt-cd-(id -u)"
+    if [ -f "$_gwt_path" ]
+        set _gwt_dir (cat $_gwt_path)
+        rm -f $_gwt_path
+        if [ -d "$_gwt_dir" ]
+            cd "$_gwt_dir" || return
+        end
+    end
+end
+
+"""
+        lines.append(hook)
+        lines.append("complete -c gwt -s h -l help -d 'Show help'")
+
+        for cmd in commands_info:
+            name = cmd["main"]
+            help_text = cmd.get("help", "")
+            escaped_help = help_text.replace("'", "'\\''")
+            aliases_str = " ".join([name] + cmd["aliases"])
+            lines.append(
+                "complete -c gwt -f -n '__fish_use_subcommand' -a "
+                + aliases_str
+                + " -d '"
+                + escaped_help
+                + "'"
+            )
+
+        all_pairs = []
+        for cmd in commands_info:
+            for name in [cmd["main"]] + cmd["aliases"]:
+                all_pairs.append((name, cmd["command_args"]))
+
+        for name, args in all_pairs:
+            flag_args = [a for a in args if a.source_type == "flags"]
+            shell_arg = [a for a in args if a.source_type == "shell_types"]
+            branch_arg = [a for a in args if a.source_type == "branches"]
+            wt_arg = [a for a in args if a.source_type == "worktree_branches"]
+
+            if shell_arg:
+                types_str = " ".join(self.SHELL_TYPES)
+                lines.append(
+                    "complete -c gwt -n '__fish_seen_subcommand "
+                    + name
+                    + "' -a \""
+                    + types_str
+                    + "\" -d 'Shell type for completion script.'"
+                )
+            elif branch_arg:
+                lines.append(
+                    "complete -c gwt -n '__fish_seen_subcommand "
+                    + name
+                    + "' -a \"(git branch --format='%(refname:short)' 2>/dev/null)\""
+                )
+            elif wt_arg:
+                lines.append(
+                    "complete -c gwt -n '__fish_seen_subcommand "
+                    + name
+                    + "' -a \"(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')\""
+                )
+            elif flag_args:
+                for a in flag_args:
+                    short_opts = []
+                    long_opts = []
+                    for n in a.name:
+                        if n.startswith("--"):
+                            long_opts.append(n.lstrip("-"))
+                        elif n.startswith("-"):
+                            short_opts.append(n.lstrip("-"))
+                    parts = ["complete -c gwt -n '__fish_seen_subcommand " + name + "'"]
+                    for s in short_opts:
+                        parts.append(f"-s {s}")
+                    for l in long_opts:
+                        parts.append(f"-l {l}")
+                    parts.append(f"-d '{a.help}'")
+                    lines.append(" ".join(parts))
+
+        return "\n".join(lines) + "\n"
+
+    def run(self, args: argparse.Namespace) -> None:
+        commands_info = self._get_commands_info()
+        gen_method = getattr(self, f"_generate_{args.shell}")
+        print(gen_method(commands_info))
+        return
+
+
+class Checkout(Command):
+    aliases = ("co",)
+    help_text = "Create or switch to a git worktree."
+    formatter_class = argparse.RawTextHelpFormatter
+    description = (
+        "Create a new worktree or switch to an existing one.\n"
+        "\n"
+        "Behavior:\n"
+        "  • If the worktree dir exists → switches into it\n"
+        "  • If branch has a worktree elsewhere → switches there\n"
+        "  • If branch exists locally → creates new worktree from it\n"
+        "  • If branch doesn't exist → creates new branch from base\n"
+    )
+    command_args = (
+        CommandArg(
+            position=1,
+            name=("branch",),
+            help="Branch name.",
+            source_type="branches",
+        ),
+        CommandArg(
+            position=2,
+            name=("base",),
+            help="Base branch (auto-detected from origin/HEAD).",
+            source_type="branches",
+            nargs="?",
+            default="__detect__",
+        ),
+        CommandArg(
+            position=1,
+            name=("--no-hooks",),
+            help="Skip running hooks from gwt.toml.",
+            source_type="flags",
+            action="store_true",
+        ),
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt checkout' subcommand."""
+        worktree_path = Path(self.project_root) / args.branch
+
+        # Case 1: Worktree dir already exists → cd into it
+        if Path(worktree_path).is_dir():
+            self._write_cd_file(worktree_path)
+            print(f"📂 Already working on: {args.branch}")
+            return
+
+        # Case 2: Branch has a worktree somewhere → cd into it
+        existing_wt = self.get_worktree_path_for_branch(args.branch)
+        if existing_wt:
+            self._write_cd_file(Path(existing_wt))
+            print(f"📂 Switching to existing worktree: {args.branch}")
+            return
+
+        # Case 3: Branch exists locally → create worktree from it (no branch changes)
+        if self.branch_exists(args.branch):
+            try:
+                subprocess.run(
+                    ["git", "worktree", "add", worktree_path, args.branch],
+                    cwd=self.project_root,
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                stderr = e.stderr.strip() if e.stderr else "unknown error"
+                print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
+                sys.exit(1)
+            self._write_cd_file(worktree_path)
+            print(f"📂 Worktree created from existing branch: {args.branch}")
+            if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
+                if not run_hooks(self.project_root, "checkout", args.branch, str(worktree_path)):
+                    sys.exit(1)
+            return
+
+        # Case 4: Branch doesn't exist → create new branch
+        base = self._default_branch() if args.base == "__detect__" else args.base
+        if self.branch_exists(f"origin/{args.branch}"):
+            base = f"origin/{args.branch}"
+
+        try:
+            subprocess.run(
+                ["git", "worktree", "add", worktree_path, "-b", args.branch, base],
+                cwd=self.project_root,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.strip() if e.stderr else "unknown error"
+            print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
+            sys.exit(1)
+
+        self._write_cd_file(worktree_path)
+        if base == f"origin/{args.branch}":
+            print(f"🚀 Ready to work on: {args.branch} (tracking {base})")
+        else:
+            print(f"🚀 Ready to work on: {args.branch}")
+        if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
+            if not run_hooks(self.project_root, "checkout", args.branch, str(worktree_path)):
+                sys.exit(1)
+
+
+class Pr(Command):
+    help_text = "Checkout a GitHub PR in a new worktree."
+    formatter_class = argparse.RawTextHelpFormatter
+    description = (
+        "Fetch a pull request and create a worktree for it.\n"
+        "\n"
+        "Behavior:\n"
+        "  • Fetches `pull/<N>/head` from the remote\n"
+        "  • Creates local branch `pr/N` at that commit\n"
+        "  • Creates a worktree at path `pr-N`\n"
+        "  • If the worktree already exists → switches into it\n"
+    )
+    command_args = (
+        CommandArg(
+            position=1,
+            name=("number",),
+            help="Pull request number.",
+        ),
+        CommandArg(
+            position=2,
+            name=("--remote",),
+            help="Remote name (default: origin).",
+            source_type="flags",
+            action="store",
+            default="origin",
+        ),
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        pr_number = args.number
+        remote = args.remote
+        branch_name = f"pr/{pr_number}"
+        worktree_path = Path(self.project_root) / f"pr-{pr_number}"
+
+        # Case 1: Worktree dir already exists → cd into it
+        if Path(worktree_path).is_dir():
+            self._write_cd_file(worktree_path)
+            return
+
+        # Case 2: Branch has a worktree somewhere → cd into it
+        existing_wt = self.get_worktree_path_for_branch(branch_name)
+        if existing_wt:
+            self._write_cd_file(Path(existing_wt))
+            return
+
+        # Fetch the PR
+        try:
+            subprocess.run(
+                ["git", "fetch", remote, f"pull/{pr_number}/head"],
+                cwd=self.project_root,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.strip() if e.stderr else "unknown error"
+            print(f"❌ Failed to fetch PR #{pr_number}: {stderr}", file=sys.stderr)
+            sys.exit(1)
+
+        # Create the local branch at the fetched commit
+        try:
+            subprocess.run(
+                ["git", "branch", branch_name, "FETCH_HEAD"],
+                cwd=self.project_root,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.strip() if e.stderr else "unknown error"
+            print(
+                f"❌ Failed to create branch pr/{pr_number}: {stderr}", file=sys.stderr
+            )
+            sys.exit(1)
+
+        # Create worktree from the local branch
+        try:
+            subprocess.run(
+                ["git", "worktree", "add", worktree_path, branch_name],
+                cwd=self.project_root,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.strip() if e.stderr else "unknown error"
+            print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
+            sys.exit(1)
+
+        print(f"🔍 Ready to review PR #{pr_number}")
+        if not os.environ.get("GWT_NO_HOOKS"):
+            if not run_hooks(self.project_root, "pr", branch_name, str(worktree_path)):
+                sys.exit(1)
+
+
+def run_hooks(project_root: str, subcommand: str, branch: str, worktree: str) -> bool:
+    """Run hooks from gwt.toml for the given subcommand."""
+    config_path = Path(project_root) / "gwt.toml"
+    if not config_path.is_file():
+        return True
+
+    try:
+        config = tomllib.loads(config_path.read_text())
+        commands = config.get("hooks", {}).get(subcommand)
+        if not commands:
+            return True
+    except tomllib.TOMLDecodeError as e:
+        print(f"⚠️  gwt.toml parse error: {e}", file=sys.stderr)
+        return True
+
+    env = {**os.environ, "GWT_BRANCH": branch, "GWT_WORKTREE": worktree}
+
+    for cmd in commands:
+        result = subprocess.run(["/bin/sh", "-c", cmd], cwd=worktree, env=env)
+        if result.returncode != 0:
+            print(f"⚠️  Hook failed: {cmd}", file=sys.stderr)
+            return False
+
+    return True
+
+
+COMMANDS = {
+    Completions,
+    Checkout,
+    Cleanup,
+    List,
+    Delete,
+    Pr,
+}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Create, switch to, or clean up git worktrees."
+    )
+    subparser = parser.add_subparsers(dest="command")
+
+    commands = {}
+    for cmd in COMMANDS:
+        command = cmd()
+        command.add_args(subparser)
+        commands[cmd.__name__.lower()] = command
+        for alias in command.aliases:
+            commands[alias] = command
+
+    args = parser.parse_args()
+    try:
+        if command := commands.get(args.command):
+            command.run(args)
+        else:
+            parser.print_help()
+    except NotAGitRepo as e:
+        print(f"❌ {e}", file=sys.stderr)
+        sys.exit(1)
+    except NoWorktreesFound as e:
+        print(f"📭 {e}", file=sys.stderr)
+        sys.exit(0)
+    except GitError as e:
+        print(f"❌ {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

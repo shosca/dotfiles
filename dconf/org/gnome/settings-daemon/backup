@@ -1,7 +1,0 @@
-[plugins/color]
-night-light-enabled=false
-night-light-schedule-automatic=true
-night-light-temperature=uint32 1700
-
-[plugins/power]
-sleep-inactive-ac-type='nothing'

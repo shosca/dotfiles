@@ -1,8 +1,0 @@
-[tools]
-poetry = { version = "latest" }
-pre-commit = { version = "latest" }
-"pipx:mycli" = { version = "latest" }
-"pipx:yawsso" = { version = "latest" }
-"pipx:tmuxp" = { version = "latest" }
-"pipx:pyrefly" = "latest"
-"pipx:ruff" = "latest"

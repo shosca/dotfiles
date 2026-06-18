@@ -1,0 +1,26 @@
+alias g="gwt"
+alias showpath='echo $PATH | tr ":" "\n"'
+alias c='clear'
+alias dmesg="dmesg -L"
+alias ducks='sudo du -ahd1 | sort -h'
+alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
+alias ls="eza ${LS_FLAGS} --across"
+alias ll="eza ${LS_FLAGS} --long --group --header --binary --created --modified --git --classify"
+alias la="ls --all"
+alias lla="ll --all"
+alias l="ls"
+alias tree="ll --tree"
+alias notify='notify-send -i gnome-terminal "[$?] $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/;\s*alert$//'\'')"'
+alias pss='ps -ef | grep $1'
+alias tma='tmux attach -d -t'
+alias up='cd ..'
+alias e="nvim"
+alias vim="nvim"
+alias vi="nvim"
+alias rekey='keychain $(find ~/.ssh -iname "id_*" ! -name "*.pub")'
+alias awsedit="e $AWS_CONFIG_FILE $AWS_SHARED_CREDENTIALS_FILE"
+alias pipupdate='pip3 install -U $(pip3 freeze | cut -d"=" -f1 | grep -v "git@")'
+alias open="xdg-open"
+alias sudovim="nvim -u NONE"
+alias oc="opencode --port"
+alias lls="llama-swap -watch-config -config ~/.config/llama-swap/config.yaml -listen 127.0.0.1:8012"

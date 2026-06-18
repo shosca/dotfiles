@@ -1,6 +1,0 @@
-[/]
-experimental-features=['screen-cast', 'remote-desktop']
-workspaces-only-on-primary=false
-
-[wayland/keybindings]
-restore-shortcuts=['<Super>Escape']

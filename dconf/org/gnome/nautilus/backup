@@ -1,9 +1,0 @@
-[preferences]
-default-folder-viewer='list-view'
-search-filter-time-type='last_modified'
-search-view='list-view'
-
-[window-state]
-initial-size=(1074, 1001)
-maximized=false
-sidebar-width=189

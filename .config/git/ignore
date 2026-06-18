@@ -1,0 +1,5 @@
+.envrc
+.nvim.lua
+.nvimrc
+.exrc.lua
+temp.py
