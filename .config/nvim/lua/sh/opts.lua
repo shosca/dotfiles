@@ -3,7 +3,6 @@ local utils = require("sh.utils")
 utils.set(vim.g, {
   mapleader = " ",
   maplocalleader = " ",
-  python3_host_prog = "/usr/bin/python3",
   autoformat = true,
   markdown_recommended_style = 0,
 })
@@ -100,6 +99,7 @@ vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.schedule(function()
   local shadadir = vim.fs.joinpath(vim.fn.stdpath("state"), "shada")
+  vim.fn.mkdir(shadadir, "p")
   utils.set(vim.opt, {
     shada = { "!", "'1000", "<50", "s10", "h" },
     shadafile = vim.fs.joinpath(shadadir, "main.shada"),

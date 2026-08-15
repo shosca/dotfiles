@@ -2,17 +2,6 @@ local utils = require("sh.utils")
 
 return {
   {
-    -- https://github.com/nvimtools/none-ls.nvim
-    "nvimtools/none-ls.nvim",
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        debounce = 1000,
-        sources = {},
-      })
-    end,
-  },
-  {
     -- https://github.com/neovim/nvim-lspconfig
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -31,9 +20,8 @@ return {
         opts = {
           library = {
             { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-            { path = "LazyVim", words = { "LazyVim" } },
             { path = "snacks.nvim", words = { "Snacks" } },
-            { path = "lazy.nvim", words = { "LazyVim" } },
+            { path = "lazy.nvim", words = { "lazy" } },
             { path = "nvim-lspconfig", words = { "lspconfig.settings" } },
           },
         },
@@ -43,10 +31,6 @@ return {
         "b0o/schemastore.nvim",
       },
     },
-  },
-  {
-    -- https://github.com/nvim-lua/lsp-status.nvim
-    "nvim-lua/lsp-status.nvim",
   },
   {
     -- https://github.com/rachartier/tiny-inline-diagnostic.nvim

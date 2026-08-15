@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("enable_treesitter", {}),
   callback = function(event)
     local bufnr = event.buf
-    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+    local filetype = vim.bo[bufnr].filetype
     -- Start treesitter for this buffer
     local start_ts = function()
       vim.treesitter.start(bufnr, parser_name)

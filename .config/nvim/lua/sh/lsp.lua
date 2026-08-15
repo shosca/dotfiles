@@ -1,17 +1,16 @@
 local utils = require("sh.utils")
-local wk = require("which-key")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then
   capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 end
-vim.lsp.config("*", { capabilities = caps })
+vim.lsp.config("*", { capabilities = capabilities })
 
 local servers = {
   "bashls",
   "oxlint",
-  "clang",
+  "clangd",
   "crystalline",
   "docker_language_server",
   "gopls",
@@ -40,7 +39,7 @@ end
 
 local au_lsp_doc_format = vim.api.nvim_create_augroup("au_lsp_doc_format", { clear = true })
 utils.lsp_attach(function(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
+  if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
     vim.api.nvim_clear_autocmds({ group = au_lsp_doc_format, buffer = bufnr, event = { "BufWritePre" } })
     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       group = au_lsp_doc_format,
@@ -71,15 +70,17 @@ utils.lsp_attach(function(_, bufnr)
   --xmap({ "la", vim.lsp.buf.range_code_action, { silent = true, buffer = bufnr } })
   vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = 1 })
-  end, { silent = true, buffer = bufnr })
+  end, { silent = true, buffer = bufnr, desc = "Next diagnostic" })
   vim.keymap.set("n", "]d", function()
     vim.diagnostic.jump({ count = -1 })
-  end, { silent = true, buffer = bufnr })
+  end, { silent = true, buffer = bufnr, desc = "Previous diagnostic" })
 end)
+
+local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", {})
+local detach_augroup = vim.api.nvim_create_augroup("lsp-detach", {})
 
 utils.lsp_attach(function(client, bufnr)
   if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-    local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       buffer = bufnr,
       group = highlight_augroup,
@@ -93,7 +94,8 @@ utils.lsp_attach(function(client, bufnr)
     })
 
     vim.api.nvim_create_autocmd("LspDetach", {
-      group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+      buffer = bufnr,
+      group = detach_augroup,
       callback = function(e)
         vim.lsp.buf.clear_references()
         vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = e.buf })

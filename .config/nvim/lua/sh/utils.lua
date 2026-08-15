@@ -9,9 +9,6 @@ end
 
 function M.set(target, opts)
   for k, v in pairs(opts) do
-    if target[k] == v then
-      vim.notify("Remove " .. k .. " from config")
-    end
     target[k] = v
   end
 end
@@ -75,14 +72,25 @@ end
 function M.get_venv_with_poetry(args)
   local poetry_lock = vim.fs.joinpath(args.root, "poetry.lock")
   if vim.fn.filereadable(poetry_lock) == 1 then
-    return vim.fn.trim(vim.fn.system(string.format("cd %s && poetry env info -p", args.root)))
+    local result = vim.system({ "poetry", "env", "info", "-p" }, { cwd = args.root, text = true }):wait()
+    if result.code == 0 then
+      return vim.trim(result.stdout)
+    end
   end
 end
 
 function M.get_venv_with_pipfile(args)
   local pipfile = vim.fs.joinpath(args.root, "Pipfile")
   if vim.fn.filereadable(pipfile) == 1 then
-    return vim.fn.trim(vim.fn.system("PIPENV_PIPFILE=" .. pipfile .. " pipenv --venv"))
+    local result = vim
+      .system({ "pipenv", "--venv" }, {
+        env = vim.tbl_extend("force", vim.env, { PIPENV_PIPFILE = pipfile }),
+        text = true,
+      })
+      :wait()
+    if result.code == 0 then
+      return vim.trim(result.stdout)
+    end
   end
 end
 

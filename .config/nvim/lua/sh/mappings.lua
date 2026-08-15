@@ -22,31 +22,31 @@ vim.keymap.set("c", "<Up>", "<C-p>")
 vim.keymap.set("c", "<Down>", "<C-n>")
 
 -- split management
-vim.keymap.set("n", "sj", "<C-W>w<CR>")
-vim.keymap.set("n", "sk", "<C-W>W<CR>")
-vim.keymap.set("n", "ss", ":split<Space>")
-vim.keymap.set("n", "sv", ":vsplit<Space>")
+vim.keymap.set("n", "sj", "<C-W>w", { desc = "Next window" })
+vim.keymap.set("n", "sk", "<C-W>W", { desc = "Previous window" })
+vim.keymap.set("n", "ss", "<cmd>split<cr>", { desc = "Split horizontal" })
+vim.keymap.set("n", "sv", "<cmd>vsplit<cr>", { desc = "Split vertical" })
 
 -- arrow key resize
-vim.keymap.set("n", "<Up>", ":resize +2<CR>")
-vim.keymap.set("n", "<Down>", ":resize -2<CR>")
-vim.keymap.set("n", "<Left>", ":vertical resize +2<CR>")
-vim.keymap.set("n", "<Right>", ":vertical resize -2<CR>")
+vim.keymap.set("n", "<Up>", "<cmd>resize +2<cr>", { silent = true, desc = "Resize taller" })
+vim.keymap.set("n", "<Down>", "<cmd>resize -2<cr>", { silent = true, desc = "Resize shorter" })
+vim.keymap.set("n", "<Left>", "<cmd>vertical resize +2<cr>", { silent = true, desc = "Resize wider" })
+vim.keymap.set("n", "<Right>", "<cmd>vertical resize -2<cr>", { silent = true, desc = "Resize narrower" })
 
 -- Easier horizontal scrolling
-vim.keymap.set("n", "zl", "zL")
-vim.keymap.set("n", "zh", "zH")
+vim.keymap.set("n", "zl", "zL", { desc = "Scroll right" })
+vim.keymap.set("n", "zh", "zH", { desc = "Scroll left" })
 
 -- Select blocks after indenting
-vim.keymap.set("x", "<", "<gv")
-vim.keymap.set("x", ">", ">gv|")
+vim.keymap.set("x", "<", "<gv", { desc = "Outdent and reselect" })
+vim.keymap.set("x", ">", ">gv", { desc = "Indent and reselect" })
 
-vim.keymap.set("n", "<M-j>", "<cmd>cnext<cr>")
-vim.keymap.set("n", "<M-k>", "<cmd>cprev<cr>")
+vim.keymap.set("n", "<M-j>", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix item" })
+vim.keymap.set("n", "<M-k>", "<cmd>cprev<cr>", { silent = true, desc = "Previous quickfix item" })
 
 vim.keymap.set("n", "<leader>ii", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-end)
+end, { desc = "Toggle inlay hints" })
 
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>")
 vim.keymap.set("t", "<S-esc>", "<C-\\><C-n>")
@@ -56,11 +56,11 @@ vim.keymap.set("n", "<C-S-j>", function()
   if not success then
     vim.cmd("cfirst")
   end
-end)
+end, { silent = true, desc = "Next quickfix (wrap)" })
 
 vim.keymap.set("n", "<C-S-k>", function()
   local success = pcall(vim.cmd, "cprev")
   if not success then
     vim.cmd("clast")
   end
-end)
+end, { silent = true, desc = "Previous quickfix (wrap)" })

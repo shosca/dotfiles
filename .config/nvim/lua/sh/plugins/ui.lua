@@ -17,30 +17,13 @@ return {
     end,
   },
   {
-    -- https://github.com/folke/tokyonight.nvim
-    "folke/tokyonight.nvim",
-    lazy = false,
-    enabled = false,
-    priority = 1000,
-    config = function()
-      require("tokyonight").setup({
-        style = "night",
-        transparent = true,
-        on_colors = function(colors)
-          colors.border = colors.magenta
-        end,
-      })
-      --vim.cmd.colorscheme("tokyonight-night")
-    end,
-  },
-  {
     -- https://github.com/MeanderingProgrammer/render-markdown.nvim
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
       anti_conceal = { enabled = false },
-      file_types = { "markdown", "Avante", "copilot-chat", "opencode_output" },
+      file_types = { "markdown", "opencode_output" },
     },
-    ft = { "markdown", "Avante", "opencode_output" },
+    ft = { "markdown", "opencode_output" },
   },
   {
     "folke/which-key.nvim",
@@ -63,32 +46,32 @@ return {
         winwidth = 15,
         winminwidth = 15,
         equalalways = false,
-        require("windows").setup({
-          animation = { enable = false },
-          ignore = {
-            buftype = {
-              "quickfix",
-              "term",
-              "terminal",
-              "fish",
-              "nvim_terminal_emulator",
-              "Terminal",
-              "opencode",
-              "opencode_output",
-            },
-            filetype = {
-              "NvimTree",
-              "neo-tree",
-              "undotree",
-              "gundo",
-              "Telescope",
-              "telescope",
-              "sidekick_terminal",
-              "opencode",
-              "opencode_output",
-            },
+      })
+      require("windows").setup({
+        animation = { enable = false },
+        ignore = {
+          buftype = {
+            "quickfix",
+            "term",
+            "terminal",
+            "fish",
+            "nvim_terminal_emulator",
+            "Terminal",
+            "opencode",
+            "opencode_output",
           },
-        }),
+          filetype = {
+            "NvimTree",
+            "neo-tree",
+            "undotree",
+            "gundo",
+            "Telescope",
+            "telescope",
+            "sidekick_terminal",
+            "opencode",
+            "opencode_output",
+          },
+        },
       })
     end,
   },
@@ -115,6 +98,7 @@ return {
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/cmp-nvim-lua" },
       { "hrsh7th/cmp-path" },
+      { "saadparwaiz1/cmp_luasnip" },
     },
     opts = function(_, opts)
       local cmp = require("cmp")
@@ -124,7 +108,7 @@ return {
         completion = { completeopt = "menu,menuone,noselect" },
         snippet = {
           expand = function(args)
-            vim.snippet.expand(args.body)
+            require("luasnip").lsp_expand(args.body)
           end,
         },
         mapping = {
@@ -151,8 +135,10 @@ return {
         },
         window = { documentation = cmp.config.window.bordered() },
         sources = cmp.config.sources({
+          { name = "lazydev", group_index = 0 }, -- skip loading LuaLS completions
           { name = "nvim_lua" },
           { name = "nvim_lsp" },
+          { name = "luasnip" },
           { name = "path" },
           { name = "buffer" },
         }),
@@ -231,7 +217,7 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      animake = {},
+      animate = {},
       dashboard = {},
       notifier = {},
       scroll = {},

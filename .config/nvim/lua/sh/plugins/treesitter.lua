@@ -4,7 +4,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-locals",
       "nvim-treesitter/nvim-treesitter-textobjects",
       "RRethy/nvim-treesitter-endwise",
     },

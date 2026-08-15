@@ -4,10 +4,9 @@ vim.diagnostic.config({
   underline = true,
   virtual_text = false,
   severity_sort = true,
-  update_in_insert = true,
+  update_in_insert = false,
   float = {
     style = "minimal",
-    show_header = true,
     border = ui.borders,
     focusable = false,
   },

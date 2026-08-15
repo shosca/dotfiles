@@ -2,7 +2,16 @@ return {
   { "nvim-mini/mini.align", opts = {} },
   { "nvim-mini/mini.basics", opts = {} },
   { "nvim-mini/mini.hipatterns", opts = {} },
-  { "nvim-mini/mini.move", opts = {} },
+  {
+    "nvim-mini/mini.move",
+    opts = {
+      mappings = {
+        disable = {
+          normal = true,
+        },
+      },
+    },
+  },
   { "nvim-mini/mini.operators", opts = {} },
   { "nvim-mini/mini.pairs", opts = {} },
   { "nvim-mini/mini.diff", opts = {} },
