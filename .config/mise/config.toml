@@ -1,6 +1,11 @@
 [tools]
+aws-iam-authenticator = "latest"
 awsls = "latest"
 "github:can1357/oh-my-pi" = "latest"
+"github:looker-open-source/looker-cli" = "latest"
+"github:tontinton/maki" = "latest"
+herdr = "latest"
+hk = "latest"
 node = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:bash-language-server" = "latest"
@@ -10,14 +15,16 @@ opencode = "latest"
 "pipx:mycli" = { version = "latest" }
 "pipx:pyrefly" = "latest"
 "pipx:ruff" = "latest"
+"pipx:semble" = "latest"
 "pipx:tmuxp" = { version = "latest" }
 "pipx:yawsso" = { version = "latest" }
 poetry = { version = "latest" }
 pre-commit = { version = "latest" }
 prek = "latest"
+trivy = "latest"
 
 [settings]
-# trusted_config_paths = ["~/src/force/force-web/"]
+trusted_config_paths = ["~/src/force/force-web/"]
 experimental = true
 dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"

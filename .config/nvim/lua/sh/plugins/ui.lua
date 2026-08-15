@@ -2,17 +2,18 @@ local utils = require("sh.utils")
 
 return {
   {
-    "ember-theme/nvim",
-    name = "ember",
+    "wtfox/luna.nvim",
+    lazy = false,
     priority = 1000,
+    opts = {},
     config = function()
-      require("ember").setup({
-        variant = "ember", -- "ember" | "ember-soft" | "ember-light"
-        on_colors = function(palette)
-          palette.bg = "#000000"
-        end,
+      require("luna").setup({
+        plugins = {
+          all = true,
+          auto = true,
+        },
       })
-      vim.cmd("colorscheme ember")
+      vim.cmd("colorscheme luna")
     end,
   },
   {

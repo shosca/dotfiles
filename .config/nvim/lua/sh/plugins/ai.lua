@@ -153,6 +153,11 @@ return {
           ["function"] = "{function}",
           class = "{class}",
         },
+        win = {
+          keys = {
+            escape = { "<Esc>", "<c-[>", mode = "t" },
+          },
+        },
       },
     },
     keys = {
