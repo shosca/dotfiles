@@ -992,12 +992,14 @@ class Pr(Command):
         # Case 1: Worktree dir already exists → cd into it
         if Path(worktree_path).is_dir():
             self._write_cd_file(worktree_path)
+            print(f"🔍 PR #{pr_number} already checked out at: {worktree_path}")
             return
 
         # Case 2: Branch has a worktree somewhere → cd into it
         existing_wt = self.get_worktree_path_for_branch(branch_name)
         if existing_wt:
             self._write_cd_file(Path(existing_wt))
+            print(f"🔍 PR #{pr_number} worktree found at: {existing_wt}")
             return
 
         # Fetch the PR
@@ -1044,7 +1046,7 @@ class Pr(Command):
             print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
             sys.exit(1)
 
-        print(f"🔍 Ready to review PR #{pr_number}")
+        print(f"🔍 Ready to review PR #{pr_number} at {worktree_path}")
         if not os.environ.get("GWT_NO_HOOKS"):
             if not run_hooks(self.project_root, "pr", branch_name, str(worktree_path)):
                 sys.exit(1)
