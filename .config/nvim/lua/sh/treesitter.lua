@@ -1,45 +1,20 @@
 vim.api.nvim_create_autocmd("FileType", {
-  desc = "Enable Treesitter",
+  desc = "Enable treesitter folding",
   group = vim.api.nvim_create_augroup("enable_treesitter", {}),
   callback = function(event)
-    local bufnr = event.buf
-    local filetype = vim.bo[bufnr].filetype
-    -- Start treesitter for this buffer
-    local start_ts = function()
-      vim.treesitter.start(bufnr, parser_name)
-      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      vim.wo.foldmethod = "expr"
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    end
-
-    -- Skip if no filetype
-    if filetype == "" then
+    local win = vim.api.nvim_get_current_win()
+    if vim.api.nvim_win_get_buf(win) ~= event.buf then
       return
     end
-
-    -- Get parser name based on filetype
-    local parser_name = vim.treesitter.language.get_lang(filetype)
+    if vim.bo[event.buf].buftype ~= "" then
+      return
+    end
+    local parser_name = vim.treesitter.language.get_lang(vim.bo[event.buf].filetype)
     if not parser_name then
-      vim.notify(vim.inspect("No treesitter parser found for filetype: " .. filetype), vim.log.levels.WARN)
-      -- Use regex based syntax-highlighting as fallback
-      vim.bo[bufnr].syntax = "ON"
+      vim.bo[event.buf].syntax = "ON"
       return
     end
-
-    -- Try to get existing parser
-    local ts_config = require("nvim-treesitter.config")
-    if not vim.tbl_contains(ts_config.get_available(), parser_name) then
-      return
-    end
-
-    local already_installed = ts_config.get_installed("parsers")
-    if not vim.tbl_contains(already_installed, parser_name) then
-      -- Install parser
-      vim.notify("Installing parser for " .. parser_name, vim.log.levels.INFO)
-      require("nvim-treesitter").install({ parser_name }):await(start_ts)
-      return
-    end
-
-    start_ts()
+    vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.wo[win].foldmethod = "expr"
   end,
 })
