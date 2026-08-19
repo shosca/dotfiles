@@ -3,7 +3,7 @@
 
 -- Errors are ignored on interactive sessions,
 -- and not when reading script files
-\set ON_ERROR_ROLLBACK interactive 
+\set ON_ERROR_ROLLBACK interactive
 
 -- Show timings on all queries
 \timing
@@ -12,7 +12,7 @@
 \set VERBOSE verbose
 
 -- Use table format (with headers across the top) by default,
--- but switch to expanded table format when there's a lot of 
+-- but switch to expanded table format when there's a lot of
 -- data
 \x auto
 

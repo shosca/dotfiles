@@ -58,7 +58,7 @@ export MAKEFLAGS="-j$(nproc)"
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ANSIBLE_NOCOWS=1
 export WORKON_HOME="${XDG_LOCAL}/share/virtualenvs"
-export PIP_VIRUTALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
+export PIP_VIRTUALENV_BASE="${XDG_LOCAL}/share/virtualenvs"
 export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
 
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"

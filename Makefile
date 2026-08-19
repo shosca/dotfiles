@@ -1,4 +1,4 @@
-# vim: set noet spell:
+# vim: set note spell:
 PWD=$(shell pwd)
 XDG_CACHE_HOME ?= $(HOME)/.cache
 XDG_CONFIG_HOME ?= $(HOME)/.config

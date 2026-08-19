@@ -117,7 +117,7 @@ zle -N down-line-or-beginning-search
 bindkey -e
 
 key[Home]="$terminfo[khome]"
-key[End]="$terminfo[kend]"
+key[End]="$terminfo[kind]"
 key[Insert]="$terminfo[kich1]"
 key[Backspace]="$terminfo[kbs]"
 key[Delete]="$terminfo[kdch1]"

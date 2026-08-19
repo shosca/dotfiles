@@ -1,0 +1,33 @@
+# Configuration file for `prek`, a git hook framework written in Rust.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+
+# zero-dep hygiene + syntax checks, native Rust impl
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "check-merge-conflict" },
+  { id = "check-json" },
+  { id = "check-toml" },
+  { id = "check-added-large-files" },
+  { id = "check-executables-have-shebangs" },
+  { id = "check-shebang-scripts-are-executable" },
+  { id = "detect-private-key" },
+]
+
+[[repos]]
+repo = "https://github.com/JohnnyMorganz/StyLua"
+rev = "v2.4.1"
+hooks = [
+  { id = "stylua-system" }
+]
+
+# shell linting; scoped to bin scripts to avoid zsh/sh noise on rc files
+[[repos]]
+repo = "https://github.com/shellcheck-py/shellcheck-py"
+rev = "v0.11.0.1"
+hooks = [
+  { id = "shellcheck", files = "^(\\.local/bin/)" },
+]

@@ -5,4 +5,4 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-dkr run --rm --service-ports $@
+dkr run --rm --service-ports "$@"
