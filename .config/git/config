@@ -76,6 +76,7 @@ helper = cache --timeout=3600
 
 [push]
 default = current
+autoSetupRemote = true
 
 [url "https://github.com/"]
 insteadOf = git://github.com/
@@ -87,6 +88,9 @@ stat = true
 
 [diff]
 # external=difft
+algorithm = histogram
+colorMoved = plain
+mnemonicPrefix = true
 
 [mergetool "nvimdiff"]
 cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'"
@@ -108,6 +112,7 @@ autoStash = true
 
 [rerere]
 enabled = true
+autoupdate = true
 
 [help]
 autocorrect = 10
