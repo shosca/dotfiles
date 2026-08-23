@@ -8,7 +8,8 @@ return {
     },
   },
   {
-    "folke/sidekick.nvim",
+    "jhicks/sidekick.nvim",
+    branch = "add-wezterm-as-mux-backend",
     opts = {
       win = {
         split = {
@@ -52,8 +53,63 @@ return {
             escape = { "<Esc>", "<c-[>", mode = "t" },
           },
         },
+        mux = {
+          enabled = true,
+          backend = "wezterm",
+          create = "split",
+          split = {
+            vertical = true,
+            size = 0.5,
+          },
+        },
       },
     },
+    config = function(_, opts)
+      require("sidekick").setup(opts)
+      -- Patch wezterm backend is_running: when the tool quits but the
+      -- wezterm pane/shell stays open, the stock check kept returning
+      -- true (it looked at the pane shell pid), so the session stayed
+      -- "attached" and show/toggle/send became silent no-ops.
+      local ok, Wezterm = pcall(require, "sidekick.cli.session.wezterm")
+      if ok then
+        local Util = require("sidekick.util")
+        Wezterm.is_running = function(self)
+          local pane_id = self.wezterm_pane_id
+          if not pane_id then
+            return false
+          end
+          local _, out = Util.exec({ "wezterm", "cli", "list", "--format", "json" }, { notify = false })
+          local decoded, panes = pcall(vim.json.decode, out or "")
+          if not decoded or type(panes) ~= "table" then
+            return false
+          end
+          local tty
+          for _, p in ipairs(panes) do
+            if p.pane_id == pane_id then
+              tty = p.tty_name
+              break
+            end
+          end
+          if not tty then
+            return false -- pane is gone
+          end
+          local pid = Wezterm.root_pid(tty)
+          if not pid then
+            return false
+          end
+          local Procs = require("sidekick.cli.procs")
+          local procs = Procs.new()
+          local found = false
+          procs:walk(pid, function(proc)
+            if self.tool and self.tool:is_proc(proc) then
+              found = true
+              return true
+            end
+          end)
+          return found
+        end
+      end
+    end,
     keys = {
       {
         "<leader>aa",
@@ -100,6 +156,13 @@ return {
           require("sidekick.cli").toggle({ name = "opencode", focus = true })
         end,
         desc = "Sidekick toggle opencode",
+      },
+      {
+        "<leader>ac",
+        function()
+          require("sidekick.cli").show({ name = "claude", focus = true })
+        end,
+        desc = "Sidekick attach claude",
       },
     },
   },

@@ -3,11 +3,14 @@ aube = "latest"
 aws-iam-authenticator = "latest"
 awsls = "latest"
 "github:looker-open-source/looker-cli" = "latest"
+"github:vercel-labs/fx" = "latest"
+herdr = "latest"
 node = "latest"
 "npm:@opencode-ai/cli" = { version = "beta", allow_builds = true }
 "npm:pnpm" = "latest"
+"pipx:harlequin" = { version = "latest", extras = "postgresql,mysql,s3" }
 "pipx:mycli" = "latest"
-"pipx:semble" = "latest"
+"pipx:semble" = { version = "latest", extras = "mcp" }
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
 
@@ -22,6 +25,7 @@ dotfiles.default_mode = "symlink"
 "~/.bashrc" = {}
 "~/.config/direnv" = {}
 "~/.config/git" = {}
+"~/.config/herdr/config.toml" = {}
 "~/.config/mise" = {}
 "~/.config/npm" = {}
 "~/.config/nvim" = {}

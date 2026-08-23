@@ -282,6 +282,22 @@ class Command(abc.ABC):
 
         return gone
 
+    def _prune_empty_parents(self, path: str) -> None:
+        """Remove now-empty parent dirs left behind by `git worktree remove`.
+
+        git only deletes the leaf worktree directory, so nested branch paths
+        (e.g. shosca/account-selector) strand empty parent dirs. rmdir only
+        removes empty dirs, so the walk stops at the first non-empty ancestor.
+        """
+        root = Path(self.project_root).resolve()
+        parent = Path(path).resolve().parent
+        while parent != root and parent.is_relative_to(root):
+            try:
+                parent.rmdir()
+            except OSError:
+                break  # not empty or not removable — stop walking up
+            parent = parent.parent
+
 
 class List(Command):
     aliases = ("ls",)
@@ -453,6 +469,8 @@ class Cleanup(Command):
                 failed += 1
                 continue
 
+            self._prune_empty_parents(wt.path)
+
             try:
                 subprocess.run(
                     ["git", "branch", "-D", wt.branch],
@@ -543,6 +561,7 @@ class Delete(Command):
             print(f"❌ Failed to remove worktree: {e.stderr.strip()}")
             sys.exit(1)
 
+        self._prune_empty_parents(matched.path)
         print(f"✅ Worktree removed: {matched.path}")
 
         if args.and_branch:
