@@ -10,7 +10,6 @@ node = "latest"
 "npm:pnpm" = "latest"
 "pipx:harlequin" = { version = "latest", extras = "postgresql,mysql,s3" }
 "pipx:mycli" = "latest"
-"pipx:semble" = { version = "latest", extras = "mcp" }
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
 

@@ -253,3 +253,4 @@ source_sh ~/.bash-my-aws/bash_completion.sh
 
 # if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 #
+export ANTHROPIC_API_KEY=x  # placeholder for Meridian proxy (value ignored)

@@ -206,7 +206,7 @@ class Command(abc.ABC):
             return 0, 0
 
     def _default_branch(self) -> str:
-        """Detect the default remote branch (main or master)."""
+        """Detect the default remote branch, falling back to local HEAD."""
         try:
             result = subprocess.run(
                 ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],
@@ -216,7 +216,24 @@ class Command(abc.ABC):
             )
             return result.stdout.strip()
         except subprocess.CalledProcessError:
-            return "origin/master"
+            pass
+
+        # origin/HEAD unset (fresh clone, or origin missing) — probe common names
+        for branch in ("origin/main", "origin/master"):
+            if self.branch_exists(branch):
+                return branch
+
+        # No origin at all — base on the current local branch
+        try:
+            result = subprocess.run(
+                ["git", "symbolic-ref", "--short", "HEAD"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            return result.stdout.strip()
+        except subprocess.CalledProcessError:
+            return "master"
 
     def _age_days(self, path: str) -> int:
         """Return age in days of the latest commit on the current branch."""
@@ -367,7 +384,7 @@ class List(Command):
             )
 
 
-class Cleanup(Command):
+class Prune(Command):
     help_text = "Delete worktrees with gone upstreams."
     command_args = (
         CommandArg(
@@ -387,7 +404,7 @@ class Cleanup(Command):
     )
 
     def run(self, args: argparse.Namespace) -> None:
-        """Handle the 'gwt cleanup' subcommand."""
+        """Handle the 'gwt prune' subcommand."""
         gone_upstreams = self.find_gone_upstreams()
 
         # Cross-reference: only show worktrees that have gone upstreams
@@ -485,6 +502,51 @@ class Cleanup(Command):
 
         print()
         print(f"  🗑️  Deleted: {deleted} | Failed: {failed}")
+
+
+class Help(Command):
+    help_text = "Print command reference (plain text, for humans and AI agents)."
+
+    def _format_arg(self, arg: CommandArg) -> str:
+        """Render one CommandArg as a usage token, e.g. '<base>' or '-y, --yes'."""
+        if arg.source_type == "flags":
+            return ", ".join(arg.name)
+        if arg.choices:
+            return f"<{arg.name[0]}> ({'|'.join(arg.choices)})"
+        return f"<{arg.name[0]}>"
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt help' subcommand."""
+        # Reference only — derives from COMMANDS metadata, never touches git.
+        commands = []
+        for cmd_cls in COMMANDS:
+            cmd = cmd_cls()
+            commands.append((cmd_cls.__name__.lower(), cmd))
+        commands.sort(key=lambda c: c[0])
+
+        print("gwt - Create, switch to, or clean up git worktrees.")
+        print()
+        print("COMMANDS")
+        print()
+
+        for name, cmd in commands:
+            aliases = f" ({', '.join(cmd.aliases)})" if cmd.aliases else ""
+            print(f"{name}{aliases}")
+            if cmd.help_text:
+                print(f"  {cmd.help_text}")
+            if cmd.command_args:
+                print("  Args:")
+                for arg in cmd.command_args:
+                    token = self._format_arg(arg)
+                    suffix = " (one or more)" if arg.nargs == "+" else ""
+                    if arg.nargs == "?":
+                        suffix = " (optional)"
+                    desc = f"  {arg.help}" if arg.help else ""
+                    print(f"    {token}{suffix}{desc}")
+            if cmd.description:
+                for line in cmd.description.strip().splitlines():
+                    print(f"  {line.rstrip()}" if line.strip() else "")
+            print()
 
 
 class Delete(Command):
@@ -894,7 +956,7 @@ class Checkout(Command):
         CommandArg(
             position=2,
             name=("base",),
-            help="Base branch (auto-detected from origin/HEAD).",
+            help="Base branch (auto-detected: origin/HEAD, origin/main|master, or current).",
             source_type="branches",
             nargs="?",
             default="__detect__",
@@ -915,14 +977,14 @@ class Checkout(Command):
         # Case 1: Worktree dir already exists → cd into it
         if Path(worktree_path).is_dir():
             self._write_cd_file(worktree_path)
-            print(f"📂 Already working on: {args.branch}")
+            print(f"📂 {worktree_path} ({args.branch})")
             return
 
         # Case 2: Branch has a worktree somewhere → cd into it
         existing_wt = self.get_worktree_path_for_branch(args.branch)
         if existing_wt:
             self._write_cd_file(Path(existing_wt))
-            print(f"📂 Switching to existing worktree: {args.branch}")
+            print(f"📂 {existing_wt} ({args.branch})")
             return
 
         # Case 3: Branch exists locally → create worktree from it (no branch changes)
@@ -940,9 +1002,11 @@ class Checkout(Command):
                 print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
                 sys.exit(1)
             self._write_cd_file(worktree_path)
-            print(f"📂 Worktree created from existing branch: {args.branch}")
+            print(f"📂 {worktree_path} ({args.branch})")
             if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
-                if not run_hooks(self.project_root, "checkout", args.branch, str(worktree_path)):
+                if not run_hooks(
+                    self.project_root, "checkout", args.branch, str(worktree_path)
+                ):
                     sys.exit(1)
             return
 
@@ -966,11 +1030,13 @@ class Checkout(Command):
 
         self._write_cd_file(worktree_path)
         if base == f"origin/{args.branch}":
-            print(f"🚀 Ready to work on: {args.branch} (tracking {base})")
+            print(f"🚀 {worktree_path} ({args.branch}, tracking {base})")
         else:
-            print(f"🚀 Ready to work on: {args.branch}")
+            print(f"🚀 {worktree_path} ({args.branch})")
         if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
-            if not run_hooks(self.project_root, "checkout", args.branch, str(worktree_path)):
+            if not run_hooks(
+                self.project_root, "checkout", args.branch, str(worktree_path)
+            ):
                 sys.exit(1)
 
 
@@ -1100,10 +1166,11 @@ def run_hooks(project_root: str, subcommand: str, branch: str, worktree: str) ->
 COMMANDS = {
     Completions,
     Checkout,
-    Cleanup,
+    Prune,
     List,
     Delete,
     Pr,
+    Help,
 }
 
 
