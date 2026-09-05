@@ -186,6 +186,25 @@ fi
 [[ -x "$(command -v starship)" ]] && eval "$(starship init zsh)"
 [[ -x "$(command -v zoxide)" ]] && eval "$(zoxide init zsh)"
 
+# herdr: tmux-style launch — land in the workspace rooted at $PWD
+herd() {
+  emulate -L zsh
+  if ! herdr status server >/dev/null 2>&1; then
+    exec herdr  # fresh server: empty session auto-seeds at the launch dir
+  fi
+  local id cwd match=""
+  for id in ${(f)"$(herdr workspace list 2>/dev/null | grep -o '"workspace_id":"[^"]*"' | cut -d'"' -f4)"}; do
+    cwd=$(herdr pane list --workspace "$id" 2>/dev/null | grep -o '"cwd":"[^"]*"' | head -1 | cut -d'"' -f4)
+    [[ "$cwd" == "$PWD" ]] && { match=$id; break }
+  done
+  if [[ -n "$match" ]]; then
+    herdr workspace focus "$match" >/dev/null 2>&1
+  else
+    herdr workspace create --cwd "$PWD" --label "${PWD:t}" --focus >/dev/null 2>&1
+  fi
+  herdr
+}
+
 [[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
 [[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
 [[ -x $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"

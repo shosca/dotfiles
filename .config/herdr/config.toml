@@ -13,7 +13,7 @@ panel_bg = "black"
 
 [terminal]
 # Matches -c "#{pane_current_path}" on every split, window, and session
-new_cwd = "follow"
+new_cwd = "current"
 
 [keys]
 prefix = "`"
