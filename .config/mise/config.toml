@@ -1,5 +1,4 @@
 [tools]
-aube = "latest"
 aws-iam-authenticator = "latest"
 awsls = "latest"
 "github:looker-open-source/looker-cli" = "latest"
@@ -12,6 +11,7 @@ node = "latest"
 "pipx:mycli" = "latest"
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
+"ubi:redhat-et/ripwire" = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]
@@ -23,11 +23,15 @@ dotfiles.default_mode = "symlink"
 "~/.aliases" = {}
 "~/.bashrc" = {}
 "~/.config/direnv" = {}
+"~/.config/ghostty" = {}
 "~/.config/git" = {}
 "~/.config/herdr/config.toml" = {}
 "~/.config/mise" = {}
 "~/.config/npm" = {}
 "~/.config/nvim" = {}
+"~/.config/opencode/cli.json" = {}
+"~/.config/opencode/opencode.json" = {}
+"~/.config/opencode/tui.json" = {}
 "~/.config/pacman" = {}
 "~/.config/pgsqlrc" = {}
 "~/.config/starship.toml" = {}

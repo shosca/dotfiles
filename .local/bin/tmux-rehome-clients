@@ -1,0 +1,17 @@
+#!/bin/sh
+# called from session-closed hook (arg unused, kept for future use)
+# no home session concept: when a session closes, its clients fall back to the
+# last remaining session in the list; if none remain, detach (exit) clients
+last=$(tmux list-sessions -F '#{session_name}' | tail -1)
+if [ -z "$last" ]; then
+	for c in $(tmux list-clients -F '#{client_name}'); do
+		tmux detach-client -t "$c"
+	done
+	exit 0
+fi
+for entry in $(tmux list-clients -F '#{client_name} #{session_name}'); do
+	client=${entry% *}
+	sess=${entry#* }
+	[ "$sess" != "$last" ] && tmux switch-client -c "$client" -t "$last"
+done
+exit 0

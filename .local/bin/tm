@@ -1,0 +1,8 @@
+#!/bin/sh
+# ghostty launch: attach to the most recent tmux session, or create the home one
+home=$(tmux show -gv @home-session 2>/dev/null || echo main)
+first=$(tmux ls -F '#{session_name}' 2>/dev/null | head -1)
+if [ -n "$first" ]; then
+	exec tmux attach -t "$first"
+fi
+exec tmux new -A -s "$home"
