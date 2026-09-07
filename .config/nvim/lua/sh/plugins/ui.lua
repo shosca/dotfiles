@@ -2,18 +2,12 @@ local utils = require("sh.utils")
 
 return {
   {
-    "wtfox/luna.nvim",
+    "craftzdog/solarized-osaka.nvim",
     lazy = false,
     priority = 1000,
     opts = {},
     config = function()
-      require("luna").setup({
-        plugins = {
-          all = true,
-          auto = true,
-        },
-      })
-      vim.cmd("colorscheme luna")
+      vim.cmd("colorscheme solarized-osaka")
     end,
   },
   {
