@@ -385,7 +385,7 @@ class List(Command):
 
 
 class Prune(Command):
-    help_text = "Delete worktrees with gone upstreams."
+    help_text = "Delete worktrees with gone upstreams, plus all PR review worktrees."
     command_args = (
         CommandArg(
             position=1,
@@ -403,21 +403,45 @@ class Prune(Command):
         ),
     )
 
+    @staticmethod
+    def _is_pr_worktree(wt: WorktreeInfo) -> bool:
+        """Match PR review worktrees created by `gwt pr` (branch pr/N or path pr-N)."""
+        return bool(re.fullmatch(r"pr/\d+", wt.branch)) or (
+            not wt.branch and bool(re.fullmatch(r"pr-\d+", Path(wt.path).name))
+        )
+
     def run(self, args: argparse.Namespace) -> None:
         """Handle the 'gwt prune' subcommand."""
         gone_upstreams = self.find_gone_upstreams()
 
+        # PR review worktrees (gwt pr) have no upstream tracking, so they never
+        # show up as gone — always include them as prune candidates.
+        pr_candidates = [wt for wt in self.worktrees if self._is_pr_worktree(wt)]
+
         # Cross-reference: only show worktrees that have gone upstreams
-        candidates = [wt for wt in self.worktrees if wt.branch in gone_upstreams]
+        candidates = [
+            wt
+            for wt in self.worktrees
+            if wt.branch in gone_upstreams and wt not in pr_candidates
+        ]
+        candidates += pr_candidates
         others = [
-            wt for wt in self.worktrees if wt.branch and wt.branch not in gone_upstreams
+            wt
+            for wt in self.worktrees
+            if wt.branch
+            and wt.branch not in gone_upstreams
+            and wt not in pr_candidates
         ]
 
         gone_count = len(candidates)
         active_count = len(others)
 
-        # Print skipped worktrees (detached / no branch)
-        detached = [wt for wt in self.worktrees if not wt.branch]
+        # Print skipped worktrees (detached / no branch, excluding PR worktrees)
+        detached = [
+            wt
+            for wt in self.worktrees
+            if not wt.branch and not self._is_pr_worktree(wt)
+        ]
         detached_count = len(detached)
         total_worktrees = gone_count + active_count + detached_count
         for wt in detached:
@@ -439,8 +463,13 @@ class Prune(Command):
 
         print(f"  ✅ Can clean ({gone_count}):")
         for wt in candidates:
-            remote_ref = gone_upstreams[wt.branch]
-            print(f"     • {wt.branch} (upstream {remote_ref})")
+            remote_ref = gone_upstreams.get(wt.branch)
+            if remote_ref:
+                label = f"upstream {remote_ref}"
+            else:
+                name = wt.branch or Path(wt.path).name
+                label = "PR review worktree"
+            print(f"     • {name} ({label})")
         print()
 
         if others:
@@ -471,8 +500,12 @@ class Prune(Command):
         failed = 0
 
         for wt in candidates:
-            remote_ref = gone_upstreams[wt.branch]
-            print(f"  🗑️  {wt.branch} (upstream {remote_ref} is gone)")
+            if wt.branch in gone_upstreams:
+                remote_ref = gone_upstreams[wt.branch]
+                print(f"  🗑️  {wt.branch} (upstream {remote_ref} is gone)")
+            else:
+                name = wt.branch or Path(wt.path).name
+                print(f"  🗑️  {name} (PR review worktree)")
 
             try:
                 subprocess.run(
@@ -487,6 +520,10 @@ class Prune(Command):
                 continue
 
             self._prune_empty_parents(wt.path)
+
+            if not wt.branch:
+                deleted += 1
+                continue
 
             try:
                 subprocess.run(

@@ -1,0 +1,28 @@
+{
+  "theme": {
+    "name": "omarchy-q2dm1",
+    "mode": "dark"
+  },
+  "attention": {
+    "enabled": true,
+    "sound": false
+  },
+  "plugin": ["./plugins/opencode-herdr"],
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "show"
+  },
+  "animations": true,
+  "keybinds": {
+    "session.first": "none",
+    "session.last": "none",
+    "input.line.home": "home",
+    "input.line.end": "end",
+    "input.select.line.home": "shift+home",
+    "input.select.line.end": "shift+end"
+  }
+}

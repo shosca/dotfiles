@@ -1,0 +1,157 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    // Catch-all FIRST. Last matching rule wins, so later rules override it.
+    // Moving this to the bottom silently disables every allow below.
+    "*": "ask",
+    // Object form preserves opencode's default .env denial; a bare
+    // "read": "allow" would drop it and expose secrets to reads.
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+    },
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "todowrite": "allow",
+    "question": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "lsp": "allow",
+    "task": "allow",
+    "skill": {
+      "*": "ask",
+      "caveman": "allow",
+      "caveman-commit": "allow",
+      "caveman-review": "allow",
+      "commit": "allow",
+      "opencode": "allow",
+      "pr-review": "allow",
+      "pr-writer": "allow",
+      "unslop": "allow",
+    },
+    // Worktree layout puts the bare clone and sibling worktrees outside the
+    // CWD, so most routine paths count as external without these rules.
+    "external_directory": {
+      "*": "ask",
+      "~/src/force/**": "allow",
+      "/tmp/**": "allow",
+    },
+    "bash": {
+      "*": "ask",
+      "echo *": "allow",
+      "find *": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "prek *": "allow",
+      "pyrefly *": "allow",
+      "pytest *": "allow",
+      "ruff *": "allow",
+      "set *": "allow",
+      "tail *": "allow",
+      "time *": "allow",
+      "true *": "allow",
+      "tmux *": "allow",
+      "wc *": "allow",
+      "xargs *": "allow",
+      "rtk *": "allow",
+      // Must stay AFTER "rtk *": `rtk proxy <cmd>` runs unfiltered, so the
+      // blanket allow would otherwise auto-approve arbitrary commands.
+      "rtk proxy *": "ask",
+      "rg *": "allow",
+      "git log *": "allow",
+      "git diff *": "allow",
+      "git rev-parse *": "allow",
+      "gh pr checks *": "allow",
+      "gh pr view *": "allow",
+    },
+    // MCP tools are keyed by tool name (<server>_<tool>); wildcards cover the
+    // server prefix. "cypress*" spans both cypress and cypress-cloud.
+    "context-mode*": "allow",
+    "atlassian*": "allow",
+    "jenkins*": "allow",
+    "cypress*": "allow",
+    "sonarqube*": "allow",
+  },
+  "formatter": true,
+  "plugins": [
+    // V2 port of CoryBR/llamaswap-opencode-plugin; injects llama-swap models
+    // into the llama-swap provider catalog and registers llamaswap_* tools.
+    "file:///home/serkan/.config/opencode/plugins/llamaswap.ts",
+  ],
+  "share": "disabled",
+  "default_agent": "plan",
+  "snapshot": false,
+  "instructions": [
+    "~/.config/opencode/AGENTS.md",
+  ],
+  "agents": {
+    "plan": {
+      "permissions": [
+{ "action": "edit", "resource": "/tmp/opencode/**", "effect": "allow" }
+      ]
+    }
+  },
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    }
+  },
+  "lsp": {
+    "ruff": {
+      "command": [
+        "ruff",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    },
+    "pyright": {
+      "disabled": true
+    },
+    "tsgo": {
+      "command": [
+        "tsgo"
+      ],
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "pyrefly": {
+      "command": [
+        "pyrefly",
+        "lsp"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    }
+  },
+  "providers": {
+    "llama-swap": {
+      "name": "llama-swap",
+      "package": "@opencode-ai/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "http://127.0.0.1:8090/v1"
+      }
+      // Models are injected at startup by plugins/llamaswap.ts from the
+      // llama-swap /v1/models endpoint instead of being listed manually.
+    }
+  },
+  "websearch": {
+    "provider": "random"
+  },
+}

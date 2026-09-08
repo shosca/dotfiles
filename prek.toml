@@ -9,7 +9,8 @@ hooks = [
   { id = "trailing-whitespace" },
   { id = "end-of-file-fixer" },
   { id = "check-merge-conflict" },
-  { id = "check-json" },
+  # opencode config is JSONC (comments + trailing commas); strict JSON check can't parse it
+  { id = "check-json", exclude = "^\\.config/opencode/opencode\\.json$" },
   { id = "check-toml" },
   { id = "check-added-large-files" },
   { id = "check-executables-have-shebangs" },

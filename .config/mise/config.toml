@@ -12,6 +12,7 @@ node = "latest"
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
 "github:redhat-et/ripwire" = "latest"
+"github:hmans/beans" = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]
@@ -27,10 +28,11 @@ dotfiles.default_mode = "symlink"
 "~/.config/git" = {}
 "~/.config/herdr/config.toml" = {}
 "~/.config/mise" = {}
-"~/.config/nvim" = {}
 "~/.config/npm" = {}
+"~/.config/nvim" = {}
 "~/.config/opencode/cli.json" = {}
 "~/.config/opencode/opencode.json" = {}
+"~/.config/opencode/themes" = {}
 "~/.config/opencode/tui.json" = {}
 "~/.config/pacman" = {}
 "~/.config/pgsqlrc" = {}
