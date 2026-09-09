@@ -34,6 +34,8 @@ dotfiles.default_mode = "symlink"
 "~/.config/nvim" = {}
 "~/.config/opencode/cli.json" = {}
 "~/.config/opencode/opencode.json" = {}
+"~/.config/opencode/plugins/opencode-herdr" = { source = "~/dotfiles/.config/opencode/plugins/opencode-herdr" }
+"~/.config/opencode/plugins/opencode-tmux" = { source = "~/dotfiles/.config/opencode/plugins/opencode-tmux" }
 "~/.config/opencode/themes" = {}
 "~/.config/opencode/tui.json" = {}
 "~/.config/pacman" = {}

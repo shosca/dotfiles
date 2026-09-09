@@ -1,0 +1,11 @@
+{
+  "name": "opencode-herdr",
+  "version": "11.0.0-v2port.5",
+  "type": "module",
+  "private": true,
+  "description": "V2 port of the herdr opencode integration: server agent-state reporting, TUI session reporting, and topic-based agent renaming (no npm dependencies)",
+  "exports": {
+    ".": "./index.js",
+    "./tui": "./tui.js"
+  }
+}

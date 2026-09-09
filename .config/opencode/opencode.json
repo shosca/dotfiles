@@ -87,6 +87,9 @@
     // V2 port of CoryBR/llamaswap-opencode-plugin; injects llama-swap models
     // into the llama-swap provider catalog and registers llamaswap_* tools.
     "file:///home/serkan/.config/opencode/plugins/llamaswap.ts",
+    // TUI-rename plugins; sources live in dotfiles, loaded in place.
+    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-herdr",
+    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-tmux",
   ],
   "share": "disabled",
   "default_agent": "plan",

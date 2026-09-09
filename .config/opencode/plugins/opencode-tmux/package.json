@@ -1,0 +1,11 @@
+{
+  "name": "opencode-tmux",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Renames the tmux window (and single-window tmux session) to the OpenCode session topic slug",
+  "exports": {
+    ".": "./index.js",
+    "./tui": "./tui.js"
+  }
+}

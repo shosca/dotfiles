@@ -211,6 +211,7 @@ hq() {
 [[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
+[[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
 
 if [[ -f "/usr/bin/dircolors" ]]; then
   case "${TERM}" in
@@ -268,6 +269,3 @@ source_sh ~/.bash-my-aws/bash_completion.sh
 #
 #   export XDG_RUNTIME_DIR="${TMPDIR}"
 # fi
-
-# if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
-#
