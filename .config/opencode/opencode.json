@@ -41,31 +41,38 @@
     },
     "bash": {
       "*": "ask",
+      "beans *": "allow",
+      "cut *": "allow",
+      "dirname *": "allow",
       "echo *": "allow",
       "find *": "allow",
+      "gh pr checks *": "allow",
+      "gh pr view *": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "git rev-parse *": "allow",
       "grep *": "allow",
       "head *": "allow",
+      "jq *": "allow",
+      "ls *": "allow",
       "prek *": "allow",
       "pyrefly *": "allow",
       "pytest *": "allow",
+      "rg *": "allow",
+      "rtk *": "allow",
       "ruff *": "allow",
       "set *": "allow",
       "tail *": "allow",
       "time *": "allow",
-      "true *": "allow",
       "tmux *": "allow",
+      "tr *": "allow",
+      "true *": "allow",
+      "uniq *": "allow",
       "wc *": "allow",
       "xargs *": "allow",
-      "rtk *": "allow",
       // Must stay AFTER "rtk *": `rtk proxy <cmd>` runs unfiltered, so the
       // blanket allow would otherwise auto-approve arbitrary commands.
       "rtk proxy *": "ask",
-      "rg *": "allow",
-      "git log *": "allow",
-      "git diff *": "allow",
-      "git rev-parse *": "allow",
-      "gh pr checks *": "allow",
-      "gh pr view *": "allow",
     },
     // MCP tools are keyed by tool name (<server>_<tool>); wildcards cover the
     // server prefix. "cypress*" spans both cypress and cypress-cloud.
@@ -90,7 +97,7 @@
   "agents": {
     "plan": {
       "permissions": [
-{ "action": "edit", "resource": "/tmp/opencode/**", "effect": "allow" }
+        { "action": "edit", "resource": "/tmp/opencode/**", "effect": "allow" }
       ]
     }
   },

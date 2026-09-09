@@ -464,10 +464,10 @@ class Prune(Command):
         print(f"  ✅ Can clean ({gone_count}):")
         for wt in candidates:
             remote_ref = gone_upstreams.get(wt.branch)
+            name = wt.branch or Path(wt.path).name
             if remote_ref:
                 label = f"upstream {remote_ref}"
             else:
-                name = wt.branch or Path(wt.path).name
                 label = "PR review worktree"
             print(f"     • {name} ({label})")
         print()

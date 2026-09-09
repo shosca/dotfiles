@@ -7,7 +7,7 @@
     "enabled": true,
     "sound": false
   },
-  "plugin": ["./plugins/opencode-herdr"],
+  "plugin": ["./plugins/opencode-herdr", "./plugins/opencode-tmux"],
   "diffs": {
     "wrap": "word"
   },

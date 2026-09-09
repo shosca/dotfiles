@@ -21,8 +21,10 @@ dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"
 
 [dotfiles]
+"~/.agents/skills" = { source = "~/dotfiles/.agents/skills" }
 "~/.aliases" = {}
 "~/.bashrc" = {}
+"~/.claude/skills" = { source = "~/dotfiles/.agents/skills" }
 "~/.config/direnv" = {}
 "~/.config/ghostty" = {}
 "~/.config/git" = {}
