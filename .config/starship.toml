@@ -8,7 +8,7 @@ symbol = " "
 symbol = " "
 
 [directory]
-read_only = " "
+read_only = " \uf03eb"
 
 [docker_context]
 symbol = " "
@@ -35,16 +35,17 @@ symbol = " "
 symbol = " "
 
 [memory_usage]
-symbol = " "
+symbol = "\uf035b "
 
 [nim]
-symbol = " "
+symbol = "\ue841 "
 
 [nix_shell]
 symbol = " "
 
 [package]
-symbol = " "
+symbol = "\uf03d3 "
+disabled = true
 
 [perl]
 symbol = " "
@@ -65,4 +66,4 @@ symbol = " "
 symbol = " "
 
 [swift]
-symbol = "ﯣ "
+symbol = "\uf06e5 "
