@@ -36,7 +36,7 @@
   "nvim-lspconfig": { "branch": "master", "commit": "ac9d2f7c4757db6320cab6697fe73e5e8adb2457" },
   "nvim-spectre": { "branch": "master", "commit": "72f56f7585903cd7bf92c665351aa585e150af0f" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
-  "render-markdown.nvim": { "branch": "main", "commit": "4663eb3ecd538bd5062628fb6d95bbe6bdca78f6" },
+  "render-markdown.nvim": { "branch": "main", "commit": "f94914e0486466aac53570de084a475e288ec46d" },
   "schemastore.nvim": { "branch": "main", "commit": "05e938c0aa5dfbdbb11972fa4c8a85f27f402ba0" },
   "sidekick.nvim": { "branch": "add-wezterm-as-mux-backend", "commit": "90133864f92e74bffd36e6685c244f3184e2d218" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },

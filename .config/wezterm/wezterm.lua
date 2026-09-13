@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local agent_deck = wezterm.plugin.require("https://github.com/Eric162/wezterm-agent-deck")
 
 -- Solarized Dark Patched, matching ~/.config/ghostty/config (background overridden)
 local colors = {
@@ -30,7 +31,7 @@ local colors = {
   },
 }
 
-return {
+local config = {
   enable_wayland = true,
   notification_handling = "NeverShow",
   front_end = "WebGpu",
@@ -152,4 +153,64 @@ return {
     { key = "6", mods = "LEADER", action = wezterm.action.ActivateTab(5) },
     { key = "7", mods = "LEADER", action = wezterm.action.ActivateTab(6) },
   },
+  -- ghostty parity: copy-on-select = clipboard copies the selection to both
+  -- the system clipboard and the primary selection, and still opens links.
+  -- ClearSelection drops the highlight once the text is copied.
+  mouse_bindings = {
+    {
+      event = { Up = { streak = 1, button = "Left" } },
+      mods = "NONE",
+      action = wezterm.action.Multiple({
+        wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor("ClipboardAndPrimarySelection"),
+        wezterm.action.ClearSelection,
+      }),
+    },
+  },
 }
+
+-- Status dots in tab titles + notifications when an agent waits for input.
+agent_deck.apply_to_config(config, {
+  update_interval = 1000,
+
+  -- Match the Solarized Dark Patched palette above.
+  colors = {
+    working = colors.ansi.green,
+    waiting = colors.ansi.yellow,
+    idle = colors.ansi.blue,
+    inactive = colors.brights.black,
+  },
+
+  -- The plugin ships empty nerd glyphs; supply ones present in VictorMono NFM.
+  icons = {
+    style = "nerd",
+    nerd = {
+      working = "\u{f111}", -- nf-fa-circle
+      waiting = "\u{f042}", -- nf-fa-adjust
+      idle = "\u{f10c}", -- nf-fa-circle_o
+      inactive = "\u{f0766}", -- nf-md-circle_outline
+    },
+  },
+
+  -- WezTerm's native toast never expires on KDE Plasma (wezterm#7553, #7573),
+  -- so disable it; the notify-send handler below honours the timeout instead.
+  notifications = { enabled = false },
+})
+
+wezterm.on("agent_deck.status_changed", function(_, pane, _old, new_status, agent_type)
+  if new_status ~= "waiting" then
+    return
+  end
+  wezterm.background_child_process({
+    "notify-send",
+    "-a",
+    "WezTerm",
+    "-u",
+    "normal",
+    "-t",
+    "4000",
+    (agent_type or "agent") .. " needs input",
+    pane:get_title(),
+  })
+end)
+
+return config
