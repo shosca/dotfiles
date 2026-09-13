@@ -87,6 +87,20 @@ class Command(abc.ABC):
         except OSError:
             pass
 
+    def _run_hooks(
+        self,
+        subcommand: str,
+        branch: str,
+        worktree: Path,
+        *,
+        skip: bool = False,
+    ) -> None:
+        """Run gwt.toml hooks for subcommand, exiting 1 if one fails."""
+        if skip or os.environ.get("GWT_NO_HOOKS"):
+            return
+        if not run_hooks(self.project_root, subcommand, branch, str(worktree)):
+            sys.exit(1)
+
     def run(self, args: argparse.Namespace) -> None: ...
 
     @functools.cached_property
@@ -1015,6 +1029,7 @@ class Checkout(Command):
         if Path(worktree_path).is_dir():
             self._write_cd_file(worktree_path)
             print(f"📂 {worktree_path} ({args.branch})")
+            self._run_hooks("checkout", args.branch, worktree_path, skip=args.no_hooks)
             return
 
         # Case 2: Branch has a worktree somewhere → cd into it
@@ -1022,6 +1037,9 @@ class Checkout(Command):
         if existing_wt:
             self._write_cd_file(Path(existing_wt))
             print(f"📂 {existing_wt} ({args.branch})")
+            self._run_hooks(
+                "checkout", args.branch, Path(existing_wt), skip=args.no_hooks
+            )
             return
 
         # Case 3: Branch exists locally → create worktree from it (no branch changes)
@@ -1040,11 +1058,7 @@ class Checkout(Command):
                 sys.exit(1)
             self._write_cd_file(worktree_path)
             print(f"📂 {worktree_path} ({args.branch})")
-            if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
-                if not run_hooks(
-                    self.project_root, "checkout", args.branch, str(worktree_path)
-                ):
-                    sys.exit(1)
+            self._run_hooks("checkout", args.branch, worktree_path, skip=args.no_hooks)
             return
 
         # Case 4: Branch doesn't exist → create new branch
@@ -1070,11 +1084,7 @@ class Checkout(Command):
             print(f"🚀 {worktree_path} ({args.branch}, tracking {base})")
         else:
             print(f"🚀 {worktree_path} ({args.branch})")
-        if not args.no_hooks and not os.environ.get("GWT_NO_HOOKS"):
-            if not run_hooks(
-                self.project_root, "checkout", args.branch, str(worktree_path)
-            ):
-                sys.exit(1)
+        self._run_hooks("checkout", args.branch, worktree_path, skip=args.no_hooks)
 
 
 class Pr(Command):
@@ -1103,6 +1113,13 @@ class Pr(Command):
             action="store",
             default="origin",
         ),
+        CommandArg(
+            position=3,
+            name=("--no-hooks",),
+            help="Skip running hooks from gwt.toml.",
+            source_type="flags",
+            action="store_true",
+        ),
     )
 
     def run(self, args: argparse.Namespace) -> None:
@@ -1115,6 +1132,7 @@ class Pr(Command):
         if Path(worktree_path).is_dir():
             self._write_cd_file(worktree_path)
             print(f"🔍 PR #{pr_number} already checked out at: {worktree_path}")
+            self._run_hooks("pr", branch_name, worktree_path, skip=args.no_hooks)
             return
 
         # Case 2: Branch has a worktree somewhere → cd into it
@@ -1122,6 +1140,7 @@ class Pr(Command):
         if existing_wt:
             self._write_cd_file(Path(existing_wt))
             print(f"🔍 PR #{pr_number} worktree found at: {existing_wt}")
+            self._run_hooks("pr", branch_name, Path(existing_wt), skip=args.no_hooks)
             return
 
         # Fetch the PR
@@ -1169,9 +1188,7 @@ class Pr(Command):
             sys.exit(1)
 
         print(f"🔍 Ready to review PR #{pr_number} at {worktree_path}")
-        if not os.environ.get("GWT_NO_HOOKS"):
-            if not run_hooks(self.project_root, "pr", branch_name, str(worktree_path)):
-                sys.exit(1)
+        self._run_hooks("pr", branch_name, worktree_path, skip=args.no_hooks)
 
 
 def run_hooks(project_root: str, subcommand: str, branch: str, worktree: str) -> bool:

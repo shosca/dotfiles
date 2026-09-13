@@ -59,8 +59,12 @@ next_tab = "prefix+l"
 new_workspace = "prefix+c"
 rename_workspace = "prefix+shift+r"
 close_workspace = "prefix+shift+k"
-previous_workspace = "prefix+p"
-next_workspace = "prefix+n"
+# Agent cycling (agent panel order, grouped by space per agent_panel_sort)
+# Replaces workspace cycling; workspaces remain reachable via goto picker (prefix+g)
+previous_agent = "prefix+p"
+next_agent = "prefix+n"
+previous_workspace = "prefix+P"
+next_workspace = "prefix+N"
 
 [ui]
 accent = "blue"

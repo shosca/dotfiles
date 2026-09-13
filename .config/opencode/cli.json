@@ -10,9 +10,19 @@
   "session": {
     "sidebar": "hide",
     "scrollbar": false,
-    "thinking": "show"
+    "thinking": "hide"
   },
   "animations": true,
+  "keybinds": {
+    "session.first": "ctrl+g,alt+home",
+    "session.last": "ctrl+alt+g",
+    "input.line.home": "ctrl+a,home",
+    "input.line.end": "ctrl+e,end",
+    "input.select.line.home": "ctrl+shift+a,shift+home",
+    "input.select.line.end": "ctrl+shift+e,shift+end",
+    "input.select.buffer.home": "none",
+    "input.select.buffer.end": "none"
+  },
   "theme": {
     "name": "solarized-osaka"
   }

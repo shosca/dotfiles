@@ -5,7 +5,6 @@ awsls = "latest"
 "github:vercel-labs/fx" = "latest"
 herdr = "latest"
 node = "latest"
-"npm:@opencode-ai/cli" = { version = "beta", allow_builds = true }
 "npm:pnpm" = "latest"
 "pipx:harlequin" = { version = "latest", extras = "postgresql,mysql,s3" }
 "pipx:mycli" = "latest"
@@ -13,6 +12,8 @@ node = "latest"
 trivy = "latest"
 "github:redhat-et/ripwire" = "latest"
 "github:hmans/beans" = "latest"
+"github:stablyai/orca" = "latest"
+"npm:@opencode/cli" = { version = "latest", allow_builds = true }
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]
@@ -29,6 +30,7 @@ dotfiles.default_mode = "symlink"
 "~/.config/ghostty" = {}
 "~/.config/git" = {}
 "~/.config/herdr/config.toml" = {}
+"~/.config/kitty" = {}
 "~/.config/mise" = {}
 "~/.config/npm" = {}
 "~/.config/nvim" = {}

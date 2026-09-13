@@ -117,7 +117,7 @@ zle -N down-line-or-beginning-search
 bindkey -e
 
 key[Home]="$terminfo[khome]"
-key[End]="$terminfo[kind]"
+key[End]="$terminfo[kend]"
 key[Insert]="$terminfo[kich1]"
 key[Backspace]="$terminfo[kbs]"
 key[Delete]="$terminfo[kdch1]"
@@ -212,6 +212,7 @@ hq() {
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
+[[ -x $(command -v inv 2>/dev/null) ]] && eval "$(inv --print-completion-script zsh)"
 
 if [[ -f "/usr/bin/dircolors" ]]; then
   case "${TERM}" in
