@@ -83,14 +83,11 @@
     "sonarqube*": "allow",
   },
   "formatter": true,
-  "plugins": [
-    // V2 port of CoryBR/llamaswap-opencode-plugin; injects llama-swap models
-    // into the llama-swap provider catalog and registers llamaswap_* tools.
-    "file:///home/serkan/.config/opencode/plugins/llamaswap.ts",
-    // TUI-rename plugins; sources live in dotfiles, loaded in place.
-    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-herdr",
-    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-tmux",
-  ],
+  // No "plugins" list: every plugin under ~/.config/opencode/plugins/ is
+  // auto-discovered. Listing one here too registers its ID twice, and the
+  // duplicate fails with "Duplicate plugin ID". A file path here is also
+  // invalid (that key takes directories only), so llamaswap.ts must stay
+  // auto-discovered.
   "share": "disabled",
   "default_agent": "plan",
   "snapshot": false,
