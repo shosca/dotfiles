@@ -1,5 +1,8 @@
-import { Plugin } from "@opencode-ai/plugin"
-import { execFile } from "node:child_process"
+import { execFile } from "node:child_process";
+
+// No `@opencode-ai/plugin` import: this file is symlinked from dotfiles, and
+// Bun resolves bare imports from the realpath, where no node_modules exists.
+// The loader accepts a plain { id, setup } object (Plugin.define is identity).
 
 // RTK OpenCode plugin — rewrites commands to use rtk for token savings.
 // Requires: rtk >= 0.23.0 in PATH.
@@ -12,42 +15,43 @@ import { execFile } from "node:child_process"
 // applicable, 3 = rewrite emitted), so resolve with stdout regardless.
 function run(file: string, args: string[]): Promise<string> {
   return new Promise((resolve) => {
-    execFile(file, args, { timeout: 5000 }, (_err, stdout) => resolve(String(stdout)))
-  })
+    execFile(file, args, { timeout: 5000 }, (_err, stdout) => resolve(String(stdout)));
+  });
 }
 
 function whichRtk(): Promise<boolean> {
   return new Promise((resolve) => {
-    execFile("which", ["rtk"], (err) => resolve(!err))
-  })
+    execFile("which", ["rtk"], (err) => resolve(!err));
+  });
 }
 
-export const RtkPlugin = Plugin.define({
-  id: "rtk",  setup: async (ctx) => {
+export const RtkPlugin = {
+  id: "rtk",
+  setup: async (ctx) => {
     if (!(await whichRtk())) {
-      console.warn("[rtk] rtk binary not found in PATH — plugin disabled")
-      return
+      console.warn("[rtk] rtk binary not found in PATH — plugin disabled");
+      return;
     }
 
     const registration = await ctx.tool.hook("execute.before", async (event) => {
-      const tool = String(event.tool ?? "").toLowerCase()
-      if (tool !== "bash" && tool !== "shell") return
-      const input = event.input as { command?: unknown } | undefined
-      const command = input?.command
-      if (typeof command !== "string" || !command) return
+      const tool = String(event.tool ?? "").toLowerCase();
+      if (tool !== "bash" && tool !== "shell") return;
+      const input = event.input as { command?: unknown } | undefined;
+      const command = input?.command;
+      if (typeof command !== "string" || !command) return;
 
       try {
-        const rewritten = (await run("rtk", ["rewrite", command])).trim()
+        const rewritten = (await run("rtk", ["rewrite", command])).trim();
         if (rewritten && rewritten !== command && input) {
-          input.command = rewritten
+          input.command = rewritten;
         }
       } catch {
         // rtk rewrite failed — pass through unchanged
       }
-    })
+    });
 
-    return registration.dispose
+    return registration.dispose;
   },
-})
+};
 
-export default RtkPlugin
+export default RtkPlugin;

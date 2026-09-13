@@ -42,7 +42,9 @@ function nextReportSeq() {
 }
 
 function sessionIDFromProperties(properties) {
-  return typeof properties?.sessionID === "string" && properties.sessionID ? properties.sessionID : undefined;
+  return typeof properties?.sessionID === "string" && properties.sessionID
+    ? properties.sessionID
+    : undefined;
 }
 
 const SESSION_STATE_BY_STATUS = new Map([
@@ -62,7 +64,11 @@ function stateFromSessionStatus(status) {
 }
 
 function envAvailable() {
-  return process.env.HERDR_ENV === "1" && Boolean(process.env.HERDR_SOCKET_PATH) && Boolean(process.env.HERDR_PANE_ID);
+  return (
+    process.env.HERDR_ENV === "1" &&
+    Boolean(process.env.HERDR_SOCKET_PATH) &&
+    Boolean(process.env.HERDR_PANE_ID)
+  );
 }
 
 function connectSocket(socketPath, payload) {
@@ -275,7 +281,6 @@ function setupServer(ctx) {
   })();
   return () => controller.abort();
 }
-
 
 export default {
   id: "herdr.opencode",

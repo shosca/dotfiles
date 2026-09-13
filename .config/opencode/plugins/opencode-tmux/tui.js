@@ -19,7 +19,8 @@ export default {
       try {
         const route = context.ui.router.current();
         const sessionID = route?.params?.sessionID ?? route?.sessionID;
-        const session = typeof sessionID === "string" ? context.data.session.get(sessionID) : undefined;
+        const session =
+          typeof sessionID === "string" ? context.data.session.get(sessionID) : undefined;
         if (!session || session.parentID) {
           return;
         }
@@ -38,4 +39,4 @@ export default {
     const poll = setInterval(() => void renameToTopic(), STATUS_POLL_INTERVAL_MS);
     return () => clearInterval(poll);
   },
-}
+};

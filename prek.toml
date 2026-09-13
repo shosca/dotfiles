@@ -25,6 +25,14 @@ hooks = [
   { id = "stylua-system" }
 ]
 
+# JS/TS formatting
+[[repos]]
+repo = "https://github.com/oxc-project/mirrors-oxfmt"
+rev = "v0.67.0"
+hooks = [
+  { id = "oxfmt" },
+]
+
 # shell linting; scoped to bin scripts to avoid zsh/sh noise on rc files
 [[repos]]
 repo = "https://github.com/shellcheck-py/shellcheck-py"

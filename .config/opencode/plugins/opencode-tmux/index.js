@@ -43,7 +43,13 @@ export function renameTmux(slug) {
   }
   const pending = renameChain.then(async () => {
     try {
-      const windows = await execFile("tmux", ["display-message", "-p", "-t", pane, "#{session_windows}"]);
+      const windows = await execFile("tmux", [
+        "display-message",
+        "-p",
+        "-t",
+        pane,
+        "#{session_windows}",
+      ]);
       // Rename the session only when this window is its only one, so a shared
       // session never takes the name of a single task.
       if (windows.stdout.trim() === "1") {

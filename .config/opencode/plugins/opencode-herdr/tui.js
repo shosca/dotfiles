@@ -4,13 +4,7 @@
 // Runs in the TUI process, which inherits the herdr pane env the shared
 // background service does not have.
 
-import {
-  SOURCE,
-  handleEvent,
-  renameHerdrAgent,
-  requestOnce,
-  slugifyTitle,
-} from "./index.js";
+import { SOURCE, handleEvent, renameHerdrAgent, requestOnce, slugifyTitle } from "./index.js";
 
 const ROUTE_POLL_INTERVAL_MS = 100;
 const STATUS_POLL_INTERVAL_MS = 1000;
@@ -24,11 +18,15 @@ function routeSessionID(route) {
 export default {
   id: "herdr.opencode.session-selection",
   setup(ctx) {
-    if (process.env.HERDR_ENV !== "1" || !process.env.HERDR_SOCKET_PATH || !process.env.HERDR_PANE_ID) {
+    if (
+      process.env.HERDR_ENV !== "1" ||
+      !process.env.HERDR_SOCKET_PATH ||
+      !process.env.HERDR_PANE_ID
+    ) {
       return;
     }
 
-  let selectedSessionID;
+    let selectedSessionID;
     let retryIndex = 0;
     let nextReportAt = 0;
     let reportPending = false;
@@ -37,7 +35,8 @@ export default {
     const syncSelectedSession = async () => {
       const route = ctx.ui.router.current();
       const sessionID = routeSessionID(route);
-      const session = typeof sessionID === "string" && sessionID ? ctx.data.session.get(sessionID) : undefined;
+      const session =
+        typeof sessionID === "string" && sessionID ? ctx.data.session.get(sessionID) : undefined;
       if (!session || session.parentID) {
         selectedSessionID = undefined;
         retryIndex = 0;
@@ -56,10 +55,14 @@ export default {
       const reportingSessionID = sessionID;
       reportPending = true;
       try {
-        await requestOnce("pane.report_agent_session", {
-          agent_session_id: reportingSessionID,
-          session_start_source: "select",
-        }, `${SOURCE}:tui`);
+        await requestOnce(
+          "pane.report_agent_session",
+          {
+            agent_session_id: reportingSessionID,
+            session_start_source: "select",
+          },
+          `${SOURCE}:tui`,
+        );
       } catch {
         // Best-effort reporting retries below while the selected route remains active.
       } finally {
