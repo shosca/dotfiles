@@ -84,6 +84,10 @@ Scope is optional, one lowercase word naming the area. Use the areas the repo hi
   previous behavior when that clarifies the change.
 - Plain prose paragraphs, imperative present tense. **No markdown headings and no bullet lists** —
   those belong in the PR body.
+- **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
+  Active voice, one idea per short sentence (~20 words). No idioms or metaphor. No nominalizations
+  ("perform an installation" → "install"). Never "simply", "just" or "easily". No future tense for
+  behavior — "returns X", never "will return X".
 - Real newlines. Never emit literal `\n` sequences.
 - Cite the evidence that made the change safe when there is any: a measured query count, a
   production figure, a mutation test that proved a budget binds.

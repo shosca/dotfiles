@@ -195,6 +195,25 @@ that tool call.
 Show the findings to the user in the conversation — verdict, blocking findings, nits. **Do
 not post anything to GitHub yet.** Wait for the user to explicitly ask you to comment on the PR.
 
+**Shape the write-up so the reader can act on it.** Severity ordering is the default, but three
+rules override it:
+
+- **Answer what was asked, first.** When the request carries specific questions, they lead the
+  reply in the order they were asked. A finding you turned up on your own comes after them,
+  however interesting it is. Leading with your own discovery buries the thing the requester is
+  waiting on and makes them reconstruct which parts were answers.
+- **One finding, one place.** Say it once, in full, and stop. Do not restate it in a lead
+  paragraph, then again in a "verdict" section, then again in a closing aside — a reader who meets
+  the same finding three times in three framings has to work out which framing is operative.
+- **One instruction per finding.** "Fix it here" or "file it separately" — never "my call: fix it
+  here, but it stops being a pure refactor, so it's the author's call whether that matters more."
+  A hedge attached to a verdict reads as a second, conflicting verdict. If the decision genuinely
+  belongs to someone else, say only that and give the evidence they need; do not also state a
+  preference.
+
+A reviewer's stated call is treated as a directive, and more so by another agent than by a person.
+Ambiguity is not neutral — it gets resolved, and often not the way you meant.
+
 ### Step 10: Post line-level review comments (only when asked)
 
 **Only when the user explicitly asks you to comment on the PR**, post findings as line-level
@@ -271,6 +290,10 @@ every posted comment and review body here:
 
 - **What and why, not how.** The diff already shows how; state the finding and its consequence, not
   a restatement of what the code does.
+- **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
+  Present tense, active voice, one idea per short sentence (~20 words). No idioms or metaphor. No
+  nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
+  future tense for behavior — "returns X", never "will return X".
 - Cite the evidence that makes a finding real — the specific behavior confirmed against master, a
   grep result, a reproducing test — not a vague "this could be an issue."
 - **Never include customer data** — org names, user emails, support ticket contents, PII — in a
@@ -303,6 +326,29 @@ every posted comment and review body here:
 - **Narrating process in a posted comment or review body.** "Reviewed in a worktree against the
   full diff, migrations, models, ..." or "one non-blocking nit left inline" tell the reader
   nothing about the PR. State findings, not what you did or where you left something.
+- **Leading with your own discovery when questions were asked.** The requester's questions come
+  first, in their order. Your incidental finding is not more important than the thing they are
+  blocked on.
+- **Restating one finding in several sections.** Once, in full. Three framings of the same thing
+  is not thoroughness, it is a puzzle.
+- **A verdict plus its own hedge.** "Fix it here, but it's arguably out of scope, so it's your
+  call" is two answers. Give one.
+
+## Reviewing for another session, before a PR exists
+
+A peer session may hand over a worktree and a list of questions rather than a PR number. Steps 1-2
+and 10-12 do not apply — there is nothing to check out and nothing to post. The rest does, and
+these are load-bearing rather than stylistic:
+
+- **Findings go back to the requester, never to GitHub.** No PR exists; posting anywhere else is
+  not an option to weigh.
+- **Everything in Step 9 about shape applies harder.** The reply is the whole artifact and it is
+  read by something that will act on it directly. Questions first in their order, one place per
+  finding, one instruction each.
+- **Stay inside the scope they brought.** They are mid-task with a goal. An incidental finding is
+  worth reporting; it is not worth reframing their task around. If it deserves to change what they
+  are doing, say that in one sentence and let them decide — do not spread the case for it across
+  the reply.
 
 ## Finding categories checklist
 
@@ -317,7 +363,11 @@ When reviewing a migration/refactor PR, run through these:
 7. **Cache-priming clarity** — discarded-return hooks have explanatory comments?
 8. **Snapshot churn** — test snapshots changed only where mount order actually shifted?
 9. **Dead code** — additive-only files in a stacked series noted but not blocked?
-10. **Pre-existing issues preserved** — typos/bugs carried through a rewrite — flag for drive-by fix?
+10. **Pre-existing issues preserved** — typos/bugs carried through a rewrite. Report them with the
+    evidence that makes them real, and say plainly whether they belong in this PR or a separate
+    one. Pick one; do not offer both. Weigh it by what the PR is *for*: folding a small fix into a
+    refactor is fine, but a fix that needs its own tests, a data decision or a behaviour argument
+    is a separate PR, and saying so is more useful than saying it is cheap.
 11. **Prior review feedback** — for each comment/review found in Step 2: resolved, still open, or
     reintroduced by a later refactor that changed the file but not the underlying issue?
 12. **Tautological tests** — any test that asserts something true by construction and can't

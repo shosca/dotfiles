@@ -3,3 +3,5 @@
 .nvimrc
 .exrc.lua
 temp.py
+
+**/.claude/settings.local.json

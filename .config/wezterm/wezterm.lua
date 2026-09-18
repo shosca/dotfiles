@@ -97,7 +97,8 @@ local config = {
   bold_brightens_ansi_colors = false,
   --dpi = 192,
   default_cursor_style = "BlinkingBar",
-  window_background_opacity = 0.930,
+  window_background_opacity = 0.900,
+  wayland_window_background_blur = true,
   warn_about_missing_glyphs = false,
   font = wezterm.font({
     -- family = "Fira Code",
@@ -168,6 +169,15 @@ local config = {
   },
 }
 
+-- Claude Code hyperlinks the filename in its tool-call headers, but paths it prints in prose
+-- stay plain text. Match `some/path.py:42` so the open-uri handler below can reach those too.
+-- Requires at least one slash, which keeps a bare `package.json` in prose from becoming a link.
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+table.insert(config.hyperlink_rules, {
+  regex = [[([\w.@+~-]*(?:/[\w.@+-]+)+)(?::(\d+))?]],
+  format = "file://$1#$2",
+})
+
 -- Status dots in tab titles + notifications when an agent waits for input.
 agent_deck.apply_to_config(config, {
   update_interval = 1000,
@@ -196,21 +206,89 @@ agent_deck.apply_to_config(config, {
   notifications = { enabled = false },
 })
 
-wezterm.on("agent_deck.status_changed", function(_, pane, _old, new_status, agent_type)
-  if new_status ~= "waiting" then
-    return
+-- The GNOME overview and taskbar read wezterm's window title, which wezterm
+-- recomputes from the focused pane. Focusing a zsh split rewrote the title to
+-- "zsh", losing which agent the window runs. Name the agent instead by scanning
+-- every pane in the window; agent-deck already detects agents per pane.
+local AGENTS = {
+  claude = { label = "Claude", strip = "^✳%s*" },
+  opencode = { label = "OpenCode", strip = "^OC%s*|%s*" },
+  codex = { label = "Codex" },
+  gemini = { label = "Gemini" },
+  aider = { label = "Aider" },
+}
+
+wezterm.on("format-window-title", function(_tab, _pane, tabs, _panes, _config)
+  local parts = {}
+  for _, t in ipairs(tabs) do
+    for _, p in ipairs(t.panes) do
+      local state = agent_deck.get_agent_state(p.pane_id)
+      if state then
+        local meta = AGENTS[state.agent_type] or { label = state.agent_type }
+        local topic = p.title or ""
+        if meta.strip then
+          topic = topic:gsub(meta.strip, "")
+        end
+        parts[#parts + 1] = meta.label .. ": " .. topic
+      end
+    end
   end
-  wezterm.background_child_process({
-    "notify-send",
-    "-a",
-    "WezTerm",
-    "-u",
-    "normal",
-    "-t",
-    "4000",
-    (agent_type or "agent") .. " needs input",
-    pane:get_title(),
-  })
+  if #parts == 0 then
+    return nil -- no agent in this window: keep wezterm's default title
+  end
+  return table.concat(parts, "  |  ")
 end)
+
+-- wezterm.on("agent_deck.status_changed", function(_, pane, _old, new_status, agent_type)
+--   if new_status ~= "waiting" then
+--     return
+--   end
+--   wezterm.background_child_process({
+--     "notify-send",
+--     "-a",
+--     "WezTerm",
+--     "-u",
+--     "normal",
+--     "-t",
+--     "4000",
+--     (agent_type or "agent") .. " needs input",
+--     pane:get_title(),
+--   })
+-- end)
+
+-- -- Open file:// links in nvim instead of xdg-open, split beside the pane that was clicked.
+-- -- Parsed by hand rather than wezterm.url.parse: a relative path yields `file://force/x.py`,
+-- -- where a URL parser reads `force` as the host and drops it.
+-- wezterm.on("open-uri", function(window, pane, uri)
+--   local path, line = uri:match("^file://([^#]*)#?(%d*)$")
+--   if not path or path == "" then
+--     return true -- not a file link; let wezterm open it normally
+--   end
+--
+--   local cwd = pane:get_current_working_dir()
+--   cwd = cwd and (cwd.file_path or tostring(cwd)) or wezterm.home_dir
+--   if path:sub(1, 1) == "~" then
+--     path = wezterm.home_dir .. path:sub(2)
+--   end
+--
+--   -- A relative path is resolved against the pane's cwd, which is often the wrong worktree.
+--   -- Bail rather than open a blank buffer at a path that does not exist.
+--   local abs = path:sub(1, 1) == "/" and path or (cwd .. "/" .. path)
+--   if #wezterm.glob(abs) == 0 then
+--     return true
+--   end
+--
+--   local args = { "nvim" }
+--   if line ~= "" then
+--     table.insert(args, "+" .. line)
+--   end
+--   table.insert(args, abs)
+--
+--   window:perform_action(
+--     wezterm.action.SplitPane({ direction = "Right", command = { args = args, cwd = cwd } }),
+--     pane
+--   )
+--   return false -- suppress xdg-open
+-- end)
 
 return config

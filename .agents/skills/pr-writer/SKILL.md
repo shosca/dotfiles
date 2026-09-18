@@ -77,6 +77,10 @@ point.
 headings, punchlines that land only at the end. Guard against it:
 
 - One idea per sentence, ≤25 words. Active voice, present tense.
+- **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
+  Present tense, active voice, one idea per short sentence (~20 words). No idioms or metaphor. No
+  nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
+  future tense for behavior — "returns X", never "will return X".
 - Fact first, implication second. A reader who stops after the first sentence of each section should
   have the full picture — no delayed reveals.
 - Headings state the takeaway in plain words. "The Email row went blank for exactly the patient it
@@ -87,6 +91,14 @@ headings, punchlines that land only at the end. Guard against it:
   If that does not tell the whole story, rewrite.
 
 - Lead with changed behavior; implementation detail only where it helps review.
+- **Describe the code, not the metric that justified the change.** A complexity score, a line-count
+  delta, a file count says a number moved — it does not say what the code now does. Never open with
+  one. At most one clause, placed after the change is described, and only where the number *is* the
+  change (a perf PR). "Four channel sections were written out one at a time; they are now one entry
+  per channel in `notificationChannels.ts`" describes the code. "`NotificationTemplate` scored 29
+  against the repo's ceiling of 15, and the component drops from 343 lines to 214" describes the
+  author's motivation, which is no use to a reviewer reading the diff or to anyone reading `git log`
+  in two years. Same for section headings: name what the code does, not what it scored.
 - Before/after fenced blocks only for changed contracts — output shapes, config, payloads,
   permissions.
 - Mermaid codeblock diagrams are welcome where they explain structure or flow better than prose —

@@ -14,6 +14,8 @@ trivy = "latest"
 "github:hmans/beans" = "latest"
 "github:stablyai/orca" = "latest"
 "npm:@opencode/cli" = { version = "latest", allow_builds = true }
+cdk = "latest"
+playwright = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]
