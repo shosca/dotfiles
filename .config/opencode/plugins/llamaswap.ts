@@ -2,13 +2,13 @@
  * llama-swap plugin for OpenCode 2 (V2 plugin API)
  *
  * Auto-discovers models from a llama-swap instance and injects them into the
- * catalog under the configured provider. Refreshes every 30 seconds, matching
- * the built-in opencode.provider.lmstudio plugin's behavior: hash-compare the
- * fetched list, reload the catalog only on change.
+ * provider registry via ctx.provider.transform (V2 API). Refreshes every 30
+ * seconds, matching the built-in lmstudio provider plugin's behavior:
+ * hash-compare the fetched list, reload the registry only on change.
  *
- * The plugin owns the provider's model list: models removed from llama-swap
- * are also removed from the catalog, and config-defined models for this
- * provider are overwritten.
+ * The plugin owns the provider's model list via editor.models.set: models
+ * removed from llama-swap are also removed from the registry, and
+ * config-defined models for this provider are overwritten.
  *
  * Ported from CoryBR/llamaswap-opencode-plugin (V1 API).
  */
@@ -92,36 +92,41 @@ export default {
     let models: LlamaSwapModel[] = [];
     let hash = "";
 
-    // Idempotent transform, replayed on every catalog reload. No-ops while the
-    // first fetch hasn't succeeded yet (retry happens on the refresh timer).
-    await ctx.catalog.transform((catalog) => {
-      if (models.length === 0) return;
-
-      // Drop models llama-swap no longer serves (provider record is absent on
-      // first materialization, which is fine — nothing to remove then)
-      const provider = catalog.provider.get(providerID);
-      if (provider) {
-        for (const existing of provider.models.values()) {
-          if (!models.some((m) => m.id === existing.id)) {
-            catalog.model.remove(providerID, existing.id);
-          }
-        }
-      }
-
-      for (const item of models) {
+    // Model inventory builder: converts llama-swap models to V2 Model.Info
+    // shape. `models.set` replaces the whole provider inventory, so removals
+    // on the llama-swap side propagate automatically.
+    const toModelInfos = () =>
+      models.map((item) => {
         const meta = item.meta?.llamaswap || {};
         const contextLimit = parseContextLimit(meta);
-
-        catalog.model.update(providerID, item.id, (model) => {
-          model.name = item.name || item.id;
-          model.limit = { context: contextLimit, output: DEFAULT_OUTPUT_LIMIT };
-          model.capabilities = {
+        return {
+          id: item.id,
+          modelID: item.id,
+          providerID,
+          name: item.name || item.id,
+          capabilities: {
             tools: meta.tool_calling === true,
             input: meta.multimodal ? ["text", "image"] : ["text"],
             output: meta.thinking ? ["text", "reasoning"] : ["text"],
-          };
-        });
-      }
+          },
+          variants: [],
+          // Model.Info requires time.released as a finite number; llama-swap
+          // reports no release date, so use the schema's own 0 default.
+          time: { released: 0 },
+          cost: [],
+          status: "active" as const,
+          enabled: true,
+          limit: { context: contextLimit, output: DEFAULT_OUTPUT_LIMIT },
+        };
+      });
+
+    // Idempotent transform, replayed on every provider reload. No-ops while
+    // the first fetch hasn't succeeded yet (retry happens on the refresh
+    // timer). `models.set` only applies once the provider record exists; the
+    // provider comes from opencode.json's "providers" config.
+    await ctx.provider.transform((editor) => {
+      if (models.length === 0) return;
+      editor.models.set(providerID, toModelInfos());
     });
 
     const refresh = async () => {
@@ -130,7 +135,7 @@ export default {
       if (next === hash) return;
       models = data.data;
       hash = next;
-      await ctx.catalog.reload();
+      await ctx.provider.reload();
     };
 
     // Initial fetch; failures are logged and swallowed so plugin load never

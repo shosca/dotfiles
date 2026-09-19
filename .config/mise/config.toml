@@ -13,7 +13,6 @@ trivy = "latest"
 "github:redhat-et/ripwire" = "latest"
 "github:hmans/beans" = "latest"
 "github:stablyai/orca" = "latest"
-"npm:@opencode/cli" = { version = "latest", allow_builds = true }
 cdk = "latest"
 playwright = "latest"
 

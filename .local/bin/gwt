@@ -7,8 +7,10 @@ import argparse
 import functools
 import os
 import re
+import shutil
 import subprocess
 import sys
+import time
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -29,7 +31,6 @@ class NoWorktreesFound(GitError):
 
 @dataclass
 class CommandArg:
-    position: int
     name: tuple[str, ...]
     help: str = ""
     source_type: str | None = None
@@ -46,10 +47,11 @@ class WorktreeInfo:
     diff_added: int = 0
     diff_removed: int = 0
     age_days: int = 0
+    created_ts: float = 0.0
 
 
 class Command(abc.ABC):
-    aliases: tuple[str] = ()
+    aliases: tuple[str, ...] = ()
     help_text: str = ""
     description: str = ""
     formatter_class: type[argparse.HelpFormatter] | None = None
@@ -76,11 +78,20 @@ class Command(abc.ABC):
                 kwargs["default"] = arg.default
             if arg.nargs:
                 kwargs["nargs"] = arg.nargs
+            if arg.choices:
+                kwargs["choices"] = arg.choices
             command_parser.add_argument(*arg.name, **kwargs)
 
     def _write_cd_file(self, path: Path) -> None:
-        """Write a temp file for the shell hook to auto-cd into this path."""
-        fpath = f"/tmp/gwt-cd-{os.getuid()}"
+        """Write the target dir for the shell wrapper to cd into.
+
+        The wrapper function (from `gwt completions`/shell integration) sets
+        GWT_CD_FILE to a fresh mktemp path; the wrapper cds to it right after
+        gwt exits. Bare binary calls (no wrapper) get no cd handoff.
+        """
+        fpath = os.environ.get("GWT_CD_FILE")
+        if not fpath:
+            return
         try:
             with open(fpath, "w") as f:
                 f.write(str(path))
@@ -159,10 +170,15 @@ class Command(abc.ABC):
                 WorktreeInfo(path=current_path, branch=current_branch or "")
             )
 
-        # Enrich with diff stats and age
+        # Enrich with diff stats, tip age, and creation time
+        created_map = self._created_map()
         for wt in worktrees:
             wt.diff_added, wt.diff_removed = self._shortstat(wt.path)
             wt.age_days = self._age_days(wt.path)
+            try:
+                wt.created_ts = created_map.get(str(Path(wt.path).resolve()), 0.0)
+            except OSError:
+                wt.created_ts = 0.0
 
         return worktrees
 
@@ -234,7 +250,7 @@ class Command(abc.ABC):
 
         # origin/HEAD unset (fresh clone, or origin missing) — probe common names
         for branch in ("origin/main", "origin/master"):
-            if self.branch_exists(branch):
+            if self.ref_exists(branch):
                 return branch
 
         # No origin at all — base on the current local branch
@@ -248,6 +264,141 @@ class Command(abc.ABC):
             return result.stdout.strip()
         except subprocess.CalledProcessError:
             return "master"
+
+    def _git_dir(self) -> Path:
+        """Git directory: the bare dir itself, or <root>/.git."""
+        root = Path(self.project_root)
+        if (root / "HEAD").is_file():
+            return root  # bare repo — project_root IS the git dir
+        return root / ".git"
+
+    def _created_map(self) -> dict[str, float]:
+        """Map worktree path -> creation time, from each admin dir's mtime.
+
+        The admin dir .git/worktrees/<admin>/ is created at `worktree add` and
+        never re-touched. Its gitdir file names the owning worktree, so the
+        mapping is built from content — admin dir names only encode the path
+        basename (colliding and drifting otherwise), so basename lookups
+        cannot be trusted.
+        """
+        mapping: dict[str, float] = {}
+        try:
+            admins = list((self._git_dir() / "worktrees").glob("*/gitdir"))
+        except OSError:
+            return mapping
+        for admin in admins:
+            try:
+                # gitdir holds the absolute path of <worktree>/.git and is
+                # written once at `worktree add` — never re-touched. The admin
+                # dir itself gets re-stamped by git churn (index, HEAD).
+                gitdir_file = (admin.parent / "gitdir").stat().st_mtime
+                wt_root = Path(admin.read_text().strip()).resolve().parent
+                mapping[str(wt_root)] = gitdir_file
+            except OSError:
+                continue
+        return mapping
+
+    @staticmethod
+    def _humanize_age(delta_s: float) -> str:
+        """Render a seconds delta as a compact human value: 45m, 3h, 5d, 2w."""
+        if delta_s < 0:
+            return "now"
+        mins = delta_s / 60
+        if mins < 60:
+            return f"{int(mins)}m" if mins >= 1 else "now"
+        hours = mins / 60
+        if hours < 24:
+            return f"{int(hours)}h"
+        days = hours / 24
+        if days < 14:
+            return f"{int(days)}d"
+        return f"{int(days // 7)}w"
+
+    def _rows(self, sort: str = "created") -> list[tuple[str, str, str, str, str, int, int]]:
+        """Build display rows shared by list and go.
+
+        Tuples are (full_path, path_short, branch, created, idle, added, removed).
+        """
+        if sort == "branch":
+            worktrees = sorted(
+                self.worktrees, key=lambda w: (w.branch.lower(), w.path)
+            )
+        elif sort == "idle":
+            # Stalest first; ties broken by branch so output is deterministic
+            worktrees = sorted(self.worktrees, key=lambda w: (-w.age_days, w.branch))
+        else:
+            # Newest created first; ties broken by path
+            worktrees = sorted(self.worktrees, key=lambda w: (-w.created_ts, w.path))
+
+        rows = []
+        for wt in worktrees:
+            path_short = str(Path(wt.path).resolve())
+            try:
+                path_short = str(Path(wt.path).resolve().relative_to(self.project_root))
+            except ValueError:
+                pass  # worktree outside project root — show absolute path
+            branch_display = wt.branch if wt.branch else "(detached)"
+            created = self._humanize_age(time.time() - wt.created_ts) if wt.created_ts > 0 else "?"
+            idle = f"{wt.age_days}d" if wt.age_days > 0 else "today"
+            rows.append(
+                (wt.path, path_short, branch_display, created, idle, wt.diff_added, wt.diff_removed)
+            )
+        return rows
+
+    def _pick_and_switch(self, hook_name: str) -> None:
+        """fzf picker over worktree rows; cds via the shell wrapper and runs hooks."""
+        fzf = shutil.which("fzf")
+        if not fzf:
+            print("❌ fzf not found on PATH.", file=sys.stderr)
+            sys.exit(1)
+
+        if not self.worktrees:
+            print("📭 No worktrees found.")
+            return
+
+        rows = self._rows("created")
+
+        # Pre-padded single display column; the full path rides as hidden data
+        branch_w = max(len(r[2]) for r in rows)
+        created_w = max(len(r[3]) for r in rows)
+        idle_w = max(len(r[4]) for r in rows)
+        lines = []
+        for full_path, _short, branch, created, idle, added, removed in rows:
+            display = (
+                f"{branch:<{branch_w}}  "
+                f"{created:>{created_w}}  "
+                f"{idle:>{idle_w}}  "
+                f"{'+' + format(added, ',') if added else '-':>7}  "
+                f"{'-' + format(removed, ',') if removed else '-':>7}"
+            )
+            lines.append(f"{full_path}\t{display}")
+
+        fzf_input = "\n".join(lines)
+        try:
+            proc = subprocess.run(
+                [fzf, "--delimiter", "\t", "--with-nth", "2..", "--reverse",
+                 "--header", f"{'branch':<{branch_w}}  {'created':>{created_w}}  {'idle':>{idle_w}}  {'+':>7}  {'-':>7}"],
+                input=fzf_input + "\n",
+                capture_output=True,
+                text=True,
+            )
+        except OSError as e:
+            print(f"❌ Failed to run fzf: {e}", file=sys.stderr)
+            sys.exit(1)
+
+        if proc.returncode == 0:
+            full_path = proc.stdout.strip().split("\t", 1)[0]
+            if full_path:
+                branch = next(
+                    (r[2] for r in rows if r[0] == full_path), ""
+                )
+                self._write_cd_file(Path(full_path))
+                print(f"📂 {full_path}")
+                self._run_hooks(hook_name, branch, Path(full_path))
+        elif proc.returncode not in (130, 0) and proc.stderr.strip():
+            # fzf aborts with 130 on Esc — cancel quietly; anything else is an error
+            print(f"❌ fzf failed: {proc.stderr.strip()}", file=sys.stderr)
+            sys.exit(1)
 
     def _age_days(self, path: str) -> int:
         """Return age in days of the latest commit on the current branch."""
@@ -274,8 +425,8 @@ class Command(abc.ABC):
                 return wt.path
         return None
 
-    def branch_exists(self, branch_name: str) -> bool:
-        """Check if a local branch exists."""
+    def ref_exists(self, branch_name: str) -> bool:
+        """Check if a ref (local branch or remote-tracking) exists."""
         try:
             subprocess.run(
                 ["git", "rev-parse", "--verify", branch_name],
@@ -332,12 +483,23 @@ class Command(abc.ABC):
 
 class List(Command):
     aliases = ("ls",)
-    help_text = "List all worktrees with branch, age, and diff status."
+    help_text = "List all worktrees with branch, create date, idle time, and diff status."
     formatter_class = argparse.RawTextHelpFormatter
     description = (
         "Display a table of all git worktrees showing path, branch name,\n"
-        "age in days, and uncommitted changes (added/removed lines).\n"
-        "Worktrees are sorted by age (oldest first).\n"
+        "worktree creation date, idle time (days since the branch tip's last\n"
+        "commit), and uncommitted changes (added/removed lines).\n"
+        "Sorted by creation date (newest first) by default.\n"
+    )
+    command_args = (
+        CommandArg(
+            name=("--sort",),
+            help="Sort key: created (newest first, default), idle (stalest first), or branch.",
+            source_type="flags",
+            action="store",
+            default="created",
+            choices=("created", "idle", "branch"),
+        ),
     )
 
     def run(self, args: argparse.Namespace) -> None:
@@ -347,21 +509,16 @@ class List(Command):
             print("📭 No worktrees found.")
             return
 
-        rows: list[tuple[str, str, str, int, int]] = []
-        for wt in sorted(self.worktrees, key=lambda w: w.age_days, reverse=True):
-            path_short = str(Path(wt.path).relative_to(self.project_root))
-            branch_display = wt.branch if wt.branch else "(detached)"
-            age = f"{wt.age_days}d" if wt.age_days > 0 else "current"
-            rows.append(
-                (path_short, branch_display, age, wt.diff_added, wt.diff_removed)
-            )
+        rows = self._rows(args.sort)
+        rows = [r[1:] for r in rows]
 
         # Calculate dynamic column widths (with padding)
         col0 = max(4, max(len(r[0]) for r in rows) + 2)
         col1 = max(6, max(len(r[1]) for r in rows) + 2)
-        col2 = max(3, max(len(r[2]) for r in rows) + 2)
-        col3 = max(3, max(len(f"+{r[3]:,}" if r[3] else "-") for r in rows) + 2)
-        col4 = max(3, max(len(f"-{r[4]:,}" if r[4] else "-") for r in rows) + 2)
+        col2 = max(7, max(len(r[2]) for r in rows) + 2)
+        col3 = max(4, max(len(r[3]) for r in rows) + 2)
+        col4 = max(3, max(len(f"+{r[4]:,}" if r[4] else "-") for r in rows) + 2)
+        col5 = max(3, max(len(f"-{r[5]:,}" if r[5] else "-") for r in rows) + 2)
 
         fmt = (
             "{:"
@@ -374,27 +531,36 @@ class List(Command):
             + str(col3)
             + "s}  {:>"
             + str(col4)
+            + "s}  {:>"
+            + str(col5)
             + "s}"
         )
-        print(fmt.format("Path", "Branch", "Age", "+", "-"))
-        print("-" * (col0 + col1 + col2 + col3 + col4 + 8))
+        sort_note = {
+            "created": " (newest first)",
+            "idle": " (stalest first)",
+            "branch": "",
+        }[args.sort]
+        print()
+        print(f"sorted by {args.sort}{sort_note}")
+        print(fmt.format("Path", "Branch", "Created", "Idle", "+", "-"))
+        print("-" * (col0 + col1 + col2 + col3 + col4 + col5 + 10))
 
-        for path_short, branch_display, age, diff_added, diff_removed in rows:
+        for path_short, branch_display, created, idle, diff_added, diff_removed in rows:
             added = f"+{diff_added:,}" if diff_added else "-"
             removed = f"-{diff_removed:,}" if diff_removed else "-"
             # Pad plain values first, then colorize only the value (preserving total width)
-            pad3 = " " * (col3 - len(added))
-            pad4 = " " * (col4 - len(removed))
+            pad4 = " " * (col4 - len(added))
+            pad5 = " " * (col5 - len(removed))
             if diff_added > 0:
-                added_str = pad3 + self._colored(added, 32)
+                added_str = pad4 + self._colored(added, 32)
             else:
-                added_str = pad3 + self._colored(added, 90)
+                added_str = pad4 + self._colored(added, 90)
             if diff_removed > 0:
-                removed_str = pad4 + self._colored(removed, 31)
+                removed_str = pad5 + self._colored(removed, 31)
             else:
-                removed_str = pad4 + self._colored(removed, 90)
+                removed_str = pad5 + self._colored(removed, 90)
             print(
-                f"{path_short:<{col0}}  {branch_display:<{col1}}  {age:>{col2}}  {added_str}  {removed_str}"
+                f"{path_short:<{col0}}  {branch_display:<{col1}}  {created:>{col2}}  {idle:>{col3}}  {added_str}  {removed_str}"
             )
 
 
@@ -402,14 +568,12 @@ class Prune(Command):
     help_text = "Delete worktrees with gone upstreams, plus all PR review worktrees."
     command_args = (
         CommandArg(
-            position=1,
             name=("-y", "--yes"),
             help="Skip confirmation prompt.",
             source_type="flags",
             action="store_true",
         ),
         CommandArg(
-            position=1,
             name=("--dry-run",),
             help="Show what would be deleted without making changes.",
             source_type="flags",
@@ -612,20 +776,17 @@ class Delete(Command):
     )
     command_args = (
         CommandArg(
-            position=1,
             name=("target",),
             help="Branch name or worktree path to delete.",
             source_type="worktree_branches",
         ),
         CommandArg(
-            position=1,
             name=("-y", "--yes"),
             help="Skip confirmation prompt.",
             source_type="flags",
             action="store_true",
         ),
         CommandArg(
-            position=1,
             name=("--and-branch",),
             help="Delete the branch after removing worktree.",
             source_type="flags",
@@ -700,7 +861,6 @@ class Completions(Command):
     SHELL_TYPES = ("bash", "fish", "zsh")
     command_args = (
         CommandArg(
-            position=1,
             name=("shell",),
             help="Shell type for completion script.",
             source_type="shell_types",
@@ -729,25 +889,23 @@ class Completions(Command):
 
     def _generate_zsh(self, commands_info: list[dict[str, Any]]) -> str:
         lines = []
-        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
-_gwt_cd() {
-    local _gwt_path="/tmp/gwt-cd-$(id -u)"
-    if [[ -f "$_gwt_path" ]]; then
-        local _gwt_dir
-        _gwt_dir=$(cat "$_gwt_path")
-        rm -f "$_gwt_path"
-        if [[ -d "$_gwt_dir" ]]; then
-            cd "$_gwt_dir" || return
-        fi
+        hook = """# gwt wrapper: cds into the worktree gwt reports, right after the command returns
+gwt() {
+    local _gwt_cd_file _gwt_rc=0
+    _gwt_cd_file="$(mktemp)"
+    GWT_CD_FILE="$_gwt_cd_file" command gwt "$@" || _gwt_rc=$?
+    if [[ -s "$_gwt_cd_file" ]]; then
+        cd -- "$(<"$_gwt_cd_file")" || _gwt_rc=$?
     fi
+    rm -f "$_gwt_cd_file"
+    return "$_gwt_rc"
 }
-precmd_functions+=(_gwt_cd)
-
+compdef _std_gwt gwt
 """
         lines.append(hook)
         lines.append("#compdef gwt")
         lines.append("")
-        lines.append("_gwt() {")
+        lines.append("_std_gwt() {")
         lines.append('    local cur="$words[CURRENT]"')
         lines.append("")
         lines.append("    if (( CURRENT == 2 )); then")
@@ -800,27 +958,21 @@ precmd_functions+=(_gwt_cd)
         lines.append("        esac")
         lines.append("    fi")
         lines.append("}")
-        lines.append("")
-        lines.append("_gwt")
-        lines.append("compdef _gwt gwt")
         return "\n".join(lines) + "\n"
 
     def _generate_bash(self, commands_info: list[dict[str, Any]]) -> str:
         lines = []
-        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
-_gwt_cd() {
-    local _gwt_path="/tmp/gwt-cd-$(id -u)"
-    if [[ -f "$_gwt_path" ]]; then
-        local _gwt_dir
-        _gwt_dir=$(cat "$_gwt_path")
-        rm -f "$_gwt_path"
-        if [[ -d "$_gwt_dir" ]]; then
-            cd "$_gwt_dir" || return
-        fi
+        hook = """# gwt wrapper: cds into the worktree gwt reports, right after the command returns
+gwt() {
+    local _gwt_cd_file _gwt_rc=0
+    _gwt_cd_file="$(mktemp)"
+    GWT_CD_FILE="$_gwt_cd_file" command gwt "$@" || _gwt_rc=$?
+    if [[ -s "$_gwt_cd_file" ]]; then
+        cd -- "$(<"$_gwt_cd_file")" || _gwt_rc=$?
     fi
+    rm -f "$_gwt_cd_file"
+    return "$_gwt_rc"
 }
-PROMPT_COMMAND="_gwt_cd; ${PROMPT_COMMAND:-}"
-
 """
         lines.append(hook)
         lines.append("__gwt() {")
@@ -897,16 +1049,17 @@ PROMPT_COMMAND="_gwt_cd; ${PROMPT_COMMAND:-}"
 
     def _generate_fish(self, commands_info: list[dict[str, Any]]) -> str:
         lines = []
-        hook = """# gwt auto-cd hook: automatically enter worktrees after checkout
-function _gwt_cd --on-event fish_prompt
-    set _gwt_path "/tmp/gwt-cd-(id -u)"
-    if [ -f "$_gwt_path" ]
-        set _gwt_dir (cat $_gwt_path)
-        rm -f $_gwt_path
-        if [ -d "$_gwt_dir" ]
-            cd "$_gwt_dir" || return
-        end
+        hook = """# gwt wrapper: cds into the worktree gwt reports, right after the command returns
+function gwt --wraps gwt
+    set -l _gwt_cd_file (mktemp)
+    set -lx GWT_CD_FILE $_gwt_cd_file
+    command gwt $argv
+    set -l _gwt_rc $status
+    if test -s $_gwt_cd_file
+        cd -- (cat $_gwt_cd_file); or set _gwt_rc $status
     end
+    rm -f $_gwt_cd_file
+    return $_gwt_rc
 end
 
 """
@@ -991,6 +1144,8 @@ class Checkout(Command):
     description = (
         "Create a new worktree or switch to an existing one.\n"
         "\n"
+        "Run `gwt co` with no branch to pick interactively with fzf.\n"
+        "\n"
         "Behavior:\n"
         "  • If the worktree dir exists → switches into it\n"
         "  • If branch has a worktree elsewhere → switches there\n"
@@ -999,13 +1154,12 @@ class Checkout(Command):
     )
     command_args = (
         CommandArg(
-            position=1,
             name=("branch",),
-            help="Branch name.",
+            help="Branch name (optional — bare `gwt co` opens the fzf picker).",
             source_type="branches",
+            nargs="?",
         ),
         CommandArg(
-            position=2,
             name=("base",),
             help="Base branch (auto-detected: origin/HEAD, origin/main|master, or current).",
             source_type="branches",
@@ -1013,7 +1167,6 @@ class Checkout(Command):
             default="__detect__",
         ),
         CommandArg(
-            position=1,
             name=("--no-hooks",),
             help="Skip running hooks from gwt.toml.",
             source_type="flags",
@@ -1023,6 +1176,10 @@ class Checkout(Command):
 
     def run(self, args: argparse.Namespace) -> None:
         """Handle the 'gwt checkout' subcommand."""
+        if args.branch is None:
+            self._pick_and_switch("checkout")
+            return
+
         worktree_path = Path(self.project_root) / args.branch
 
         # Case 1: Worktree dir already exists → cd into it
@@ -1043,7 +1200,7 @@ class Checkout(Command):
             return
 
         # Case 3: Branch exists locally → create worktree from it (no branch changes)
-        if self.branch_exists(args.branch):
+        if self.ref_exists(args.branch):
             try:
                 subprocess.run(
                     ["git", "worktree", "add", worktree_path, args.branch],
@@ -1063,7 +1220,7 @@ class Checkout(Command):
 
         # Case 4: Branch doesn't exist → create new branch
         base = self._default_branch() if args.base == "__detect__" else args.base
-        if self.branch_exists(f"origin/{args.branch}"):
+        if self.ref_exists(f"origin/{args.branch}"):
             base = f"origin/{args.branch}"
 
         try:
@@ -1101,12 +1258,10 @@ class Pr(Command):
     )
     command_args = (
         CommandArg(
-            position=1,
             name=("number",),
             help="Pull request number.",
         ),
         CommandArg(
-            position=2,
             name=("--remote",),
             help="Remote name (default: origin).",
             source_type="flags",
@@ -1114,7 +1269,6 @@ class Pr(Command):
             default="origin",
         ),
         CommandArg(
-            position=3,
             name=("--no-hooks",),
             help="Skip running hooks from gwt.toml.",
             source_type="flags",
@@ -1204,7 +1358,8 @@ def run_hooks(project_root: str, subcommand: str, branch: str, worktree: str) ->
             return True
     except tomllib.TOMLDecodeError as e:
         print(f"⚠️  gwt.toml parse error: {e}", file=sys.stderr)
-        return True
+        print("   Fix gwt.toml or re-run with GWT_NO_HOOKS=1 to skip hooks.", file=sys.stderr)
+        return False
 
     env = {**os.environ, "GWT_BRANCH": branch, "GWT_WORKTREE": worktree}
 

@@ -270,3 +270,6 @@ source_sh ~/.bash-my-aws/bash_completion.sh
 #
 #   export XDG_RUNTIME_DIR="${TMPDIR}"
 # fi
+
+# opencode
+export PATH=/home/serkan/.opencode/bin:$PATH
