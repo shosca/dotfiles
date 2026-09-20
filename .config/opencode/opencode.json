@@ -102,6 +102,13 @@
     }
   },
   "mcp": {
+    "ripwire": {
+      "type": "local",
+      "command": [
+        "ripwire",
+        "--mcp"
+      ]
+    },
     "chrome-devtools": {
       "type": "local",
       "command": [

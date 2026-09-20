@@ -15,6 +15,7 @@ trivy = "latest"
 "github:stablyai/orca" = "latest"
 cdk = "latest"
 playwright = "latest"
+"pipx:nexmod" = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]

@@ -792,6 +792,12 @@ class Delete(Command):
             source_type="flags",
             action="store_true",
         ),
+        CommandArg(
+            name=("-f", "--force"),
+            help="Force removal even if the worktree contains modified or untracked files.",
+            source_type="flags",
+            action="store_true",
+        ),
     )
 
     def run(self, args: argparse.Namespace) -> None:
@@ -824,15 +830,20 @@ class Delete(Command):
                 return
 
         # Remove worktree
+        git_cmd = ["git", "worktree", "remove"]
+        if args.force:
+            git_cmd.append("--force")
         try:
             subprocess.run(
-                ["git", "worktree", "remove", matched.path],
+                git_cmd + [matched.path],
                 capture_output=True,
                 text=True,
                 check=True,
             )
         except subprocess.CalledProcessError as e:
             print(f"❌ Failed to remove worktree: {e.stderr.strip()}")
+            if "modified or untracked" in (e.stderr or ""):
+                print("   Pass --force to delete it anyway (discards untracked files).")
             sys.exit(1)
 
         self._prune_empty_parents(matched.path)
