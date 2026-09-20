@@ -80,12 +80,12 @@ local config = {
     tab_bar = {
       background = colors.ansi.black,
       active_tab = {
-        bg_color = colors.ansi.cyan,
-        fg_color = colors.ansi.black,
+        bg_color = colors.background,
+        fg_color = colors.brights.white,
       },
       inactive_tab = {
         bg_color = colors.ansi.black,
-        fg_color = colors.brights.white,
+        fg_color = colors.foreground, -- readable grey-teal for inactive tabs
       },
       new_tab = {
         bg_color = colors.ansi.black,
