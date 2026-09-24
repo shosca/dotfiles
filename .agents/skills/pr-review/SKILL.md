@@ -14,9 +14,15 @@ Review a GitHub PR by checking it out in a **worktree** alongside the base branc
 full Read/Grep/Glob/LSP access to both the PR code and the pre-PR state. `gh` is then used only
 to **post** review comments. CI runs lint/typecheck/tests — don't duplicate that work.
 
-Requires `gh` (authenticated), `git`, and the bare-clone + worktree layout from AGENTS.md. This
-repo is `ForceTherapeutics/force-web`. CI already runs `tsgo`, `oxlint`, and vitest — do not
-re-run them during review.
+Requires `gh` (authenticated), `git`, and the bare-clone + worktree layout from AGENTS.md. Resolve
+the repository once and use it wherever the commands below say `OWNER/REPO`:
+
+```bash
+rtk gh repo view --json nameWithOwner --jq .nameWithOwner
+```
+
+Check what the project's CI runs (lint, typecheck, tests), and do not re-run those checks during
+review.
 
 ## Process
 
@@ -37,7 +43,7 @@ all of it before touching the diff:
 
 ```bash
 rtk gh pr view PR_NUMBER --json comments,reviews
-rtk gh api repos/ForceTherapeutics/force-web/pulls/PR_NUMBER/comments --paginate
+rtk gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --paginate
 ```
 
 The first call gets top-level issue comments and review summaries (author replies, bot posts).
@@ -53,7 +59,7 @@ What to look for:
   old comment against the *current* code; don't assume a rework silently fixed everything it
   was reacting to. Some feedback is about a structural/data-shape issue that survives a refactor
   of the surrounding plumbing even when the specific file or prop being commented on is gone.
-- **Bot/CI comments** (SonarQube, Cypress, coverage) — informational; skim for anything CI
+- **Bot/CI comments** (static analysis, e2e runs, coverage) — informational; skim for anything CI
   flagged that's worth folding into your own findings rather than duplicating.
 - **Resolved vs. still-open threads** — if a past suggestion was implemented, say so explicitly
   in your findings so the human reviewer knows it's handled. If not, carry it forward in your
@@ -129,19 +135,39 @@ depends on matching conventions already in the codebase. Use `semble search` or 
 the precedent file, then read it with the Read tool.
 
 Verify:
-- Does the new code follow the same structure (factory, manual `createApi`, wrapper hook)?
-- Are types/DTOs narrowed correctly (e.g. `Props & { id: number }` for `ObjectWithID`)?
+- Does the new code follow the same structure as its precedent (factories, wrappers, layering)?
+- Are types narrowed as tightly as the precedent narrows them?
 - Do URLs / endpoint paths match old behavior?
 - Are constants used where existing code uses constants?
 
+#### Check the project's documented rules
+
+A precedent file shows how the code looks. It does not show the rules the team has written down,
+and a PR that copies a precedent can still break them. Precedents on the base branch break those
+rules too, and new code copies them.
+
+1. Find the rule documents. Start at the project's `CLAUDE.md` / `AGENTS.md`, and follow every
+   document it links to. Also check the project's docs directory and any project skills that cover
+   the kind of code the PR changes.
+2. Pick every document whose scope matches a file the PR touches. Decide by the kind of file the
+   PR changes (tests, API endpoints, migrations, styles), not by the PR title. A PR can touch
+   several kinds of file, and each kind can have its own document.
+3. Read each document in full. Then check every rule in it, one at a time, against every new or
+   changed line that it covers. A general read of the diff is not this check. Many rules fail on a
+   single line, and a reader who is not looking for that rule passes the line.
+4. Report each violation with the document and the sentence it breaks, quoted.
+5. Record which documents and rules you checked. A re-review of a later revision can carry a
+   "clean" result forward only for rules that an earlier pass actually checked. If a push changes
+   only the lines behind one finding, that does not cover rules no pass ran.
+
 ### Step 6: Find missed consumers (the critical step)
 
-When a PR **deletes** exports (duck selectors, service functions, action creators), every
+When a PR **deletes** exports (functions, classes, constants, selectors), every
 consumer must be either updated or deleted. Grep the **base branch worktree** (pre-PR state)
 for all imports of the deleted symbols:
 
 ```bash
-rg "deletedSymbolName|anotherDeletedExport" --type ts --type tsx   # run in the master worktree
+rg -w "deletedSymbolName|anotherDeletedExport"   # run in the base branch worktree
 ```
 
 Then cross-reference every hit against the PR's changed files (from the diff hunk list). If
@@ -155,16 +181,17 @@ Do this exhaustively. This is the most valuable part of the review.
 Read the full diff hunks (and the surrounding code in the PR worktree) for non-mechanical
 changes. Look for:
 
-- **Sync → async**: a function that returned `void` now returns `Promise<void>`. Callers
-  typed `() => void` still compile (TS quirk), but React `onClick` won't catch rejections.
-  Flag unhandled rejection risk.
-- **Optimistic → pessimistic**: fire-and-forget dispatch → `await mutation.unwrap()` before
-  UI feedback. Failure path changes — banner/error may now be skipped or thrown.
-- **Removed effects**: deleted `useEffect` that dispatched fetch-on-mount. RTK Query
-  auto-fetches, but verify the hook is actually mounted (not conditionally skipped with
-  `skipToken` / conditional args).
-- **Cache-priming**: `useHook()` calls with discarded return value. Fine if deliberate, but
-  add a comment or it reads as dead code.
+- **Sync → async**: a function that returned nothing now returns a promise or future. Callers
+  that ignore the return value can still compile, but nothing catches a rejection. Flag the
+  unhandled rejection risk.
+- **Optimistic → pessimistic**: a fire-and-forget call becomes an awaited call before the user
+  sees feedback. The failure path changes: an error message can now be skipped, or an exception
+  can now reach the caller.
+- **Removed side effects**: deleted code that loaded or wrote data at startup or on load. If
+  something else now does it, verify that the replacement runs on every path the old code ran on,
+  not only on the default path.
+- **Discarded return values**: calls kept only for their side effect, such as priming a cache.
+  Fine if deliberate, but add a comment or it reads as dead code.
 
 Use Read/Grep/LSP on the PR worktree to trace callers, check types, and confirm behavior.
 
@@ -231,7 +258,7 @@ Post each comment via the PR comments API:
 ```bash
 SHA=$(rtk gh pr view PR_NUMBER --json headRefOid --jq '.headRefOid')
 
-rtk gh api repos/ForceTherapeutics/force-web/pulls/PR_NUMBER/comments \
+rtk gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments \
   -F body=@/path/to/comment.md \
   -f commit_id="$SHA" \
   -f path='path/to/file.ts' \
@@ -243,7 +270,7 @@ Write each body to a file in the scratchpad with the Write tool and pass it as `
 Inline `-f body='...'` mangles any body containing backticks, quotes or newlines. Use the Write
 tool rather than a shell heredoc, so the body is never subject to shell quoting at all. To edit a
 body after posting, `PATCH
-repos/ForceTherapeutics/force-web/pulls/comments/COMMENT_ID` with the same `-F body=@FILE` (the
+repos/OWNER/REPO/pulls/comments/COMMENT_ID` with the same `-F body=@FILE` (the
 comment id is the `r<digits>` tail of the `html_url` the POST returns); an issue comment uses
 `issues/comments/COMMENT_ID`.
 
@@ -294,8 +321,8 @@ every posted comment and review body here:
   Present tense, active voice, one idea per short sentence (~20 words). No idioms or metaphor. No
   nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
   future tense for behavior — "returns X", never "will return X".
-- Cite the evidence that makes a finding real — the specific behavior confirmed against master, a
-  grep result, a reproducing test — not a vague "this could be an issue."
+- Cite the evidence that makes a finding real — the specific behavior confirmed against the base
+  branch, a grep result, a reproducing test — not a vague "this could be an issue."
 - **Never include customer data** — org names, user emails, support ticket contents, PII — in a
   posted comment. Describe the technical symptom, not who hit it. This matters even more here than
   in a commit message: PR comments are more visible and get pasted into Slack/Jira routinely.
@@ -331,6 +358,9 @@ every posted comment and review body here:
   blocked on.
 - **Restating one finding in several sections.** Once, in full. Three framings of the same thing
   is not thoroughness, it is a puzzle.
+- **A "clean" verdict without the project's documented rules.** Precedent matching and missed
+  consumers do not cover the rules the project has written down. A clean verdict that skips them
+  leaves the user to find the violations after they approve.
 - **A verdict plus its own hedge.** "Fix it here, but it's arguably out of scope, so it's your
   call" is two answers. Give one.
 
@@ -376,3 +406,5 @@ When reviewing a migration/refactor PR, run through these:
     an `expect.any()` that swallows the value being checked, or a missing `await` so an async
     expectation never runs before the test ends. Such a test passes even when the code is broken —
     flag it and suggest an assertion that exercises the actual behavior.
+13. **Documented project rules** — every rule in each project document that covers the changed
+    files was checked line by line (Step 5), and the record names the documents checked.

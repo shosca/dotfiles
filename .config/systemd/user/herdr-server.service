@@ -1,0 +1,10 @@
+[Unit]
+Description=Herdr server (headless)
+
+[Service]
+ExecStart=%h/.local/share/mise/installs/herdr/latest/herdr server
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

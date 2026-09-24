@@ -44,6 +44,7 @@ local config = {
   max_fps = 170,
   --hide_tab_bar_if_only_one_tab = false,
   enable_scroll_bar = false,
+  tab_max_width = 40,
   use_fancy_tab_bar = false,
   --tab_bar_at_bottom = true,
   colors = {

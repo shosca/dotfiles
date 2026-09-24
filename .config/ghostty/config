@@ -5,8 +5,8 @@ font-size = 10
 command = /usr/bin/zsh --login
 
 # Solarized Dark (craftzdog style)
-theme = Solarized Dark Patched
-background-opacity = 0.85
+theme = solarized_osaka_dark
+background-opacity = 0.75
 background = #031219
 
 # No GTK CSD titlebar (too tall on GNOME); rely on window management keys

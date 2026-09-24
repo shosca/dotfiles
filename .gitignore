@@ -6,3 +6,4 @@ log
 *.log
 packer_compiled.lua
 secrets.*
+.agents/skills/synced/*

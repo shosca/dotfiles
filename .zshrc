@@ -174,7 +174,7 @@ if [ -x "$(command -v keychain)" ]; then
 fi
 
 [[ -d "$HOME/bin" ]] && _extend_path "$HOME/bin"
-[[ -d "$XDG_LOCAL/bin" ]] && _extend_path "$XDG_LOCAL/bin"
+[[ -d "$HOME/.local/bin" ]] && _extend_path "$HOME/.local/bin"
 [[ -d "$GOPATH/bin" ]] && _extend_path "$GOPATH/bin"
 [[ -d "$XDG_DATA_HOME/gem/bin" ]] && _extend_path "$XDG_DATA_HOME/gem/bin"
 [[ -d "$XDG_DATA_HOME/npm/bin" ]] && _extend_path "$XDG_DATA_HOME/npm/bin"
@@ -186,33 +186,39 @@ fi
 [[ -x "$(command -v starship)" ]] && eval "$(starship init zsh)"
 [[ -x "$(command -v zoxide)" ]] && eval "$(zoxide init zsh)"
 
-# herdr: tmux-style launch — one session per directory, fully independent terminals
-herd() {
-  emulate -L zsh
-  herdr --session "${1:-${PWD:t}}"
-}
-
-# herdr: stop the session of the pane you're in (derive name from the socket path)
-hq() {
-  emulate -L zsh
-  local name="${HERDR_SOCKET_PATH##*/sessions/}"
-  name="${name%/herdr.sock}"
-  if [[ -z "$name" || "$name" == "$HERDR_SOCKET_PATH" ]]; then
-    echo "not inside a named herdr session (default session: herdr server stop)" >&2
-    return 1
-  fi
-  herdr session stop "$name"
-}
-
-[[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
-[[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
-[[ -x $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
-[[ -x $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+# Completions for gwt, poetry, pipx, uv, inv, herdr live in ~/.zfunc as static
+# files (regen with compfile or their own generators); pyenv/direnv/mise/wt init
+# hooks must run per shell, so they stay below.
 [[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
-[[ -x $(command -v inv 2>/dev/null) ]] && eval "$(inv --print-completion-script zsh)"
+[[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
+
+function compfile() {
+  [[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
+  [[ -x $(command -v herdr 2>/dev/null) ]] && herdr completion zsh > ~/.zfunc/_herdr
+  [[ -x $(command -v pipx 2>/dev/null) ]] && register-python-argcomplete pipx > ~/.zfunc/_pipx
+  [[ -x $(command -v uv 2>/dev/null) ]] && uv generate-shell-completion zsh > ~/.zfunc/_uv
+  # invoke's own generator emits compctl code that compinit-based zsh never
+  # consults; use a hand-written compsys hook that calls `inv` via uv so the
+  # task list resolves inside the project venv.
+  [[ -x $(command -v inv 2>/dev/null) ]] && cat > ~/.zfunc/_inv <<'EOF'
+#compdef inv
+# compsys rewrite of invoke's compctl-era generator; task list comes from the
+# project's env, hence `uv run`. Falls back to nothing outside an invoke repo.
+_inv() {
+  local -a reply
+  local collection_arg=''
+  if [[ "${words}" =~ "(-c|--collection) [^ ]+" ]]; then
+    collection_arg=$MATCH
+  fi
+  reply=( $(uv run inv ${=collection_arg} --complete -- ${words} 2>/dev/null) )
+  compadd -a reply
+}
+EOF
+  rm -f ~/.zcompdump
+}
 
 if [[ -f "/usr/bin/dircolors" ]]; then
   case "${TERM}" in
@@ -273,3 +279,6 @@ source_sh ~/.bash-my-aws/bash_completion.sh
 
 # opencode
 export PATH=/home/serkan/.opencode/bin:$PATH
+
+# invalidate AWS SSO session and clear cached short-lived creds
+alias awsdone="aws sso logout && rm -rf ~/.aws/sso/cache ~/.aws/cli/cache && unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN"

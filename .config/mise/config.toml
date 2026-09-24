@@ -12,10 +12,11 @@ node = "latest"
 trivy = "latest"
 "github:redhat-et/ripwire" = "latest"
 "github:hmans/beans" = "latest"
-"github:stablyai/orca" = "latest"
 cdk = "latest"
 playwright = "latest"
 "pipx:nexmod" = "latest"
+poetry = "latest"
+uv = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]
@@ -46,6 +47,8 @@ dotfiles.default_mode = "symlink"
 "~/.config/pacman" = {}
 "~/.config/pgsqlrc" = {}
 "~/.config/starship.toml" = {}
+"~/.config/systemd/user/herdr-server.service" = {}
+"~/.config/systemd/user/herdr-server.service.d" = {}
 "~/.config/tmux" = {}
 "~/.config/wezterm" = {}
 "~/.gemrc" = {}

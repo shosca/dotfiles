@@ -5,6 +5,7 @@ from typing import Any
 import abc
 import argparse
 import functools
+import json
 import os
 import re
 import shutil
@@ -719,6 +720,83 @@ class Prune(Command):
         print(f"  🗑️  Deleted: {deleted} | Failed: {failed}")
 
 
+class Herdr(Command):
+    aliases = ("hd",)
+    help_text = "Register git worktrees as herdr Spaces."
+    description = (
+        "Import the repo's worktrees into a running herdr server as grouped\n"
+        "worktree workspaces.Requires the herdr CLI on PATH and its server\n"
+        "running.Worktrees that already have a herdr workspace are skipped,\n"
+        "so repeated runs are idempotent."
+    )
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Handle the 'gwt herdr' subcommand."""
+
+        import shutil
+
+        herdr = shutil.which("herdr")
+        if not herdr:
+            print("❌ herdr CLI not found on PATH.")
+            sys.exit(1)
+
+        root = Path(self.project_root)
+        # Anchoring at the bare/main root is required; opening from inside a
+        # linked worktree fails with linked_worktree_source.
+        result = subprocess.run(
+            [herdr, "worktree", "list", "--cwd", str(root), "--trust-repository"],
+            capture_output=True,
+            text=True,
+        )
+        try:
+            payload = json.loads(result.stdout)["result"]["worktrees"]
+        except (KeyError, ValueError):
+            print(
+                f"❌ herdr server not reachable at its socket — "
+                f"start it with `systemctl --user start herdr-server` "
+                f"or `start-herdr {root}`."
+            )
+            sys.exit(1)
+
+        missing = [
+            w["path"]
+            for w in payload
+            if w["is_linked_worktree"]
+            and not (w.get("open_workspace_id") or w.get("is_prunable"))
+        ]
+        if not missing:
+            linked = sum(1 for w in payload if w["is_linked_worktree"])
+            print(f"📡 all {linked} worktrees already open in herdr")
+            return
+
+        rc = 0
+        for path in missing:
+            resp = subprocess.run(
+                [
+                    herdr,
+                    "worktree",
+                    "open",
+                    "--cwd",
+                    str(root),
+                    "--path",
+                    path,
+                    "--label",
+                    Path(path).name,
+                    "--no-focus",
+                    "--trust-repository",
+                ],
+                capture_output=True,
+                text=True,
+            )
+            if resp.returncode:
+                print(f"❌ {Path(path).name}: {resp.stderr.strip() or 'herdr open failed'}")
+                rc = 1
+            else:
+                print(f"🪴 {Path(path).name} opened as a herdr Space")
+        if rc:
+            sys.exit(1)
+
+
 class Help(Command):
     help_text = "Print command reference (plain text, for humans and AI agents)."
 
@@ -1390,6 +1468,7 @@ COMMANDS = {
     List,
     Delete,
     Pr,
+    Herdr,
     Help,
 }
 
