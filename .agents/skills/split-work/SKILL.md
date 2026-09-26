@@ -68,13 +68,19 @@ user. Never invent a ticket key, and never invent a naming scheme.
 ## Step 3: Create the worktree
 
 ```bash
-gwt co "$BRANCH"
+command gwt co "$BRANCH"
 WT=$(git worktree list --porcelain |
      awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
 ```
 
 Read the path back from `git worktree list` rather than parsing `gwt` output. Do not `cd` into it —
 this session stays where it is.
+
+Call the binary with `command gwt`, never bare `gwt`. The shell profile defines a `gwt` wrapper
+function that runs `cd` into the new worktree after the binary exits, and the agent's shell
+snapshot carries that function. The Bash tool keeps its working directory between calls, so the
+wrapper moves this session into the new worktree. `command` skips the function. The binary alone
+creates the worktree and runs its hooks, but changes no directory.
 
 ## Step 4: Write the handoff doc
 

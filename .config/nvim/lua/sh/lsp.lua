@@ -17,6 +17,7 @@ local servers = {
   "html",
   "jsonls",
   "kotlin_language_server",
+  "marksman",
   "omnisharp",
   "pyrefly",
   "ruff",
