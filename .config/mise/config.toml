@@ -37,6 +37,7 @@ dotfiles.default_mode = "symlink"
 "~/.config/mise" = {}
 "~/.config/npm" = {}
 "~/.config/nvim" = {}
+"~/.config/opencode/AGENTS.md" = {}
 "~/.config/opencode/cli.json" = {}
 "~/.config/opencode/opencode.json" = {}
 "~/.config/opencode/plugins/llamaswap.ts" = {}

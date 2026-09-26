@@ -1,0 +1,39 @@
+- At session start, check for a CLAUDE.md in the project root and read it if it exists. Treat it as binding project instructions (same authority as this file).
+- Avoid using `rtk proxy` as much as possible, see `rtk help`
+- ALWAYS: Use parallel tools when applicable.
+- ALWAYS: chat replies in the terminal use caveman full mode (ultra-compressed responses, cut filler, keep only what's actionable). Revert only on "stop caveman" / "normal mode". Caveman never applies to text that leaves the chat (see the writing rule below).
+- NEVER: commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked
+- ALWAYS: stage changes and run pre-commit hooks (prek, pre-commit, etc..) and check for failure before `git commit`
+- ALWAYS: check the exit code `git commit` returns non-zero on failure. Before claiming you committed, verify: `git log -1 --oneline` must show your commit. If it doesn't, stop and ask.
+- ALWAYS: If commit FAILED or was REJECTED by hook, NEVER amend - STOP AND ASK FOR HELP
+- ALWAYS: put a function's reasoning in its docstring: why it exists, design choices, ordering constraints, what it mirrors. Keep inline comments rare: one short line tied to one surprising line. Tests follow the same rule. When you edit a function with scattered comment blocks, fold them into its docstring.
+- ALWAYS: Use the `pr-review` skill when asked to review a pull request. Load it via the skill tool before starting the review.
+- ALWAYS: for text that leaves the chat (PR descriptions, PR reviews and review comments, Jira ticket descriptions and comments, commit messages, code comments, docs), load the unslop skill and apply it, and write in the Google developer documentation style guide's voice, approximating ASD-STE100 Simplified Technical English: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations ("perform an installation" → "install"), no "simply/just/easily", no future tense for behavior ("returns X", never "will return").
+
+- Use my `gwt` tool if you see bare checkout repo setup, see `gwt help`
+- I work in feature branches and git worktrees, never directly on main/master. If a change seems unrelated to current work, suggest creating a new worktree first.
+- **Layout:** Bare clone + worktrees. Run worktree commands from repo root (where `.git/` lives), not inside a worktree.
+- **Worktree dirs:**  The git branch name and worktree names may contain slashes
+- **Worktree → session cwd:** Whenever you create a git worktree, immediately make it the current session's working directory (cd into it, or use your runtime's session-move mechanism if it has one — e.g. OpenCode's `tools.opencode.session_move` / `opencode2 api post /api/session/<id>/move --data '{"directory":"/absolute/path/to/worktree"}'`). All subsequent commands run there; don't keep working from the old directory.
+- **Muxer names:** two different objects get names, and they get different ones. A container that several sessions share (a tmux session, a herdr space) is named after its **location** — the worktree or branch it holds. The per-session object (a tmux window, a herdr agent row) is named after the **task**. Never name a shared container after one task; a second session in it makes that label wrong. Update at session start and whenever the task materially changes (new feature, PR review, etc). Name after the work or branch, never the cwd. e.g. `review-pr-123`, `feature-tui`.
+  - **herdr:** naming is automatic — a `SessionStart` hook sets the agent name from the branch on a cold start, or from the session's own `/rename` title on a resume, and a `Stop` hook replaces it with a slug of the current topic title. Do not rename the agent yourself; the next turn overwrites it. Set a space label when you create the space (`herdr worktree open --label`). Before renaming a space you did not create, check `herdr workspace list` — rename it only if `pane_count` shows it holds just this task.
+  - **tmux:** nothing is automatic. Run `tmux rename-session <session>` when the session holds only this task's window. Do not rename windows; they keep the automatic name from the running command. Do not set the title with an escape sequence: Claude Code already writes OSC 0, tmux records that as `pane_title` only, and the window name never sees it.
+
+- think before coding, state your assumptions, ask when unsure. never guess
+- simplicity first, write the minimum code that solves the problem, no abstractions nobody asked for
+- surgical changes, don't touch code unrelated to the request, every changed line must trace back to what was asked
+- goal-driven execution, turn vague instructions into verifiable success criteria before writing a single line
+
+## ripwire — codebase maps (MCP `mcp__ripwire__*`; CLI `ripwire` when the MCP server is not registered)
+The MCP server's own instructions list the verbs. These rules decide when to use them:
+- Precedence over rtk: for code navigation and search, use a ripwire verb FIRST (`for`, `explore`,
+  `find_referencing_symbols`, `grep`, `find_symbol`). Use `rtk rg`/`rtk grep` only for plain text that
+  ripwire cannot answer (comments, config values, non-code files, dependencies, build output, logs).
+- The tell: typing `grep -rn`, `sed -n '<range>p'`, `find -name`, or `cat` against a source file IS the
+  violation. "Where is X defined", "who calls X", "what does X do", and "does X exist" are ripwire questions.
+- Do NOT open a file you have not located first. Do NOT read a whole file to understand one symbol
+  (`fetch_body`). Do NOT fan reads across files to learn one thing (`batch`).
+- Before writing a new fn/class/helper: `exemplar`. Before calling work done: `quality_delta`, then
+  `--test-gate`.
+- CLI: same verbs as flags (`--for=`, `--callers=`, `--expand=`, `--grep`, `--from-trace=`); add
+  `--legend=compact`.
