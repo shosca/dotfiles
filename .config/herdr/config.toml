@@ -107,3 +107,8 @@ position = "top-right"
 # Bare-clone + worktrees layout; checkouts land under ~/worktrees/<repo>/<branch-slug>
 [worktrees]
 directory = "~/worktrees"
+
+# Review-queue reviewers end a turn every 15 minutes, so the done sound fired on
+# no-change ticks. Real events already reach the desktop through notify-send.
+[ui.sound.agents]
+claude = "off"
