@@ -4,10 +4,9 @@ font-size = 10
 # Pick an existing tmux session (fzf chooser), else create the home session
 command = /usr/bin/zsh --login
 
-# Solarized Dark (craftzdog style)
-theme = solarized_osaka_dark
+# Ayu Dark (Ghostty bundled; same palette as Empryo's "Ayu Dark")
+theme = Ayu
 background-opacity = 0.75
-background = #031219
 
 # No GTK CSD titlebar (too tall on GNOME); rely on window management keys
 # Flat GTK CSD in windowed mode; auto = titlebar auto-hides when fullscreened
