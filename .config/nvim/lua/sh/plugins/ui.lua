@@ -2,12 +2,19 @@ local utils = require("sh.utils")
 
 return {
   {
-    "craftzdog/solarized-osaka.nvim",
+    "ayu-theme/ayu-vim",
     lazy = false,
     priority = 1000,
-    opts = {},
+    init = function()
+      vim.g.ayucolor = "dark"
+    end,
     config = function()
-      vim.cmd("colorscheme solarized-osaka")
+      vim.cmd("colorscheme ayu")
+      -- Keep the Ghostty background image visible under the buffer and floats
+      local clear_bg = { bg = "None" }
+      for _, group in ipairs({ "Normal", "NormalNC", "NormalFloat" }) do
+        vim.api.nvim_set_hl(0, group, clear_bg)
+      end
     end,
   },
   {

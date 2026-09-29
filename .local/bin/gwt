@@ -51,6 +51,72 @@ class WorktreeInfo:
     created_ts: float = 0.0
 
 
+def _herdr_auto_on(project_root: str | None) -> bool:
+    """Decide whether gwt auto-registers worktrees in herdr.
+
+    GWT_HERDR_AUTO overrides gwt.toml's [herdr] auto: "1"/"true"/"on" forces
+    it on everywhere, "0"/"false"/"off" forces off (escape hatch when herdr
+    is broken), unset falls back to the repo's gwt.toml so projects that
+    want the sidebar tree opt in explicitly.
+    """
+    env = os.environ.get("GWT_HERDR_AUTO", "").strip().lower()
+    if env in ("1", "true", "on"):
+        return True
+    if env in ("0", "false", "off"):
+        return False
+    if not project_root:
+        return False
+    config_path = Path(project_root) / "gwt.toml"
+    if not config_path.is_file():
+        return False
+    try:
+        config = tomllib.loads(config_path.read_text())
+    except tomllib.TOMLDecodeError:
+        return False  # run_hooks already reports the parse error
+    return bool(config.get("herdr", {}).get("auto", False))
+
+
+def herdr_register(worktree: Path, branch: str | None) -> None:
+    """Best-effort: open one worktree as a herdr Space.
+
+    --no-focus keeps the caller's current Space; label is the directory name
+    so sidebar rows match the branch slug like `gwt herdr` labels them.
+    A missing herdr binary warns once (the user opted in via [herdr] auto or
+    GWT_HERDR_AUTO, so silence would hide a broken setup), while a down
+    server skips silently — starting a server from here would hijack the
+    checkout. A registration failure prints one stderr line and never fails
+    the gwt command that caused it. Runs before _run_hooks callers so the
+    Space exists even when a gwt.toml hook (dev.setup) fails.
+    """
+    herdr = shutil.which("herdr")
+    if not herdr:
+        print(
+            "⚠️  [herdr] auto is on, but herdr is not on PATH — "
+            "worktree not registered as a herdr Space"
+        )
+        return
+    socket = os.environ.get("HERDR_SOCKET_PATH", "~/.config/herdr/herdr.sock")
+    if not Path(socket).expanduser().exists():
+        return  # server down: gwt herdr / next checkout catches it later
+    argv = [
+        herdr,
+        "worktree",
+        "open",
+        "--cwd",
+        str(Path(worktree).resolve().parent),
+        "--path",
+        str(worktree),
+        "--label",
+        worktree.name,
+        "--no-focus",
+        "--trust-repository",
+    ]
+    result = subprocess.run(argv, capture_output=True, text=True)
+    if result.returncode != 0:
+        err = (result.stderr or result.stdout).strip().splitlines()
+        print(f"⚠️  herdr: {err[-1] if err else 'open failed'}", file=sys.stderr)
+
+
 class Command(abc.ABC):
     aliases: tuple[str, ...] = ()
     help_text: str = ""
@@ -1302,6 +1368,8 @@ class Checkout(Command):
                 stderr = e.stderr.strip() if e.stderr else "unknown error"
                 print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
                 sys.exit(1)
+            if _herdr_auto_on(self.project_root):
+                herdr_register(worktree_path, args.branch)
             self._write_cd_file(worktree_path)
             print(f"📂 {worktree_path} ({args.branch})")
             self._run_hooks("checkout", args.branch, worktree_path, skip=args.no_hooks)
@@ -1325,6 +1393,8 @@ class Checkout(Command):
             print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
             sys.exit(1)
 
+        if _herdr_auto_on(self.project_root):
+            herdr_register(worktree_path, args.branch)
         self._write_cd_file(worktree_path)
         if base == f"origin/{args.branch}":
             print(f"🚀 {worktree_path} ({args.branch}, tracking {base})")
@@ -1429,6 +1499,9 @@ class Pr(Command):
             stderr = e.stderr.strip() if e.stderr else "unknown error"
             print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
             sys.exit(1)
+
+        if _herdr_auto_on(self.project_root):
+            herdr_register(worktree_path, branch_name)
 
         print(f"🔍 Ready to review PR #{pr_number} at {worktree_path}")
         self._run_hooks("pr", branch_name, worktree_path, skip=args.no_hooks)

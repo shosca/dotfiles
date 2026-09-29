@@ -233,10 +233,30 @@ skill writes — the sidebar shows the slug; the branch appears there anyway via
 `--trust-repository` silences git's other-user owner check for this command only; it does not
 weaken any other check, and repos you don't own deliberately stay rejected.
 
-Split is unnecessary: the workspace root pane boots with `cwd` already at the checkout and is an
-available shell, so `agent start` can take it directly. Names: the agent name is the slug (it
-matches the `[a-z][a-z0-9_-]{0,31}` rule from Step 1); the kind follows the agent resolved in
-Step 0 (`claude` / `opencode` both ship as herdr kinds).
+You don't need a split. The workspace root pane boots with `cwd` already at the checkout. Type the
+launch command into its shell with `pane run`, after `wait-output` sees the prompt. This mirrors
+`/review-queue`.
+
+Don't use `herdr agent start`. On 0.9.1 it fails in two ways, and this skill has hit both:
+
+- It rejects a pane that is still running zsh startup (keychain, direnv, mise) with
+  `agent_pane_busy`, and `worktree open` returns before that startup ends. See
+  [herdr#3208](https://github.com/herdrdev/herdr/issues/3208). `pane get` returns the same output
+  before and after the shell is ready, so you can't poll for it.
+- It waits only 30 seconds for the agent to become ready, and a Claude boot with `SessionStart`
+  hooks takes longer. It then reports `timed out waiting for agent startup` for an agent that did
+  start.
+
+The herdr `SessionStart` hook registers the agent. The agent's name comes from the terminal title,
+which `--name` sets. So the slug still names the agent, and it must match the rule from Step 1.
+
+```bash
+herdr pane wait-output "$PANE" --match '❯' --lines 3 --timeout 30000
+herdr pane run "$PANE" "$LAUNCH"
+```
+
+If `wait-output` times out, send the command anyway. zsh reads typed-ahead input once the prompt
+appears. Build `$LAUNCH` per agent as shown below.
 
 #### Claude
 
@@ -244,37 +264,38 @@ Step 0 (`claude` / `opencode` both ship as herdr kinds).
 SID=$(uuidgen --sha1 -n @url -N "$BRANCH")
 PROJDIR=~/.claude/projects/$(printf %s "$WT" | tr / -)
 if [ -f "$PROJDIR/$SID.jsonl" ]; then
-  ARGS=(--resume "$SID" --permission-mode auto)
+  LAUNCH="claude --resume $SID --permission-mode auto"
 else
-  ARGS=(--name "$SLUG" --session-id "$SID" --permission-mode auto "Read $DOC and implement it.")
+  LAUNCH="claude --name $SLUG --session-id $SID --permission-mode auto 'Read $DOC and implement it.'"
 fi
-herdr agent start "$SLUG" --kind claude --pane "$PANE" -- "${ARGS[@]}"
 ```
 
-`--permission-mode auto` is there for the same reason as on the WezTerm path above: the session
-works through the brief rather than stopping at the first prompt. It does not cover a `SessionStart`
-hook, which runs before the mode applies.
+`--permission-mode auto` serves the same purpose as on the WezTerm path above: the session works
+through the brief instead of stopping at the first prompt. It doesn't cover a `SessionStart` hook,
+which runs before the mode applies.
 
 #### OpenCode
 
 ```bash
-herdr agent start "$SLUG" --kind opencode --pane "$PANE" -- \
-  --prompt "Read '$DOC' and implement it. First, rename this session to '$SLUG'. You have the
-  session_rename tool — use it before anything else."
+LAUNCH="opencode --prompt 'Read $DOC and implement it. First, rename this session to $SLUG. You have the session_rename tool. Use it before anything else.'"
 ```
 
 Notes:
 
-- `agent start` returns only once herdr detects the agent and considers it ready; on
-  `agent_not_ready` the name is kept and `herdr agent get "$SLUG"` / `herdr agent read "$SLUG"`
-  still work — wait instead of relaunching, a second `agent start` on the same pane errors.
-- The env strip from Step 5 still wraps the call for hygiene; the pane process itself is spawned by
-  the herdr server, so the child does not inherit this shell's `CLAUDE*`/`OPENCODE*` variables
-  directly, but stripping keeps the herdr CLI call itself clean.
-- State check and idle-wait: `herdr agent get "$SLUG"` (states `idle`, `working`, `blocked`,
-  `done`, `unknown`); `herdr agent prompt` and `herdr agent send-keys` drive it later.
-- Resume for Claude: run `claude --resume "$SID"` inside the pane (or `herdr agent attach`). For
-  OpenCode, resume by session id from `opencode session list` inside the worktree.
+- About 30 seconds after `pane run`, check the pane with `herdr agent get "$PANE"`. States are
+  `idle`, `working`, `blocked`, `done` and `unknown`. If it still fails, report the pane to the
+  user. **Never send the command a second time.** The first one may still be starting, and a
+  second one runs after the first exits.
+- `pane run` types into a shell that the herdr server spawned, so that shell doesn't inherit this
+  session's `CLAUDE*`/`OPENCODE*` variables. You don't need the env strip from Step 5 here.
+- Keep `$LAUNCH` short. Pane typing injection truncates at 1024 bytes
+  ([herdr#2862](https://github.com/herdrdev/herdr/issues/2862)), and the truncated command never
+  runs. The handoff doc carries everything else. The quoting rule from the WezTerm path applies:
+  backticks and `$(…)` in the prompt run as commands.
+- Drive the agent later with `herdr agent prompt` or `herdr agent send-keys`, and target it by pane
+  id.
+- To resume Claude, run `claude --resume "$SID"` inside the pane, or use `herdr agent attach`. To
+  resume OpenCode, use the session id from `opencode session list` inside the worktree.
 
 ## Step 7: Report back
 
@@ -292,10 +313,12 @@ Tell the user:
 
 On the herdr path, additionally:
 
-- the Space and agent name (`herdr agent list` finds it; the sidebar groups it under the repo)
-- nudge or prompt it later by name: `herdr agent prompt "$SLUG" "..."`
-- resume via `herdr agent attach "$SLUG"` (takes over the pane) or the per-agent resume commands
-  above
+- the Space and the pane id. `herdr agent list` finds the agent, and the sidebar groups it under
+  the repo.
+- how to prompt it later: `herdr agent prompt "$PANE" "..."`
+- how to resume it: `herdr agent attach "$PANE"`, which takes over the pane, or the per-agent
+  resume commands above
+- the pane, if `herdr agent get` still failed for it after about 30 seconds
 
 ## Notes
 

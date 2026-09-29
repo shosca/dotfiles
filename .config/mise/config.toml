@@ -5,7 +5,6 @@ awsls = "latest"
 "github:vercel-labs/fx" = "latest"
 herdr = "latest"
 node = "latest"
-"npm:pnpm" = "latest"
 "pipx:harlequin" = { version = "latest", extras = "postgresql,mysql,s3" }
 "pipx:mycli" = "latest"
 "pipx:yawsso" = { version = "latest" }
@@ -17,6 +16,10 @@ playwright = "latest"
 "pipx:nexmod" = "latest"
 poetry = "latest"
 uv = "latest"
+gitleaks = "latest"
+pnpm = "latest"
+duckdb = "latest"
+groovy = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]

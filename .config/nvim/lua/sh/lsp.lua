@@ -26,7 +26,7 @@ local servers = {
   "sorbet",
   "terraformls",
   "tombi",
-  "tsgo",
+  "tsc",
   "yamlls",
   "zls",
   -- "pylsp",
