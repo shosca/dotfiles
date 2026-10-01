@@ -96,6 +96,17 @@ worktree directory for the rest of the review.
 If the PR is already on a local branch (e.g. you authored it), skip the checkout — just work
 from its existing worktree.
 
+**Validate before reading, not after.** Confirm the fixed points resolve and the diff is
+non-empty before any read-heavy work:
+
+```bash
+git rev-parse origin/BASE_BRANCH HEAD
+git diff origin/BASE_BRANCH...HEAD --stat | head -5
+```
+
+A bad ref or an empty diff should fail here, not mid-review after you have already built
+findings on nothing.
+
 **Before comparing against the base branch, make sure the base ref is actually current.** A
 local `master` (or other base) worktree branch can sit behind `origin/master` for reasons
 unrelated to this PR — nobody pulled recently, or the checkout predates a same-day merge. Diffing
@@ -160,6 +171,44 @@ rules too, and new code copies them.
    "clean" result forward only for rules that an earlier pass actually checked. If a push changes
    only the lines behind one finding, that does not cover rules no pass ran.
 
+#### Smell baseline
+
+On top of whatever the project documents, apply a fixed baseline of Fowler code smells
+(_Refactoring_, ch. 3). Two rules bind it:
+
+- **The repo overrides.** A documented rule or precedent always wins — where the codebase
+  endorses something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"),
+  never a hard violation. Report smells as nits, not blocking findings. Skip anything tooling
+  (linter, type checker) already enforces.
+
+Each smell reads _what it is → how to fix_; match it against the diff:
+
+- **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or
+  holds → rename it; if no honest name comes, the design is murky.
+- **Duplicated Code**: the same logic shape appears in more than one hunk or file in the change
+  → extract the shared shape, call it from both sites.
+- **Feature Envy**: a method reaches into another object's data more than its own → move the
+  method onto the data it envies.
+- **Data Clumps**: the same few fields or params keep travelling together (a type waiting to be
+  born) → bundle them into one type and pass that.
+- **Primitive Obsession**: a primitive or string stands in for a domain concept that deserves its
+  own type → give the concept its own small type.
+- **Repeated Switches**: the same switch/if-cascade on the same type recurs across the change →
+  replace with polymorphism, or one map both sites share.
+- **Shotgun Surgery**: one logical change forces scattered edits across many files → gather what
+  changes together into one module.
+- **Divergent Change**: one file or module is edited for several unrelated reasons → split so
+  each module changes for one reason.
+- **Speculative Generality**: abstraction, parameters, or hooks added for needs the PR doesn't
+  have → delete or inline them until a real need shows.
+- **Message Chains**: long `a.b().c().d()` navigation the caller shouldn't depend on → hide the
+  walk behind one method on the first object.
+- **Middle Man**: a class or function that mostly just delegates onward → cut it, call the real
+  target directly.
+- **Refused Bequest**: a subclass or implementer ignores or overrides most of what it inherits →
+  drop the inheritance, use composition.
+
 ### Step 6: Find missed consumers (the critical step)
 
 When a PR **deletes** exports (functions, classes, constants, selectors), every
@@ -176,7 +225,40 @@ a blocking finding.
 
 Do this exhaustively. This is the most valuable part of the review.
 
-### Step 7: Analyze behavior changes
+### Step 7: Verify against the requirement
+
+Confirm the PR implements what was asked, and nothing smuggled itself in. Work from the
+requirement source, not the diff — enumerate what was asked first, then check the diff against
+each item.
+
+**Gather the requirement, in this order:**
+
+1. Issue references in the PR body or in commit messages (`#123`, `Closes #45`), fetched via
+   `gh issue view`.
+2. The PR body's own description / acceptance criteria.
+3. A spec or task description a user or requester session passed along with the review request.
+4. If nothing is found, ask the user. If they say there isn't one, note "no requirement source
+   available" in the verdict and skip this step — a diff can still get the full review.
+
+**Classify against the diff.** For each requirement, mark exactly one of:
+
+- **Missing** — the requirement asks for it; the diff doesn't contain it.
+- **Partial** — present but incomplete (one path handled, another not; data modeled but not
+  surfaced).
+- **Implemented** — and verified in the diff, not just plausible.
+- **Implemented wrong** — present, but the behavior conflicts with the requirement.
+- **Extra** — behaviour in the diff nothing asked for (scope creep).
+
+Quote the requirement line next to every non-"Implemented" finding. A listing of all
+requirements with their classification is the deliverable of this step; it feeds Step 9 (a
+"Missing" or "Implemented wrong" on a core requirement is blocking; "Extra" is usually a nit
+or a question for the author).
+
+**Verify before reporting.** Trace each suspected gap through the PR worktree — requirements
+are often satisfied by code outside the hunks that mention them (a helper, a call site, a
+default). Read the surrounding code before claiming a requirement is missing.
+
+### Step 8: Analyze behavior changes
 
 Read the full diff hunks (and the surrounding code in the PR worktree) for non-mechanical
 changes. Look for:
@@ -195,7 +277,7 @@ changes. Look for:
 
 Use Read/Grep/LSP on the PR worktree to trace callers, check types, and confirm behavior.
 
-### Step 8: Categorize findings
+### Step 9: Categorize findings
 
 - **Blocking**: missed consumer, broken behavior, type error, wrong URL.
 - **Nit (non-blocking)**: style, naming, hardcoded vs constant, missing comment, dead code
@@ -206,12 +288,12 @@ Only post what's actionable. Don't restate what the code does — the author can
 When the PR does something notably well (a clean pattern match, careful migration, good
 defensive coding), call that out too — reviews shouldn't be problem-only.
 
-### Step 9: Present findings to the user
+### Step 10: Present findings to the user
 
 Before writing up findings, invoke the `unslop` skill on the draft — verdict, findings, and
 summary alike — to strip AI tells and keep it terse and direct. Do this for every findings
 write-up in this skill: the in-conversation summary here, and the line/summary comment bodies
-in Steps 10-11.
+in Steps 11-12.
 
 **Re-run unslop on the exact string right before it gets posted, not only on an earlier draft.**
 Invoking `unslop` once in the conversation does not retroactively clean up comment/review bodies
@@ -241,7 +323,7 @@ rules override it:
 A reviewer's stated call is treated as a directive, and more so by another agent than by a person.
 Ambiguity is not neutral — it gets resolved, and often not the way you meant.
 
-### Step 10: Post line-level review comments (only when asked)
+### Step 11: Post line-level review comments (only when asked)
 
 **Only when the user explicitly asks you to comment on the PR**, post findings as line-level
 review comments.
@@ -280,7 +362,7 @@ For a blocking finding, omit the "Nit (non-blocking)" prefix and describe the pr
 Frame feedback as suggestions, not criticism — describe the concern and a proposed
 alternative, not a verdict on the author. Run each comment body through `unslop` before posting.
 
-### Step 11: Post a summary comment (only when asked)
+### Step 12: Post a summary comment (only when asked)
 
 If the review has a non-obvious overall verdict or a cross-cutting finding that doesn't attach
 to a single line (e.g. "all consumers verified migrated"), post one summary comment:
@@ -298,7 +380,7 @@ left inline") — the reviewer sees the inline comment already; pointing at it a
 sentence in the summary should be a claim about the PR, not a claim about what you did or where you
 left something.
 
-### Step 12: Clean up the worktree
+### Step 13: Clean up the worktree
 
 When the review is done, remove the review worktree and its branch:
 
@@ -361,18 +443,52 @@ every posted comment and review body here:
 - **A "clean" verdict without the project's documented rules.** Precedent matching and missed
   consumers do not cover the rules the project has written down. A clean verdict that skips them
   leaves the user to find the violations after they approve.
+- **A "clean" verdict without a requirements check.** Steps 5-6 and 8 can all pass while the
+  answer to "does it do what was asked?" is no. Run Step 7 or state explicitly that no
+  requirement source existed.
+- **Reviewing a diff you never confirmed is non-empty.** A bad ref or empty diff discovered
+  mid-review invalidates everything built on it. Validate first (Step 3).
 - **A verdict plus its own hedge.** "Fix it here, but it's arguably out of scope, so it's your
   call" is two answers. Give one.
+
+## Parallel review passes (optional, for heavy PRs)
+
+For a large diff — roughly, over ~1k added lines or over ~20 files — running the Standards and
+Requirements passes in separate sub-agents keeps each review out of the other's context and
+keeps the expensive reading out of yours. On a normal-sized PR, skip this section: one pass in
+this session is cheaper and loses nothing.
+
+Split when you use it:
+
+- **Standards sub-agent** gets: the diff command and hunk/commit list, the paths of every rule
+  document found (Step 5), the full smell baseline (Step 5) pasted inline — a sub-agent has no
+  other access to it — and this brief: "Report, per file where relevant, every violation of a
+  documented rule (cite the document and the rule, quoted) and every baseline smell (name it,
+  quote the hunk). Documented rules can be hard violations; smells are always judgement calls,
+  and a documented rule overrides the baseline. Skip anything tooling enforces."
+- **Requirements sub-agent** gets: the diff command and commit list, the requirement source
+  (PR body, issue text, spec) pasted inline, and this brief: "Classify each requirement as
+  missing, partial, implemented, implemented wrong, or extra (scope creep). Quote the
+  requirement line for every non-'implemented' finding. Under 400 words."
+
+Keep the interactive steps in this session: Steps 3-4 (worktree, diff), Step 6 (missed
+consumers — needs live grep against the base worktree), Step 8 (behavior traces).
+Sub-agents only run where the work is bounded reading: rules and requirements.
+
+Aggregate the reports under `## Standards` and `## Requirements` headings and end with the
+per-axis count and worst finding within each axis. Do not merge the two lists or pick a single
+winner across them — a change can pass one axis and fail the other, and ranking across axes
+re-hides exactly that.
 
 ## Reviewing for another session, before a PR exists
 
 A peer session may hand over a worktree and a list of questions rather than a PR number. Steps 1-2
-and 10-12 do not apply — there is nothing to check out and nothing to post. The rest does, and
+and 11-13 do not apply — there is nothing to check out and nothing to post. The rest does, and
 these are load-bearing rather than stylistic:
 
 - **Findings go back to the requester, never to GitHub.** No PR exists; posting anywhere else is
   not an option to weigh.
-- **Everything in Step 9 about shape applies harder.** The reply is the whole artifact and it is
+- **Everything in Step 10 about shape applies harder.** The reply is the whole artifact and it is
   read by something that will act on it directly. Questions first in their order, one place per
   finding, one instruction each.
 - **Stay inside the scope they brought.** They are mid-task with a goal. An incidental finding is
@@ -408,3 +524,7 @@ When reviewing a migration/refactor PR, run through these:
     flag it and suggest an assertion that exercises the actual behavior.
 13. **Documented project rules** — every rule in each project document that covers the changed
     files was checked line by line (Step 5), and the record names the documents checked.
+14. **Smell baseline** — the 12 smells were run against the diff (Step 5); each hit reported as a
+    nit, and repo rules that endorse the pattern suppressed it.
+15. **Requirement classification** — every gathered requirement carries exactly one label from
+    Step 7; a "no requirement source available" note if none was found.
