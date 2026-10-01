@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Send /compact to every not-busy herdr agent whose context is over a threshold.
+#
+# Usage: all-compact [threshold_k]   (default 200)
+#
+# An agent qualifies when its herdr status is `idle` or `done`: a `working` or `blocked` agent
+# would only queue the compact behind its turn. The pane this runs from is skipped for the same
+# reason. Context comes from the Claude status line (`NNNk/NNNNk ctx`), which updates only at the
+# end of a turn, so an agent that has not run since its last compact still reads its old figure.
+set -euo pipefail
+
+threshold=${1:-200}
+self=$(herdr pane current 2>/dev/null |
+  python3 -c 'import json,sys;print(json.load(sys.stdin)["result"]["pane"]["pane_id"])' 2>/dev/null || true)
+
+herdr agent list |
+  python3 -c '
+import json, sys
+result = json.load(sys.stdin)["result"]
+for agent in result.get("agents", result):
+    print(agent["pane_id"], agent.get("agent_status") or "unknown", agent["name"])
+' |
+  while read -r pane status name; do
+    if [ "$pane" = "$self" ]; then
+      echo "$name: this session, skip"
+      continue
+    fi
+
+    ctx_line=$(herdr agent read "$pane" --lines 6 2>/dev/null | grep -oE '[0-9.]+[kM]/[0-9.]+[kM] ctx' | tail -1 || true)
+    if [ -z "$ctx_line" ]; then
+      echo "$name: no context line, skip"
+      continue
+    fi
+    used=${ctx_line%%/*}
+    case $used in
+      *M) used_k=$(python3 -c "print(int(float('${used%M}') * 1000))") ;;
+      *k) used_k=${used%k}; used_k=${used_k%.*} ;;
+    esac
+
+    if [ "$status" != idle ] && [ "$status" != "done" ]; then
+      echo "$name ${used_k}k: $status, skip"
+    elif [ "$used_k" -gt "$threshold" ]; then
+      herdr agent prompt "$pane" "/compact" >/dev/null
+      echo "$name ${used_k}k: compacted"
+    else
+      echo "$name ${used_k}k: under ${threshold}k"
+    fi
+  done
