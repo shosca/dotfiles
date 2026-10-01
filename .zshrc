@@ -194,29 +194,13 @@ fi
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
 [[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
+[[ -x $(command -v herdr 2>/dev/null) ]] && eval "$(herdr completion zsh)"
+[[ -x $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
+[[ -x $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ -x $(command -v inv 2>/dev/null) ]] && eval "$(inv --print-completion-script zsh)"
 
 function compfile() {
   [[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
-  [[ -x $(command -v herdr 2>/dev/null) ]] && herdr completion zsh > ~/.zfunc/_herdr
-  [[ -x $(command -v pipx 2>/dev/null) ]] && register-python-argcomplete pipx > ~/.zfunc/_pipx
-  [[ -x $(command -v uv 2>/dev/null) ]] && uv generate-shell-completion zsh > ~/.zfunc/_uv
-  # invoke's own generator emits compctl code that compinit-based zsh never
-  # consults; use a hand-written compsys hook that calls `inv` via uv so the
-  # task list resolves inside the project venv.
-  [[ -x $(command -v inv 2>/dev/null) ]] && cat > ~/.zfunc/_inv <<'EOF'
-#compdef inv
-# compsys rewrite of invoke's compctl-era generator; task list comes from the
-# project's env, hence `uv run`. Falls back to nothing outside an invoke repo.
-_inv() {
-  local -a reply
-  local collection_arg=''
-  if [[ "${words}" =~ "(-c|--collection) [^ ]+" ]]; then
-    collection_arg=$MATCH
-  fi
-  reply=( $(uv run inv ${=collection_arg} --complete -- ${words} 2>/dev/null) )
-  compadd -a reply
-}
-EOF
   rm -f ~/.zcompdump
 }
 

@@ -9,7 +9,6 @@ node = "latest"
 "pipx:mycli" = "latest"
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
-"github:redhat-et/ripwire" = "latest"
 "github:hmans/beans" = "latest"
 cdk = "latest"
 playwright = "latest"
@@ -20,6 +19,7 @@ gitleaks = "latest"
 pnpm = "latest"
 duckdb = "latest"
 groovy = "latest"
+"npm:chrome-devtools-mcp" = "latest"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]

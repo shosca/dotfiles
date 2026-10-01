@@ -20,20 +20,7 @@
   - **tmux:** nothing is automatic. Run `tmux rename-session <session>` when the session holds only this task's window. Do not rename windows; they keep the automatic name from the running command. Do not set the title with an escape sequence: Claude Code already writes OSC 0, tmux records that as `pane_title` only, and the window name never sees it.
 
 - think before coding, state your assumptions, ask when unsure. never guess
+- restate my intent before continuing
 - simplicity first, write the minimum code that solves the problem, no abstractions nobody asked for
 - surgical changes, don't touch code unrelated to the request, every changed line must trace back to what was asked
 - goal-driven execution, turn vague instructions into verifiable success criteria before writing a single line
-
-## ripwire — codebase maps (MCP `mcp__ripwire__*`; CLI `ripwire` when the MCP server is not registered)
-The MCP server's own instructions list the verbs. These rules decide when to use them:
-- Precedence over rtk: for code navigation and search, use a ripwire verb FIRST (`for`, `explore`,
-  `find_referencing_symbols`, `grep`, `find_symbol`). Use `rtk rg`/`rtk grep` only for plain text that
-  ripwire cannot answer (comments, config values, non-code files, dependencies, build output, logs).
-- The tell: typing `grep -rn`, `sed -n '<range>p'`, `find -name`, or `cat` against a source file IS the
-  violation. "Where is X defined", "who calls X", "what does X do", and "does X exist" are ripwire questions.
-- Do NOT open a file you have not located first. Do NOT read a whole file to understand one symbol
-  (`fetch_body`). Do NOT fan reads across files to learn one thing (`batch`).
-- Before writing a new fn/class/helper: `exemplar`. Before calling work done: `quality_delta`, then
-  `--test-gate`.
-- CLI: same verbs as flags (`--for=`, `--callers=`, `--expand=`, `--grep`, `--from-trace=`); add
-  `--legend=compact`.
