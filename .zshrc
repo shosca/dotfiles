@@ -63,7 +63,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview $dir_preview
 zstyle ':fzf-tab:complete:bat:*' fzf-preview $dir_or_file_preview
 zstyle ':fzf-tab:complete:cat:*' fzf-preview $dir_or_file_preview
@@ -73,6 +73,7 @@ zstyle ':fzf-tab:complete:nvim:*' fzf-preview $dir_or_file_preview
 zstyle ':fzf-tab:complete:less:*' fzf-preview $dir_or_file_preview
 zstyle ':fzf-tab:complete:head:*' fzf-preview $dir_or_file_preview
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview $dir_preview
+zstyle ':fzf-tab:*' fzf-flags -i
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
