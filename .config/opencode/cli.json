@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "plugins": [
-    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-herdr",
-    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-tmux"
+    "file:///home/serkan/dotfiles/.config/opencode/plugins/opencode-tmux",
+    "./herdr-opencode"
   ],
   "diffs": {
     "wrap": "word"

@@ -1,0 +1,26 @@
+{
+  "version": 3,
+  "skills": {
+    "asd-ste100": {
+      "source": "danyuchn/asd-ste100-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "7d4a135a199a5d7447c4886bcd7ffe742a627bc9",
+      "installedAt": "2026-10-03T14:03:48.416Z",
+      "updatedAt": "2026-10-03T14:03:48.416Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
+      "installedAt": "2026-10-03T14:03:54.127Z",
+      "updatedAt": "2026-10-03T14:03:54.127Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  }
+}
