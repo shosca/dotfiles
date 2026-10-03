@@ -51,72 +51,6 @@ class WorktreeInfo:
     created_ts: float = 0.0
 
 
-def _herdr_auto_on(project_root: str | None) -> bool:
-    """Decide whether gwt auto-registers worktrees in herdr.
-
-    GWT_HERDR_AUTO overrides gwt.toml's [herdr] auto: "1"/"true"/"on" forces
-    it on everywhere, "0"/"false"/"off" forces off (escape hatch when herdr
-    is broken), unset falls back to the repo's gwt.toml so projects that
-    want the sidebar tree opt in explicitly.
-    """
-    env = os.environ.get("GWT_HERDR_AUTO", "").strip().lower()
-    if env in ("1", "true", "on"):
-        return True
-    if env in ("0", "false", "off"):
-        return False
-    if not project_root:
-        return False
-    config_path = Path(project_root) / "gwt.toml"
-    if not config_path.is_file():
-        return False
-    try:
-        config = tomllib.loads(config_path.read_text())
-    except tomllib.TOMLDecodeError:
-        return False  # run_hooks already reports the parse error
-    return bool(config.get("herdr", {}).get("auto", False))
-
-
-def herdr_register(worktree: Path, branch: str | None) -> None:
-    """Best-effort: open one worktree as a herdr Space.
-
-    --no-focus keeps the caller's current Space; label is the directory name
-    so sidebar rows match the branch slug like `gwt herdr` labels them.
-    A missing herdr binary warns once (the user opted in via [herdr] auto or
-    GWT_HERDR_AUTO, so silence would hide a broken setup), while a down
-    server skips silently — starting a server from here would hijack the
-    checkout. A registration failure prints one stderr line and never fails
-    the gwt command that caused it. Runs before _run_hooks callers so the
-    Space exists even when a gwt.toml hook (dev.setup) fails.
-    """
-    herdr = shutil.which("herdr")
-    if not herdr:
-        print(
-            "⚠️  [herdr] auto is on, but herdr is not on PATH — "
-            "worktree not registered as a herdr Space"
-        )
-        return
-    socket = os.environ.get("HERDR_SOCKET_PATH", "~/.config/herdr/herdr.sock")
-    if not Path(socket).expanduser().exists():
-        return  # server down: gwt herdr / next checkout catches it later
-    argv = [
-        herdr,
-        "worktree",
-        "open",
-        "--cwd",
-        str(Path(worktree).resolve().parent),
-        "--path",
-        str(worktree),
-        "--label",
-        worktree.name,
-        "--no-focus",
-        "--trust-repository",
-    ]
-    result = subprocess.run(argv, capture_output=True, text=True)
-    if result.returncode != 0:
-        err = (result.stderr or result.stdout).strip().splitlines()
-        print(f"⚠️  herdr: {err[-1] if err else 'open failed'}", file=sys.stderr)
-
-
 class Command(abc.ABC):
     aliases: tuple[str, ...] = ()
     help_text: str = ""
@@ -793,30 +727,36 @@ class Herdr(Command):
         "Import the repo's worktrees into a running herdr server as grouped\n"
         "worktree workspaces.Requires the herdr CLI on PATH and its server\n"
         "running.Worktrees that already have a herdr workspace are skipped,\n"
-        "so repeated runs are idempotent."
+        "so repeated runs are idempotent.\n"
+        "\n"
+        "With a <target> (branch name, path, or worktree dir basename) opens\n"
+        "one worktree instead — best-effort: skips silently-skippable states,\n"
+        "never exits nonzero, so it is safe as a gwt.toml checkout hook:\n"
+        '  gwt herdr "$GWT_WORKTREE"'
+    )
+    command_args = (
+        CommandArg(
+            name=("target",),
+            nargs="?",
+            help="Register one worktree (branch, path, or dir basename) best-effort.",
+        ),
     )
 
     def run(self, args: argparse.Namespace) -> None:
         """Handle the 'gwt herdr' subcommand."""
-
-        import shutil
-
         herdr = shutil.which("herdr")
         if not herdr:
             print("❌ herdr CLI not found on PATH.")
             sys.exit(1)
+        if getattr(args, "target", None):
+            self._register_one(herdr, args.target)
+            return
 
         root = Path(self.project_root)
         # Anchoring at the bare/main root is required; opening from inside a
         # linked worktree fails with linked_worktree_source.
-        result = subprocess.run(
-            [herdr, "worktree", "list", "--cwd", str(root), "--trust-repository"],
-            capture_output=True,
-            text=True,
-        )
-        try:
-            payload = json.loads(result.stdout)["result"]["worktrees"]
-        except (KeyError, ValueError):
+        payload = self._worktree_payload(herdr, root)
+        if payload is None:
             print(
                 f"❌ herdr server not reachable at its socket — "
                 f"start it with `systemctl --user start herdr-server` "
@@ -861,6 +801,68 @@ class Herdr(Command):
                 print(f"🪴 {Path(path).name} opened as a herdr Space")
         if rc:
             sys.exit(1)
+
+    def _worktree_payload(self, herdr: str, root: Path) -> dict | None:
+        """Fetch herdr's worktree list JSON; None when the server is down."""
+        result = subprocess.run(
+            [herdr, "worktree", "list", "--cwd", str(root), "--trust-repository"],
+            capture_output=True,
+            text=True,
+        )
+        try:
+            return json.loads(result.stdout)["result"]["worktrees"]
+        except (KeyError, ValueError):
+            return None
+
+    def _register_one(self, herdr: str, target: str) -> None:
+        """Open one worktree as a herdr Space, best-effort (never exits nonzero).
+
+        Unlock hook use: [hooks.checkout] ending in `gwt herdr <worktree>`.
+        Deliberately softer than the bulk mode above — a down server only prints
+        a skip line, because a failed registration must never abort the checkout
+        that spawned the hook. Idempotent: skips when the listing already shows
+        an open workspace for this checkout.
+        """
+        root = Path(self.project_root)
+        matched = next(
+            (wt for wt in self.worktrees
+             if wt.branch == target or Path(wt.path).name == target or wt.path == target),
+            None,
+        )
+        if not matched:
+            print(f"❌ No worktree found matching: {target}")
+            sys.exit(1)
+        payload = self._worktree_payload(herdr, root)
+        if payload is None:
+            print("⚠️  herdr server down — worktree not registered (gwt herdr retries later)")
+            return
+        path = str(Path(matched.path).resolve())
+        entry = next((w for w in payload if os.path.realpath(w["path"]) == path), None)
+        if entry and (entry.get("open_workspace_id") or entry.get("is_prunable")):
+            print(f"🪴 {Path(path).name} already open in herdr")
+            return
+        resp = subprocess.run(
+            [
+                herdr,
+                "worktree",
+                "open",
+                "--cwd",
+                str(root),
+                "--path",
+                path,
+                "--label",
+                Path(path).name,
+                "--no-focus",
+                "--trust-repository",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if resp.returncode:
+            err = (resp.stderr or resp.stdout).strip().splitlines()
+            print(f"⚠️  herdr: {err[-1] if err else 'open failed'}", file=sys.stderr)
+        else:
+            print(f"🪴 {Path(path).name} opened as a herdr Space")
 
 
 class Help(Command):
@@ -915,6 +917,8 @@ class Delete(Command):
     description = (
         "Remove an existing worktree and its branch.\n"
         "\n"
+        "The branch is deleted too unless --keep-branch is passed.\n"
+        "Runs the repo's [hooks.delete] hooks before removing the worktree.\n"
         "Accepts either the branch name or the worktree directory basename.\n"
         "Cannot delete the main worktree (project root).\n"
     )
@@ -931,14 +935,20 @@ class Delete(Command):
             action="store_true",
         ),
         CommandArg(
-            name=("--and-branch",),
-            help="Delete the branch after removing worktree.",
+            name=("--keep-branch",),
+            help="Keep the branch after removing the worktree (branch is deleted by default).",
             source_type="flags",
             action="store_true",
         ),
         CommandArg(
             name=("-f", "--force"),
             help="Force removal even if the worktree contains modified or untracked files.",
+            source_type="flags",
+            action="store_true",
+        ),
+        CommandArg(
+            name=("--no-hooks",),
+            help="Skip running hooks from gwt.toml.",
             source_type="flags",
             action="store_true",
         ),
@@ -956,6 +966,14 @@ class Delete(Command):
                 break
 
         if not matched:
+            # The worktree may already be gone, leaving only its branch behind
+            # (e.g. a previous delete used --keep-branch). Fall back to deleting
+            # just the branch so a kept branch stays reachable via `gwt rm`.
+            if not subprocess.run(
+                ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{target}"]
+            ).returncode:
+                self._delete_branch(target, args)
+                return
             print(f"❌ No worktree found matching: {target}")
             print("   Use 'gwt list' to see available worktrees.")
             return
@@ -972,6 +990,10 @@ class Delete(Command):
             if answer not in ("y", "yes"):
                 print("❌ Cancelled.")
                 return
+
+        # Hooks run before removal: they tear down services whose cwd is the
+        # worktree, which no longer exists once the worktree is gone.
+        self._run_hooks("delete", matched.branch, Path(matched.path), skip=args.no_hooks)
 
         # Remove worktree
         git_cmd = ["git", "worktree", "remove"]
@@ -993,17 +1015,38 @@ class Delete(Command):
         self._prune_empty_parents(matched.path)
         print(f"✅ Worktree removed: {matched.path}")
 
-        if args.and_branch:
-            try:
-                subprocess.run(
-                    ["git", "branch", "-D", matched.branch],
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                )
-                print(f"✅ Branch deleted: {matched.branch}")
-            except subprocess.CalledProcessError as e:
-                print(f"⚠️  Failed to delete branch: {e.stderr.strip()}")
+        # The branch goes with the worktree by default. Delete with -d so
+        # unmerged branches are refused; --force is the conscious opt-in to -D.
+        # show-ref first: a branch deleted out-of-band (or a race between
+        # worktree list and this delete) is a no-op, not a scary warning.
+        if args.keep_branch:
+            print(f"🌿 Branch kept: {matched.branch}")
+        else:
+            self._delete_branch(matched.branch, args)
+
+    def _delete_branch(self, branch: str, args: argparse.Namespace) -> None:
+        """Delete a local branch, warning (not failing) when the delete fails.
+
+        Uses -d so unmerged branches are refused; --force is the conscious
+        opt-in to -D. A failed delete never fails the command.
+        """
+        branch_out = subprocess.run(
+            ["git", "branch", "-D" if args.force else "-d", branch],
+            capture_output=True,
+            text=True,
+        )
+        if branch_out.returncode == 0:
+            print(f"✅ Branch deleted: {branch}")
+            if branch_out.stdout:
+                print(branch_out.stdout.strip())
+        else:
+            stderr = (branch_out.stderr or "").strip()
+            if "not found" in stderr:
+                print(f"🌿 Branch already gone: {branch}")
+            else:
+                print(f"⚠️  Failed to delete branch: {stderr}")
+                if not args.force:
+                    print("   Unmerged branches are refused. Pass --force to delete anyway (-D).")
 
 
 class Completions(Command):
@@ -1368,8 +1411,6 @@ class Checkout(Command):
                 stderr = e.stderr.strip() if e.stderr else "unknown error"
                 print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
                 sys.exit(1)
-            if _herdr_auto_on(self.project_root):
-                herdr_register(worktree_path, args.branch)
             self._write_cd_file(worktree_path)
             print(f"📂 {worktree_path} ({args.branch})")
             self._run_hooks("checkout", args.branch, worktree_path, skip=args.no_hooks)
@@ -1393,8 +1434,6 @@ class Checkout(Command):
             print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
             sys.exit(1)
 
-        if _herdr_auto_on(self.project_root):
-            herdr_register(worktree_path, args.branch)
         self._write_cd_file(worktree_path)
         if base == f"origin/{args.branch}":
             print(f"🚀 {worktree_path} ({args.branch}, tracking {base})")
@@ -1499,9 +1538,6 @@ class Pr(Command):
             stderr = e.stderr.strip() if e.stderr else "unknown error"
             print(f"❌ Failed to create worktree: {stderr}", file=sys.stderr)
             sys.exit(1)
-
-        if _herdr_auto_on(self.project_root):
-            herdr_register(worktree_path, branch_name)
 
         print(f"🔍 Ready to review PR #{pr_number} at {worktree_path}")
         self._run_hooks("pr", branch_name, worktree_path, skip=args.no_hooks)

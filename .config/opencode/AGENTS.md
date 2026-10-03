@@ -1,14 +1,14 @@
 - At session start, check for a CLAUDE.md in the project root and read it if it exists. Treat it as binding project instructions (same authority as this file).
 - Avoid using `rtk proxy` as much as possible, see `rtk help`
 - ALWAYS: Use parallel tools when applicable.
-- ALWAYS: chat replies in the terminal use caveman full mode (ultra-compressed responses, cut filler, keep only what's actionable). Revert only on "stop caveman" / "normal mode". Caveman never applies to text that leaves the chat (see the writing rule below).
+- ALWAYS: chat replies in the terminal follow the `asd-ste100` skill. Load it via the skill tool and apply the structural rules (≤20 words for instructions, ≤25 words for descriptions). Keep replies concise and actionable. If the skill fails to load, fall back to the inline recital here: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
 - NEVER: commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked
 - ALWAYS: stage changes and run pre-commit hooks (prek, pre-commit, etc..) and check for failure before `git commit`
 - ALWAYS: check the exit code `git commit` returns non-zero on failure. Before claiming you committed, verify: `git log -1 --oneline` must show your commit. If it doesn't, stop and ask.
 - ALWAYS: If commit FAILED or was REJECTED by hook, NEVER amend - STOP AND ASK FOR HELP
 - ALWAYS: put a function's reasoning in its docstring: why it exists, design choices, ordering constraints, what it mirrors. Keep inline comments rare: one short line tied to one surprising line. Tests follow the same rule. When you edit a function with scattered comment blocks, fold them into its docstring.
 - ALWAYS: Use the `pr-review` skill when asked to review a pull request. Load it via the skill tool before starting the review.
-- ALWAYS: for text that leaves the chat (PR descriptions, PR reviews and review comments, Jira ticket descriptions and comments, commit messages, code comments, docs), load the unslop skill and apply it, and write in the Google developer documentation style guide's voice, approximating ASD-STE100 Simplified Technical English: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations ("perform an installation" → "install"), no "simply/just/easily", no future tense for behavior ("returns X", never "will return").
+- ALWAYS: for text that leaves the chat (PR descriptions, PR reviews and review comments, Jira ticket descriptions and comments, commit messages, code comments, docs), load the `asd-ste100` skill and apply it in STE-flavored mode for structure, then load the `unslop` skill and apply it to remove AI-tell vocabulary. Write in the Google developer documentation style guide's voice.
 
 - Use my `gwt` tool if you see bare checkout repo setup, see `gwt help`
 - I work in feature branches and git worktrees, never directly on main/master. If a change seems unrelated to current work, suggest creating a new worktree first.
