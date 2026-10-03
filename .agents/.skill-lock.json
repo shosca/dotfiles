@@ -18,6 +18,16 @@
       "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
       "installedAt": "2026-10-03T14:03:54.127Z",
       "updatedAt": "2026-10-03T14:03:54.127Z"
+    },
+    "codebase-design": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/engineering/codebase-design/SKILL.md",
+      "skillFolderHash": "07ba1cd60efc12d0d3a083005c1d9651cf15e39a",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-10-03T14:04:43.186Z",
+      "updatedAt": "2026-10-03T14:04:43.186Z"
     }
   },
   "dismissed": {
