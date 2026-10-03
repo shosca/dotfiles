@@ -1,11 +1,8 @@
 [tools]
 aws-iam-authenticator = "latest"
 awsls = "latest"
-"github:looker-open-source/looker-cli" = "latest"
-"github:vercel-labs/fx" = "latest"
 herdr = "latest"
 node = "latest"
-"pipx:harlequin" = { version = "latest", extras = "postgresql,mysql,s3" }
 "pipx:mycli" = "latest"
 "pipx:yawsso" = { version = "latest" }
 trivy = "latest"
