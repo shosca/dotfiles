@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "7d4a135a199a5d7447c4886bcd7ffe742a627bc9",
+      "skillFolderHash": "32511c6992ecb5f1971e46a2943f2e6adceedafe",
       "installedAt": "2026-10-03T14:03:48.416Z",
-      "updatedAt": "2026-10-03T14:03:48.416Z"
+      "updatedAt": "2026-10-04T15:35:37.001Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
@@ -28,6 +28,26 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-10-03T14:04:43.186Z",
       "updatedAt": "2026-10-03T14:04:43.186Z"
+    },
+    "retro": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/engineering/retro/SKILL.md",
+      "skillFolderHash": "335c1862a43da9d629abafdb79ca0c0de118be08",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-10-04T15:35:51.661Z",
+      "updatedAt": "2026-10-04T15:35:51.661Z"
+    },
+    "writing-for-agents": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/productivity/writing-for-agents/SKILL.md",
+      "skillFolderHash": "ad2925850efb8973a72d2e666f7a975f9a2d4a9b",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-10-04T15:36:30.193Z",
+      "updatedAt": "2026-10-04T15:36:30.193Z"
     }
   },
   "dismissed": {

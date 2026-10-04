@@ -1,10 +1,11 @@
+typeset -U path PATH fpath FPATH
 export DOTFILES="${HOME}/dotfiles"
 export DISABLE_MAGIC_FUNCTIONS=true
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+HISTORY_IGNORE="(ls|cd|cd -|pwd|exit|date|* --help)"
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -19,8 +20,6 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 fpath+=~/.zfunc
-autoload -Uz compinit && compinit
-autoload -Uz bashcompinit && bashcompinit
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 autoload -U select-word-style
@@ -28,25 +27,19 @@ autoload -U select-word-style
 select-word-style bash
 
 setopt always_to_end
-setopt append_history
 setopt auto_cd
 setopt auto_list
 setopt auto_menu
 setopt auto_param_slash
-setopt case_glob
 setopt complete_in_word
 setopt extended_glob
 setopt extended_history
-setopt extended_history
 setopt glob_dots
-setopt hist_expire_dups_first
 setopt hist_ignore_all_dups
-setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
-setopt inc_append_history
 setopt interactive_comments
 setopt pushd_ignore_dups
 setopt share_history
@@ -94,18 +87,18 @@ source_sh() {
   emulate -LR zsh
 }
 
-zinit pack for dircolors-material
-zinit pack for ls_colors
 
 zinit load zsh-users/zsh-completions
-zinit load zsh-users/zsh-history-substring-search
-zinit load zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
 
-zinit light junegunn/fzf
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
+# fzf-tab: after compinit, before plugins that wrap widgets
 zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/history-search-multi-word
 zinit light zdharma-continuum/fast-syntax-highlighting
+zinit load zsh-users/zsh-history-substring-search
 
 zinit light apachler/zsh-aws
 zinit light hlissner/zsh-autopair
@@ -135,8 +128,8 @@ key[PageDown]="$terminfo[knp]"
 [[ -n "$key[Insert]"    ]] && bindkey -- "$key[Insert]"    overwrite-mode
 [[ -n "$key[Backspace]" ]] && bindkey -- "$key[Backspace]" backward-delete-char
 [[ -n "$key[Delete]"    ]] && bindkey -- "$key[Delete]"    delete-char
-[[ -n "$key[Up]"        ]] && bindkey -- "$key[Up]"        up-line-or-history
-[[ -n "$key[Down]"      ]] && bindkey -- "$key[Down]"      down-line-or-history
+[[ -n "$key[Up]"        ]] && bindkey -- "$key[Up]"        history-substring-search-up
+[[ -n "$key[Down]"      ]] && bindkey -- "$key[Down]"      history-substring-search-down
 [[ -n "$key[Left]"      ]] && bindkey -- "$key[Left]"      backward-char
 [[ -n "$key[Right]"     ]] && bindkey -- "$key[Right]"     forward-char
 
@@ -154,9 +147,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 
 
-bindkey '^T' fzf-file-widget
-bindkey '\ec' fzf-cd-widget
-bindkey '^R' fzf-history-widget
 bindkey ' ' magic-space
 
 bindkey '^[[A' history-substring-search-up
@@ -189,16 +179,13 @@ fi
 
 # Completions for gwt, poetry, pipx, uv, inv, herdr live in ~/.zfunc as static
 # files (regen with compfile or their own generators); pyenv/direnv/mise/wt init
-# hooks must run per shell, so they stay below.
+# hooks must run per shell, so they stay below. gwt stays too: its eval defines
+# the gwt() cd wrapper, which ~/.zfunc/_gwt only loads on first completion.
 [[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
 [[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
-[[ -x $(command -v herdr 2>/dev/null) ]] && eval "$(herdr completion zsh)"
-[[ -x $(command -v pipx 2>/dev/null) ]] && eval "$(register-python-argcomplete pipx)"
-[[ -x $(command -v uv 2>/dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
-[[ -x $(command -v inv 2>/dev/null) ]] && eval "$(inv --print-completion-script zsh)"
 
 function compfile() {
   [[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry
@@ -208,7 +195,6 @@ function compfile() {
 if [[ -f "/usr/bin/dircolors" ]]; then
   case "${TERM}" in
     xterm*)
-      export TERM=xterm-256color
       cache_term_colors=256
       eval "$(dircolors -b)"
       ;;
@@ -231,8 +217,7 @@ fi
 
 
 source_sh ${HOME}/.aliases
-alias z='__zoxide_z'
-alias zi='__zoxide_zi'
+alias zi='__zoxide_zi'  # zinit defines zi=zinit; this alias wins over zoxide's zi function
 alias resrc='source ~/.zshrc'
 
 if [ ! -e ~/.bash-my-aws ]; then

@@ -22,6 +22,16 @@ import sys
 # ponytail: regex heuristics, not a parser. No noun-cluster rule — needs POS
 # tagging to avoid constant false positives; add spaCy-backed rule if ever needed.
 # No ellipsis rule by owner's choice: technical writing sometimes earns one.
+# Irregular past participles used by the present-perfect heuristic.
+IRREGULAR_PARTICIPLES = "given|taken|made|done|found|seen|known|shown|written|built|sent|set|run|read|kept|held|left|put|cut|hit|let|shut|split|spread|begun|become|come|gone|got|gotten|lost|met|paid|said|sold|told|thought|brought|bought|caught|taught|won|worn|torn|born|drawn|grown|thrown|flown|driven|risen|chosen|broken|spoken|frozen|hidden|ridden|forgotten|fallen|eaten|beaten|understood|stood|struck|stuck|swung|hung|led|fed|bled|fled|sped|bound|wound|dug|spun|slid|bit|lit|quit"
+
+# Preserve the original passive heuristic; perfects also include intransitive verbs.
+PASSIVE_PARTICIPLES = "given|taken|made|done|found|seen|known|shown|written|built|sent|set|run|read|kept|held|left|put"
+MODAL_PERFECT_PREFIX = re.compile(
+    r"\b(?:may|might|could|should|would|must|can|will|shall)"
+    r"(?:\s+not|n['’]t)?\s+$", re.I,
+)
+
 RULES = [
     ("semicolon", "advisory-free",
      re.compile(r";"),
@@ -36,11 +46,11 @@ RULES = [
      re.compile(r"\b(perform|performs|performed|conduct|conducts|conducted|carry out|carries out|carried out)\s+(?:a|an|the)\s+\w+(?:tion|sion|ment|ance|ence|ysis)\b", re.I),
      "Action frozen into a noun. Use the verb (analyze, not perform an analysis of)."),
     ("passive-voice", "advisory",
-     re.compile(r"\b(is|are|was|were|been|being)\s+(\w+ed|given|taken|made|done|found|seen|known|shown|written|built|sent|set|run|read|kept|held|left|put)\b(?!\s+(?:to|for|by)\s+\w+ing)", re.I),
+     re.compile(r"\b(is|are|was|were|been|being)\s+(\w+ed|" + PASSIVE_PARTICIPLES + r")\b(?!\s+(?:to|for|by)\s+\w+ing)", re.I),
      "Possible passive voice. Name the actor and use an active verb, unless the actor is unknown or irrelevant."),
     ("present-perfect", "advisory",
      # modal + perfect infinitive ("may have failed") is a protected hedge, not present perfect
-     re.compile(r"(?<!\bmay )(?<!\bmight )(?<!\bcould )(?<!\bshould )(?<!\bwould )(?<!\bmust )\b(has|have|had)\s+(?:been\s+)?\w+(?:ed|en)\b", re.I),
+     re.compile(r"(?<!\bmay )(?<!\bmight )(?<!\bcould )(?<!\bshould )(?<!\bwould )(?<!\bmust )\b(has|have|had)\s+(?:been\s+)?(?:\w+(?:ed|en)|" + IRREGULAR_PARTICIPLES + r")\b", re.I),
      "Compound tense. Use simple past/present unless current relevance is the point (then keep and flag)."),
 ]
 
@@ -248,6 +258,10 @@ def lint(text, filename="<stdin>"):
             words_total += len(line.split())
             for rule_id, level, pattern, msg in RULES:
                 for m in pattern.finditer(line):
+                    if rule_id == "present-perfect" and MODAL_PERFECT_PREFIX.search(
+                        line[:m.start()]
+                    ):
+                        continue
                     findings.append({"file": filename, "line": lineno,
                                      "col": source_column + m.start() + 1,
                                      "rule": rule_id, "level": level,
@@ -312,6 +326,23 @@ def selftest():
     findings, _ = lint("The request may have failed. It could be a timeout. "
                        "The disk might have filled.")
     assert findings == [], findings
+    # irregular participles: "has run" is a compound tense as much as "has failed"
+    findings, _ = lint("The task has run. The job has set the flag. We have begun.")
+    assert sum(1 for f in findings if f["rule"] == "present-perfect") == 3, findings
+    findings, _ = lint("The job may have run.")
+    assert not any(f["rule"] == "present-perfect" for f in findings), findings
+    # Modal perfects remain protected across negation and variable whitespace.
+    for modal in ("may", "might", "could", "should", "would", "must"):
+        for gap in (" ", "  ", "\t", " not "):
+            findings, _ = lint(f"The task {modal}{gap}have run.")
+            assert not any(f["rule"] == "present-perfect" for f in findings), findings
+    findings, _ = lint("The task couldn't have run. The task MAY NOT HAVE RUN.")
+    assert not any(f["rule"] == "present-perfect" for f in findings), findings
+    findings, _ = lint("The task has run. We have begun. The flag is set.")
+    assert sum(f["rule"] == "present-perfect" for f in findings) == 2, findings
+    assert any(f["rule"] == "passive-voice" for f in findings), findings
+    findings, _ = lint("The task is gone.")
+    assert not any(f["rule"] == "passive-voice" for f in findings), findings
     # code blocks skipped
     findings, _ = lint("```\nx = a; y = b\n```")
     assert findings == []

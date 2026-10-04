@@ -65,6 +65,12 @@ next_agent = "prefix+n"
 previous_workspace = "prefix+P"
 next_workspace = "prefix+N"
 
+[[keys.command]]
+key = "prefix+comma"
+type = "plugin_action"
+command = "covr.sidebar.settings"
+description = "covr: settings"
+
 [ui]
 accent = "blue"
 
@@ -98,8 +104,9 @@ agent_panel_sort = "spaces"
 
 # tmux was one line per window; keep each agent entry to one sidebar row
 status_indicators = "symbols"
-[ui.sidebar.agents]
-rows = [["state_icon", "agent"]]
+
+[ui.toast]
+delivery = "off"
 
 # Move the copied-text toast out of the bottom-center default into a corner
 [ui.toast.clipboard]
@@ -113,6 +120,3 @@ claude = "off"
 # Bare-clone + worktrees layout; checkouts land under ~/worktrees/<repo>/<branch-slug>
 [worktrees]
 directory = "~/worktrees"
-
-[ui.toast]
-delivery = "off"

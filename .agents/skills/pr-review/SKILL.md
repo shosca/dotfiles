@@ -18,7 +18,7 @@ Requires `gh` (authenticated), `git`, and the bare-clone + worktree layout from 
 the repository once and use it wherever the commands below say `OWNER/REPO`:
 
 ```bash
-rtk gh repo view --json nameWithOwner --jq .nameWithOwner
+gh repo view --json nameWithOwner --jq .nameWithOwner
 ```
 
 Check what the project's CI runs (lint, typecheck, tests), and do not re-run those checks during
@@ -29,7 +29,7 @@ review.
 ### Step 1: Understand the PR
 
 ```bash
-rtk gh pr view PR_NUMBER --json title,body,headRefName,baseRefName,headRefOid,additions,deletions
+gh pr view PR_NUMBER --json title,body,headRefName,baseRefName,headRefOid,additions,deletions
 ```
 
 Note the head branch (`headRefName`), base branch (`baseRefName`), and head commit SHA
@@ -42,8 +42,8 @@ an author reply explaining a design pivot, or unresolved threads nobody circled 
 all of it before touching the diff:
 
 ```bash
-rtk gh pr view PR_NUMBER --json comments,reviews
-rtk gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --paginate
+gh pr view PR_NUMBER --json comments,reviews
+gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --paginate
 ```
 
 The first call gets top-level issue comments and review summaries (author replies, bot posts).
@@ -126,7 +126,7 @@ it as a finding — don't build a narrative on a ref you haven't confirmed is cu
 
 ### Step 4: Get the full diff
 
-`gh pr diff` (and `rtk gh pr diff`) **truncate** large diffs. Get the raw full patch from the
+`gh pr diff` (and `gh pr diff`) **truncate** large diffs. Get the raw full patch from the
 worktree:
 
 ```bash
@@ -338,9 +338,9 @@ worktree is right there.
 Post each comment via the PR comments API:
 
 ```bash
-SHA=$(rtk gh pr view PR_NUMBER --json headRefOid --jq '.headRefOid')
+SHA=$(gh pr view PR_NUMBER --json headRefOid --jq '.headRefOid')
 
-rtk gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments \
+gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments \
   -F body=@/path/to/comment.md \
   -f commit_id="$SHA" \
   -f path='path/to/file.ts' \
@@ -368,7 +368,7 @@ If the review has a non-obvious overall verdict or a cross-cutting finding that 
 to a single line (e.g. "all consumers verified migrated"), post one summary comment:
 
 ```bash
-rtk gh pr comment PR_NUMBER --body-file /path/to/summary.md
+gh pr comment PR_NUMBER --body-file /path/to/summary.md
 ```
 
 Do **not** duplicate line-comment content in the summary — reference it, don't repeat it.
@@ -421,9 +421,6 @@ every posted comment and review body here:
   only problems demoralize authors and miss the chance to reinforce good patterns.
 - **Re-grepping for content you already found.** After `semble search` or grep locates a file,
   read it directly. Don't search for the same thing again.
-- **Reaching for `rtk proxy` or bare `gh`.** Every `gh` call in this skill goes through `rtk gh`.
-  `rtk proxy` skips the output filter and is for debugging RTK itself; bare `gh` loses the filter
-  too. If a call is rejected or fails, fix the call, don't drop to `rtk proxy` or `gh`.
 - **Reading files via `gh api contents` when a worktree is checked out.** The worktree is right
   there — use Read/Grep on it instead.
 - **Verifying author's test claims.** CI runs lint/typecheck/tests. Don't re-run them or

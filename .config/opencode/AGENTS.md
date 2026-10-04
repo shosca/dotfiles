@@ -1,5 +1,4 @@
 - At session start, check for a CLAUDE.md in the project root and read it if it exists. Treat it as binding project instructions (same authority as this file).
-- Avoid using `rtk proxy` as much as possible, see `rtk help`
 - ALWAYS: Use parallel tools when applicable.
 - ALWAYS: chat replies in the terminal follow the `asd-ste100` skill. Load it via the skill tool and apply the structural rules (≤20 words for instructions, ≤25 words for descriptions). Keep replies concise and actionable. If the skill fails to load, fall back to the inline recital here: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
 - NEVER: commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked
