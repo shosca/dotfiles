@@ -1,6 +1,6 @@
 ---
 name: split-work
-description: Hand a plan worked out in this session to a fresh agent session (Claude or OpenCode) in its own worktree and its own WezTerm window or Herdr pane. Use when planning is done and the implementation should run somewhere else, separately steerable. Triggers on "/split-work", "split this off", "hand this to a new session", "open a window and work on this there".
+description: Hand a plan worked out in this session to a fresh agent session in its own worktree and WezTerm window or Herdr pane. Use when planning is done and the implementation should run somewhere else, separately steerable. Triggers on "/split-work", "split this off", or "hand this to a new session".
 allowed-tools: Bash(gwt:*) Bash(git:*) Bash(wezterm:*) Bash(herdr:*) Bash(uuidgen:*) Bash(opencode:*) Write Read
 ---
 
@@ -9,9 +9,9 @@ allowed-tools: Bash(gwt:*) Bash(git:*) Bash(wezterm:*) Bash(herdr:*) Bash(uuidge
 Turn a plan into a running peer session: a worktree, a handoff doc, a muxer location (WezTerm
 window or Herdr Space), and an agent session named after the work.
 
-The new session is **not** a subagent. It has its own terminal, its own permission prompts, its own
-hooks, and its own transcript. You keep talking to it through its window, or over peer messaging
-once it registers as a peer in `ListAgents` (Claude only).
+The new session is a peer: its own terminal, its own permission prompts, its own hooks, and its own
+transcript. It is not a subagent — do not spawn it through subagent tooling. You keep talking to it
+through its window, or over peer messaging once it registers as a peer in `ListAgents` (Claude only).
 
 ## What travels
 
@@ -43,7 +43,7 @@ command -v opencode
 ```
 
 Exactly one on PATH → that is the agent. Both or neither → ask the user once and remember the
-answer. Reserve a variable for it and reuse it below.
+answer. Reserve `$AGENT` for it and reuse it below.
 
 ## Step 1: Settle the slug
 
@@ -63,7 +63,7 @@ fits; just lower-case everything and strip characters outside that set.
 
 The branch convention is declared by the repo, not by this skill. Read the repo's `CLAUDE.md` /
 `AGENTS.md` / `CONTRIBUTING.md`; follow what it declares. If no convention is documented, ask the
-user. Never invent a ticket key, and never invent a naming scheme.
+user. Never invent a ticket key.
 
 ## Step 3: Create the worktree
 
@@ -208,6 +208,8 @@ Notes:
   only interpolations, since backticks/`$(…)` in an argv prompt run as commands (same rule as
   Claude above).
 
+Completion check: the new window's title shows the slug — `--name` sets the terminal title.
+
 ### Herdr
 
 Herdr already groups per repo; `worktree create` here would put checkouts under
@@ -231,11 +233,12 @@ worktree is safe: `already_open` comes back true and the same workspace and root
 so the check-then-open dance is unnecessary. `--label "$SLUG"` is the one human-facing name this
 skill writes — the sidebar shows the slug; the branch appears there anyway via the group row.
 `--trust-repository` silences git's other-user owner check for this command only; it does not
-weaken any other check, and repos you don't own deliberately stay rejected.
+weaken any other check, and repos you don't own deliberately stay rejected. Herdr panes or rows
+that predate this grouping can stay standalone; nothing newer breaks.
 
-You don't need a split. The workspace root pane boots with `cwd` already at the checkout. Type the
-launch command into its shell with `pane run`, after `wait-output` sees the prompt. This mirrors
-`/review-queue`.
+No pane split and no `herdr agent start`: the workspace root pane boots with `cwd` already at the
+checkout. Type the launch command into its shell with `pane run`, after `wait-output` sees the
+prompt.
 
 Don't use `herdr agent start`. On 0.9.1 it fails in two ways, and this skill has hit both:
 
@@ -270,10 +273,6 @@ else
 fi
 ```
 
-`--permission-mode auto` serves the same purpose as on the WezTerm path above: the session works
-through the brief instead of stopping at the first prompt. It doesn't cover a `SessionStart` hook,
-which runs before the mode applies.
-
 #### OpenCode
 
 ```bash
@@ -290,12 +289,9 @@ Notes:
   session's `CLAUDE*`/`OPENCODE*` variables. You don't need the env strip from Step 5 here.
 - Keep `$LAUNCH` short. Pane typing injection truncates at 1024 bytes
   ([herdr#2862](https://github.com/herdrdev/herdr/issues/2862)), and the truncated command never
-  runs. The handoff doc carries everything else. The quoting rule from the WezTerm path applies:
-  backticks and `$(…)` in the prompt run as commands.
+  runs. The handoff doc carries everything else. The quoting rule from the WezTerm path applies.
 - Drive the agent later with `herdr agent prompt` or `herdr agent send-keys`, and target it by pane
   id.
-- To resume Claude, run `claude --resume "$SID"` inside the pane, or use `herdr agent attach`. To
-  resume OpenCode, use the session id from `opencode session list` inside the worktree.
 
 ## Step 7: Report back
 
@@ -333,7 +329,4 @@ On the herdr path, additionally:
   replaced — verify with `herdr agent get` before scripting against it. Deleting a Space is
   `herdr workspace close <id>` (never `worktree remove` — that deletes the checkout and only herdr
   workspaces it created itself are safe targets).
-- `herdr` general rule: only one human-facing label touches this skill (`--label "$SLUG"`); every
-  identifier is parsed out of a JSON response, and herdr panes/rows that predate the grouping can
-  stay standalone without breaking anything newer.
 - `gwt co` runs the repo's setup hooks, including a dependency install. Expect it to take a moment.

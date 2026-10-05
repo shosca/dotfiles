@@ -2,9 +2,7 @@
 - ALWAYS: Use parallel tools when applicable.
 - ALWAYS: chat replies in the terminal follow the `asd-ste100` skill. Load it via the skill tool and apply the structural rules (≤20 words for instructions, ≤25 words for descriptions). Keep replies concise and actionable. If the skill fails to load, fall back to the inline recital here: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
 - NEVER: commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked
-- ALWAYS: stage changes and run pre-commit hooks (prek, pre-commit, etc..) and check for failure before `git commit`
-- ALWAYS: check the exit code `git commit` returns non-zero on failure. Before claiming you committed, verify: `git log -1 --oneline` must show your commit. If it doesn't, stop and ask.
-- ALWAYS: If commit FAILED or was REJECTED by hook, NEVER amend - STOP AND ASK FOR HELP
+- ALWAYS: use the `commit` skill for any commit. It carries the staging, hook, verification, and no-amend rules.
 - ALWAYS: put a function's reasoning in its docstring: why it exists, design choices, ordering constraints, what it mirrors. Keep inline comments rare: one short line tied to one surprising line. Tests follow the same rule. When you edit a function with scattered comment blocks, fold them into its docstring.
 - ALWAYS: Use the `pr-review` skill when asked to review a pull request. Load it via the skill tool before starting the review.
 - ALWAYS: for text that leaves the chat (PR descriptions, PR reviews and review comments, Jira ticket descriptions and comments, commit messages, code comments, docs), load the `asd-ste100` skill and apply it in STE-flavored mode for structure, then load the `unslop` skill and apply it to remove AI-tell vocabulary. Write in the Google developer documentation style guide's voice.

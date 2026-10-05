@@ -75,10 +75,6 @@ Data that must not be stored:
 ## Reference Architecture
 
 - `SKILL.md` contains runtime workflow, command patterns, PR body template, examples, and safety constraints.
-- `references/` contains no files currently; add focused style or evidence examples only if the runtime file becomes too long or repeated regressions show the examples need more room.
-- `references/evidence/` contains no files currently; use it for durable positive and negative PR body examples if iteration data accumulates.
-- `scripts/` contains no files currently.
-- `assets/` contains no files currently.
 
 ## Evaluation
 
@@ -87,7 +83,17 @@ Data that must not be stored:
 - Holdout examples: include at least one simple PR that should have no bold section, one PR with no known issue reference, and one API or input-format change that should use separate before/after fenced blocks.
 - Holdout examples: include at least one PR update where the old title no longer matches the final diff and must be rewritten.
 - Holdout examples: include at least one review-feedback or follow-up-commit scenario where the skill should refresh an open PR without an explicit PR-update request.
-- Acceptance gates: output title uses the repo's title format (or a conventional-commits style when the repo has none), contains no bracketed agent/tool prefix, matches the dominant change, update flows explicitly re-evaluate whether the existing title still fits, material follow-up commits to an open PR trigger a refresh even without an explicit PR-update request, output begins with a 1-3 sentence summary, summary prose leads with the changed behavior before implementation detail, uses no required generic headings, includes at most a few bold emphasis blocks, uses before/after examples only when direct comparison is the clearest explanation, omits unknown issue references instead of inventing placeholders, avoids test-plan sections and test outcomes, follows the repo's draft/WIP convention instead of defaulting to drafts, and does not include customer data.
+- Acceptance gates:
+  - Title uses the repo's title format (conventional-commits style when the repo has none), carries
+    no bracketed agent/tool prefix, and matches the dominant change.
+  - Update flows re-evaluate whether the existing title still fits the final diff.
+  - Material follow-up commits to an open PR trigger a refresh without an explicit request.
+  - Body opens with a 1-3 sentence summary; the summary leads with changed behavior before
+    implementation detail.
+  - No generic headings, no test-plan sections, no test outcomes, no customer data.
+  - At most a few bold blocks; before/after examples only when direct comparison explains best.
+  - Omits unknown issue references instead of inventing placeholders.
+  - Drafts and WIP markers follow the repo's convention, never a default.
 
 ## Known Limitations
 

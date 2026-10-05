@@ -1,6 +1,6 @@
 ---
 name: pr-writer
-description: Create and update pull requests. Use when opening a PR or refreshing an existing PR after material changes.
+description: Open a pull request, or refresh an existing one after material changes.
 ---
 
 # PR Writer
@@ -10,6 +10,9 @@ subject (with ` (#NNNNN)` appended) and the body becomes the body, permanently. 
 someone reading `git log` in two years, not as review chatter.
 
 For commits inside the branch, see the [`commit`](../commit/SKILL.md) skill. Requires `gh`, authenticated.
+
+One PR per feature or fix, never bundled. Smaller PRs get faster, better reviews, and the
+description carries the why that the code cannot.
 
 ## Precedence
 
@@ -53,12 +56,11 @@ exists, `<type>: <Subject>` otherwise (`feat`, `fix`, `ref`, `perf`, `docs`, `te
 Rules that hold everywhere:
 
 - Describe the dominant change, not the latest commit. Aim ≤70 characters.
-- **Never derive the title from the branch name.** `Dgockel/case filters to smart form` tells a
-  reviewer nothing and lands on `master` forever.
+- **Derive the title from the diff.** A branch-name title like `Dgockel/case filters to smart form`
+  tells a reviewer nothing and lands on `master` forever.
 - Never invent a ticket number; no ticket means no ticket prefix.
 - No attribution brackets — no `[codex]`, `[claude]`, `[ai]`, `[bot]`.
-- `[wip]` is fine if the author put it there; do not add or strip it unprompted. Never pass `--draft`
-  to repos that do not use drafts.
+- `[wip]` is fine if the author put it there; do not add or strip it unprompted.
 - `[<topic> N/M]` is fine for a genuinely split series.
 - No vague process titles (`update`, `cleanup`, `address feedback`). No trailing period.
 - Check whether CI in this repo parses the title (build variables, tag suppression). A stray
@@ -76,9 +78,8 @@ point.
 **Voice.** Plain, skimmable, human. The failure mode is the literary essay: long clauses, dramatic
 headings, punchlines that land only at the end. Guard against it:
 
-- One idea per sentence, ≤25 words. Active voice, present tense.
 - **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
-  Present tense, active voice, one idea per short sentence (~20 words). No idioms or metaphor. No
+  One idea per sentence, ≤25 words. Active voice, present tense. No idioms or metaphor. No
   nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
   future tense for behavior — "returns X", never "will return X".
 - Fact first, implication second. A reader who stops after the first sentence of each section should
@@ -87,22 +88,31 @@ headings, punchlines that land only at the end. Guard against it:
   exists to describe" is a dramatic setup; "**Fix: blank email row for empty-string values**" is the
   same fact, readable at a glance.
 - No nested parentheticals, no rhetorical asides, no sentences whose point depends on the one before.
-- Skim test before posting: read only the title, the headings, and the first sentence of each block.
-  If that does not tell the whole story, rewrite.
 
 - Lead with changed behavior; implementation detail only where it helps review.
 - **Describe the code, not the metric that justified the change.** A complexity score, a line-count
-  delta, a file count says a number moved — it does not say what the code now does. Never open with
-  one. At most one clause, placed after the change is described, and only where the number *is* the
-  change (a perf PR). "Four channel sections were written out one at a time; they are now one entry
-  per channel in `notificationChannels.ts`" describes the code. "`NotificationTemplate` scored 29
-  against the repo's ceiling of 15, and the component drops from 343 lines to 214" describes the
-  author's motivation, which is no use to a reviewer reading the diff or to anyone reading `git log`
-  in two years. Same for section headings: name what the code does, not what it scored.
-- Before/after fenced blocks only for changed contracts — output shapes, config, payloads,
+  delta, or a file count says a number moved, not what the code does. Open with what the code does,
+  and add a metric only where the number *is* the change (a perf PR). Headings do the same.
+- Pick the smallest view that carries the point. One view per PR. Add a second only when two
+  different readers need two different pictures.
+- Match the view to the change:
+  - Logic or an algorithm: pseudocode in a `text` block, no language syntax.
+  - Runtime control flow: a call tree, ordered by call rather than by file.
+  - UI structure: a component tree with the state and module boundaries that matter.
+  - File responsibility or a broad refactor: a shallow file tree, one comment per file.
+  - Interaction or data flow between components: a Mermaid `sequenceDiagram`.
+  - A shape that already exists: a `diff` block, trimmed to the changed lines. A sketch, not the
+    real diff.
+- The `diff` block takes the shape of the topic: a component tree for a component change, a
+  directory tree for a file-layout change, a call tree for a control-flow change.
+- Show the whole block when most of it is new, when trimmed context would hide ownership or order,
+  or when a reviewer needs a copyable target shape.
+- Put each view next to the text it supports. Cut every call, file, prop, and state that does not
+  answer the reviewer's question.
+- Before/after fenced blocks only for changed contracts: output shapes, config, payloads,
   permissions.
-- Mermaid codeblock diagrams are welcome where they explain structure or flow better than prose —
-  internal call graphs, architecture, state machines, sample usage flows.
+- Mermaid diagrams are welcome where they explain structure or flow better than prose: internal call
+  graphs, architecture, state machines, sample usage flows.
 - For changes with benchmarks, show a before/after table: baseline from the target branch, candidate
   from the PR. Same machine, same workload, both numbers.
 - Name the evidence that made the change safe (a measured query count, a production figure, a
@@ -134,20 +144,23 @@ the fix it cited, making the whole sentence wrong). If a flaky or known-broken t
 to reach a human, it goes in a PR **comment**, never in the body.
 
 A genuinely impressive, difficult, or high-risk/wide-scoped change may be written like a technical
-blog post instead: context and storytelling, code samples, before/after diagrams, the works. Earn it
-— most PRs are not this. Even there, the voice rules above hold: short sentences, facts before
-implications.
+blog post instead: context and storytelling, code samples, before/after diagrams. Earn it — most PRs
+are not this. Even there, the voice rules above hold: short sentences, facts before implications.
 
 Do not include: generic headings (`## Summary`, `## Changes`, `## Type of Change`); a `## Test plan`
-heading or checkbox test steps; a test's outcome in any form; file-by-file narration or redundant
-diff summaries; AI-disclosure boilerplate — no generated-with footer, no "This PR is AI-generated"
-line. Attribution lives on the commits (`Co-Authored-By` trailers), which GitHub lifts onto the
-squash commit; the PR body does not carry it. And never include customer data — org names, user
-emails, support ticket contents, PII. Describe the technical symptom, cite the ticket instead.
+heading or checkbox test steps; test outcomes (the rule above holds here too); file-by-file
+narration or redundant diff summaries; AI-disclosure boilerplate — no generated-with footer, no
+"This PR is AI-generated" line. Attribution lives on the commits (`Co-Authored-By` trailers), which
+GitHub lifts onto the squash commit; the PR body does not carry it. And never include customer data
+— org names, user emails, support ticket contents, PII. Describe the technical symptom, cite the
+ticket instead.
 
 > This diverges from much of GitHub history, where bodies carry `## Summary` and `## Test plan`
 > headings inherited from PR templates. That is intentional; they add nothing to a squashed commit
 > message. Genuine manual steps survive as a `**Manual testing**` block.
+
+Skim test before posting — the completion criterion for this step. Read only the title, the
+headings, and the first sentence of each block. If that does not tell the whole story, rewrite.
 
 ### Step 5: Create or update
 
@@ -158,8 +171,7 @@ file instead for anything with backticks or real length:
 gh pr create --title "Subject" --body-file /tmp/pr-body.md
 ```
 
-Check the repo's default base before creating; an urgent second PR against a release branch is
-leaving it to the repo's convention — not this skill's.
+Check the repo's default base before creating.
 
 Update an existing PR with `gh pr edit PR_NUMBER --title '...' --body "$(cat <<'EOF' … EOF)"`,
 having re-evaluated both. **If that fails with a Projects (classic) deprecation error**, the local
@@ -177,8 +189,9 @@ Apply the repo's agent-attribution label if one exists (`ai-generated` is the co
 how a bot PR is told apart from its author's own work. Attribution stays out of the title and body;
 the `Co-Authored-By` trailer rides on the commits.
 
-**Never open a draft PR** where the team does not use them. Use the repo's WIP convention (`WIP`
-label or `[wip]` prefix) instead; do not add either unprompted, and do not remove one the author set.
+**Never open a draft PR** where the team does not use them — never pass `--draft` on such a repo.
+Use the repo's WIP convention (`WIP` label or `[wip]` prefix) instead; do not add either unprompted,
+and do not remove one the author set.
 
 ## Examples
 
@@ -230,6 +243,3 @@ repo's squash merge makes that the permanent subject.
 
 CODEOWNERS or a review policy assigns reviewers automatically — expect them and do not fight the
 assignment. Do not pass `--reviewer` to preempt it.
-
-One PR per feature or fix, never bundled. Smaller PRs get faster, better reviews, and the
-description carries the why that the code cannot.

@@ -1,6 +1,6 @@
 ---
 name: commit
-description: ALWAYS use this skill when committing code changes — never commit directly without it. Creates commits in the Force feature-branch format. Trigger on any commit, git commit, save changes, or commit message task.
+description: Use this skill for every commit. Trigger on any commit or commit-message request. Covers staging, hooks, message format, and attribution.
 ---
 
 # Commit
@@ -26,11 +26,9 @@ git status --porcelain
 Identify the repo's default branch and any deploy branches (settings, CLAUDE.md, or repo docs make
 this explicit — never assume by name). CRITICAL: **do not commit directly to a long-lived or deploy
 branch** (`master`/`main`, `release`, `production`, or whatever the repo names them) unless the user
-explicitly asked to commit there — many of those branches deploy on push. If the user did not ask to
-commit to one, stop.
-
-On squash-merge repos, CRITICAL: **never commit directly to the default branch** unless the user
-explicitly asked — a direct commit bypasses the review path.
+explicitly asked to commit there — many of those branches deploy on push, and on squash-merge repos
+a direct default-branch commit bypasses the review path. If the user did not ask to commit to one,
+stop.
 
 For repo-specific branches (release trains, hotfix conventions), follow the repo docs; this skill
 does not assume the topology.
@@ -43,8 +41,8 @@ does not assume the topology.
 - CRITICAL: A hook rejection means **no commit was created**. NEVER amend — that would rewrite the
   previous, unrelated commit. Stop and ask for help.
 - CRITICAL: `git commit` returns non-zero on failure. Check `git log -1 --oneline` before committing to
-  see what HEAD points at, and again after to confirm your commit exists and clobbered nothing. Never
-  infer success from hook output.
+  see what HEAD points at, and again after to confirm your commit exists and changed nothing else.
+  Never infer success from hook output.
 
 ## Pre-commit hook gotchas
 
@@ -85,10 +83,9 @@ Scope is optional, one lowercase word naming the area. Use the areas the repo hi
 - Plain prose paragraphs, imperative present tense. **No markdown headings and no bullet lists** —
   those belong in the PR body.
 - **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
-  Active voice, one idea per short sentence (~20 words). No idioms or metaphor. No nominalizations
+  Active voice, one idea per sentence (≤25 words). No idioms or metaphor. No nominalizations
   ("perform an installation" → "install"). Never "simply", "just" or "easily". No future tense for
   behavior — "returns X", never "will return X".
-- Real newlines. Never emit literal `\n` sequences.
 - Cite the evidence that made the change safe when there is any: a measured query count, a
   production figure, a mutation test that proved a budget binds.
 - Never include customer data — org names, user emails, support ticket contents, PII. Describe the
@@ -118,7 +115,7 @@ title**, since that is what lands on the default branch.
 - No `Fixes Ticket` footer on a feature commit — once squashed it is redundant with the title.
 - No `[Ticket]` prefix on a feature commit. One exception: a single-commit PR where commit and title
   are 1:1, when the repo allows it.
-- Never invent a ticket number. Without one, use the ticketless track and say so.
+- Never invent a ticket number. Without one, say in the body that no ticket exists.
 
 ## Commit hygiene
 
@@ -135,8 +132,8 @@ title**, since that is what lands on the default branch.
   screen-capture tool, which blocks forever waiting for a mouse click and looks exactly like a hung
   agent. `$(…)`, `$VAR` and `!` are the same hazard. Escaping backticks works but only while you
   remember to; `-F` removes the whole class.
-- Never embed escaped `\n` in a message; it lands as literal backslashes. A file has real newlines,
-  which is another reason to prefer `-F`.
+- Never emit literal `\n` sequences in a message. They land as backslash and n, not as line breaks.
+  A message file has real newlines, which is another reason to prefer `-F`.
 
 ```bash
 # write the full message — subject, blank line, body, trailer — to a file first
@@ -169,11 +166,11 @@ ref: Stop joining user by default on the managers
 
 The managers passed select_related("user"), so every caller got the join
 whether or not it read the relation, and no call site had to declare the cost.
-That default was subsidising an N+1 on the list endpoint: the query budget
-there sat at 9 with the join and 14 without it, one extra query per row.
+That default hid an N+1 on the list endpoint. The query budget there sat
+at 9 with the join and 14 without it, one extra query per row.
 
-The other manager keeps its default. It has a separate blast radius and no
-query budgets to prove a removal is safe.
+The other manager keeps its default. It affects different callers and has
+no query budgets to prove a removal is safe.
 ```
 
 ### Fix
@@ -183,8 +180,8 @@ fix: Export first_login and last_login from their own columns
 
 The User Management Report read both login dates through the user relation,
 but first_login exists only on Provider and has never been a User field.
-getpath swallows the resulting AttributeError and falls back to its default,
-so the First Login column has always exported blank.
+getpath catches the resulting AttributeError and returns its default, so
+the First Login column has always exported blank.
 ```
 
 ### Revert

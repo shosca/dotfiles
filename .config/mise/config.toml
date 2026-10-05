@@ -18,6 +18,7 @@ duckdb = "latest"
 groovy = "latest"
 "npm:chrome-devtools-mcp" = "latest"
 "github:fajarhide/omni" = "latest"
+"github:babarot/claude-recall" = { version = "latest", rename_exe = "recall" }
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]

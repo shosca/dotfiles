@@ -1,6 +1,6 @@
 ---
 name: teardown
-description: Tear down a worktree — verify nothing is lost, kill its tmux session, delete the checkout and branch with gwt, then close its herdr Space. Use for "teardown", "tear down <branch>", "delete worktree", "close worktree", "clean up the worktree", or "shut down <branch>"; also when a task is merged and its checkout should disappear.
+description: Tear down a worktree — verify nothing is lost, kill its tmux session, delete the checkout and branch with gwt, then close its herdr Space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
 ---
 
 # Teardown
@@ -22,9 +22,6 @@ removal:
 This destroys a checkout, so every gate must pass before any destructive step.
 Anything unresolved or unpushed means **STOP** and leave the checkout intact.
 
-Since 2026-04-27, gwt rm deletes the branch by default (`git branch -d`;
-`--force` upgrades to -D). Keep-branch behavior is `--keep-branch`.
-
 ## Step 1: Resolve the target
 
 An argument (branch, path, or worktree dir basename) wins. Otherwise use the
@@ -33,6 +30,7 @@ current directory. Then:
 ```bash
 git worktree list --porcelain          # the target must appear once here
 branch=$(git -C "$wt" rev-parse --abbrev-ref HEAD)
+root=$(dirname "$(git -C "$wt" rev-parse --git-common-dir)")   # bare clone root
 ```
 
 Refuse the main checkout (project root) — there is nothing to tear down.
@@ -57,8 +55,7 @@ commands in any batch. Report each skipped step in the final summary.
 
 ## Step 2: Gate on unmerged / unpushed work
 
-Borrowed from LandonSchropp's `close-workspace` skill, with the same STOP
-table at the end of this step. Fetch first so push state is current.
+Fetch first so push state is current.
 
 ```bash
 git -C "$wt" fetch
@@ -69,7 +66,7 @@ git -C "$wt" branch -r --contains <HEAD>           # non-empty when some remote 
 
 `gwt rm` refuses unmerged branches itself (`-d` runs under the hook — so its
 message covers branch-level safety). Only unpushed commits destroy silently;
-their check is this skill's job. Never pass `--force` to gwt to paper over
+their check is this skill's job. Never pass `--force` to gwt to bypass
 these gates; resolve the tree instead.
 
 | Thought                                         | Reality                                                          |
@@ -92,7 +89,7 @@ wsid=$(herdr worktree list --cwd "$root" --trust-repository 2>/dev/null |
           | .open_workspace_id // empty')
 ```
 
-Running agents first — a pane mid-task must never die against its back.
+Running agents first — a pane mid-task must not die unnoticed.
 Match them by cwd:
 
 ```bash
@@ -109,8 +106,8 @@ When `$HERDR_WORKSPACE_ID` equals `wsid`, this session runs inside the Space.
 One `working` entry in the list is this session itself; do not count it.
 
 If `wsid` is empty, the checkout has no Space and Step 7 is a no-op. Detached
-HEAD checkouts can have a label day named after the checkout tree — match on
-`path`, never on label.
+HEAD checkouts can have a Space label that copies the checkout's directory
+name — match on `path`, never on label.
 
 ## Step 4: Kill the tmux mirror (if any)
 
@@ -145,6 +142,7 @@ Pass `--keep-branch` when the user asks for the branch to outlive the removal.
 ```bash
 git -C "$root" worktree prune
 find "$root" -mindepth 1 -maxdepth 1 -type d -empty -delete 2>/dev/null
+git worktree list --porcelain   # must not print the removed checkout
 ```
 
 ## Step 7: Close the herdr Space
@@ -175,3 +173,5 @@ herdr worktree list --cwd "$root" --trust-repository   # entry must be gone
 An empty `worktree list` result is correct. A still-present entry for the
 removed checkout means the close did not reach the Space. Report it rather
 than assuming all is well.
+
+The STOP table borrows from LandonSchropp's `close-workspace` skill.
