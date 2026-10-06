@@ -166,7 +166,10 @@ rules too, and new code copies them.
 3. Read each document in full. Then check every rule in it, one at a time, against every new or
    changed line that it covers. A general read of the diff is not this check. Many rules fail on a
    single line, and a reader who is not looking for that rule passes the line.
-4. Report each violation with the document and the sentence it breaks, quoted.
+4. Report each violation with the document and the sentence it breaks, quoted. A prohibition
+   ("never", "must") binds the behaviour it targets, not only the literal form its example shows.
+   "Never access `request.data` directly with `.get()`" also covers indexing it, iterating it, or
+   passing it to a helper before validation.
 5. Record which documents and rules you checked. A re-review of a later revision can carry a
    "clean" result forward only for rules that an earlier pass actually checked. If a push changes
    only the lines behind one finding, that does not cover rules no pass ran.
@@ -274,12 +277,28 @@ changes. Look for:
   not only on the default path.
 - **Discarded return values**: calls kept only for their side effect, such as priming a cache.
   Fine if deliberate, but add a comment or it reads as dead code.
+- **Input read before validation**: code that reads request input before the validator runs, by
+  indexing it, iterating it, passing it to a helper, or keying a query on it. Compare the order
+  against the base branch, since a change that moves an existing read ahead of validation is new
+  risk. A query keyed on raw input must apply the same tenant or permission scope as the validator.
+  An unscoped query can leak through the response shape, such as the number of errors in a 400.
+- **Request or response shape change**: an endpoint that now takes or returns a different shape,
+  such as an array body or a list for one case. Generate the API schema at the head with the
+  project's schema command and compare the affected operations. A schema that still documents the
+  old shape breaks every generated client.
+- **A comment that argues a risk away**: a docstring or comment that says "discloses nothing",
+  "safe because" or "cannot happen". Treat it as a claim and probe it. Trace the code, or write a
+  throwaway test that would show the failure, run it, record the result, and delete the test. Run
+  the project's per-worktree setup from its `CLAUDE.md` before the first test run. A connection
+  error on that first run means the setup has not run.
 
 Use Read/Grep/LSP on the PR worktree to trace callers, check types, and confirm behavior.
 
 ### Step 9: Categorize findings
 
-- **Blocking**: missed consumer, broken behavior, type error, wrong URL.
+- **Blocking**: missed consumer, broken behavior, type error, wrong URL, input used before
+  validation, a query that crosses a tenant or permission scope, a schema that no longer matches
+  the endpoint.
 - **Nit (non-blocking)**: style, naming, hardcoded vs constant, missing comment, dead code
   in a stacked series, pre-existing typos preserved through a rewrite.
 
@@ -424,7 +443,8 @@ every posted comment and review body here:
 - **Reading files via `gh api contents` when a worktree is checked out.** The worktree is right
   there — use Read/Grep on it instead.
 - **Verifying author's test claims.** CI runs lint/typecheck/tests. Don't re-run them or
-  claim "tests pass" based on the author's word — just trust CI.
+  claim "tests pass" based on the author's word — just trust CI. A throwaway probe for a claim no
+  test covers (Step 8) is not a re-run. Write it, run it, and delete it.
 - **Trusting a local base-branch ref without fetching first.** A stale `master` worktree gives
   a stale merge-base, which gives a wrong diff and wrong ancestry checks. Fetch
   `origin/BASE_BRANCH` and diff/check against that before concluding a branch is behind, based
@@ -525,3 +545,8 @@ When reviewing a migration/refactor PR, run through these:
     nit, and repo rules that endorse the pattern suppressed it.
 15. **Requirement classification** — every gathered requirement carries exactly one label from
     Step 7; a "no requirement source available" note if none was found.
+16. **Input path and schema** — for an endpoint change: no request input read before validation,
+    every query on request input scoped like the validator, and the generated schema matches the
+    shapes the endpoint takes and returns (Step 8).
+17. **Risk claims probed** — every comment that argues a risk away was traced or tested, and the
+    result recorded (Step 8).
