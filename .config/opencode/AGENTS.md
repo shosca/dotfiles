@@ -1,23 +1,59 @@
-- At session start, check for a CLAUDE.md in the project root and read it if it exists. Treat it as binding project instructions (same authority as this file).
-- ALWAYS: Use parallel tools when applicable.
-- ALWAYS: chat replies in the terminal follow the `asd-ste100` skill. Load it via the skill tool and apply the structural rules (≤20 words for instructions, ≤25 words for descriptions). Keep replies concise and actionable. If the skill fails to load, fall back to the inline recital here: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
-- NEVER: commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked
-- ALWAYS: use the `commit` skill for any commit. It carries the staging, hook, verification, and no-amend rules.
-- ALWAYS: put a function's reasoning in its docstring: why it exists, design choices, ordering constraints, what it mirrors. Keep inline comments rare: one short line tied to one surprising line. Tests follow the same rule. When you edit a function with scattered comment blocks, fold them into its docstring.
-- ALWAYS: Use the `pr-review` skill when asked to review a pull request. Load it via the skill tool before starting the review.
-- ALWAYS: for text that leaves the chat (PR descriptions, PR reviews and review comments, Jira ticket descriptions and comments, commit messages, code comments, docs), load the `asd-ste100` skill and apply it in STE-flavored mode for structure, then load the `unslop` skill and apply it to remove AI-tell vocabulary. Write in the Google developer documentation style guide's voice.
+# Global OpenCode rules
 
-- Use my `gwt` tool if you see bare checkout repo setup, see `gwt help`
+These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on repo workflow. The safety rules below never yield.
+
+## Safety
+
+- NEVER commit changes unless the user explicitly asks. Use the `commit` skill for any commit; it carries the staging, hook, verification, and no-amend rules.
+- Ask before destructive commands: force push, `git reset --hard`, `rm -rf`, branch deletes.
+
+## Session start
+
+- Check for `AGENTS.md` and `CLAUDE.md` in the project root. Read them if they exist. Treat them as binding project instructions.
+
+## Session environment
+
+- A session's environment is captured at launch and stays frozen. The working directory does not update it.
+- In a mise project, prefix commands that read project env with `mise exec -- `. It resolves the project's current env at exec time, so a stale session env cannot leak through.
+- Processes spawned outside the shell (LSP servers, MCP servers) cannot be wrapped. Restart the session from the project directory for those.
+- Load the `mise` skill when env problems need debugging.
+
+## Working style
+
+- Think before coding. State your assumptions. Ask when unsure. Never guess.
+- Restate my intent before continuing.
+- Simplicity first: write the minimum code that solves the problem, no abstractions nobody asked for.
+- Surgical changes: do not touch code unrelated to the request. Every changed line traces back to what was asked.
+- Goal-driven execution: turn vague instructions into verifiable success criteria before writing code.
+- Before reporting done, run the project's tests and lint.
+- Use parallel tools when applicable.
+
+## Prose
+
+- Load `asd-ste100` for all prose you write.
+  - Chat replies: apply the structural rules (≤20 words for instructions, ≤25 for descriptions). Keep replies concise and actionable.
+  - Text that leaves the chat (PR descriptions, PR reviews and comments, Jira tickets, commit messages, code comments, docs): apply STE-flavored mode, then load `unslop`. Write in the Google developer documentation style guide's voice.
+  - If the skill fails to load, fall back to: present tense, active voice, second person, one idea per short sentence (~20 words), no idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
+
+## Skills
+
+- Load the `pr-review` skill before reviewing a pull request.
+- Load the matching file-type skill (`docx`, `xlsx`, `pptx`, `pdf`) before creating or editing those files.
+
+## Code comments
+
+- Put a function's reasoning in its docstring: why it exists, design choices, ordering constraints, what it mirrors. Keep inline comments rare: one short line tied to one surprising line. Tests follow the same rule. When you edit a function with scattered comment blocks, fold them into its docstring.
+
+## Worktrees and branches
+
 - I work in feature branches and git worktrees, never directly on main/master. If a change seems unrelated to current work, suggest creating a new worktree first.
-- **Layout:** Bare clone + worktrees. Run worktree commands from repo root (where `.git/` lives), not inside a worktree.
-- **Worktree dirs:**  The git branch name and worktree names may contain slashes
-- **Worktree → session cwd:** Whenever you create a git worktree, immediately make it the current session's working directory (cd into it, or use your runtime's session-move mechanism if it has one — e.g. OpenCode's `tools.opencode.session_move` / `opencode2 api post /api/session/<id>/move --data '{"directory":"/absolute/path/to/worktree"}'`). All subsequent commands run there; don't keep working from the old directory.
-- **Muxer names:** two different objects get names, and they get different ones. A container that several sessions share (a tmux session, a herdr space) is named after its **location** — the worktree or branch it holds. The per-session object (a tmux window, a herdr agent row) is named after the **task**. Never name a shared container after one task; a second session in it makes that label wrong. Update at session start and whenever the task materially changes (new feature, PR review, etc). Name after the work or branch, never the cwd. e.g. `review-pr-123`, `feature-tui`.
-  - **herdr:** naming is automatic — a `SessionStart` hook sets the agent name from the branch on a cold start, or from the session's own `/rename` title on a resume, and a `Stop` hook replaces it with a slug of the current topic title. Do not rename the agent yourself; the next turn overwrites it. Set a space label when you create the space (`herdr worktree open --label`). Before renaming a space you did not create, check `herdr workspace list` — rename it only if `pane_count` shows it holds just this task.
-  - **tmux:** nothing is automatic. Run `tmux rename-session <session>` when the session holds only this task's window. Do not rename windows; they keep the automatic name from the running command. Do not set the title with an escape sequence: Claude Code already writes OSC 0, tmux records that as `pane_title` only, and the window name never sees it.
+- Use my `gwt` tool if you see a bare checkout repo setup; see `gwt help`.
+- **Layout:** bare clone + worktrees. Run worktree commands from repo root (where `.git/` lives), not inside a worktree.
+- **Worktree dirs:** the git branch name and worktree names may contain slashes.
+- **Worktree → session cwd:** whenever you create a git worktree, immediately make it the current session's working directory (cd into it, or use your runtime's session-move mechanism — e.g. OpenCode's `tools.opencode.session_move`, or `opencode2 api post /api/session/<id>/move --data '{"directory":"/absolute/path/to/worktree"}'`). All subsequent commands run there; don't keep working from the old directory.
 
-- think before coding, state your assumptions, ask when unsure. never guess
-- restate my intent before continuing
-- simplicity first, write the minimum code that solves the problem, no abstractions nobody asked for
-- surgical changes, don't touch code unrelated to the request, every changed line must trace back to what was asked
-- goal-driven execution, turn vague instructions into verifiable success criteria before writing a single line
+## Muxer names
+
+- A shared container (tmux session, herdr space) holds several sessions. Name it after the branch or worktree it holds.
+- A single session (tmux window, herdr agent row) does one task. Name it after the task, e.g. `review-pr-123`. Rename when the task changes.
+- **herdr:** agent naming is automatic; do not rename the agent. **tmux:** rename the session only (`tmux rename-session <session>`), never windows.

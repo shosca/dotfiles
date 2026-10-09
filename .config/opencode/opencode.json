@@ -23,10 +23,9 @@
     "task": "allow",
     "skill": {
       "*": "ask",
-      "caveman": "allow",
-      "caveman-commit": "allow",
-      "caveman-review": "allow",
+      "asd-ste100": "allow",
       "commit": "allow",
+      "mise": "allow",
       "opencode": "allow",
       "pr-review": "allow",
       "pr-writer": "allow",
@@ -83,11 +82,6 @@
     "sonarqube*": "allow",
   },
   "formatter": true,
-  // No "plugins" list: every plugin under ~/.config/opencode/plugins/ is
-  // auto-discovered. Listing one here too registers its ID twice, and the
-  // duplicate fails with "Duplicate plugin ID". A file path here is also
-  // invalid (that key takes directories only), so llamaswap.ts must stay
-  // auto-discovered.
   "share": "disabled",
   "default_agent": "plan",
   "snapshot": false,
