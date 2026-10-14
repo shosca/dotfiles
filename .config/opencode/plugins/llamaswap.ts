@@ -40,11 +40,16 @@ interface LlamaSwapModel {
   id: string;
   name?: string;
   description?: string;
-  meta?: { llamaswap?: LlamaSwapMeta };
+  // `n_ctx` is llama-swap's numeric configured context; present only for
+  // currently loaded models, sibling to the `llamaswap` metadata block.
+  meta?: { llamaswap?: LlamaSwapMeta; n_ctx?: number };
 }
 
-function parseContextLimit(meta: LlamaSwapMeta): number {
-  // 1. Exact per-slot limit
+function parseContextLimit(meta: LlamaSwapMeta, nCtx?: number): number {
+  // 1. Numeric n_ctx field at model-meta level (loaded models only)
+  if (typeof nCtx === "number" && nCtx > 0) return nCtx;
+
+  // 2. Exact per-slot limit
   if (meta.effective_context_per_slot) {
     const val = parseInt(meta.effective_context_per_slot, 10);
     if (!isNaN(val) && val > 0) return val;
@@ -98,7 +103,7 @@ export default {
     const toModelInfos = () =>
       models.map((item) => {
         const meta = item.meta?.llamaswap || {};
-        const contextLimit = parseContextLimit(meta);
+        const contextLimit = parseContextLimit(meta, item.meta?.n_ctx);
         return {
           id: item.id,
           modelID: item.id,
@@ -164,11 +169,13 @@ export default {
           const lines: string[] = [];
           for (const m of data.data) {
             const meta = m.meta?.llamaswap || {};
+            const nCtx = m.meta?.n_ctx;
             const parts = [m.id];
             if (m.name && m.name !== m.id) parts.push(`"${m.name}"`);
             if (meta.size) parts.push(`size=${meta.size}`);
             if (meta.quantization) parts.push(`quant=${meta.quantization}`);
-            if (meta.context) parts.push(`ctx=${meta.context}`);
+            if (nCtx) parts.push(`ctx=${nCtx}`);
+            else if (meta.context) parts.push(`ctx=${meta.context}`);
             if (meta.implementation) parts.push(`backend=${meta.implementation}`);
             const caps: string[] = [];
             if (meta.multimodal) caps.push("multimodal");

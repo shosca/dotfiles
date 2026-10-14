@@ -158,7 +158,7 @@ bindkey '^N' down-line-or-beginning-search
 
 
 if [ -x "$(command -v keychain)" ]; then
-    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
+    keychain --absolute --dir "${XDG_RUNTIME_DIR}/keychain" --immediate --quiet $(find ~/.ssh -iname 'id_*' ! -name '*.pub')
     [[ -f ${XDG_RUNTIME_DIR}/keychain/$HOST-sh ]] && source ${XDG_RUNTIME_DIR}/keychain/$HOST-sh
     [[ -f ${HOME}/.keychain/$HOST-sh ]] && source ${HOME}/.keychain/$HOST-sh
     [[ -f ${HOME}/.keychain/$HOST-sh-gpg ]] && source ${HOME}/.keychain/$HOST-sh-gpg

@@ -58,18 +58,28 @@ next_tab = "prefix+l"
 new_workspace = "prefix+c"
 rename_workspace = "prefix+shift+r"
 close_workspace = "prefix+shift+k"
-# Agent cycling (agent panel order, grouped by space per agent_panel_sort)
-# Replaces workspace cycling; workspaces remain reachable via goto picker (prefix+g)
-previous_agent = "prefix+p"
-next_agent = "prefix+n"
-previous_workspace = "prefix+P"
-next_workspace = "prefix+N"
+# Workspace cycling is the unshifted pair; agents sit on shift.
+# Agent cycling follows agent panel order, grouped by space per agent_panel_sort.
+previous_workspace = "prefix+p"
+next_workspace = "prefix+n"
+previous_agent = "prefix+P"
+next_agent = "prefix+N"
+
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "hhdebb.herdr-radar.view-flip"  # order: active <-> recent
 
 [[keys.command]]
 key = "prefix+comma"
 type = "plugin_action"
-command = "covr.sidebar.settings"
-description = "covr: settings"
+command = "hhdebb.herdr-radar.settings"  # settings popup
+
+[[keys.command]]
+key = "prefix+/"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
 
 [ui]
 accent = "blue"
@@ -93,8 +103,13 @@ mouse_capture = true
 # Selections also go to the clipboard so ctrl+shift+v matches shift+insert
 copy_on_select = true
 
-# status-right had the zoom flag followed by #h
-tab_bar_right = [{ type = "zoom" }, { type = "hostname" }]
+# status-right had the zoom flag followed by #h; load 1m avg refreshes every 5s
+tab_bar_position = "bottom"
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "hostname" },
+  { type = "command", command = "cut -d' ' -f1 /proc/loadavg", interval_seconds = 5, timeout_seconds = 2 },
+]
 
 # set -g set-titles on / set -g set-titles-string '#h:#W', where tmux's #W was
 # the basename of the pane cwd. This is what Hyprland shows in the group bar,
@@ -116,6 +131,17 @@ position = "top-right"
 # no-change ticks. Real events already reach the desktop through notify-send.
 [ui.sound.agents]
 claude = "off"
+
+# >>> sidebar layout — covr removed 2026-10-05; native tokens now.
+# agents row: state glyph + agent name (session name), colored by status rule.
+[ui.sidebar.spaces]
+row_gap = 0
+rows = [["state_icon", "workspace", { token = "branch", fg = "#7f849c" }, "git_status"]]
+
+[ui.sidebar.agents]
+row_gap = 0
+rows = [["state_icon", { token = "agent", fg = "#cdd6f4" }]]
+# <<< sidebar layout
 
 # Bare-clone + worktrees layout; checkouts land under ~/worktrees/<repo>/<branch-slug>
 [worktrees]

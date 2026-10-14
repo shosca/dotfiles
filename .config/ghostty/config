@@ -17,6 +17,7 @@ gtk-titlebar-hide-when-maximized = true
 copy-on-select = clipboard
 
 # Reload config (default ctrl+shift+, needs comma; this is easier)
+keybind = ctrl+enter=unbind
 keybind = ctrl+shift+r=reload_config
 
 # Paste clipboard, matching ctrl+shift+v

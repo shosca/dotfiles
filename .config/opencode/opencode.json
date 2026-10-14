@@ -23,6 +23,7 @@
     "task": "allow",
     "skill": {
       "*": "ask",
+      "ponytail*": "allow",
       "asd-ste100": "allow",
       "commit": "allow",
       "mise": "allow",
@@ -30,6 +31,7 @@
       "pr-review": "allow",
       "pr-writer": "allow",
       "unslop": "allow",
+      "herdr": "allow",
     },
     // Worktree layout puts the bare clone and sibling worktrees outside the
     // CWD, so most routine paths count as external without these rules.
@@ -146,5 +148,13 @@
   },
   "websearch": {
     "provider": "random"
+  },
+  "plugins": [
+    "billion-context",
+    "context-mode",
+    "@dietrichgebert/ponytail"
+  ],
+  "compaction": {
+    "auto": false
   },
 }

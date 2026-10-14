@@ -5,8 +5,11 @@
 #
 # An agent qualifies when its herdr status is `idle` or `done`: a `working` or `blocked` agent
 # would only queue the compact behind its turn. The pane this runs from is skipped for the same
-# reason. Context comes from the Claude status line (`NNNk/NNNNk ctx`), which updates only at the
-# end of a turn, so an agent that has not run since its last compact still reads its old figure.
+# reason. Context comes from the status line: claude-powerline's context segment (`◔ 88,820 (91%)`:
+# tokens used, then percent left; the glyph changes with the fill level, so only the number and
+# percent are matched) or METRICC's `Tokens: 88.8k` cell, which needs `"layout": "horizontal"` and
+# `"Tokens": true`. METRICC pads with non-breaking spaces, so those are normalized first. The status line updates only at the end of a turn, so an agent that has not run since
+# its last compact still reads its old figure.
 set -euo pipefail
 
 threshold=${1:-200}
@@ -26,15 +29,21 @@ for agent in result.get("agents", result):
       continue
     fi
 
-    ctx_line=$(herdr agent read "$pane" --lines 6 2>/dev/null | grep -oE '[0-9.]+[kM]/[0-9.]+[kM] ctx' | tail -1 || true)
+    ctx_line=$(herdr agent read "$pane" --lines 6 2>/dev/null | sed 's/\xc2\xa0/ /g' |
+      grep -oE '[0-9][0-9,]* \([0-9]+%\)|(^|[^t] )Tokens: [0-9.]+[kM]?' | tail -1 || true)
     if [ -z "$ctx_line" ]; then
       echo "$name: no context line, skip"
       continue
     fi
-    used=${ctx_line%%/*}
-    case $used in
-      *M) used_k=$(python3 -c "print(int(float('${used%M}') * 1000))") ;;
-      *k) used_k=${used%k}; used_k=${used_k%.*} ;;
+    case $ctx_line in
+      *Tokens:*)
+        v=${ctx_line##*: }
+        case $v in
+          *M) used_k=$(awk "BEGIN{print int(${v%M}*1000)}") ;;
+          *k) used_k=${v%%.*} ;;
+          *) used_k=0 ;;
+        esac ;;
+      *) used=${ctx_line%% *}; used_k=$(( ${used//,/} / 1000 )) ;;
     esac
 
     if [ "$status" != idle ] && [ "$status" != "done" ]; then
