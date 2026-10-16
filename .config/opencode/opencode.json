@@ -151,7 +151,6 @@
   },
   "plugins": [
     "billion-context",
-    "context-mode",
     "@dietrichgebert/ponytail"
   ],
   "compaction": {

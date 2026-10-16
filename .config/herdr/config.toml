@@ -121,14 +121,18 @@ agent_panel_sort = "spaces"
 status_indicators = "symbols"
 
 [ui.toast]
-delivery = "off"
+delivery = "herdr"
+# in-TUI agent toasts: mirror the desktop banner corner
+[ui.toast.herdr]
+position = "top-right"
 
 # Move the copied-text toast out of the bottom-center default into a corner
 [ui.toast.clipboard]
 position = "top-right"
 
 # Review-queue reviewers end a turn every 15 minutes, so the done sound fired on
-# no-change ticks. Real events already reach the desktop through notify-send.
+# no-change ticks. Desktop notifications are plugin-owned instead
+# (~/.config/herdr/plugins/config/liamwh.herdr-rich-notifications/config.toml).
 [ui.sound.agents]
 claude = "off"
 

@@ -2,21 +2,9 @@
 
 These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on repo workflow. The safety rules below never yield.
 
-## Safety
-
-- NEVER commit changes unless the user explicitly asks. Use the `commit` skill for any commit; it carries the staging, hook, verification, and no-amend rules.
-- Ask before destructive commands: force push, `git reset --hard`, `rm -rf`, branch deletes.
-
 ## Session start
 
 - Check for `AGENTS.md` and `CLAUDE.md` in the project root. Read them if they exist. Treat them as binding project instructions.
-
-## Session environment
-
-- A session's environment is captured at launch and stays frozen. The working directory does not update it.
-- In a mise project, prefix commands that read project env with `mise exec -- `. It resolves the project's current env at exec time, so a stale session env cannot leak through.
-- Processes spawned outside the shell (LSP servers, MCP servers) cannot be wrapped. Restart the session from the project directory for those.
-- Load the `mise` skill when env problems need debugging.
 
 ## Working style
 
@@ -38,6 +26,8 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 ## Skills
 
 - Load the `pr-review` skill before reviewing a pull request.
+- Load the `commit` skill before you run `git commit`.
+- Load the `pr-writer` skill before you create or edit a pull request title or body.
 - Load the matching file-type skill (`docx`, `xlsx`, `pptx`, `pdf`) before creating or editing those files.
 
 ## Code comments

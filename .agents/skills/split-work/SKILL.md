@@ -89,9 +89,20 @@ Verifiable criteria. A command that passes, a behavior that changes, a PR that e
 ## Gotchas
 What we found the hard way: a hook that rewrites files, a flag that drops TZ, a fixture
 that overwrites the field you set.
+
+## After the PR is open
+Watch the PR until it merges or closes. Check it on a self-paced loop, about every 20 to
+30 minutes. On each check, read new review comments, review states, and CI results.
+Fix what you can without the user: CI failures your change caused, and review comments
+with a clear answer in the code. When a comment needs the user's judgment, or a reviewer
+asks for changes you do not agree with, ask the user with your question tool and wait for
+the answer. Do not end the turn to signal that you need the user. On a merge or a close,
+stop the loop and clean up.
 ```
 
 Prose, not a transcript. Aim for one screen. Leave out the exploration that produced the plan.
+
+Always include **After the PR is open**, as written. An open question puts the session in a waiting state that the muxer can detect, and the user's notification setup reacts to that state. A finished turn looks the same as a quiet check, so it never reaches the user. For Claude, the question tool is `AskUserQuestion`. For OpenCode, it is the built-in tool that asks the user a question.
 
 **Done:** `$DOC` holds an absolute path, and the file exists.
 
