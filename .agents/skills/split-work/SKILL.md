@@ -91,13 +91,11 @@ What we found the hard way: a hook that rewrites files, a flag that drops TZ, a 
 that overwrites the field you set.
 
 ## After the PR is open
-Watch the PR until it merges or closes. Check it on a self-paced loop, about every 20 to
-30 minutes. On each check, read new review comments, review states, and CI results.
-Fix what you can without the user: CI failures your change caused, and review comments
-with a clear answer in the code. When a comment needs the user's judgment, or a reviewer
-asks for changes you do not agree with, ask the user with your question tool and wait for
-the answer. Do not end the turn to signal that you need the user. On a merge or a close,
-stop the loop and clean up.
+Run the `babysit-pr` skill on the PR. It owns the watch loop, the cadence, and the
+merge. When a comment needs the user's judgment, or a reviewer asks for changes you
+do not agree with, ask the user with your question tool and wait for the answer. Do
+not end the turn to signal that you need the user. On a merge or a close, stop and
+clean up.
 ```
 
 Prose, not a transcript. Aim for one screen. Leave out the exploration that produced the plan.

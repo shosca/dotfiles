@@ -92,10 +92,11 @@ A repo that requires an up-to-date branch before merge needs the same update eve
 1. For every unresolved thread, check each claim against the current head. A bot comment on
    stale code is not a finding.
 2. Fix the claims that hold and are inside the PR scope. Dismiss the rest with a reason.
-3. Reply with the reason and the commit SHA, then resolve the thread.
+3. Reply with the reason and the commit SHA.
 
-Never resolve a thread you did not address. Never reply on a thread from another person. Report
-those to the user in chat instead. Never change code to quiet a bot.
+Reply to every reviewer's thread. Resolve a thread once you replied to it, unless your reply
+defers to the reviewer. Never resolve a thread you did not address. Never change code to quiet
+a bot.
 
 ## 6. CI
 
@@ -172,7 +173,21 @@ Leave branch deletion to the user, because a worktree still holds the branch.
 After you arm, disarm with `gh pr merge <n> --disable-auto` when a change request arrives or the
 branch turns conflicted. Report either one.
 
-## 8. Stop and report
+## 8. Tick cadence
+
+Set the delay to the next tick at the end of every tick that waits for a person.
+
+Back off only when a person is the only blocker: a review, a thread reply, or a merge decision.
+Start at 20 minutes and double the delay after each tick with no progress, to a cap of 2 hours. The
+delays are 20, 40, 80, 120, and then 120 minutes.
+
+Reset the delay to 20 minutes when progress arrives. Progress is a new head SHA, a review, a check
+status change, a thread change, or a merge state change.
+
+Do not back off while a required check runs or while a review bot is in flight. Keep the 20-minute
+delay. `gh pr checks --watch` (step 6) wakes the loop on the CI event, so that wait costs no tick.
+
+## 9. Stop and report
 
 Stop when the PR merges, closes, has auto-merge armed, or needs a person.
 
@@ -181,9 +196,10 @@ Also stop for a conflict in source logic, a dirty worktree, or a `mergeable` of 
 does not settle.
 
 Report the PR URL, head SHA, check summary, unresolved thread count, fixes pushed, re-runs used,
-remaining blockers, and whether you armed auto-merge. Report evidence, not narrative.
+remaining blockers, the delay to the next tick, and whether you armed auto-merge. Report evidence,
+not narrative.
 
-Cap the loop at 6 hours or 20 ticks without progress.
+Cap the loop at 24 hours or 20 ticks without progress.
 
 The loop lives in the session. Step 2 re-reads all state from GitHub, so a new session resumes by
 running this skill again on the same PR.
