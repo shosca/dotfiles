@@ -1,5 +1,0 @@
-#!/bin/bash
-dkr-clean
-dkr-clean-images
-dkr-clean-volumes
-docker network ls --format "{{.Name}}" | grep '!(bridge|host|none)' | xargs -r docker network rm

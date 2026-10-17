@@ -186,6 +186,7 @@ fi
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
 [[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
+[[ -x $(command -v process-compose 2>/dev/null) ]] && eval "$(process-compose completion zsh)"
 
 function compfile() {
   [[ -x $(command -v poetry 2>/dev/null) ]] && poetry completions zsh > ~/.zfunc/_poetry

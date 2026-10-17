@@ -1,28 +1,36 @@
 [tools]
+"github:hmans/beans" = "latest"
+"github:looker-open-source/looker-cli" = "latest"
+"npm:billion-context" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"pipx:mycli" = "latest"
+"pipx:nexmod" = "latest"
+"pipx:yawsso" = { version = "latest" }
+age = "latest"
 aws-iam-authenticator = "latest"
 awsls = "latest"
+cdk = "latest"
+claude = "latest"
+claude-powerline = "latest"
+duckdb = "latest"
+fnox = { version = "latest", workflow = "release.yml" }
+gitleaks = "latest"
+groovy = "latest"
 herdr = "latest"
 node = "latest"
-"pipx:mycli" = "latest"
-"pipx:yawsso" = { version = "latest" }
-trivy = "latest"
-"github:hmans/beans" = "latest"
-cdk = "latest"
-playwright = "latest"
-"pipx:nexmod" = "latest"
-poetry = "latest"
-uv = "latest"
-gitleaks = "latest"
-pnpm = "latest"
-duckdb = "latest"
-groovy = "latest"
-"npm:chrome-devtools-mcp" = "latest"
-claude-powerline = "latest"
-rtk = "latest"
-claude = "latest"
 pi = "latest"
-"npm:billion-context" = "latest"
-"github:looker-open-source/looker-cli" = "latest"
+pitchfork = { version = "latest", workflow = "release.yml@refs/heads/main" }
+playwright = "latest"
+pnpm = "latest"
+poetry = "latest"
+process-compose = "latest"
+rtk = "latest"
+trivy = "latest"
+uv = "latest"
+
+[shell_alias]
+pc = "process-compose"
+dkr = "docker-compose"
 
 [settings]
 trusted_config_paths = ["~/src/force/force-web/"]

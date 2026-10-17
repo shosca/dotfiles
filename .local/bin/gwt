@@ -444,10 +444,9 @@ class Command(abc.ABC):
 
         Returns {branch_name: remote_ref} for each branch with gone upstream.
         """
-        git_dir = Path(self.project_root) / ".git"
         try:
             result = subprocess.run(
-                ["git", "--git-dir", git_dir, "branch", "-vv"],
+                ["git", "--git-dir", self._git_dir(), "branch", "-vv"],
                 capture_output=True,
                 text=True,
                 check=True,
@@ -830,8 +829,8 @@ class Herdr(Command):
             None,
         )
         if not matched:
-            print(f"❌ No worktree found matching: {target}")
-            sys.exit(1)
+            print(f"⚠️  No worktree found matching: {target} — skipped", file=sys.stderr)
+            return
         payload = self._worktree_payload(herdr, root)
         if payload is None:
             print("⚠️  herdr server down — worktree not registered (gwt herdr retries later)")
@@ -1197,36 +1196,35 @@ gwt() {
             for name in [cmd["main"]] + cmd["aliases"]:
                 all_pairs.append((name, cmd["command_args"]))
 
-        for i, (name, args) in enumerate(all_pairs):
+        # Collect the branch bodies first: the if/elif chain must open with the
+        # first command that actually emits a block, not the first in sort order.
+        blocks: list[tuple[str, list[str]]] = []
+        for name, args in all_pairs:
             flag_args = [a for a in args if a.source_type == "flags"]
             shell_arg = [a for a in args if a.source_type == "shell_types"]
             branch_arg = [a for a in args if a.source_type == "branches"]
             wt_arg = [a for a in args if a.source_type == "worktree_branches"]
 
-            prefix = "    if" if i == 0 else "    elif"
-
+            body: list[str] = []
             if shell_arg:
                 types_str = " ".join(self.SHELL_TYPES)
-                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
-                lines.append(
+                body.append(
                     '        COMPREPLY=( $(compgen -W "' + types_str + '" -- "$cur") )'
                 )
             elif branch_arg:
-                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
-                lines.append("        local branches")
-                lines.append(
+                body.append("        local branches")
+                body.append(
                     "        branches=$(git branch --format='%(refname:short)' 2>/dev/null)"
                 )
-                lines.append(
+                body.append(
                     '        COMPREPLY=( $(compgen -W "$branches" -- "$cur") )'
                 )
             elif wt_arg:
-                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
-                lines.append("        local wt_branches")
-                lines.append(
+                body.append("        local wt_branches")
+                body.append(
                     "        wt_branches=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{p=1;next} /^branch /{if(p)print $2; p=0}' | sed 's|refs/heads/||')"
                 )
-                lines.append(
+                body.append(
                     '        COMPREPLY=( $(compgen -W "$wt_branches" -- "$cur") )'
                 )
             elif flag_args:
@@ -1234,12 +1232,20 @@ gwt() {
                 for a in flag_args:
                     all_flags.extend(a.name)
                 flags_str = " ".join(all_flags)
-                lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
-                lines.append(
+                body.append(
                     '        COMPREPLY=( $(compgen -W "' + flags_str + '" -- "$cur") )'
                 )
 
-        lines.append("    fi")
+            if body:
+                blocks.append((name, body))
+
+        for i, (name, body) in enumerate(blocks):
+            prefix = "    if" if i == 0 else "    elif"
+            lines.append(prefix + ' [[ "$prev" == "' + name + '" ]]; then')
+            lines.extend(body)
+
+        if blocks:
+            lines.append("    fi")
         lines.append("}")
         lines.append("")
         lines.append("complete -F __gwt gwt")

@@ -1,2 +1,0 @@
-#!/bin/bash
-docker volume ls --format "{{.Name}}" | xargs -r docker volume rm -f

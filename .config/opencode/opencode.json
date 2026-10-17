@@ -98,6 +98,10 @@
     }
   },
   "mcp": {
+    "mise": {
+      "type": "local",
+      "command": ["mise", "mcp"]
+    }
   },
   "lsp": {
     "ruff": {

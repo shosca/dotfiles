@@ -1,2 +1,0 @@
-#!/bin/bash
-docker images --format '{{.Repository}} {{.ID}}' | awk '{ print $2 }' | xargs -r docker rmi -f
