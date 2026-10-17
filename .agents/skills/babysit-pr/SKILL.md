@@ -93,6 +93,9 @@ A repo that requires an up-to-date branch before merge needs the same update eve
    stale code is not a finding.
 2. Fix the claims that hold and are inside the PR scope. Dismiss the rest with a reason.
 3. Reply with the reason and the commit SHA.
+4. Re-request review from each reviewer whose thread you answered, or who asked for changes. A
+   push can dismiss their review, so they must look again. Use `gh pr edit <n> --add-reviewer
+   <login>`.
 
 Reply to every reviewer's thread. Resolve a thread once you replied to it, unless your reply
 defers to the reviewer. Never resolve a thread you did not address. Never change code to quiet
@@ -168,7 +171,8 @@ a stale result does not count, because the gate already passed.
 gh pr merge <n> --auto <method>
 ```
 
-Leave branch deletion to the user, because a worktree still holds the branch.
+When the PR merges, run the [`teardown`](../teardown/SKILL.md) skill. It removes the worktree and
+the branch.
 
 After you arm, disarm with `gh pr merge <n> --disable-auto` when a change request arrives or the
 branch turns conflicted. Report either one.
@@ -189,7 +193,8 @@ delay. `gh pr checks --watch` (step 6) wakes the loop on the CI event, so that w
 
 ## 9. Stop and report
 
-Stop when the PR merges, closes, has auto-merge armed, or needs a person.
+Stop when the PR merges, closes, has auto-merge armed, or needs a person. On a merge, run
+[`teardown`](../teardown/SKILL.md).
 
 Stop and ask a person about a permission error, an exhausted re-run budget, or out-of-scope feedback.
 Also stop for a conflict in source logic, a dirty worktree, or a `mergeable` of `UNKNOWN` that
