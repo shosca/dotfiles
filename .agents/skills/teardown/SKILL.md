@@ -1,12 +1,12 @@
 ---
 name: teardown
-description: Tear down a worktree — verify nothing is lost, kill its tmux session, delete the checkout and branch with gwt, then close its herdr Space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
+description: Tear down a worktree — verify nothing is lost, delete the checkout and branch with gwt, then close its herdr Space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
 ---
 
 # Teardown
 
-Tear down one worktree: kill its tmux mirror, delete the checkout and branch,
-then close its herdr Space. The Space closes last because this session often
+Tear down one worktree: delete the checkout and branch, then close its herdr
+Space. The Space closes last because this session often
 runs inside it, and closing it ends the session. Two mechanisms do the real
 removal:
 
@@ -33,25 +33,25 @@ branch=$(git -C "$wt" rev-parse --abbrev-ref HEAD)
 root=$(dirname "$(git -C "$wt" rev-parse --git-common-dir)")   # bare clone root
 ```
 
-Refuse the main checkout (project root) — there is nothing to tear down.
+Refuse the repository itself — there is nothing to tear down.
 Detached HEAD is fine for removal: the checkout goes, no branch steps apply.
+Step 4 then names the checkout by its directory basename, because there is no
+branch to name.
 
 Run every later step from outside the target dir (`cd` to the project root
-or another worktree), or set `PWD` aside: after Step 5 the old cwd is gone.
+or another worktree), or set `PWD` aside: after Step 4 the old cwd is gone.
 
-### Detect the multiplexers
+### Detect herdr
 
-Check which multiplexers run on this machine before you touch either one.
-Each check tests for a running server, not for an installed binary.
+Check whether the herdr server answers before you touch it. This tests for a
+running server, not for an installed binary.
 
 ```bash
-herdr workspace list >/dev/null 2>&1 && has_herdr=1   # herdr server answers
-tmux list-sessions >/dev/null 2>&1 && has_tmux=1      # tmux server has sessions
+herdr workspace list >/dev/null 2>&1 && has_herdr=1
 ```
 
-Run Steps 3 and 7 only when `has_herdr` is set. Run Step 4 only when
-`has_tmux` is set. Skip a step for a multiplexer that is not running, and do not put its
-commands in any batch. Report each skipped step in the final summary.
+Run Steps 3 and 6 only when `has_herdr` is set: each step states its own skip,
+and a skipped step still appears in the final report.
 
 ## Step 2: Gate on unmerged / unpushed work
 
@@ -60,14 +60,18 @@ Fetch first so push state is current.
 ```bash
 git -C "$wt" fetch
 git -C "$wt" status --porcelain                    # empty when clean
-git -C "$wt" log --oneline origin/<branch>..HEAD   # empty when pushed
-git -C "$wt" branch -r --contains <HEAD>           # non-empty when some remote has it
+git -C "$wt" rev-parse --verify --quiet "origin/$branch" >/dev/null \
+  && git -C "$wt" log --oneline "origin/$branch"..HEAD   # empty when pushed
+git -C "$wt" branch -r --contains HEAD             # non-empty when some remote has it
 ```
 
-`gwt rm` refuses unmerged branches itself (`-d` runs under the hook — so its
-message covers branch-level safety). Only unpushed commits destroy silently;
-their check is this skill's job. Never pass `--force` to gwt to bypass
-these gates; resolve the tree instead.
+`rev-parse --verify` exits non-zero for a branch no remote has, so the `log` never
+runs. Read that empty output as "not pushed", not as "pushed".
+
+`gwt rm` deletes the branch with `-d`, so it refuses a branch it cannot prove
+merged, and that message covers branch-level safety. Only unpushed commits
+destroy silently; their check is this skill's job. Never pass `--force` to gwt
+to bypass these gates; resolve the tree instead.
 
 | Thought                                         | Reality                                                          |
 | ------------------------------------------------ | ---------------------------------------------------------------- |
@@ -80,7 +84,7 @@ these gates; resolve the tree instead.
 ## Step 3: Gate on the herdr Space
 
 Skip this step when `has_herdr` is not set. This step only checks the Space;
-Step 7 closes it. One workspace id per linked worktree, from `herdr worktree list`.
+Step 6 closes it. One workspace id per linked worktree, from `herdr worktree list`.
 
 ```bash
 wsid=$(herdr worktree list --cwd "$root" --trust-repository 2>/dev/null |
@@ -98,35 +102,22 @@ herdr agent list 2>/dev/null |
     | select(.cwd | sub("/$"; "") == $wt) | "\(.agent) \(.agent_status)"'
 ```
 
-Any `working` / `blocked` entry → **STOP**, report the agent and its status.
-Let the user wait, or `herdr agent attach` to drive it. `idle` / `done` /
-no entries at all → continue.
+Any `working` or `blocked` entry → **STOP**, report the agent and its status.
+Let the user wait, or `herdr agent attach` to drive it. `idle`, `done`, or no
+entries at all → continue.
 
-When `$HERDR_WORKSPACE_ID` equals `wsid`, this session runs inside the Space.
-One `working` entry in the list is this session itself; do not count it.
+One exception, and only when `$HERDR_WORKSPACE_ID` equals `wsid`: this session
+runs inside the Space, so its own entry is not a reason to stop.
 
-If `wsid` is empty, the checkout has no Space and Step 7 is a no-op. Detached
+If `wsid` is empty, the checkout has no Space and Step 6 is a no-op. Detached
 HEAD checkouts can have a Space label that copies the checkout's directory
 name — match on `path`, never on label.
 
-## Step 4: Kill the tmux mirror (if any)
-
-Skip this step when `has_tmux` is not set. tmux sessions shared by the worktree take their name from the branch, not from
-any single task. So the name to kill is the branch-derived one:
+## Step 4: Remove checkout and branch
 
 ```bash
-slug=${branch##*/}                       # e.g. dockerfile-layer-caching, pr/16602
-tmux kill-session -t "$slug" 2>/dev/null || true
-```
-
-Verify with `tmux list-sessions`: left-over sessions named after tasks
-(`review-pr-123`, `feature-tui`) belong to a particular session's work — do
-not kill them here.
-
-## Step 5: Remove checkout and branch
-
-```bash
-gwt rm "$branch" --yes
+gwt rm "$branch" --yes              # branch checkout
+gwt rm "$(basename "$wt")" --yes    # detached checkout
 ```
 
 What this does, in order: `[hooks.delete]` hooks (app services stop here;
@@ -137,22 +128,24 @@ git blocks it and the checkout stays.
 
 Pass `--keep-branch` when the user asks for the branch to outlive the removal.
 
-## Step 6: Sweep after removal
+## Step 5: Sweep after removal
 
 ```bash
 git -C "$root" worktree prune
-find "$root" -mindepth 1 -maxdepth 1 -type d -empty -delete 2>/dev/null
+find "$root" -mindepth 1 -maxdepth 1 -type d -empty -name 'pr-*' -delete
 git worktree list --porcelain   # must not print the removed checkout
 ```
 
-## Step 7: Close the herdr Space
+`-name 'pr-*'` keeps the sweep away from empty directories that belong to nobody's
+worktree. A leftover under another name is yours to delete by hand.
+
+## Step 6: Close the herdr Space
 
 Skip this step when `has_herdr` is not set or `wsid` is empty.
 
-Report first, because the close can end this session. The report covers
-what closed (tmux session, the Space id about to close), what was removed,
-which branch went, how many `[hooks.delete]` commands ran, and whether
-anything was skipped or held back.
+Report first, because the close can end this session. The report covers the
+Space id about to close, the checkout and branch removed, whether the
+`[hooks.delete]` hook ran and passed, and anything skipped or held back.
 
 Then close the Space:
 

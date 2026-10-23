@@ -1,0 +1,9 @@
+login = "shosca"
+prefix = "/ghpoll-digest "
+
+[[repo]]
+name = "ForceTherapeutics/force-web"
+root = "~/src/force/force-web"
+space = "ghpoll"
+age_days = 14
+hold_label = "on hold"

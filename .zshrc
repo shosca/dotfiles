@@ -184,6 +184,7 @@ fi
 [[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
+[[ -x $(command -v fnox 2>/dev/null) ]] && eval "$(fnox activate zsh)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
 [[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
 [[ -x $(command -v process-compose 2>/dev/null) ]] && eval "$(process-compose completion zsh)"

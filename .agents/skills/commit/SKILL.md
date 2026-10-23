@@ -13,49 +13,59 @@ Feature-branch commits are what reviewers step through one at a time. They are n
 ## Precedence
 
 This is the generic skill. If the current repo carries its own `commit` skill (`.claude/skills/`,
-etc.) or documents commit or branch conventions in `CLAUDE.md` / repo docs, that layer wins. Before
-committing, check for both; the steps below assume only conventional-commits style and GitHub.
+etc.) or documents commit or branch conventions in `CLAUDE.md` / repo docs, that layer wins. Check
+for both before you commit. The steps below assume only conventional-commits style and GitHub.
 
 ## Pre-flight
 
 ```bash
 git branch --show-current
 git status --porcelain
+git diff --cached --stat   # what the index already holds
 ```
 
-Identify the repo's default branch and any deploy branches (settings, CLAUDE.md, or repo docs make
-this explicit — never assume by name). CRITICAL: **do not commit directly to a long-lived or deploy
-branch** (`master`/`main`, `release`, `production`, or whatever the repo names them) unless the user
-explicitly asked to commit there — many of those branches deploy on push, and on squash-merge repos
-a direct default-branch commit bypasses the review path. If the user did not ask to commit to one,
-stop.
+Anything in `git diff --cached` that you did not stage belongs to another session. Commit it only
+when the user asks, and never mix it into your commit.
 
-For repo-specific branches (release trains, hotfix conventions), follow the repo docs; this skill
+Identify the repo's default branch and any deploy branches. CLAUDE.md, repo docs, or the hosting
+settings name them, and anything else is a guess:
+
+```bash
+gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
+```
+
+CRITICAL: **do not commit directly to a long-lived or deploy branch** — the default branch and
+whatever the repo publishes from — unless the user explicitly asked to commit there. Many of those
+branches deploy on push, and on squash-merge repos a direct default-branch commit bypasses the
+review path. If the user did not ask to commit to one, stop.
+
+For repo-specific branches (release trains, hotfix conventions), follow the repo docs. This skill
 does not assume the topology.
 
 ## Guardrails
 
 - CRITICAL: NEVER commit unless the user explicitly asks you to. Only commit when asked.
 - CRITICAL: Always stage changes, then run the repo's pre-commit hooks and check for failure, before
-  `git commit`. prek, pre-commit, husky, lint-staged — whatever the repo installs.
-- CRITICAL: A hook rejection means **no commit was created**. NEVER amend — that would rewrite the
-  previous, unrelated commit. Stop and ask for help.
-- CRITICAL: `git commit` returns non-zero on failure. Check `git log -1 --oneline` before committing to
-  see what HEAD points at, and again after to confirm your commit exists and changed nothing else.
-  Never infer success from hook output.
+  `git commit`. Read `.pre-commit-config.yaml` (prek or pre-commit), `.husky/`, or the `lint-staged`
+  block in `package.json` to learn which runner the repo installs, then use that runner's own
+  command.
+- CRITICAL: NEVER amend. An amendment rewrites the previous, unrelated commit.
+- CRITICAL: Check `git log -1 --oneline` before committing to see what HEAD points at, and again
+  after any non-zero exit. A hook rejection leaves HEAD where it was. A hook that rewrote files
+  leaves the fix unstaged, so inspect and `git add` again. Never infer success from hook output.
 
 ## Pre-commit hook gotchas
 
-Whether hooks validate the message depends on the repo: some install `commit-msg`/commitlint, others
+Whether hooks check the message depends on the repo: some install `commit-msg`/commitlint, others
 only run linters, so **treat the message format below as yours to enforce**.
 
 - Formatters rewrite files in place (`ruff`, `ruff-format`, `prettier`, `oxfmt`, `oxlint --fix`,
   `stylelint --fix`). After a failed run the fix is usually already applied but unstaged: re-inspect
   and `git add` again before retrying.
-- Whole-project or networked checks (`pyrefly`, `uv-audit`) run regardless of what files are staged.
+- Whole-project or networked checks (`pyrefly`, `uv-audit`) run regardless of which files you stage.
   Slow is not hung.
-- Failures on generated state (e.g. missing migration, missing migration docstring) mean fix the
-  cause; never `--no-verify`.
+- Failures on generated state — a migration or a generated index that is out of date — mean the
+  cause is upstream. Fix the cause. Never `--no-verify`.
 
 ## Format
 
@@ -65,7 +75,7 @@ only run linters, so **treat the message format below as yours to enforce**.
 <body>
 ```
 
-Header required; body optional but expected for anything non-obvious. Subject is imperative present
+Header required. Body optional but expected for anything non-obvious. Subject is imperative present
 tense ("Add feature", not "Added feature"), capitalized after the type, no trailing period, aim
 ≤70 characters.
 
@@ -83,9 +93,9 @@ Scope is optional, one lowercase word naming the area. Use the areas the repo hi
 - Plain prose paragraphs, imperative present tense. **No markdown headings and no bullet lists** —
   those belong in the PR body.
 - **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
-  Active voice, one idea per sentence (≤25 words). No idioms or metaphor. No nominalizations
-  ("perform an installation" → "install"). Never "simply", "just" or "easily". No future tense for
-  behavior — "returns X", never "will return X".
+  Active voice, one idea per sentence (≤25 words). No idioms or metaphor. No nominalizations: use
+  the verb. Never "simply", "just" or "easily". No future tense for behavior — "returns X", never
+  "will return X".
 - Cite the evidence that made the change safe when there is any: a measured query count, a
   production figure, a mutation test that proved a budget binds.
 - Never include customer data — org names, user emails, support ticket contents, PII. Describe the
@@ -98,13 +108,16 @@ last line of the message, naming the actual agent that did the work:
 
 ```
 Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+Co-Authored-By: <Agent Name> <agent@example.com>
 ```
 
-Trailers survive squash merges (GitHub lifts them onto the squash commit) and are the signal most AI
-reporting counts; the PR body never carries them — see [`pr-writer`](../pr-writer/SKILL.md).
+The second line is a shape, not a literal: substitute the agent's own name and address.
+
+Trailers survive squash merges (GitHub lifts them onto the squash commit), and they are the signal
+most AI reporting counts. The PR body never carries them — see [`pr-writer`](../pr-writer/SKILL.md).
 
 Name the agent honestly. Do not emit a Claude trailer for a non-Claude agent, and do not add one to a
-commit a human wrote unassisted; both corrupt any attribution reporting.
+commit a human wrote unassisted. Both corrupt any attribution reporting.
 
 ## Ticket references
 
@@ -130,18 +143,18 @@ title**, since that is what lands on the default branch.
   string runs backticks as command substitution, and commit prose about code is full of them.
   ``\`import produce from "immer"\`` in a message makes the shell run `import` — ImageMagick's
   screen-capture tool, which blocks forever waiting for a mouse click and looks exactly like a hung
-  agent. `$(…)`, `$VAR` and `!` are the same hazard. Escaping backticks works but only while you
-  remember to; `-F` removes the whole class.
+  agent. `$(…)`, `$VAR` and `!` are the same hazard. Escaping backticks works, but only while you
+  remember to do it. `-F` removes the whole class.
 - Never emit literal `\n` sequences in a message. They land as backslash and n, not as line breaks.
   A message file has real newlines, which is another reason to prefer `-F`.
 
 ```bash
-# write the full message — subject, blank line, body, trailer — to a file first
-git commit -F /tmp/commit-msg.txt
+msg=$(mktemp)   # write subject, blank line, body and trailer to "$msg" first
+git commit -F "$msg"
 ```
 
-The same hazard applies to `gh pr create --body`: use a **quoted** heredoc (`<<'EOF'`), which does
-not interpolate. An unquoted `<<EOF` does, and will eat backticks in the body the same way.
+The same hazard applies to `gh pr create --body` and `gh pr edit --body`. Write the PR body to a
+file and pass `--body-file`. `pr-writer` Step 5 shows the commands.
 
 ## Examples
 
@@ -187,7 +200,7 @@ the First Login column has always exported blank.
 ### Revert
 
 ```
-revert: feat(api): Add new endpoint
+revert(api): Add new endpoint
 
 This reverts commit abc123def456.
 

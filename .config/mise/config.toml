@@ -12,12 +12,12 @@ awsls = "latest"
 cdk = "latest"
 claude = "latest"
 claude-powerline = "latest"
-duckdb = "latest"
 fnox = { version = "latest", workflow = "release.yml" }
 gitleaks = "latest"
 groovy = "latest"
 herdr = "latest"
 node = "latest"
+oha = "latest"
 pi = "latest"
 pitchfork = { version = "latest", workflow = "release.yml@refs/heads/main" }
 playwright = "latest"
@@ -27,6 +27,7 @@ process-compose = "latest"
 rtk = "latest"
 trivy = "latest"
 uv = "latest"
+acli = "latest"
 
 [shell_alias]
 pc = "process-compose"
@@ -49,6 +50,7 @@ dotfiles.default_mode = "symlink"
 "~/.claude/skills" = { source = "~/dotfiles/.agents/skills" }
 "~/.config/direnv" = {}
 "~/.config/ghostty" = {}
+"~/.config/ghpoll" = {}
 "~/.config/git" = {}
 "~/.config/herdr/config.toml" = {}
 "~/.config/kitty" = {}

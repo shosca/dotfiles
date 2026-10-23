@@ -26,9 +26,11 @@ repo's branch model, ticketing, or labels beyond squash-merge GitHub.
 ### Step 1: Read the branch
 
 ```bash
+BASE=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+git fetch origin "$BASE"
 git status
-git log origin/<base>..HEAD
-git diff origin/<base>...HEAD
+git log "origin/$BASE"..HEAD
+git diff "origin/$BASE"...HEAD
 ```
 
 Everything committed, branch pushed, rebased on its base. Understand every change before writing
@@ -37,8 +39,11 @@ anything: the dominant change drives the title, the reviewer-relevant surprises 
 ### Step 2: Check for an existing PR
 
 ```bash
-gh pr view PR_NUMBER --json number,title,body,url,baseRefName,headRefName
+gh pr view --json number,title,body,url,baseRefName,headRefName
 ```
+
+With no argument it reads the PR for the current branch. A non-zero exit means no PR exists yet:
+skip to Step 3 and create one.
 
 Treat the current title and body as inputs, not source of truth, and compare them against the
 **current** diff rather than the diff from when the PR was opened. Keep the title only if it still
@@ -76,7 +81,8 @@ matters, then 0–3 `**Bold Block**` sections of 1–2 sentences, one per distin
 point.
 
 **Voice.** Plain, skimmable, human. The failure mode is the literary essay: long clauses, dramatic
-headings, punchlines that land only at the end. Guard against it:
+headings, punchlines that land only at the end. Guard against it. The blog-post path at Step 4
+loosens order, not clarity.
 
 - **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
   One idea per sentence, ≤25 words. Active voice, present tense. No idioms or metaphor. No
@@ -103,8 +109,6 @@ headings, punchlines that land only at the end. Guard against it:
   - Interaction or data flow between components: a Mermaid `sequenceDiagram`.
   - A shape that already exists: a `diff` block, trimmed to the changed lines. A sketch, not the
     real diff.
-- The `diff` block takes the shape of the topic: a component tree for a component change, a
-  directory tree for a file-layout change, a call tree for a control-flow change.
 - Show the whole block when most of it is new, when trimmed context would hide ownership or order,
   or when a reviewer needs a copyable target shape.
 - Put each view next to the text it supports. Cut every call, file, prop, and state that does not
@@ -134,14 +138,12 @@ block entirely.
 **Never state a test's *outcome*, anywhere in the body, block or no block.** No pass count ("254
 passed, 215 subtests"), no suite-status claim ("`reports` is green"), no flaky-test prediction about
 what CI will show, no "this proves it's safe" tied to a local run. This is narrower than "never
-mention testing" — describing a *new test file* that's part of the diff (what it pins, what invariant
-it closes, why the gap existed) is normal, wanted diff description and stays. The line is whether the
-sentence reports what happened when something ran, or describes what the test code does: the first
-never survives, no rewrite makes it acceptable; the second is ordinary description. Do not carve out
-an exception for an outcome that "feels" reviewer-relevant — that carve-out is exactly how a stale
-claim gets back in (a flaky-test callout read as a fact right up until the branch already contained
-the fix it cited, making the whole sentence wrong). If a flaky or known-broken test genuinely needs
-to reach a human, it goes in a PR **comment**, never in the body.
+mention testing": a *new test file* in the diff stays, described by what it pins, what invariant it
+closes and why the gap existed. The line is whether the sentence reports what happened when
+something ran, or describes what the test code does. The first never survives. A flaky-test callout
+is how a stale claim re-enters: it reads as a fact right up until the branch already contained the
+fix it cited. To get a flaky or known-broken test in front of a human, use a PR **comment**, never
+the body.
 
 A genuinely impressive, difficult, or high-risk/wide-scoped change may be written like a technical
 blog post instead: context and storytelling, code samples, before/after diagrams. Earn it — most PRs
@@ -164,20 +166,21 @@ headings, and the first sentence of each block. If that does not tell the whole 
 
 ### Step 5: Create or update
 
-Quote heredocs (`<<'EOF'`) when passing bodies inline — unquoted ones eat backticks. Write a body
-file instead for anything with backticks or real length:
+Always pass the body from a file. Inline heredocs (`--body "$(cat <<'EOF' … EOF)"`) and `-f
+body="..."` lose backticks and quotes on the way through the shell or `gh`.
 
 ```bash
 gh pr create --title "Subject" --body-file /tmp/pr-body.md
 ```
 
-Check the repo's default base before creating.
+Check the repo's default base with `gh repo view --json defaultBranchRef --jq .defaultBranchRef.name`
+before creating.
 
-Update an existing PR with `gh pr edit PR_NUMBER --title '...' --body "$(cat <<'EOF' … EOF)"`,
-having re-evaluated both. **If that fails with a Projects (classic) deprecation error**, the local
-`gh` predates 2.82.1, which fixed it (cli/cli#11987) — check `gh --version` and upgrade, since distro
-packages lag badly. Until then `gh api -X PATCH repos/{owner}/{repo}/pulls/PR_NUMBER -f title='...'
--f body="..."` bypasses the GraphQL path.
+Update an existing PR with `gh pr edit PR_NUMBER --title '...' --body-file /tmp/pr-body.md`, having
+re-evaluated both. **If that fails with a Projects (classic) deprecation error**, the local `gh`
+predates 2.82.1, which fixed it (cli/cli#11987) — check `gh --version` and upgrade, since distro
+packages lag badly. Until then `gh api -X PATCH repos/{owner}/{repo}/pulls/PR_NUMBER -F
+title='...' -F body=@/tmp/pr-body.md` bypasses the GraphQL path.
 
 ## Labels
 
@@ -185,9 +188,18 @@ Labels carry process state, so the title and body stay pure description. Labels 
 run `gh label list` before assuming any exist, and leave owned labels (`QA`, `priority`, release
 gates) to the humans who own them. Never invent one.
 
+Apply a label with `gh pr edit PR_NUMBER --add-label "<name>"`, or pass `--label "<name>"` to
+`gh pr create`. Read `gh label list --json name,description` first: a name alone often hides what the
+label means in that repo. Pick only the labels whose description matches this diff. One clear label
+beats three guesses, and a small self-explanatory change takes none.
+
 Apply the repo's agent-attribution label if one exists (`ai-generated` is the common name) — it is
 how a bot PR is told apart from its author's own work. Attribution stays out of the title and body;
 the `Co-Authored-By` trailer rides on the commits.
+
+Apply the repo's `security` label if one exists when the PR fixes a check that fails on every
+branch, such as a dependency bump that clears an audit advisory. ghpoll-digest reads the label and
+tells the sessions on other PRs to wait for this fix instead of repeating it.
 
 **Never open a draft PR** where the team does not use them — never pass `--draft` on such a repo.
 Use the repo's WIP convention (`WIP` label or `[wip]` prefix) instead; do not add either unprompted,

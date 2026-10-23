@@ -3,10 +3,14 @@ onboarding = false
 # tmux session -> herdr workspace, tmux window -> herdr tab, tmux pane -> herdr pane
 
 [theme]
-# tmux ran on the terminal's own palette (bg=default, fg=default, ANSI blue accents)
-# Ghostty runs Ayu dark, so the UI copies that palette and follows theme changes
-name = "terminal"
+# catppuccin, with the active row from the herdr-radar block at the end of this file
+name = "catppuccin"
 auto_switch = false
+
+# >>> herdr-radar theme block
+[theme.custom]
+active_row_bg = "#414868"
+# <<< herdr-radar theme block
 
 [terminal]
 # Matches -c "#{pane_current_path}" on every split, window, and session
@@ -81,6 +85,18 @@ type = "plugin_action"
 command = "herdr-bar.open"
 description = "command bar"
 
+[[keys.command]]
+key = "prefix+shift+m"
+type = "shell"
+command = "herdr plugin pane open --plugin herdr-workspace-organizer --entrypoint organizer --focus"
+description = "workspace organizer"
+
+[[keys.command]]
+key = "prefix+0"
+type = "plugin_action"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
+
 [ui]
 accent = "blue"
 
@@ -122,6 +138,7 @@ status_indicators = "symbols"
 
 [ui.toast]
 delivery = "herdr"
+
 # in-TUI agent toasts: mirror the desktop banner corner
 [ui.toast.herdr]
 position = "top-right"

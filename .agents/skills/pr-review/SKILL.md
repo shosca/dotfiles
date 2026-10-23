@@ -82,7 +82,8 @@ relative to the repo root, and auto-cd's into it via a shell hook. Work from tha
 **If `gwt` is not available**, fall back to a manual worktree:
 
 ```bash
-git worktree add -b review-PRNNNNN ../review-PRNNNNN PR_HEAD_BRANCH
+git fetch origin "pull/PR_NUMBER/head" &&
+  git worktree add -b "pr/PR_NUMBER" "../pr-PR_NUMBER" FETCH_HEAD
 ```
 
 Then work from that worktree directory. The **base branch worktree** (e.g. `master`) stays
@@ -126,11 +127,10 @@ it as a finding — don't build a narrative on a ref you haven't confirmed is cu
 
 ### Step 4: Get the full diff
 
-`gh pr diff` (and `gh pr diff`) **truncate** large diffs. Get the raw full patch from the
-worktree:
+`gh pr diff` returns a truncated patch for a large PR. Get the full patch from the worktree:
 
 ```bash
-git diff BASE...HEAD > /tmp/prNNNNN-raw.patch
+git diff origin/BASE_BRANCH...HEAD > /tmp/prNNNNN-raw.patch
 ```
 
 Capture the diff hunk headers to understand scope:
@@ -139,11 +139,47 @@ Capture the diff hunk headers to understand scope:
 grep -n "^diff --git\|^@@" /tmp/prNNNNN-raw.patch
 ```
 
+### Re-review after a push
+
+A rebase moves the SHA without touching the work, and a verdict on one revision covers another
+whose content is identical. Before re-reviewing a new head, check whether the push changed
+anything the PR owns.
+
+`$BASE` is the PR's base branch (`baseRefName`), `$N` its number, and `<reviewed-sha>` the head you
+last reviewed. Move the worktree to the new head first. A force-push is not a fast-forward, so
+reset. The worktree holds no work of yours, but check anyway:
+
+```bash
+git status --porcelain                    # anything listed: stop and say so
+git rev-parse --abbrev-ref HEAD           # must be pr/$N, the branch the review owns
+git fetch origin "$BASE"
+git fetch origin "pull/$N/head" && git reset --hard FETCH_HEAD
+base="$(git merge-base "origin/$BASE" HEAD)"
+git diff --name-only "$base" HEAD > /tmp/pr-$N-paths     # the files the PR touches
+git diff --name-only <reviewed-sha> HEAD -- $(cat /tmp/pr-$N-paths)   # empty: nothing moved
+```
+
+`--hard` discards commits, not only edits. Run it on `pr/$N` only. When the PR sits on a branch the
+user owns (Step 3), a reset moves their branch: fetch, report the new head, and stop.
+
+Compare the two heads restricted to those paths, never the two net patches. A rebase shifts every
+hunk header when the base edits surrounding lines, so the patch text differs for revisions whose
+content is identical. File contents do not.
+
+- **Empty:** carry the previous verdict forward and note that the push was a rebase.
+- **Not empty:** review the new head.
+
+Carrying the verdict forward carries only the checks the earlier pass ran. A pass that read just
+the fix push, or just the diff, covers nothing the first pass skipped.
+
+The one way this misreads is a file that both the PR and the base touch, which reports a change and
+costs a re-read. That is the safe direction.
+
 ### Step 5: Read the reference patterns
 
 For each new file, find the **existing pattern it mirrors** and read it. The PR's correctness
-depends on matching conventions already in the codebase. Use `semble search` or grep to find
-the precedent file, then read it with the Read tool.
+depends on matching conventions already in the codebase. Use `semble search` when it is on `$PATH`,
+or `rg`, to find the precedent file, then read it with the Read tool.
 
 Verify:
 - Does the new code follow the same structure as its precedent (factories, wrappers, layering)?
@@ -159,7 +195,8 @@ rules too, and new code copies them.
 
 1. Find the rule documents. Start at the project's `CLAUDE.md` / `AGENTS.md`, and follow every
    document it links to. Also check the project's docs directory and any project skills that cover
-   the kind of code the PR changes.
+   the kind of code the PR changes. Read them at the PR head, not on the base branch: a PR can
+   change the rules it is judged by.
 2. Pick every document whose scope matches a file the PR touches. Decide by the kind of file the
    PR changes (tests, API endpoints, migrations, styles), not by the PR title. A PR can touch
    several kinds of file, and each kind can have its own document.
@@ -169,7 +206,10 @@ rules too, and new code copies them.
 4. Report each violation with the document and the sentence it breaks, quoted. A prohibition
    ("never", "must") binds the behaviour it targets, not only the literal form its example shows.
    "Never access `request.data` directly with `.get()`" also covers indexing it, iterating it, or
-   passing it to a helper before validation.
+   passing it to a helper before validation. An example states no rule: it shows the common case
+   and forbids nothing. Report a documented pattern only where the document states a prohibition
+   or a consequence ("never", "must", "fails because"), and judge an alternative design on its
+   types, behaviour and callers.
 5. Record which documents and rules you checked. A re-review of a later revision can carry a
    "clean" result forward only for rules that an earlier pass actually checked. If a push changes
    only the lines behind one finding, that does not cover rules no pass ran.
@@ -228,6 +268,11 @@ a blocking finding.
 
 Do this exhaustively. This is the most valuable part of the review.
 
+Some consumers never appear in a grep: a mobile app, another service, a message already in a
+queue. When the PR removes an endpoint, a task or a value that crosses a process boundary, ask for
+production evidence, such as access logs by user agent, rather than reasoning about who should
+call it.
+
 ### Step 7: Verify against the requirement
 
 Confirm the PR implements what was asked, and nothing smuggled itself in. Work from the
@@ -237,7 +282,7 @@ each item.
 **Gather the requirement, in this order:**
 
 1. Issue references in the PR body or in commit messages (`#123`, `Closes #45`), fetched via
-   `gh issue view`.
+   `gh issue view`, or through the tracker the repo's rules name.
 2. The PR body's own description / acceptance criteria.
 3. A spec or task description a user or requester session passed along with the review request.
 4. If nothing is found, ask the user. If they say there isn't one, note "no requirement source
@@ -275,6 +320,11 @@ changes. Look for:
 - **Removed side effects**: deleted code that loaded or wrote data at startup or on load. If
   something else now does it, verify that the replacement runs on every path the old code ran on,
   not only on the default path.
+- **Removed names that data still carries**: an enum member removed from code leaves database rows
+  that hold its value. "Does anything crash reading one" is narrower than "does anything still
+  track this data". Compare the PR against itself: a migration that cleans up one retired value
+  and not its sibling is a finding. A task removed from a schedule still has messages in the
+  broker, so it stays registered, with an empty body, for one release.
 - **Discarded return values**: calls kept only for their side effect, such as priming a cache.
   Fine if deliberate, but add a comment or it reads as dead code.
 - **Input read before validation**: code that reads request input before the validator runs, by
@@ -286,11 +336,12 @@ changes. Look for:
   such as an array body or a list for one case. Generate the API schema at the head with the
   project's schema command and compare the affected operations. A schema that still documents the
   old shape breaks every generated client.
-- **A comment that argues a risk away**: a docstring or comment that says "discloses nothing",
-  "safe because" or "cannot happen". Treat it as a claim and probe it. Trace the code, or write a
-  throwaway test that would show the failure, run it, record the result, and delete the test. Run
-  the project's per-worktree setup from its `CLAUDE.md` before the first test run. A connection
-  error on that first run means the setup has not run.
+- **A comment that argues a risk away**: a docstring, comment or PR body that says "discloses
+  nothing", "safe because" or "cannot happen". Treat it as a claim and probe it. Check the
+  inference as well as the premise: a true premise often carries a false conclusion. Trace the
+  code, or write a throwaway test that would show the failure, run it, record the result, and
+  delete the test. Run the project's per-worktree setup from its `CLAUDE.md` before the first test
+  run. A connection error on that first run means the setup has not run.
 
 Use Read/Grep/LSP on the PR worktree to trace callers, check types, and confirm behavior.
 
@@ -354,37 +405,40 @@ Get accurate line numbers by reading the file in the PR worktree with the Read t
 -n` inside the worktree). This replaces the old `gh api contents + base64 -d` dance — the
 worktree is right there.
 
-Post each comment via the PR comments API:
+Post every comment in one review, so the author gets one notification:
 
 ```bash
 SHA=$(gh pr view PR_NUMBER --json headRefOid --jq '.headRefOid')
 
-gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments \
-  -F body=@/path/to/comment.md \
-  -f commit_id="$SHA" \
-  -f path='path/to/file.ts' \
-  -F line=42 \
-  -f side=RIGHT
+jq -n --arg sha "$SHA" --rawfile body /path/to/review.md \
+  --slurpfile comments /path/to/comments.json \
+  '{commit_id: $sha, event: "COMMENT", body: $body, comments: $comments[0]}' |
+  gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --input -
 ```
 
-Write each body to a file in the scratchpad with the Write tool and pass it as `-F body=@FILE`.
-Inline `-f body='...'` mangles any body containing backticks, quotes or newlines. Use the Write
-tool rather than a shell heredoc, so the body is never subject to shell quoting at all. To edit a
-body after posting, `PATCH
-repos/OWNER/REPO/pulls/comments/COMMENT_ID` with the same `-F body=@FILE` (the
-comment id is the `r<digits>` tail of the `html_url` the POST returns); an issue comment uses
+Write `/path/to/comments.json` with the Write tool: an array of
+`{"path": "src/x.ts", "line": 42, "side": "RIGHT", "body": "the finding"}` objects. Set `event` to
+`REQUEST_CHANGES` when any finding blocks, and to `COMMENT` otherwise. Keep bodies in a file so
+backticks, quotes and newlines reach GitHub unescaped. To edit one comment after posting,
+`PATCH repos/OWNER/REPO/pulls/comments/COMMENT_ID` with `-F body=@/path` (the id is the
+`r<digits>` tail of the `html_url` the POST returns); an issue comment uses
 `issues/comments/COMMENT_ID`.
 
-For a blocking finding, omit the "Nit (non-blocking)" prefix and describe the problem + impact
-+ fix directly. Consider opening as a review with `EVENT=request_changes` if blocking.
+For a blocking finding, omit the "Nit (non-blocking)" prefix and describe the problem, the impact
+and the fix directly.
 
 Frame feedback as suggestions, not criticism — describe the concern and a proposed
 alternative, not a verdict on the author. Run each comment body through `unslop` before posting.
 
 ### Step 12: Post a summary comment (only when asked)
 
-If the review has a non-obvious overall verdict or a cross-cutting finding that doesn't attach
-to a single line (e.g. "all consumers verified migrated"), post one summary comment:
+A summary comment carries a finding that has no line to attach to, and nothing else. Never a
+wrap-up, a verdict, or a recap of the inline comments. A clean review posts nothing: no "LGTM", no
+note that the PR looks fine. Praise from Step 9 attaches to the line that earns it, never to a
+summary.
+
+If the review has a cross-cutting finding that doesn't attach to a single line (e.g. "a consumer in
+a file this PR doesn't touch still imports the removed export"), post one summary comment:
 
 ```bash
 gh pr comment PR_NUMBER --body-file /path/to/summary.md
@@ -401,15 +455,15 @@ left something.
 
 ### Step 13: Clean up the worktree
 
-When the review is done, remove the review worktree and its branch:
+When the review is done, remove the review worktree and its branch from the repo root:
 
 ```bash
-git worktree remove ../review-PRNNNNN
-git branch -D review-PRNNNNN
+gwt rm "pr/PR_NUMBER" --yes
 ```
 
-Skip this if the user wants to inspect the PR themselves, or if the PR was already on a local
-branch they own.
+`gwt rm` runs the repo's `[hooks.delete]` first, then removes the worktree and deletes the branch.
+Skip it if the user wants to inspect the PR themselves, or if the PR was already on a local branch
+they own.
 
 ## Comment body content
 
@@ -465,6 +519,9 @@ every posted comment and review body here:
   requirement source existed.
 - **Reviewing a diff you never confirmed is non-empty.** A bad ref or empty diff discovered
   mid-review invalidates everything built on it. Validate first (Step 3).
+- **Answering a reply on the author's behalf.** A reply to a finding without a push is reported,
+  never answered. Posting as the user, unattended, turns a review artifact into a conversation.
+  Quote the reply and let the user decide.
 - **A verdict plus its own hedge.** "Fix it here, but it's arguably out of scope, so it's your
   call" is two answers. Give one.
 
@@ -492,6 +549,10 @@ Keep the interactive steps in this session: Steps 3-4 (worktree, diff), Step 6 (
 consumers — needs live grep against the base worktree), Step 8 (behavior traces).
 Sub-agents only run where the work is bounded reading: rules and requirements.
 
+Every sub-agent finding states its basis: `doc: <quoted sentence>` or `judgement: <evidence>`.
+Name the PR's kind in each brief, and on a re-review pass the reviewed SHA, the blockers to
+re-check and the nits not to repeat.
+
 Aggregate the reports under `## Standards` and `## Requirements` headings and end with the
 per-axis count and worst finding within each axis. Do not merge the two lists or pick a single
 winner across them — a change can pass one axis and fail the other, and ranking across axes
@@ -515,7 +576,7 @@ these are load-bearing rather than stylistic:
 
 ## Finding categories checklist
 
-When reviewing a migration/refactor PR, run through these:
+Run items 1 to 11 on a migration or refactor PR. Items 12 to 17 apply to every PR:
 
 1. **Missed consumers** — every deleted export's importers updated or deleted?
 2. **Pattern consistency** — new code matches existing conventions?

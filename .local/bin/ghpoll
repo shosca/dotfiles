@@ -1,0 +1,428 @@
+#!/usr/bin/env python3
+"""Poll GitHub for pull request changes and wake a herdr orchestrator agent.
+
+ghpoll detects changes and nothing else. It holds no review or merge logic and never names an
+agent. Each round, per configured repo, it:
+
+1. Reads every open PR with one paginated GraphQL search.
+2. Sorts each PR into a role. ``babysit`` is a PR you author. ``review`` is someone else's PR
+   that is not approved, not WIP, not on hold and active inside the age window. Drafts of
+   either role are skipped until they are ready.
+3. Compares each PR with the snapshot from the last round and turns the differences into short
+   events, such as ``pushed``, ``checks FAILURE`` or ``merged``. Events pile up per PR until
+   they are delivered.
+4. Delivers the pending events as one single-line prompt to the herdr agent in the repo's
+   ``ghpoll`` space: the space with that label whose repo root is the configured ``root``. Space
+   labels repeat across projects, so the label alone is not enough. It sends only when that
+   agent is ``idle`` or
+   ``done``. A ``working`` agent gets the merged events on a later round, so the agent never
+   holds a queue of prompts. A ``blocked`` agent, or no agent, gets one herdr notification per
+   state change, because typed input would answer whatever the agent is asking.
+
+The prompt is one line because a newline typed into an agent TUI can submit it early.
+
+``--replay`` puts the last delivered events back in the queue, for every PR or the ones named,
+and runs a normal round. Use it to retry a prompt the agent dropped or to test the digest.
+
+Config lives in ``~/.config/ghpoll/config.toml``::
+
+    login = "octocat"            # optional; defaults to `gh api user`
+    prefix = ""                  # optional text in front of every prompt, e.g. a slash command
+
+    [[repo]]
+    name = "owner/repo"
+    root = "~/src/repo"          # clone root
+    space = "ghpoll"             # herdr space label whose agent wakes
+    age_days = 14                # review PRs idle longer than this are ignored
+    hold_label = "on hold"
+    ignore_authors = []
+    roles = ["review", "babysit"]  # omit a role to stop hearing about it
+
+State lives in ``~/.local/state/ghpoll/<owner>__<repo>.json``. Run it from a systemd user timer.
+"""
+
+from __future__ import annotations
+
+import argparse
+import fcntl
+import json
+import os
+import subprocess
+import sys
+import tomllib
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from typing import Any
+
+GONE_BATCH = 50
+CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser() / "ghpoll/config.toml"
+STATE = Path(os.environ.get("XDG_STATE_HOME", "~/.local/state")).expanduser() / "ghpoll"
+DELIVERABLE = {"idle", "done"}
+
+SEARCH = """
+query($q: String!, $after: String) {
+  search(query: $q, type: ISSUE, first: 50, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes { ... on PullRequest {
+      number title isDraft updatedAt headRefOid reviewDecision mergeStateStatus
+      author { login }
+      labels(first: 20) { nodes { name } }
+      commits(last: 1) { nodes { commit { statusCheckRollup {
+        state
+        contexts(last: 100) { nodes {
+          ... on CheckRun { startedAt completedAt }
+          ... on StatusContext { createdAt }
+        } }
+      } } } }
+      reviewThreads(first: 100) { pageInfo { hasNextPage } nodes { isResolved } }
+    } }
+  }
+}
+"""
+
+
+def run(*cmd: str) -> str:
+    return subprocess.run(cmd, check=True, capture_output=True, text=True).stdout
+
+
+def graphql(query: str, **variables: str | None) -> dict[str, Any]:
+    """Run a query and keep partial data, so one unresolvable PR number does not sink a round."""
+    args = ["gh", "api", "graphql", "-f", f"query={query}"]
+    for key, value in variables.items():
+        if value is not None:
+            args += ["-f", f"{key}={value}"]
+    result = subprocess.run(args, check=False, capture_output=True, text=True)
+    data = json.loads(result.stdout or "{}").get("data")
+    if data is None:
+        raise subprocess.CalledProcessError(result.returncode, args, result.stdout, result.stderr)
+    return data
+
+
+def fetch_open(repo: str) -> list[dict[str, Any]]:
+    prs, after = [], None
+    while True:
+        page = graphql(SEARCH, q=f"repo:{repo} is:pr is:open", after=after)["search"]
+        prs += [node for node in page["nodes"] if node]
+        if not page["pageInfo"]["hasNextPage"]:
+            return prs
+        after = page["pageInfo"]["endCursor"]
+
+
+def fetch_states(repo: str, numbers: list[int]) -> dict[int, str]:
+    if not numbers:
+        return {}
+    owner, name = repo.split("/")
+    fields = " ".join(f"p{n}: pullRequest(number: {n}) {{ state }}" for n in numbers)
+    data = graphql(f'query {{ repository(owner: "{owner}", name: "{name}") {{ {fields} }} }}')
+    repository = data.get("repository")
+    if repository is None:
+        raise RuntimeError(f"repository {repo} is not visible")
+    return {
+        int(key[1:]): value["state"] if value else "GONE"
+        for key, value in repository.items()
+    }
+
+
+def snapshot(pr: dict[str, Any], login: str) -> dict[str, Any]:
+    commits = pr["commits"]["nodes"]
+    rollup = commits[0]["commit"]["statusCheckRollup"] if commits else None
+    return {
+        "role": "babysit" if (pr["author"] or {}).get("login") == login else "review",
+        "title": pr["title"],
+        "author": (pr["author"] or {}).get("login", "ghost"),
+        "draft": pr["isDraft"],
+        "head": pr["headRefOid"],
+        "updated": pr["updatedAt"],
+        "decision": pr["reviewDecision"],
+        "merge": pr["mergeStateStatus"],
+        "checks": rollup["state"] if rollup else None,
+        "checks_at": checks_at(rollup),
+        "threads": threads(pr["reviewThreads"]),
+        "labels": [label["name"] for label in pr["labels"]["nodes"]],
+    }
+
+
+def checks_at(rollup: dict[str, Any] | None) -> str | None:
+    """Return the newest check timestamp on the head commit.
+
+    The rollup state alone misses a re-run that finishes in the state it started from:
+    ``FAILURE``, re-run, ``FAILURE`` between two rounds looks like no change. Every re-run writes
+    newer check-run and status timestamps, so this stamp moves even when the state does not.
+    """
+    if not rollup:
+        return None
+    stamps = [
+        stamp
+        for node in rollup["contexts"]["nodes"]
+        for stamp in (node.get("startedAt"), node.get("completedAt"), node.get("createdAt"))
+        if stamp
+    ]
+    return max(stamps, default=None)
+
+
+def threads(review_threads: dict[str, Any]) -> str:
+    """Count unresolved threads in the first page; a ``+`` marks a count that may be higher."""
+    count = sum(not thread["isResolved"] for thread in review_threads["nodes"])
+    return f"{count}+" if review_threads["pageInfo"]["hasNextPage"] else str(count)
+
+
+def skip_reason(snap: dict[str, Any], repo: dict[str, Any]) -> str | None:
+    """Return why a PR is out of the queue, or None when it belongs in it."""
+    if snap["draft"]:
+        return "draft"
+    labels = {label.lower() for label in snap["labels"]}
+    if repo.get("hold_label", "on hold").lower() in labels:
+        return "on hold"
+    if snap["role"] == "babysit":
+        return None
+    if snap["decision"] == "APPROVED":
+        return "approved"
+    if "[wip]" in snap["title"].lower() or "wip" in labels:
+        return "wip"
+    cutoff = datetime.now(UTC) - timedelta(days=repo.get("age_days", 14))
+    if datetime.fromisoformat(snap["updated"]) < cutoff:
+        return "stale"
+    return None
+
+
+def diff(old: dict[str, Any] | None, new: dict[str, Any]) -> list[str]:
+    """Describe what changed. Plain ``activity`` covers an updatedAt bump with nothing specific.
+
+    A tracked PR that went back to draft reports ``back to draft`` once and then stays quiet
+    until it is ready again, merged or closed.
+    """
+    if old is None:
+        return [f'new "{new["title"][:60]}" @{new["author"]}']
+    if new["draft"] and old["draft"]:
+        return []
+    events = []
+    if new["head"] != old["head"]:
+        events.append("pushed")
+    if new["draft"] != old["draft"]:
+        events.append("back to draft" if new["draft"] else "ready for review")
+    if new["role"] == "babysit":
+        stamp = old.get("checks_at", new["checks_at"])
+        rerun = new["checks"] != "PENDING" and new["checks_at"] != stamp
+        if new["checks"] != old["checks"] or rerun:
+            events.append(f"checks {new['checks'] or 'NONE'}")
+        if "UNKNOWN" not in (new["merge"], old["merge"]) and new["merge"] != old["merge"]:
+            events.append(f"merge {new['merge']}")
+        if new["decision"] != old["decision"]:
+            events.append(f"review {new['decision'] or 'NONE'}")
+        if new["threads"] != old["threads"]:
+            events.append(f"{new['threads']} unresolved threads")
+    if not events and new["updated"] != old["updated"]:
+        events.append("activity")
+    return events
+
+
+def find_agent(root: Path, space: str) -> dict[str, Any] | None:
+    workspaces = json.loads(run("herdr", "workspace", "list"))["result"]["workspaces"]
+    ids = {
+        workspace["workspace_id"]
+        for workspace in workspaces
+        if workspace.get("label") == space
+        and (repo_root := (workspace.get("worktree") or {}).get("repo_root"))
+        and Path(repo_root).resolve() == root
+    }
+    agents = json.loads(run("herdr", "agent", "list"))["result"]["agents"]
+    return next((agent for agent in agents if agent.get("workspace_id") in ids), None)
+
+
+def render(repo: str, pending: dict[str, dict[str, list[str]]], prefix: str) -> str:
+    parts = []
+    for role in ("review", "babysit"):
+        prs = pending.get(role, {})
+        if prs:
+            items = "; ".join(
+                f"#{n} {', '.join(events)}"
+                for n, events in sorted(prs.items(), key=lambda item: int(item[0]))
+            )
+            parts.append(f"{role}: {items}")
+    return f"{prefix}ghpoll {repo} — " + " — ".join(parts)
+
+
+def notify(title: str, body: str) -> None:
+    args = ["herdr", "notification", "show", title, "--body", body, "--sound", "request"]
+    subprocess.run(args, check=False, capture_output=True)
+
+
+def collect(
+    repo: dict[str, Any], login: str, tracked: dict[str, dict[str, Any]]
+) -> tuple[dict[str, dict[str, Any]], dict[str, tuple[str, list[str]]]]:
+    """Return the PRs in the queue now, and the events per PR since the ``tracked`` snapshots.
+
+    A tracked PR that leaves the queue while open gets one ``dropped`` event. A draft keeps its
+    snapshot, because its author is still working on it. The hold label keeps only a review PR: a
+    PR with a reviewer stays that reviewer's to watch, while your own PR on hold is parked.
+    A tracked PR that is no longer open gets its final state, read in one aliased query. That query
+    holds at most ``GONE_BATCH`` aliases, so a long pause cannot grow it past GitHub's limits. The
+    rest keep their old snapshot and resolve in later rounds. A PR the search missed but that is
+    still open, such as past the search's 1000-result cap or during index lag, also keeps its
+    snapshot.
+
+    A role the repo left out of ``roles`` is forgotten rather than tracked, so turning that role
+    back on treats the PRs open then as new.
+    """
+    name = repo["name"]
+    ignored = set(repo.get("ignore_authors", []))
+    roles = set(repo.get("roles", ("review", "babysit")))
+    current, events, still_open = {}, {}, set()
+    for pr in fetch_open(name):
+        snap = snapshot(pr, login)
+        key = str(pr["number"])
+        still_open.add(key)
+        if snap["role"] not in roles:
+            tracked.pop(key, None)
+            continue
+        if snap["author"] in ignored:
+            continue
+        reason = skip_reason(snap, repo)
+        keeps_snapshot = reason == "draft" or (reason == "on hold" and snap["role"] == "review")
+        if keeps_snapshot and key in tracked:
+            reason = None
+        if reason:
+            if key in tracked:
+                events[key] = (snap["role"], [f"dropped ({reason})"])
+            continue
+        current[key] = snap
+        if found := diff(tracked.get(key), snap):
+            events[key] = (snap["role"], found)
+
+    gone = [key for key in tracked if key not in still_open]
+    for key in gone[GONE_BATCH:]:
+        current[key] = tracked[key]
+    for number, pr_state in fetch_states(name, [int(key) for key in gone[:GONE_BATCH]]).items():
+        key = str(number)
+        if pr_state == "OPEN":
+            current[key] = tracked[key]
+        else:
+            events[key] = (tracked[key]["role"], [pr_state.lower()])
+    return current, events
+
+
+def deliver(name: str, root: Path, space: str, message: str, state: dict[str, Any]) -> bool:
+    """Prompt the target agent when it can take input. Return True when the prompt went in.
+
+    Any other outcome, including a failed prompt, notifies once per distinct status, so a
+    persistent failure is visible without a notification every round.
+    """
+    agent = find_agent(root, space)
+    status = agent["agent_status"] if agent else "missing"
+    if status in DELIVERABLE:
+        try:
+            run("herdr", "agent", "prompt", agent["pane_id"], message)
+        except subprocess.CalledProcessError as error:
+            print(f"ghpoll {name}: prompt failed: {error.stderr.strip()}", file=sys.stderr)
+            status = "rejecting prompts"
+        else:
+            state["notice"] = None
+            print(f"ghpoll {name}: prompted {agent['pane_id']}")
+            return True
+    if status != "working" and state.get("notice") != status:
+        notify(f"ghpoll {name}", f"orchestrator in space {space} is {status}; events wait")
+        state["notice"] = status
+        print(f"ghpoll {name}: orchestrator {status}; notified")
+    else:
+        print(f"ghpoll {name}: orchestrator {status}; events queued")
+    return False
+
+
+def poll(
+    repo: dict[str, Any],
+    login: str,
+    prefix: str,
+    dry_run: bool,
+    seed: bool,
+    replay: list[str] | None,
+) -> None:
+    """Run one round for one repo.
+
+    ``delivered`` keeps each PR's last delivered events so ``--replay`` can queue them again. It
+    holds only PRs still tracked or just delivered, so closed PRs age out after one round.
+    """
+    name = repo["name"]
+    root = Path(repo["root"]).expanduser().resolve()
+    space = repo.get("space", "ghpoll")
+    state_file = STATE / f"{name.replace('/', '__')}.json"
+    state = json.loads(state_file.read_text()) if state_file.exists() else {}
+    pending: dict[str, dict[str, list[str]]] = state.get("pending", {})
+    delivered: dict[str, dict[str, list[str]]] = state.get("delivered", {})
+
+    current, events = collect(repo, login, state.get("prs", {}))
+    if replay is not None:
+        for role, prs in delivered.items():
+            for key, found in prs.items():
+                if not replay or key in replay:
+                    events[key] = (role, found + events.get(key, (role, []))[1])
+    if not seed:
+        for key, (role, found) in events.items():
+            queue = pending.setdefault(role, {}).setdefault(key, [])
+            queue += [event for event in found if event not in queue]
+
+    message = render(name, pending, prefix) if any(pending.values()) else None
+    if dry_run:
+        print(message or f"ghpoll {name}: no changes")
+        return
+    if seed:
+        print(f"ghpoll {name}: seeded {len(current)} PRs")
+    elif message:
+        for key, (role, found) in sorted(events.items(), key=lambda item: int(item[0])):
+            print(f"ghpoll {name}: #{key} {role}: {', '.join(found)}")
+        if deliver(name, root, space, message, state):
+            for role, prs in pending.items():
+                delivered.setdefault(role, {}).update(prs)
+            pending = {}
+    else:
+        print(f"ghpoll {name}: no changes")
+
+    for role, prs in delivered.items():
+        delivered[role] = {
+            key: found for key, found in prs.items() if key in current or key in events
+        }
+    state.update(prs=current, pending=pending, delivered=delivered)
+    tmp = state_file.with_suffix(".tmp")
+    tmp.write_text(json.dumps(state, indent=1))
+    tmp.replace(state_file)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--config", type=Path, default=CONFIG)
+    parser.add_argument("--dry-run", action="store_true", help="print the prompt; save nothing")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--seed", action="store_true", help="record the current PRs as seen")
+    mode.add_argument(
+        "--replay",
+        nargs="*",
+        metavar="PR",
+        help="queue the last delivered events again, for all PRs or the ones named",
+    )
+    args = parser.parse_args()
+
+    config = tomllib.loads(args.config.expanduser().read_text())
+    login = config.get("login") or run("gh", "api", "user", "--jq", ".login").strip()
+
+    STATE.mkdir(parents=True, exist_ok=True)
+    failures = 0
+    prefix = config.get("prefix", "")
+    with open(STATE / "lock", "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            sys.exit("ghpoll: another round is running")
+        for repo in config["repo"]:
+            try:
+                poll(repo, login, prefix, args.dry_run, args.seed, args.replay)
+            except subprocess.CalledProcessError as error:
+                failures += 1
+                print(f"ghpoll {repo['name']}: {error.stderr.strip()}", file=sys.stderr)
+            except Exception as error:  # noqa: BLE001 - one broken repo must not stop the others
+                failures += 1
+                print(f"ghpoll {repo['name']}: {error!r}", file=sys.stderr)
+    if failures:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
