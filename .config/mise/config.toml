@@ -1,11 +1,14 @@
 [tools]
+"github:avivsinai/jenkins-cli" = "latest"
 "github:hmans/beans" = "latest"
 "github:looker-open-source/looker-cli" = "latest"
+"github:penso/herdr-gpui" = "latest"
 "npm:billion-context" = "latest"
 "npm:chrome-devtools-mcp" = "latest"
 "pipx:mycli" = "latest"
 "pipx:nexmod" = "latest"
 "pipx:yawsso" = { version = "latest" }
+acli = "latest"
 age = "latest"
 aws-iam-authenticator = "latest"
 awsls = "latest"
@@ -27,7 +30,7 @@ process-compose = "latest"
 rtk = "latest"
 trivy = "latest"
 uv = "latest"
-acli = "latest"
+sonarqube-cli = "latest"
 
 [shell_alias]
 pc = "process-compose"

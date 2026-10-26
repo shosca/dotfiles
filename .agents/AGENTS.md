@@ -31,7 +31,7 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 
 ## Skills
 
-- Load the `pr-review` skill before reviewing a pull request.
+- Before the first `git commit`, a fresh subagent loads the `pr-review` skill and reviews your uncommitted diff — no PR, no comments posted, findings back as text. Fix from its findings; never review your own diff in-session.
 - Load the `commit` skill before you run `git commit`.
 - Load the `pr-writer` skill before you create or edit a pull request title or body.
 - Load the matching file-type skill (`docx`, `xlsx`, `pptx`, `pdf`, and any newer one) before creating or editing that file type.

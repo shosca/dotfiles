@@ -59,7 +59,7 @@ Then work through these in order. Cases 1 and 2 end the tick.
 End every tick with one block in the pane. A tick where nothing changed prints one line. A tick
 that reviewed a revision, or that asks for my verdict, prints the review summary, in this order:
 
-1. The verdict and the blocker and nit counts, then the PR URL on its own line.
+1. The assessment and the blocker and nit counts, then the PR URL on its own line.
 2. What changed since the last revision: a rebase with no code change, or what the push changed.
 3. What the PR does, in two or three lines.
 4. The requirement check: each acceptance criterion and its result.
@@ -67,8 +67,12 @@ that reviewed a revision, or that asks for my verdict, prints the review summary
 6. What I let pass, and why.
 7. What I did not verify, such as CI that is still running or tests not run locally.
 
-A verdict count alone gives me nothing to decide on. Without the summary, I cannot approve. A tick
-that pings carries the summary inside the question as well, as "Notify me" describes.
+The **assessment** is this session's reading of the revision: `clean`, `clean, 2 nits` or
+`blocked, 1 blocker`. The **verdict** is mine: approve, request changes, or wait. The pane reports
+the assessment and puts the verdict to me as a question.
+
+A count alone gives me nothing to decide on. Without the summary, I cannot approve. A tick that
+pings carries the summary inside the question as well, as "Notify me" describes.
 
 When the block asks for my verdict, it carries the PR's full URL on its own line, with no
 punctuation after it, so I can open it from the pane. This covers a revision that comes back with
@@ -98,13 +102,13 @@ revisions:
     activity_seen: 2026-09-10T13:22:00Z
     notified:                 # the sha or comment id already pinged, if any
     mode:                     # diff-only when that pass read only the diff
-    verdict: approve, 3 nits, no blockers
+    assessment: clean, 3 nits
     blockers: 0
     findings:
       - https://github.com/…#discussion_r3979500097
 ---
 
-## 03072dcd — approve, 3 nits, no blockers
+## 03072dcd — clean, 3 nits
 
 ### Findings
 
@@ -117,14 +121,14 @@ unchanged after the push.
 ```
 
 - **Dedupe on the `revisions` list.** A head that already appears there is reviewed. A new push
-  adds a SHA rather than a file, and so does a rebase that carries the verdict forward. Record a
+  adds a SHA rather than a file, and so does a rebase that carries the assessment forward. Record a
   clean review too. It posts nothing to GitHub, so this file is the only thing that stops it being
   redone on every tick.
 - **Append, never restart.** A re-review opens on what the last one concluded and checked clean,
   and reads the new revision against that. Say in the new section what changed since the revision
   below it.
 - **Write the findings in full.** The pane scrolls away, and the posted comments carry only what
-  is about the code. The reasoning behind a verdict and everything that checked out fine live
+  is about the code. The reasoning behind an assessment and everything that checked out fine live
   nowhere else.
 - `blockers` is per revision, so "waiting on me" is computable rather than parsed out of prose.
 - `settled:` in the frontmatter records how the PR ended: an approval I gave, a merge, a close, or
@@ -136,8 +140,9 @@ unchanged after the push.
 ## Review and posting
 
 Use the `pr-review` skill. It carries the review: the full patch, prior threads, missed consumers,
-the project's documented rules, behaviour changes and probes. Two of its steps are overridden
-here:
+the project's documented rules, behaviour changes and probes. Post through the
+[`pr-comment`](../pr-comment/SKILL.md) standard: attribution callout, secret scan, return-URL
+verification. Two of `pr-review`'s steps are overridden here:
 
 - **The worktree already exists.** It is this session's cwd. Skip the checkout step. Do not remove
   the worktree at the end.
@@ -239,10 +244,10 @@ ping goes out, and send nothing for an event already listed there. Ping last in 
 order: post the comments, write the record, print the end-of-tick block, then ask. The ping never
 promises findings that are not up yet.
 
-The question box hides every line printed in the same turn, the end-of-tick block included. A
-`preview` shows only while an option has focus, so a summary that sits only in a preview stays
-hidden too. Put the full end-of-tick summary, the PR URL included, in the question text itself,
-after the one-line event. Put the same summary in the `preview` of each option as well.
+The question box hides every line printed in the same turn, the end-of-tick block included. Put
+the full end-of-tick summary, the PR URL included, in the question text itself, after the one-line
+event. Never set `preview` on an option: herdr reports a pane with a preview dialog as `done`, not
+`blocked`, so ghpoll types into it and its Enter picks an option.
 
 When I answer a question with "clarify" instead of an option, the summary did not reach me. Print
 the full summary as plain text, then ask what I want to clarify. Do not ask the same question
@@ -252,9 +257,10 @@ To ping, write `notified:` first, then ask me a question and wait. That is the o
 session sends: the rich-notifications plugin turns a `blocked` pane into a desktop notification, and
 it is the one channel that behaves the same for every agent. `herdr notification show` reaches the
 herdr window only, so do not use it here. Use whatever blocking question the harness has (Claude:
-`AskUserQuestion`). Start the question with the event: `#<n> waiting on you: <verdict>, <one line
-on what changed>`. The summary follows it. Offer the decision the event asks for, such as approve or leave it, and act on the answer
-in the same turn.
+`AskUserQuestion`). Start the question with the event: `#<n> waiting on you: <assessment>, <one line
+on what changed>`. The summary follows it. Offer the verdict the event asks for, such as approve or leave it, and act on the answer
+in the same turn. Put the option that changes nothing first. A stray Enter selects the first
+option, so it must never post to GitHub.
 
 ## Cleanup
 

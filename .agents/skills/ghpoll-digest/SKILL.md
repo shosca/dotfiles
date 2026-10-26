@@ -54,8 +54,11 @@ A PR's worktree is:
 Run `herdr agent list` once. A PR's session is the agent whose `cwd` is that worktree. Its
 `agent_status` decides how you reach it:
 
-- `idle` or `done`: `herdr agent prompt <pane> "<command>"`. Do not pass `--wait`: this path needs
-  no confirmation, and a stall is only reported with `--wait`.
+- `idle` or `done`: first run `herdr pane read <pane> --source visible`. herdr can report `done`
+  while a question or choice dialog is open, and the Enter of a prompt then selects the highlighted
+  option. If the screen shows an open question, treat the pane as `blocked`. Otherwise run
+  `herdr agent prompt <pane> "<command>"`. Do not pass `--wait`: this path needs no confirmation,
+  and a stall is only reported with `--wait`.
 - `working`: run `herdr agent wait <pane> --timeout 60000`, then act on the new status. A timeout
   exits non-zero, so run the wait and the prompt as separate commands. A timed-out wait says nothing
   about delivery: never send the same prompt twice. When the agent still works, send it anyway and

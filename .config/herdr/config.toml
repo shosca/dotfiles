@@ -118,8 +118,6 @@ mouse_capture = true
 
 # Selections also go to the clipboard so ctrl+shift+v matches shift+insert
 copy_on_select = true
-
-# status-right had the zoom flag followed by #h; load 1m avg refreshes every 5s
 tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "zoom" },
@@ -135,6 +133,7 @@ agent_panel_sort = "spaces"
 
 # tmux was one line per window; keep each agent entry to one sidebar row
 status_indicators = "symbols"
+hide_tab_bar_when_single_tab = true
 
 [ui.toast]
 delivery = "herdr"

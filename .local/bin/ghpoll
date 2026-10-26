@@ -4,7 +4,9 @@
 ghpoll detects changes and nothing else. It holds no review or merge logic and never names an
 agent. Each round, per configured repo, it:
 
-1. Reads every open PR with one paginated GraphQL search.
+1. Reads every open PR with one paginated GraphQL search. When the GraphQL rate limit is
+   exhausted, the read degrades to the REST API and keeps each tracked PR's last thread count,
+   which the REST API cannot resolve.
 2. Sorts each PR into a role. ``babysit`` is a PR you author. ``review`` is someone else's PR
    that is not approved, not WIP, not on hold and active inside the age window. Drafts of
    either role are skipped until they are ready.
@@ -98,14 +100,130 @@ def graphql(query: str, **variables: str | None) -> dict[str, Any]:
     return data
 
 
-def fetch_open(repo: str) -> list[dict[str, Any]]:
-    prs, after = [], None
+def rate_limited(error: subprocess.CalledProcessError) -> bool:
+    stderr = error.stderr or ""
+    return "API rate limit exceeded" in stderr or "secondary rate limit" in stderr
+
+
+# ``mergeable_state`` from the REST pull read, keyed to GraphQL ``mergeStateStatus``.
+MERGE_STATE = {
+    "clean": "CLEAN",
+    "dirty": "DIRTY",
+    "blocked": "BLOCKED",
+    "unstable": "UNSTABLE",
+    "behind": "BEHIND",
+    "unknown": "UNKNOWN",
+    # hooks are still queued; GraphQL reports that as a rollup in progress.
+    "has_hooks": "UNSTABLE",
+    "draft": "DRAFT",
+}
+
+FAILING = {"failure", "timed_out", "cancelled", "action_required", "startup_failure"}
+DECIDED = {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"}
+
+
+def rest_rollup(repo: str, sha: str) -> dict[str, Any]:
+    """Rebuild the GraphQL ``statusCheckRollup`` shape from REST reads."""
+    runs = json.loads(run("gh", "api", f"repos/{repo}/commits/{sha}/check-runs?per_page=100"))[
+        "check_runs"
+    ]
+    status = json.loads(run("gh", "api", f"repos/{repo}/commits/{sha}/status"))
+    contexts = [
+        {"startedAt": r["started_at"], "completedAt": r["completed_at"]}
+        for r in runs
+        if r["started_at"]
+    ] + [{"createdAt": s["created_at"]} for s in status["statuses"]]
+    pending = any(r["status"] != "COMPLETED" for r in runs) or status["state"] == "pending"
+    failing = any(r["conclusion"] in FAILING for r in runs) or status["state"] == "failure"
+    if pending:
+        state = "PENDING"
+    elif failing:
+        state = "FAILURE"
+    else:
+        state = "SUCCESS" if runs or status["statuses"] else None
+    return {"state": state, "contexts": {"nodes": contexts}}
+
+
+def rest_decision(repo: str, number: int) -> str | None:
+    """The GraphQL ``reviewDecision``: a reviewer's latest decided review rules."""
+    reviews = json.loads(run("gh", "api", f"repos/{repo}/pulls/{number}/reviews?per_page=100"))
+    latest = {
+        review["user"]["login"]: review["state"]
+        for review in reviews
+        if review["state"] in DECIDED
+    }
+    if "CHANGES_REQUESTED" in latest.values():
+        return "CHANGES_REQUESTED"
+    return "APPROVED" if "APPROVED" in latest.values() else None
+
+
+def rest_pr(repo: str, number: int, tracked: dict[str, list[str]] | None) -> dict[str, Any]:
+    """Rebuild one GraphQL PR node from REST reads.
+
+    REST cannot report thread resolution, so a tracked PR keeps its old thread string (a ``3+``
+    becomes ``3``) and an unknown one reports ``0``. The next unexhausted round replaces the
+    value with a real count.
+    """
+    pr = json.loads(run("gh", "api", f"repos/{repo}/pulls/{number}"))
+    old = (tracked or {}).get(str(number))
+    count = int(str((old or {}).get("threads", "0")).rstrip("+") or 0)
+    rollup = rest_rollup(repo, pr["head"]["sha"]) if pr["head"]["sha"] else None
+    return {
+        "number": number,
+        "title": pr["title"],
+        "isDraft": pr["draft"],
+        "updatedAt": pr["updated_at"],
+        "headRefOid": pr["head"]["sha"],
+        "reviewDecision": rest_decision(repo, number),
+        "mergeStateStatus": MERGE_STATE.get(pr["mergeable_state"], "UNKNOWN"),
+        "author": {"login": (pr["user"] or {}).get("login")},
+        "labels": {"nodes": [{"name": label["name"]} for label in pr["labels"]]},
+        "commits": {"nodes": [{"commit": {"statusCheckRollup": rollup}}]} if rollup else [],
+        "reviewThreads": {
+            "pageInfo": {"hasNextPage": False},
+            "nodes": [{"isResolved": False}] * count,
+        },
+    }
+
+
+def rest_open(repo: str, tracked: dict[str, list[str]]) -> list[dict[str, Any]]:
+    """Read every open PR through REST. Past page 1 per page of 100, paginate the list."""
+    prs, page = [], 1
     while True:
-        page = graphql(SEARCH, q=f"repo:{repo} is:pr is:open", after=after)["search"]
-        prs += [node for node in page["nodes"] if node]
-        if not page["pageInfo"]["hasNextPage"]:
+        listed = json.loads(run("gh", "api", f"repos/{repo}/pulls?state=open&per_page=100&page={page}"))
+        prs += [rest_pr(repo, pr["number"], tracked) for pr in listed]
+        if len(listed) < 100:
             return prs
-        after = page["pageInfo"]["endCursor"]
+        page += 1
+
+
+def rest_states(repo: str, numbers: list[int]) -> dict[int, str]:
+    """Read each PR's state through REST; an unreadable one counts as GONE."""
+    out = {}
+    for number in numbers:
+        try:
+            pr = json.loads(run("gh", "api", f"repos/{repo}/pulls/{number}"))
+        except subprocess.CalledProcessError:
+            out[number] = "GONE"
+            continue
+        out[number] = "MERGED" if pr.get("merged") else pr["state"].upper()
+    return out
+
+
+def fetch_open(repo: str, tracked: dict[str, list[str]] | None = None) -> list[dict[str, Any]]:
+    try:
+        prs, after = [], None
+        while True:
+            page = graphql(SEARCH, q=f"repo:{repo} is:pr is:open", after=after)["search"]
+            prs += [node for node in page["nodes"] if node]
+            if not page["pageInfo"]["hasNextPage"]:
+                return prs
+            after = page["pageInfo"]["endCursor"]
+    except subprocess.CalledProcessError as error:
+        if not rate_limited(error):
+            raise
+        print(f"ghpoll {repo}: graphql exhausted; REST fallback", file=sys.stderr)
+        return rest_open(repo, tracked or {})
 
 
 def fetch_states(repo: str, numbers: list[int]) -> dict[int, str]:
@@ -113,7 +231,13 @@ def fetch_states(repo: str, numbers: list[int]) -> dict[int, str]:
         return {}
     owner, name = repo.split("/")
     fields = " ".join(f"p{n}: pullRequest(number: {n}) {{ state }}" for n in numbers)
-    data = graphql(f'query {{ repository(owner: "{owner}", name: "{name}") {{ {fields} }} }}')
+    try:
+        data = graphql(f'query {{ repository(owner: "{owner}", name: "{name}") {{ {fields} }} }}')
+    except subprocess.CalledProcessError as error:
+        if not rate_limited(error):
+            raise
+        print(f"ghpoll {repo}: graphql exhausted; REST fallback", file=sys.stderr)
+        return rest_states(repo, numbers)
     repository = data.get("repository")
     if repository is None:
         raise RuntimeError(f"repository {repo} is not visible")
@@ -268,7 +392,7 @@ def collect(
     ignored = set(repo.get("ignore_authors", []))
     roles = set(repo.get("roles", ("review", "babysit")))
     current, events, still_open = {}, {}, set()
-    for pr in fetch_open(name):
+    for pr in fetch_open(name, tracked):
         snap = snapshot(pr, login)
         key = str(pr["number"])
         still_open.add(key)
@@ -389,6 +513,12 @@ def poll(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--config", type=Path, default=CONFIG)
+    parser.add_argument(
+        "--min-remaining",
+        type=int,
+        default=200,
+        help="skip the round when the GraphQL budget is below this; rate_limit reads are free",
+    )
     parser.add_argument("--dry-run", action="store_true", help="print the prompt; save nothing")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--seed", action="store_true", help="record the current PRs as seen")
@@ -404,6 +534,11 @@ def main() -> None:
     login = config.get("login") or run("gh", "api", "user", "--jq", ".login").strip()
 
     STATE.mkdir(parents=True, exist_ok=True)
+    remaining = int(json.loads(run("gh", "api", "rate_limit"))["resources"]["graphql"]["remaining"])
+    if remaining < args.min_remaining:
+        sys.exit(
+            f"ghpoll: graphql budget low ({remaining} < {args.min_remaining}), skipping round"
+        )
     failures = 0
     prefix = config.get("prefix", "")
     with open(STATE / "lock", "w") as lock:

@@ -49,6 +49,7 @@
       "find *": "allow",
       "gh pr checks *": "allow",
       "gh pr view *": "allow",
+      "gh search *": "allow",
       "git diff *": "allow",
       "git log *": "allow",
       "git rev-parse *": "allow",

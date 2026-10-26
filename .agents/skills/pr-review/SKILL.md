@@ -395,6 +395,9 @@ Ambiguity is not neutral — it gets resolved, and often not the way you meant.
 
 ### Step 11: Post line-level review comments (only when asked)
 
+Post through the [`pr-comment`](../pr-comment/SKILL.md) skill: the attribution callout, the
+secret scan before posting, and the returned-URL check after.
+
 **Only when the user explicitly asks you to comment on the PR**, post findings as line-level
 review comments.
 

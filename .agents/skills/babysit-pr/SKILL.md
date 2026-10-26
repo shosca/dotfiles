@@ -124,7 +124,9 @@ is the thread root.
    resolve. The push comes first, so a reply links a commit that exists on the remote, and a refused
    lease publishes nothing.
 
-Reply to every reviewer's thread. Resolve a thread once you replied to it, unless your reply
+Reply to every reviewer's thread, formatted per the
+[`pr-comment`](../pr-comment/SKILL.md) standard. Resolve a thread once you replied to it, unless
+your reply
 defers to the reviewer. Never resolve a thread you did not address. Never change code to quiet
 a bot.
 
