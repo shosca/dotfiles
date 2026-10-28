@@ -1,5 +1,8 @@
 font-family = "VictorMono Nerd Font Mono"
 font-size = 10
+# Match WezTerm: SemiBold weight + Victor Mono stylistic sets / ligatures
+font-style = SemiBold
+font-feature = calt, clig, liga, ss01, ss02, ss03, ss04, ss05, ss06, ss07, ss08, ss09, ss10
 
 # Pick an existing tmux session (fzf chooser), else create the home session
 command = /usr/bin/zsh --login
@@ -15,6 +18,7 @@ gtk-titlebar-hide-when-maximized = true
 
 # Select also copies to CLIPBOARD so ctrl+shift+v matches shift+insert (primary)
 copy-on-select = clipboard
+middle-click-action = clipboard-paste
 
 # Reload config (default ctrl+shift+, needs comma; this is easier)
 keybind = ctrl+enter=unbind

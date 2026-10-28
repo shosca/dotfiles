@@ -97,6 +97,12 @@ type = "plugin_action"
 command = "ray.plugin-manager.open"
 description = "open plugin manager"
 
+[[keys.command]]
+key = "prefix+shift+h"
+type = "plugin_action"
+command = "bengemine.hibernate.now"
+description = "hibernate focused pane"
+
 [ui]
 accent = "blue"
 

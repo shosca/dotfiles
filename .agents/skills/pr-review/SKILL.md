@@ -1,28 +1,33 @@
 ---
 name: pr-review
 description: >
-  Review a GitHub PR: check out the PR in a worktree, read the full diff, verify against
-  existing patterns, find missed consumers, optionally run lint/typecheck/tests, and post
-  line-level review comments on the specific file locations. Use when user says "review this
-  PR", "review #NNNNN", "code review", or invokes /pr-review. Auto-triggers when reviewing
-  pull requests.
+  Review a GitHub PR, or an uncommitted diff before its first commit: read the full diff, verify
+  it against existing patterns and documented rules, find missed consumers, and post line-level
+  review comments when asked. Use when the user says "review this PR", "review #NNNNN", "code
+  review", or invokes /pr-review.
 ---
 
 # PR Review
 
 Review a GitHub PR by checking it out in a **worktree** alongside the base branch. This gives
 full Read/Grep/Glob/LSP access to both the PR code and the pre-PR state. `gh` is then used only
-to **post** review comments. CI runs lint/typecheck/tests — don't duplicate that work.
+to **post** review comments. For an uncommitted diff with no PR, see
+[Reviewing before a PR exists](#reviewing-before-a-pr-exists).
 
-Requires `gh` (authenticated), `git`, and the bare-clone + worktree layout from AGENTS.md. Resolve
-the repository once and use it wherever the commands below say `OWNER/REPO`:
+Requires `gh` (authenticated), `git`, and the bare-clone + worktree layout from the project's
+`AGENTS.md` or `CLAUDE.md`. Resolve the repository once and use it wherever the commands below say
+`OWNER/REPO`:
 
 ```bash
 gh repo view --json nameWithOwner --jq .nameWithOwner
 ```
 
-Check what the project's CI runs (lint, typecheck, tests), and do not re-run those checks during
-review.
+On a PR, CI owns lint, typecheck and tests. Check what the project's CI runs and trust its result.
+A throwaway probe for a claim no test covers (Step 8) is not a re-run.
+
+Write every scratch file (patches, path lists, comment bodies) to your session's scratch directory,
+written as `$SCRATCH` below. A fixed `/tmp` name collides with another session that reviews the same
+PR.
 
 ## Process
 
@@ -67,27 +72,19 @@ What to look for:
 
 ### Step 3: Check out the PR in a worktree
 
-Run from the **repo root** (where `.git/` lives), not inside a worktree. See AGENTS.md for the
-worktree layout.
+Run from the **repo root** (where `.git/` lives), not inside a worktree. The project's `AGENTS.md`
+or `CLAUDE.md` describes the worktree layout.
 
-**Preferred — `gwt pr`** (if `gwt` is on `$PATH` at `~/.local/bin/gwt`):
+Check out with `gwt pr` (the worktree manager, at `~/.local/bin/gwt`):
 
 ```bash
 gwt pr PR_NUMBER
 ```
 
 `gwt pr` fetches `pull/<N>/head`, creates local branch `pr/<N>`, creates a worktree at `pr-<N>/`
-relative to the repo root, and auto-cd's into it via a shell hook. Work from that directory.
-
-**If `gwt` is not available**, fall back to a manual worktree:
-
-```bash
-git fetch origin "pull/PR_NUMBER/head" &&
-  git worktree add -b "pr/PR_NUMBER" "../pr-PR_NUMBER" FETCH_HEAD
-```
-
-Then work from that worktree directory. The **base branch worktree** (e.g. `master`) stays
-checked out separately — that is the pre-PR state you grep against for missed consumers.
+relative to the repo root, and auto-cd's into it via a shell hook. Work from that directory. The
+**base branch worktree** (e.g. `master`) stays checked out separately — that is the pre-PR state
+you grep against for missed consumers.
 
 **If in plan mode (read-only):** you cannot run `gwt pr` or `git worktree add` yourself. Ask the
 user to run `gwt pr PR_NUMBER` and tell you the worktree path (typically `pr-<N>` relative to the
@@ -130,13 +127,13 @@ it as a finding — don't build a narrative on a ref you haven't confirmed is cu
 `gh pr diff` returns a truncated patch for a large PR. Get the full patch from the worktree:
 
 ```bash
-git diff origin/BASE_BRANCH...HEAD > /tmp/prNNNNN-raw.patch
+git diff origin/BASE_BRANCH...HEAD > "$SCRATCH/prNNNNN-raw.patch"
 ```
 
 Capture the diff hunk headers to understand scope:
 
 ```bash
-grep -n "^diff --git\|^@@" /tmp/prNNNNN-raw.patch
+grep -n "^diff --git\|^@@" "$SCRATCH/prNNNNN-raw.patch"
 ```
 
 ### Re-review after a push
@@ -147,20 +144,21 @@ anything the PR owns.
 
 `$BASE` is the PR's base branch (`baseRefName`), `$N` its number, and `<reviewed-sha>` the head you
 last reviewed. Move the worktree to the new head first. A force-push is not a fast-forward, so
-reset. The worktree holds no work of yours, but check anyway:
+re-point the branch. The worktree holds no work of yours, but check anyway:
 
 ```bash
 git status --porcelain                    # anything listed: stop and say so
 git rev-parse --abbrev-ref HEAD           # must be pr/$N, the branch the review owns
 git fetch origin "$BASE"
-git fetch origin "pull/$N/head" && git reset --hard FETCH_HEAD
+git fetch origin "pull/$N/head" && git checkout -B "pr/$N" FETCH_HEAD
 base="$(git merge-base "origin/$BASE" HEAD)"
-git diff --name-only "$base" HEAD > /tmp/pr-$N-paths     # the files the PR touches
-git diff --name-only <reviewed-sha> HEAD -- $(cat /tmp/pr-$N-paths)   # empty: nothing moved
+git diff --name-only "$base" HEAD > "$SCRATCH/pr-$N-paths"     # the files the PR touches
+git diff --name-only <reviewed-sha> HEAD -- $(cat "$SCRATCH/pr-$N-paths")   # empty: nothing moved
 ```
 
-`--hard` discards commits, not only edits. Run it on `pr/$N` only. When the PR sits on a branch the
-user owns (Step 3), a reset moves their branch: fetch, report the new head, and stop.
+`checkout -B` refuses to overwrite uncommitted edits, but it drops the branch's old commits. Run it
+on `pr/$N` only. When the PR sits on a branch the user owns (Step 3), fetch, report the new head,
+and stop.
 
 Compare the two heads restricted to those paths, never the two net patches. A rebase shifts every
 hunk header when the base edits surrounding lines, so the patch text differs for revisions whose
@@ -178,8 +176,8 @@ costs a re-read. That is the safe direction.
 ### Step 5: Read the reference patterns
 
 For each new file, find the **existing pattern it mirrors** and read it. The PR's correctness
-depends on matching conventions already in the codebase. Use `semble search` when it is on `$PATH`,
-or `rg`, to find the precedent file, then read it with the Read tool.
+depends on matching conventions already in the codebase. Use `rg` to find the precedent file,
+then read it with the Read tool.
 
 Verify:
 - Does the new code follow the same structure as its precedent (factories, wrappers, layering)?
@@ -225,6 +223,9 @@ On top of whatever the project documents, apply a fixed baseline of Fowler code 
   never a hard violation. Report smells as nits, not blocking findings. Skip anything tooling
   (linter, type checker) already enforces.
 
+Also load the `codestyle` skill and judge the diff against every rule in it, under the same
+two bindings above.
+
 Each smell reads _what it is → how to fix_; match it against the diff:
 
 - **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or
@@ -251,6 +252,17 @@ Each smell reads _what it is → how to fix_; match it against the diff:
   target directly.
 - **Refused Bequest**: a subclass or implementer ignores or overrides most of what it inherits →
   drop the inheritance, use composition.
+
+Not a Fowler smell, but judged the same way — a labelled judgement call, reported as a nit unless
+the lie already produces wrong behavior:
+
+- **Design Lie**: the change makes a structure claim what it no longer is — a function whose name
+  says one thing and now does two, a boolean parameter selecting behaviors, a branch bolted onto a
+  path that was shaped for one caller → state the lie in one sentence (what the structure says
+  versus what is now true), cite the second caller, format, or source that forced it, and give one
+  instruction: usually "file the redesign separately"; "redesign here" only when behavior is
+  already wrong. The `codestyle` skill names the same trigger, so the finding cites a rule the
+  author agreed to.
 
 ### Step 6: Find missed consumers (the critical step)
 
@@ -285,8 +297,9 @@ each item.
    `gh issue view`, or through the tracker the repo's rules name.
 2. The PR body's own description / acceptance criteria.
 3. A spec or task description a user or requester session passed along with the review request.
-4. If nothing is found, ask the user. If they say there isn't one, note "no requirement source
-   available" in the verdict and skip this step — a diff can still get the full review.
+4. If nothing is found, ask the user. A subagent with no user to ask goes straight to the next
+   sentence. With no source, note "no requirement source available" in the verdict and skip this
+   step: a diff can still get the full review.
 
 **Classify against the diff.** For each requirement, mark exactly one of:
 
@@ -342,6 +355,10 @@ changes. Look for:
   code, or write a throwaway test that would show the failure, run it, record the result, and
   delete the test. Run the project's per-worktree setup from its `CLAUDE.md` before the first test
   run. A connection error on that first run means the setup has not run.
+- **A threshold or formula change**: run the old and the new code over each input the definition
+  allows, and compare the results. Test each threshold at its exact value, because floating-point
+  arithmetic can land just below a whole-number threshold. Write the sweep as a throwaway script,
+  record what it found, and delete it.
 
 Use Read/Grep/LSP on the PR worktree to trace callers, check types, and confirm behavior.
 
@@ -360,16 +377,13 @@ defensive coding), call that out too — reviews shouldn't be problem-only.
 
 ### Step 10: Present findings to the user
 
-Before writing up findings, invoke the `unslop` skill on the draft — verdict, findings, and
-summary alike — to strip AI tells and keep it terse and direct. Do this for every findings
-write-up in this skill: the in-conversation summary here, and the line/summary comment bodies
-in Steps 11-12.
+Before writing up findings, load `asd-ste100`, then `unslop`, and apply both to the draft:
+verdict, findings, and summary alike. Do this for every findings write-up in this skill: the
+in-conversation summary here, and the line/summary comment bodies in Steps 11-12.
 
 **Re-run unslop on the exact string right before it gets posted, not only on an earlier draft.**
-Invoking `unslop` once in the conversation does not retroactively clean up comment/review bodies
-you compose later in the same turn — a body drafted after the skill call still needs its own
-pass. Read the literal text going into the `gh api`/`gh pr` call one more time immediately before
-that tool call.
+A body drafted after the skill call still needs its own pass. Read the literal text going into the
+`gh api`/`gh pr` call one more time immediately before that tool call.
 
 Show the findings to the user in the conversation — verdict, blocking findings, nits. **Do
 not post anything to GitHub yet.** Wait for the user to explicitly ask you to comment on the PR.
@@ -431,7 +445,7 @@ For a blocking finding, omit the "Nit (non-blocking)" prefix and describe the pr
 and the fix directly.
 
 Frame feedback as suggestions, not criticism — describe the concern and a proposed
-alternative, not a verdict on the author. Run each comment body through `unslop` before posting.
+alternative, not a verdict on the author.
 
 ### Step 12: Post a summary comment (only when asked)
 
@@ -470,63 +484,24 @@ they own.
 
 ## Comment body content
 
-The same content discipline [`commit`](../commit/SKILL.md) applies to commit messages applies to
-every posted comment and review body here:
+Every posted comment and review body follows the content discipline that
+[`commit`](../commit/SKILL.md) sets for commit messages:
 
 - **What and why, not how.** The diff already shows how; state the finding and its consequence, not
   a restatement of what the code does.
-- **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
-  Present tense, active voice, one idea per short sentence (~20 words). No idioms or metaphor. No
-  nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
-  future tense for behavior — "returns X", never "will return X".
+- **Style comes from `asd-ste100` and `unslop`,** loaded in Step 10.
 - Cite the evidence that makes a finding real — the specific behavior confirmed against the base
   branch, a grep result, a reproducing test — not a vague "this could be an issue."
 - **Never include customer data** — org names, user emails, support ticket contents, PII — in a
   posted comment. Describe the technical symptom, not who hit it. This matters even more here than
   in a commit message: PR comments are more visible and get pasted into Slack/Jira routinely.
 
-## Anti-patterns
+## Replies and searches
 
-- **Posting comments before the user asks.** Present findings in the conversation first. Only
-  post to GitHub when the user explicitly says to comment on the PR.
-- **Posting a general PR comment instead of line comments.** General comments force the author
-  to hunt for the location. Always use line-level review comments.
-- **Posting both a general comment AND line comments with the same content.** Choose one
-  (line comments). Delete the general duplicate.
-- **Posting only criticism.** When the PR does something well, say so — reviews that surface
-  only problems demoralize authors and miss the chance to reinforce good patterns.
-- **Re-grepping for content you already found.** After `semble search` or grep locates a file,
-  read it directly. Don't search for the same thing again.
-- **Reading files via `gh api contents` when a worktree is checked out.** The worktree is right
-  there — use Read/Grep on it instead.
-- **Verifying author's test claims.** CI runs lint/typecheck/tests. Don't re-run them or
-  claim "tests pass" based on the author's word — just trust CI. A throwaway probe for a claim no
-  test covers (Step 8) is not a re-run. Write it, run it, and delete it.
-- **Trusting a local base-branch ref without fetching first.** A stale `master` worktree gives
-  a stale merge-base, which gives a wrong diff and wrong ancestry checks. Fetch
-  `origin/BASE_BRANCH` and diff/check against that before concluding a branch is behind, based
-  on an unmerged commit, or missing content that's actually already upstream.
-- **Narrating process in a posted comment or review body.** "Reviewed in a worktree against the
-  full diff, migrations, models, ..." or "one non-blocking nit left inline" tell the reader
-  nothing about the PR. State findings, not what you did or where you left something.
-- **Leading with your own discovery when questions were asked.** The requester's questions come
-  first, in their order. Your incidental finding is not more important than the thing they are
-  blocked on.
-- **Restating one finding in several sections.** Once, in full. Three framings of the same thing
-  is not thoroughness, it is a puzzle.
-- **A "clean" verdict without the project's documented rules.** Precedent matching and missed
-  consumers do not cover the rules the project has written down. A clean verdict that skips them
-  leaves the user to find the violations after they approve.
-- **A "clean" verdict without a requirements check.** Steps 5-6 and 8 can all pass while the
-  answer to "does it do what was asked?" is no. Run Step 7 or state explicitly that no
-  requirement source existed.
-- **Reviewing a diff you never confirmed is non-empty.** A bad ref or empty diff discovered
-  mid-review invalidates everything built on it. Validate first (Step 3).
-- **Answering a reply on the author's behalf.** A reply to a finding without a push is reported,
-  never answered. Posting as the user, unattended, turns a review artifact into a conversation.
-  Quote the reply and let the user decide.
-- **A verdict plus its own hedge.** "Fix it here, but it's arguably out of scope, so it's your
-  call" is two answers. Give one.
+- **A reply from the author is the user's to answer.** A reply to a finding without a push is
+  reported, never answered. Quote the reply and let the user decide.
+- **Read what a search found.** After `rg` locates a file, read it directly
+  rather than search for it again.
 
 ## Parallel review passes (optional, for heavy PRs)
 
@@ -542,7 +517,9 @@ Split when you use it:
   other access to it — and this brief: "Report, per file where relevant, every violation of a
   documented rule (cite the document and the rule, quoted) and every baseline smell (name it,
   quote the hunk). Documented rules can be hard violations; smells are always judgement calls,
-  and a documented rule overrides the baseline. Skip anything tooling enforces."
+  and a documented rule overrides the baseline. Skip anything tooling enforces. Also load the
+  `codestyle` skill and judge the diff against every rule in it, as a judgement call under the
+  same bindings."
 - **Requirements sub-agent** gets: the diff command and commit list, the requirement source
   (PR body, issue text, spec) pasted inline, and this brief: "Classify each requirement as
   missing, partial, implemented, implemented wrong, or extra (scope creep). Quote the
@@ -561,11 +538,28 @@ per-axis count and worst finding within each axis. Do not merge the two lists or
 winner across them — a change can pass one axis and fail the other, and ranking across axes
 re-hides exactly that.
 
-## Reviewing for another session, before a PR exists
+## Reviewing before a PR exists
 
-A peer session may hand over a worktree and a list of questions rather than a PR number. Steps 1-2
-and 11-13 do not apply — there is nothing to check out and nothing to post. The rest does, and
-these are load-bearing rather than stylistic:
+A peer session may hand over a worktree and a list of questions, or ask for a review of its
+uncommitted diff before the first commit. Steps 1-4, "Re-review after a push", and Steps 11-13
+do not apply: this section replaces the checkout and the diff, and nothing gets posted. The rest
+does, with three changes:
+
+- **Diff the working tree, not the commits.** `origin/BASE...HEAD` skips uncommitted edits and is
+  empty before the first commit. From the worktree:
+
+  ```bash
+  git fetch origin BASE_BRANCH
+  git diff "$(git merge-base origin/BASE_BRANCH HEAD)" > "$SCRATCH/review-raw.patch"
+  git ls-files --others --exclude-standard   # untracked files: read each in full
+  ```
+
+  The diff plus the untracked files is the change. If both are empty, stop and say so.
+- **Run the checks CI would run.** No CI has run yet. Run the project's lint and the tests for the
+  changed files, after the per-worktree setup its `CLAUDE.md` names. Report failures as blocking.
+- **Requirements come from the requester's brief.** Step 7 source 3 is the only source.
+
+These rules are load-bearing rather than stylistic:
 
 - **Findings go back to the requester, never to GitHub.** No PR exists; posting anywhere else is
   not an option to weigh.
@@ -579,7 +573,8 @@ these are load-bearing rather than stylistic:
 
 ## Finding categories checklist
 
-Run items 1 to 11 on a migration or refactor PR. Items 12 to 17 apply to every PR:
+Items 1, 2, 5 and 10 to 18 apply to every PR. Items 3, 4 and 6 to 9 add on for a migration or
+refactor PR. A review is done when every item that applies carries a result:
 
 1. **Missed consumers** — every deleted export's importers updated or deleted?
 2. **Pattern consistency** — new code matches existing conventions?
@@ -614,3 +609,5 @@ Run items 1 to 11 on a migration or refactor PR. Items 12 to 17 apply to every P
     shapes the endpoint takes and returns (Step 8).
 17. **Risk claims probed** — every comment that argues a risk away was traced or tested, and the
     result recorded (Step 8).
+18. **Design lie** — the diff judged against the structure-claims-versus-truth test (Step 5), each
+    hit reported as a judgement call with one instruction.

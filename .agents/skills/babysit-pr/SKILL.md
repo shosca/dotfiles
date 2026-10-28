@@ -48,7 +48,8 @@ gh api "repos/O/R/compare/<base>...<head>" --jq .behind_by
 `<head>` is the branch name, or `owner:branch` when the PR comes from a fork. Both forms work.
 
 Read unresolved review threads with the GraphQL query in section 5, and paginate with
-`pageInfo.endCursor`.
+`pageInfo.endCursor`. Read the conversation comments and review bodies in section 5 too, because
+the thread query does not return them.
 
 `mergeable` reads `UNKNOWN` for a few seconds after a push. Re-check it. Do not treat `UNKNOWN` as
 `MERGEABLE`.
@@ -136,6 +137,20 @@ gh api graphql -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$
 ```
 
 Reply on the thread root, not on a reply, because GitHub rejects a reply to a reply.
+
+**Conversation comments and review bodies.** A reviewer can also comment on the PR's
+Conversation tab, or write a review body with no inline thread. The thread query returns
+neither. Read both on every pass:
+
+```bash
+gh api "repos/O/R/issues/<n>/comments" --paginate --jq '.[]|{id,user:.user.login,created_at,body}'
+gh api "repos/O/R/pulls/<n>/reviews" --paginate --jq '.[]|select(.body!="")|{id,user:.user.login,state,submitted_at,body}'
+```
+
+A comment needs an answer when a person wrote it after your newest top-level reply. Skip your own
+comments and status bots, such as a quality-gate report. Handle each claim with steps 1 to 3
+above. These comments have no thread, so reply with a top-level comment that names the
+reviewer, `gh pr comment <n> --body-file <file>`. There is nothing to resolve.
 
 ## 6. CI
 

@@ -64,7 +64,8 @@ that reviewed a revision, or that asks for my verdict, prints the review summary
 3. What the PR does, in two or three lines.
 4. The requirement check: each acceptance criterion and its result.
 5. The findings, one line each with its link, or "none".
-6. What I let pass, and why.
+6. What I let pass, and why. This lists only items checked and judged not a problem. An earlier
+   bug, an unprobed claim or an open question is a finding, so it goes in item 5.
 7. What I did not verify, such as CI that is still running or tests not run locally.
 
 The **assessment** is this session's reading of the revision: `clean`, `clean, 2 nits` or
@@ -149,6 +150,10 @@ verification. Two of `pr-review`'s steps are overridden here:
 - **Posting is pre-authorized.** The skill's "wait for the user to ask" step does not apply. Post
   findings as soon as the review is done.
 
+**The review is done when the record has a result for each checklist item.** Write one line per
+applicable item of the `pr-review` "Finding categories checklist" into the record. Write the
+assessment only after the last line.
+
 **Check the test setup before the first test run.** A `gwt pr` worktree may have no reachable test
 database. Probe it once, with the command in the project's rules. When it fails, read the PR's CI
 results instead, and record the tests as not run locally.
@@ -217,7 +222,7 @@ or a `[bot]` suffix on its login.
 
 Quote the reply's substance in the pane, not just that it exists. The decision it asks for is
 usually in the text. Then stop. I read it in the pane and tell this session what to say back; the
-`pr-review` anti-patterns forbid answering on my behalf.
+`pr-review` rules on replies forbid answering on my behalf.
 
 **Write `activity_seen` back on every tick that looked, always.** Without it the comparison is
 against `reviewed`, which never moves, so a single reply fires on every tick for as long as the PR

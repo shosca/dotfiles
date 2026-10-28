@@ -54,3 +54,19 @@ export PATH="$PATH:/home/serkan/.lmstudio/bin"
 alias claude-mem='bun "/home/serkan/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+# >>> herdr-hibernate pane stub hook >>>
+# Re-arm a hibernated agent session when Herdr spawns a fresh shell in a pane.
+# This is what makes hibernation survive a reboot: the stub process dies with
+# Herdr, but its script lives on disk and this hook runs it again.
+# Run it as a CHILD (no exec) so this shell stays the pane's shell — claude is
+# then a grandchild, and killing it at the next hibernation cannot close the tab.
+if [ -n "${HERDR_PANE_ID:-}" ] && [ -z "${HERDR_HIBERNATE_STUB:-}" ] \
+   && [[ $- == *i* ]]; then
+    _hb_stub_file="$HOME/.config/herdr-hibernate/panes/${HERDR_PANE_ID//[^A-Za-z0-9]/_}.sh"
+    if [ -s "$_hb_stub_file" ]; then
+        HERDR_HIBERNATE_STUB=1 bash "$_hb_stub_file"
+    fi
+    unset _hb_stub_file
+fi
+# <<< herdr-hibernate pane stub hook <<<
