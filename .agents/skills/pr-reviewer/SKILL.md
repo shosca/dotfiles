@@ -2,7 +2,7 @@
 name: pr-reviewer
 description: >
   Review and watch one PR from its own worktree session: first review, re-reviews after a push,
-  replies, notifications, and cleanup when the PR is approved, merged or closed. Started by
+  replies, notifications, and cleanup when the PR is merged or closed. Started by
   herdr-dispatch; ghpoll sends the next pass when the PR changes. Use when the prompt names
   /pr-reviewer or asks this session to review the watched PR.
 allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(gwt:*), Bash(herdr:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
@@ -11,7 +11,7 @@ allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh p
 Review and watch PR <n>. This session is the PR's only reviewer. It runs in the PR's worktree,
 `pr-<n>/`, as the herdr agent `pr-<n>-review`. The orchestrator started it through
 `herdr-dispatch`. Everything after that is this session's job: the first review, re-reviews after a
-push, replies, notifications, and cleanup when the PR is approved, merged or closed.
+push, replies, notifications, and cleanup when the PR is merged or closed.
 
 `<n>` is the PR number in the prompt. If the prompt has none, take it from the worktree name:
 `basename "$PWD"` prints `pr-<n>`.
@@ -36,25 +36,29 @@ Read the live state and the record at `$ROOT/.reviews/pr-<n>.md`:
 gh pr view <n> --json state,headRefOid,baseRefName,updatedAt,reviewDecision,isDraft,labels,title,url
 ```
 
-Then work through these in order. Cases 1 and 2 end the tick.
+Then work through these in order. Cases 1 to 3 end the tick.
 
-1. **Approved, merged, closed or gone.** `state` is not `OPEN`, `reviewDecision` is `APPROVED`, or
-   the events say `gone`. A state read that fails because the PR no longer exists counts as gone.
-   Write `settled:` into the record and clean up. See "Cleanup".
-2. **The repo's hold label is on.** `hold_label` in `~/.config/ghpoll/config.toml` names it
+1. **Merged, closed or gone.** `state` is not `OPEN`, or the events say `gone`. A state read that
+   fails because the PR no longer exists counts as gone. Write `settled:` into the record and
+   clean up. See "Cleanup".
+2. **Approved.** `reviewDecision` is `APPROVED`. Write `settled: approved <time> on <sha>` into the
+   record once, keep the worktree and the Space, and report one line. When `reviewDecision` is not
+   `APPROVED` but the record says `settled: approved`, a push dismissed the approval: remove the
+   `settled:` line and go on to case 3.
+3. **The repo's hold label is on.** `hold_label` in `~/.config/ghpoll/config.toml` names it
    (default `on hold`). It means the author or the team parked the PR. Record the label once and
    do nothing else. When the label comes off, the next tick carries on normally.
-3. **`new` or `pushed` is in the events, or `headRefOid` is not the newest `revisions` entry.**
+4. **`new` or `pushed` is in the events, or `headRefOid` is not the newest `revisions` entry.**
    Fetch. When an earlier review exists, run "Re-review after a push" in the `pr-review` skill.
    Review the head when it is new work. See "Review and posting".
    A newest entry marked `mode: diff-only` came from an older draft review that read only the
    diff. When the PR is no longer a draft, review its head in full once, reading that entry first,
    even when the SHA matches. The full review adds an entry without `mode`, so the rule stops
    applying by itself.
-4. **`activity` is in the events, or `updatedAt` is newer than `activity_seen`.** See "Someone
-   replied without pushing". A push and a reply in the same tick run 3 then 4: the review does not
+5. **`activity` is in the events, or `updatedAt` is newer than `activity_seen`.** See "Someone
+   replied without pushing". A push and a reply in the same tick run 4 then 5: the review does not
    cover the reply.
-5. **Nothing above applied.** The event was informational. Report one line and stop.
+6. **Nothing above applied.** The event was informational. Report one line and stop.
 
 End every tick with one block in the pane. A tick where nothing changed prints one line. A tick
 that reviewed a revision, or that asks for my verdict, prints the review summary, in this order:
@@ -79,10 +83,12 @@ When the block asks for my verdict, it carries the PR's full URL on its own line
 punctuation after it, so I can open it from the pane. This covers a revision that comes back with
 no blockers. `#<n>` alone is not a link.
 
-**An approval ends the watch.** When I tell this pane to approve, submit the approval, write
-`settled: approved <time> on <sha>` into the record, and clean up in the same turn. When someone
-else approves, the next tick sees `reviewDecision: APPROVED` and ends the same way. Nothing watches
-the PR after that: ghpoll drops approved PRs, so a push after the approval starts no new reviewer.
+**An approval pauses the watch.** When I tell this pane to approve, submit the approval and write
+`settled: approved <time> on <sha>` into the record in the same turn. When someone else approves,
+the next tick sees `reviewDecision: APPROVED` and records it the same way. Keep the worktree and
+the Space. The repo dismisses an approval on a push, and ghpoll keeps ticking an approved PR, so
+the next push comes back here as a re-review. Clean up only on a merge, a close or a PR that is
+gone.
 
 ## Records
 
@@ -132,8 +138,8 @@ unchanged after the push.
   is about the code. The reasoning behind an assessment and everything that checked out fine live
   nowhere else.
 - `blockers` is per revision, so "waiting on me" is computable rather than parsed out of prose.
-- `settled:` in the frontmatter records how the PR ended: an approval I gave, a merge, a close, or
-  the PR disappearing.
+- `settled:` in the frontmatter records how the PR ended: an approval, a merge, a close, or the PR
+  disappearing. A push that dismisses the approval removes `settled: approved`.
 - **Mark who checked each "Verified clean" item.** Suffix an item with `(agent)` when a subagent
   ran it and you did not read the evidence yourself. A re-review carries an `(agent)` item forward
   only after you check that its evidence still holds at the new head.
@@ -269,7 +275,8 @@ option, so it must never post to GitHub.
 
 ## Cleanup
 
-On an approval, a merge, a close or a PR that is gone, after `settled:` is in the record:
+On a merge, a close or a PR that is gone, after `settled:` is in the record. An approval keeps the
+worktree, because a push dismisses it:
 
 1. `cd "$ROOT"` first: step 2 deletes the directory this session runs in, and a shell that sits in
    a deleted directory cannot run the rest of the cleanup.

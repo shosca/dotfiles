@@ -72,7 +72,7 @@ Run `herdr agent list` once. A PR's session is the agent whose `cwd` is that wor
 |---|---|
 | `new` | Dispatch a reviewer. See section 4 |
 | `pushed`, `ready for review`, `activity` | Tick the reviewer with `/pr-reviewer <n> <events>`. With no reviewer, dispatch one |
-| `merged`, `closed`, `gone`, `dropped (approved)` | Tick the reviewer so it runs its own cleanup. With no reviewer and a `pr-<n>/` worktree, dispatch one so its first tick cleans up. See section 4 |
+| `merged`, `closed`, `gone` | Tick the reviewer so it runs its own cleanup. With no reviewer and a `pr-<n>/` worktree, dispatch one so its first tick cleans up. See section 4 |
 | `dropped (on hold)` | Nothing. Record it and leave the reviewer's Space open |
 | `dropped (wip)`, `dropped (stale)` | Nothing. ghpoll took the PR out of the queue. A stale PR keeps its reviewer, so close that Space by hand when you no longer need it |
 

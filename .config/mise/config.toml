@@ -31,6 +31,7 @@ rtk = "latest"
 trivy = "latest"
 uv = "latest"
 sonarqube-cli = "latest"
+"github:andreconde21/sheprd" = "latest"
 
 [shell_alias]
 pc = "process-compose"

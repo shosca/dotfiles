@@ -9,7 +9,8 @@ agent. Each round, per configured repo, it:
    which the REST API cannot resolve.
 2. Sorts each PR into a role. ``babysit`` is a PR you author. ``review`` is someone else's PR
    that is not approved, not WIP, not on hold and active inside the age window. Drafts of
-   either role are skipped until they are ready.
+   either role are skipped until they are ready. A tracked review PR that gets approved or put
+   on hold stays tracked, so its reviewer still gets the merge or close.
 3. Compares each PR with the snapshot from the last round and turns the differences into short
    events, such as ``pushed``, ``checks FAILURE`` or ``merged``. Events pile up per PR until
    they are delivered.
@@ -377,8 +378,9 @@ def collect(
     """Return the PRs in the queue now, and the events per PR since the ``tracked`` snapshots.
 
     A tracked PR that leaves the queue while open gets one ``dropped`` event. A draft keeps its
-    snapshot, because its author is still working on it. The hold label keeps only a review PR: a
-    PR with a reviewer stays that reviewer's to watch, while your own PR on hold is parked.
+    snapshot, because its author is still working on it. The hold label and an approval keep only a
+    review PR: a PR with a reviewer stays that reviewer's to watch, while your own PR on hold is
+    parked. A push dismisses an approval, and the reviewer cleans up only on a merge or a close.
     A tracked PR that is no longer open gets its final state, read in one aliased query. That query
     holds at most ``GONE_BATCH`` aliases, so a long pause cannot grow it past GitHub's limits. The
     rest keep their old snapshot and resolve in later rounds. A PR the search missed but that is
@@ -402,7 +404,9 @@ def collect(
         if snap["author"] in ignored:
             continue
         reason = skip_reason(snap, repo)
-        keeps_snapshot = reason == "draft" or (reason == "on hold" and snap["role"] == "review")
+        keeps_snapshot = reason == "draft" or (
+            reason in ("on hold", "approved") and snap["role"] == "review"
+        )
         if keeps_snapshot and key in tracked:
             reason = None
         if reason:
