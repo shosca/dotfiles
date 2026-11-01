@@ -4,6 +4,56 @@ prefix = "/ghpoll-digest "
 [[repo]]
 name = "ForceTherapeutics/force-web"
 root = "~/src/force/force-web"
-space = "ghpoll"
+space = "force-web"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/force-infra"
+root = "~/src/force/force-infra"
+space = "force-infra"
+age_days = 14
+hold_label = "on hold"
+roles = ["babysit"]
+
+[[repo]]
+name = "ForceTherapeutics/force-looker"
+root = "~/src/force/force-looker"
+space = "force-looker"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/force-ios-provider"
+root = "~/src/force/force-ios-provider"
+space = "force-ios-provider"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/force-ios"
+root = "~/src/force/force-ios"
+space = "force-ios"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/force-android-provider"
+root = "~/src/force/force-android-provider"
+space = "force-android-provider"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/force-android"
+root = "~/src/force/force-android"
+space = "force-android"
+age_days = 14
+hold_label = "on hold"
+
+[[repo]]
+name = "ForceTherapeutics/awell-score"
+root = "~/src/force/awell-score"
+space = "awell-score"
 age_days = 14
 hold_label = "on hold"

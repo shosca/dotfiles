@@ -73,8 +73,8 @@ query($q: String!, $after: String) {
       commits(last: 1) { nodes { commit { statusCheckRollup {
         state
         contexts(last: 100) { nodes {
-          ... on CheckRun { startedAt completedAt }
-          ... on StatusContext { createdAt }
+          ... on CheckRun { status startedAt completedAt }
+          ... on StatusContext { state createdAt }
         } }
       } } } }
       reviewThreads(first: 100) { pageInfo { hasNextPage } nodes { isResolved } }
@@ -134,7 +134,7 @@ def rest_rollup(repo: str, sha: str) -> dict[str, Any]:
         for r in runs
         if r["started_at"]
     ] + [{"createdAt": s["created_at"]} for s in status["statuses"]]
-    pending = any(r["status"] != "COMPLETED" for r in runs) or status["state"] == "pending"
+    pending = any(r["status"] != "completed" for r in runs) or status["state"] == "pending"
     failing = any(r["conclusion"] in FAILING for r in runs) or status["state"] == "failure"
     if pending:
         state = "PENDING"
@@ -260,11 +260,28 @@ def snapshot(pr: dict[str, Any], login: str) -> dict[str, Any]:
         "updated": pr["updatedAt"],
         "decision": pr["reviewDecision"],
         "merge": pr["mergeStateStatus"],
-        "checks": rollup["state"] if rollup else None,
+        "checks": checks_state(rollup),
         "checks_at": checks_at(rollup),
         "threads": threads(pr["reviewThreads"]),
         "labels": [label["name"] for label in pr["labels"]["nodes"]],
     }
+
+
+def checks_state(rollup: dict[str, Any] | None) -> str | None:
+    """Return the rollup state, or ``PENDING`` while any check on the head commit still runs.
+
+    GitHub rolls a finished failure and a running check up to ``FAILURE``. A CI re-run then reads
+    as ``FAILURE`` for its whole run, and each shard it finishes moves ``checks_at``, so every
+    round reported a new ``checks FAILURE``. ``rest_rollup`` applies the same pending-first rule.
+    """
+    if not rollup:
+        return None
+    running = any(
+        node.get("status", "COMPLETED") != "COMPLETED"
+        or node.get("state") in ("PENDING", "EXPECTED")
+        for node in rollup["contexts"]["nodes"]
+    )
+    return "PENDING" if running else rollup["state"]
 
 
 def checks_at(rollup: dict[str, Any] | None) -> str | None:
@@ -330,7 +347,7 @@ def diff(old: dict[str, Any] | None, new: dict[str, Any]) -> list[str]:
         rerun = new["checks"] != "PENDING" and new["checks_at"] != stamp
         if new["checks"] != old["checks"] or rerun:
             events.append(f"checks {new['checks'] or 'NONE'}")
-        if "UNKNOWN" not in (new["merge"], old["merge"]) and new["merge"] != old["merge"]:
+        if new["merge"] != old["merge"]:
             events.append(f"merge {new['merge']}")
         if new["decision"] != old["decision"]:
             events.append(f"review {new['decision'] or 'NONE'}")
@@ -387,6 +404,10 @@ def collect(
     still open, such as past the search's 1000-result cap or during index lag, also keeps its
     snapshot.
 
+    GitHub reports an ``UNKNOWN`` merge state while it recomputes mergeability after the base
+    moves. A tracked PR keeps its last known merge state through that gap, so a ``CLEAN``,
+    ``UNKNOWN``, ``DIRTY`` sequence still reports ``merge DIRTY``.
+
     A role the repo left out of ``roles`` is forgotten rather than tracked, so turning that role
     back on treats the PRs open then as new.
     """
@@ -413,8 +434,11 @@ def collect(
             if key in tracked:
                 events[key] = (snap["role"], [f"dropped ({reason})"])
             continue
+        old = tracked.get(key)
+        if old and snap["merge"] == "UNKNOWN":
+            snap["merge"] = old["merge"]
         current[key] = snap
-        if found := diff(tracked.get(key), snap):
+        if found := diff(old, snap):
             events[key] = (snap["role"], found)
 
     gone = [key for key in tracked if key not in still_open]

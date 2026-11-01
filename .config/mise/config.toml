@@ -18,7 +18,6 @@ claude-powerline = "latest"
 fnox = { version = "latest", workflow = "release.yml" }
 gitleaks = "latest"
 groovy = "latest"
-herdr = "latest"
 node = "latest"
 oha = "latest"
 pi = "latest"
@@ -31,7 +30,9 @@ rtk = "latest"
 trivy = "latest"
 uv = "latest"
 sonarqube-cli = "latest"
-"github:andreconde21/sheprd" = "latest"
+k6 = "latest"
+herdr = "latest"
+pulumi = "latest"
 
 [shell_alias]
 pc = "process-compose"
@@ -44,6 +45,7 @@ dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"
 
 [dotfiles]
+"~/bin" = {}
 "~/.agents" = { source = "~/dotfiles/.agents" }
 "~/.claude/CLAUDE.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
 "~/.codex/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
@@ -73,7 +75,6 @@ dotfiles.default_mode = "symlink"
 "~/.config/wezterm" = {}
 "~/.gemrc" = {}
 "~/.inputrc" = {}
-"~/.local/bin" = {}
 "~/.pdbrc" = {}
 "~/.pdbrc.py" = {}
 "~/.profile" = {}

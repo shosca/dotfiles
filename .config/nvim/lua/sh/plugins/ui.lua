@@ -2,6 +2,27 @@ local utils = require("sh.utils")
 
 return {
   {
+    "ChmaraX/herdr-nvim",
+    opts = {
+      keymaps = false,
+    },
+    keys = {
+      { "<leader>ac", "<CMD>Herdr comment<CR>", desc = "Comment" },
+      {
+        "<leader>ac",
+        function()
+          require("herdr-nvim").comment_selection()
+        end,
+        mode = "x",
+      },
+      { "<leader>al", "<CMD>Herdr list<CR>", desc = "List comments" },
+      { "<leader>as", "<CMD>Herdr send<CR>", desc = "Send to agent" },
+      { "<leader>aS", "<CMD>Herdr submit<CR>", desc = "Submit to agent" },
+      { "<leader>ai", "<CMD>Herdr ref<CR>", desc = "Reference lines" },
+      { "<leader>ai", ":Herdr ref<CR>", mode = "x" },
+    },
+  },
+  {
     "ayu-theme/ayu-vim",
     lazy = false,
     priority = 1000,

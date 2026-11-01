@@ -129,9 +129,10 @@ real fix merges. So tell the other sessions to wait.
 When a `security` PR has `new`, `ready for review` or `merged`, do this in addition to the role
 table's action:
 
-1. From the `herdr agent list` output, take every session whose `cwd` is under `$ROOT`, except
-   the security PR's own session and this one. Map each to its PR: `pr-<n>` is PR `<n>`, and a
-   babysit worktree's branch gives `gh pr list --head <branch> --repo <owner>/<repo> --json
+1. From the `herdr agent list` output, take every babysit session whose `cwd` is under `$ROOT`,
+   except the security PR's own session and this one. Skip the reviewers in `pr-<n>/`: a reviewer
+   never changes the author's branch, and a rebase line makes it force-push one. Map each session
+   to its PR: its worktree's branch gives `gh pr list --head <branch> --repo <owner>/<repo> --json
    number,baseRefName`.
 2. Keep the sessions whose PR has the same `baseRefName` as the security PR.
 3. Reach each one by the status rules in section 2, and send one line:

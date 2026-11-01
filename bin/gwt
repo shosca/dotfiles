@@ -5,7 +5,6 @@ from typing import Any
 import abc
 import argparse
 import functools
-import json
 import os
 import re
 import shutil
@@ -717,151 +716,6 @@ class Prune(Command):
 
         print()
         print(f"  🗑️  Deleted: {deleted} | Failed: {failed}")
-
-
-class Herdr(Command):
-    aliases = ("hd",)
-    help_text = "Register git worktrees as herdr Spaces."
-    description = (
-        "Import the repo's worktrees into a running herdr server as grouped\n"
-        "worktree workspaces.Requires the herdr CLI on PATH and its server\n"
-        "running.Worktrees that already have a herdr workspace are skipped,\n"
-        "so repeated runs are idempotent.\n"
-        "\n"
-        "With a <target> (branch name, path, or worktree dir basename) opens\n"
-        "one worktree instead — best-effort: skips silently-skippable states,\n"
-        "never exits nonzero, so it is safe as a gwt.toml checkout hook:\n"
-        '  gwt herdr "$GWT_WORKTREE"'
-    )
-    command_args = (
-        CommandArg(
-            name=("target",),
-            nargs="?",
-            help="Register one worktree (branch, path, or dir basename) best-effort.",
-        ),
-    )
-
-    def run(self, args: argparse.Namespace) -> None:
-        """Handle the 'gwt herdr' subcommand."""
-        herdr = shutil.which("herdr")
-        if not herdr:
-            print("❌ herdr CLI not found on PATH.")
-            sys.exit(1)
-        if getattr(args, "target", None):
-            self._register_one(herdr, args.target)
-            return
-
-        root = Path(self.project_root)
-        # Anchoring at the bare/main root is required; opening from inside a
-        # linked worktree fails with linked_worktree_source.
-        payload = self._worktree_payload(herdr, root)
-        if payload is None:
-            print(
-                f"❌ herdr server not reachable at its socket — "
-                f"start it with `systemctl --user start herdr-server` "
-                f"or `start-herdr {root}`."
-            )
-            sys.exit(1)
-
-        missing = [
-            w["path"]
-            for w in payload
-            if w["is_linked_worktree"]
-            and not (w.get("open_workspace_id") or w.get("is_prunable"))
-        ]
-        if not missing:
-            linked = sum(1 for w in payload if w["is_linked_worktree"])
-            print(f"📡 all {linked} worktrees already open in herdr")
-            return
-
-        rc = 0
-        for path in missing:
-            resp = subprocess.run(
-                [
-                    herdr,
-                    "worktree",
-                    "open",
-                    "--cwd",
-                    str(root),
-                    "--path",
-                    path,
-                    "--label",
-                    Path(path).name,
-                    "--no-focus",
-                    "--trust-repository",
-                ],
-                capture_output=True,
-                text=True,
-            )
-            if resp.returncode:
-                print(f"❌ {Path(path).name}: {resp.stderr.strip() or 'herdr open failed'}")
-                rc = 1
-            else:
-                print(f"🪴 {Path(path).name} opened as a herdr Space")
-        if rc:
-            sys.exit(1)
-
-    def _worktree_payload(self, herdr: str, root: Path) -> dict | None:
-        """Fetch herdr's worktree list JSON; None when the server is down."""
-        result = subprocess.run(
-            [herdr, "worktree", "list", "--cwd", str(root), "--trust-repository"],
-            capture_output=True,
-            text=True,
-        )
-        try:
-            return json.loads(result.stdout)["result"]["worktrees"]
-        except (KeyError, ValueError):
-            return None
-
-    def _register_one(self, herdr: str, target: str) -> None:
-        """Open one worktree as a herdr Space, best-effort (never exits nonzero).
-
-        Unlock hook use: [hooks.checkout] ending in `gwt herdr <worktree>`.
-        Deliberately softer than the bulk mode above — a down server only prints
-        a skip line, because a failed registration must never abort the checkout
-        that spawned the hook. Idempotent: skips when the listing already shows
-        an open workspace for this checkout.
-        """
-        root = Path(self.project_root)
-        matched = next(
-            (wt for wt in self.worktrees
-             if wt.branch == target or Path(wt.path).name == target or wt.path == target),
-            None,
-        )
-        if not matched:
-            print(f"⚠️  No worktree found matching: {target} — skipped", file=sys.stderr)
-            return
-        payload = self._worktree_payload(herdr, root)
-        if payload is None:
-            print("⚠️  herdr server down — worktree not registered (gwt herdr retries later)")
-            return
-        path = str(Path(matched.path).resolve())
-        entry = next((w for w in payload if os.path.realpath(w["path"]) == path), None)
-        if entry and (entry.get("open_workspace_id") or entry.get("is_prunable")):
-            print(f"🪴 {Path(path).name} already open in herdr")
-            return
-        resp = subprocess.run(
-            [
-                herdr,
-                "worktree",
-                "open",
-                "--cwd",
-                str(root),
-                "--path",
-                path,
-                "--label",
-                Path(path).name,
-                "--no-focus",
-                "--trust-repository",
-            ],
-            capture_output=True,
-            text=True,
-        )
-        if resp.returncode:
-            err = (resp.stderr or resp.stdout).strip().splitlines()
-            print(f"⚠️  herdr: {err[-1] if err else 'open failed'}", file=sys.stderr)
-        else:
-            print(f"🪴 {Path(path).name} opened as a herdr Space")
 
 
 class Help(Command):
@@ -1583,7 +1437,6 @@ COMMANDS = {
     List,
     Delete,
     Pr,
-    Herdr,
     Help,
 }
 
