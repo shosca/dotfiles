@@ -147,9 +147,13 @@ unchanged after the push.
 ## Review and posting
 
 Use the `pr-review` skill. It carries the review: the full patch, prior threads, missed consumers,
-the project's documented rules, behaviour changes and probes. Post through the
-[`pr-comment`](../pr-comment/SKILL.md) standard: attribution callout, secret scan, return-URL
-verification. Two of `pr-review`'s steps are overridden here:
+the project's documented rules, behaviour changes and probes.
+
+**Load the `pr-comment` skill with the Skill tool before every post**, approval bodies included.
+Copy its attribution prefix exactly as written; the skill is the only source of that format. It
+also carries the secret scan and the return-URL check.
+
+Two of `pr-review`'s steps are overridden here:
 
 - **The worktree already exists.** It is this session's cwd. Skip the checkout step. Do not remove
   the worktree at the end.
@@ -196,11 +200,23 @@ even when every finding is a nit.
 
 **When I do say "approve", that approval carries a body.** Two or three sentences giving the
 verdict's basis: what the review turned up, or that it was clean and what the review checked. On a
-re-review after fixes, say what was addressed. Never a bare `gh pr review --approve`. The full
+re-review after fixes, say what was addressed. The full
 reasoning lives in the record, which nobody but me can read, so an empty approval throws it away
 for everyone else. The rule that a clean review posts no comments governs the comment stream, not
 the approval body. Keep the body short and unslop it like any other posted text. Then follow "An
 approval ends the watch" above.
+
+**Pin the approval to the reviewed SHA.** Read `headRefOid` first. When it differs from the newest
+reviewed SHA, review the new commits and tell me before you approve. Then approve through the
+reviews API with that SHA:
+
+```bash
+gh api -X POST repos/{owner}/{repo}/pulls/<n>/reviews \
+  -f commit_id=<reviewed sha> -f event=APPROVE -f body="<body>"
+```
+
+`gh pr review --approve` approves the live head. A push that lands while my verdict is pending then
+gets an approval for code nobody read.
 
 ## Someone replied without pushing
 

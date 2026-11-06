@@ -193,8 +193,9 @@ rules too, and new code copies them.
 
 1. Find the rule documents. Start at the project's `CLAUDE.md` / `AGENTS.md`, and follow every
    document it links to. Also check the project's docs directory and any project skills that cover
-   the kind of code the PR changes. Read them at the PR head, not on the base branch: a PR can
-   change the rules it is judged by.
+   the kind of code the PR changes. Always add the `codestyle` skill: load it, and judge its rules
+   under the two bindings of the smell baseline below. Read them at the PR head, not on the base
+   branch: a PR can change the rules it is judged by.
 2. Pick every document whose scope matches a file the PR touches. Decide by the kind of file the
    PR changes (tests, API endpoints, migrations, styles), not by the PR title. A PR can touch
    several kinds of file, and each kind can have its own document.
@@ -222,9 +223,6 @@ On top of whatever the project documents, apply a fixed baseline of Fowler code 
 - **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"),
   never a hard violation. Report smells as nits, not blocking findings. Skip anything tooling
   (linter, type checker) already enforces.
-
-Also load the `codestyle` skill and judge the diff against every rule in it, under the same
-two bindings above.
 
 Each smell reads _what it is → how to fix_; match it against the diff:
 
@@ -573,7 +571,7 @@ These rules are load-bearing rather than stylistic:
 
 ## Finding categories checklist
 
-Items 1, 2, 5 and 10 to 18 apply to every PR. Items 3, 4 and 6 to 9 add on for a migration or
+Items 1, 2, 5 and 10 to 19 apply to every PR. Items 3, 4 and 6 to 9 add on for a migration or
 refactor PR. A review is done when every item that applies carries a result:
 
 1. **Missed consumers** — every deleted export's importers updated or deleted?
@@ -611,3 +609,5 @@ refactor PR. A review is done when every item that applies carries a result:
     result recorded (Step 8).
 18. **Design lie** — the diff judged against the structure-claims-versus-truth test (Step 5), each
     hit reported as a judgement call with one instruction.
+19. **Codestyle** — every rule in the `codestyle` skill was checked against the diff (Step 5),
+    and the record names each rule with its result.

@@ -4,7 +4,7 @@ onboarding = false
 
 [theme]
 # catppuccin, with the active row from the herdr-radar block at the end of this file
-name = "terminal"
+name = "catppuccin"
 auto_switch = false
 
 [terminal]
@@ -100,14 +100,32 @@ description = "open file from agent output"
 [[keys.command]]
 key = "prefix+ctrl+j"
 type = "plugin_action"
-command = "chmarax.gitview.toggle"   # sidebar in the current tab
+command = "chmarax.gitview.toggle"  # sidebar in the current tab
 description = "git view sidebar"
 
 [[keys.command]]
 key = "prefix+ctrl+k"
 type = "plugin_action"
-command = "chmarax.gitview.toggle-tab"   # dedicated gitview tab
+command = "chmarax.gitview.toggle-tab"  # dedicated gitview tab
 description = "git view tab"
+
+[[keys.command]]
+key = "prefix+shift+f"
+type = "plugin_action"
+command = "shosca.space-folders.sync"
+description = "reorder spaces by folder"
+
+[[keys.command]]
+key = "prefix+shift+u"
+type = "plugin_action"
+command = "shosca.space-folders.move-up"
+description = "move space up in its group"
+
+[[keys.command]]
+key = "prefix+shift+d"
+type = "plugin_action"
+command = "shosca.space-folders.move-down"
+description = "move space down in its group"
 
 [ui]
 accent = "blue"
@@ -168,7 +186,10 @@ claude = "off"
 # agents row: state glyph + agent name (session name), colored by status rule.
 [ui.sidebar.spaces]
 row_gap = 0
-rows = [["state_icon", "workspace", { token = "branch", fg = "#7f849c" }, "git_status"]]
+# rows = [["state_icon", "workspace", { token = "branch", fg = "#7f849c" }, "git_status"]]
+rows = [
+  ["state_icon", { token = "workspace", rules = [{ contains = "▦", bold = true }] }, { token = "branch", dim = true }, "git_status"],
+]
 
 [ui.sidebar.agents]
 row_gap = 0
@@ -178,22 +199,3 @@ rows = [["state_icon", { token = "agent", fg = "#cdd6f4" }]]
 # Bare-clone + worktrees layout; checkouts land under ~/worktrees/<repo>/<branch-slug>
 [worktrees]
 directory = "~/worktrees"
-
-
-[[keys.command]]
-key = "prefix+shift+f"
-type = "plugin_action"
-command = "shosca.space-folders.sync"
-description = "reorder spaces by folder"
-
-[[keys.command]]
-key = "prefix+shift+u"
-type = "plugin_action"
-command = "shosca.space-folders.move-up"
-description = "move space up in its group"
-
-[[keys.command]]
-key = "prefix+shift+d"
-type = "plugin_action"
-command = "shosca.space-folders.move-down"
-description = "move space down in its group"

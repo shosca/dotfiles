@@ -365,7 +365,8 @@ def find_agent(root: Path, space: str) -> dict[str, Any] | None:
         for workspace in workspaces
         if workspace.get("label") == space
         and (repo_root := (workspace.get("worktree") or {}).get("repo_root"))
-        and Path(repo_root).resolve() == root
+        # herdr reports a bare clone's repo_root as its .git directory.
+        and Path(repo_root).resolve() in (root, root / ".git")
     }
     agents = json.loads(run("herdr", "agent", "list"))["result"]["agents"]
     return next((agent for agent in agents if agent.get("workspace_id") in ids), None)

@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "32511c6992ecb5f1971e46a2943f2e6adceedafe",
+      "skillFolderHash": "fd86652be0d5d3485c69e1529dfd1fa3c9a7a640",
       "installedAt": "2026-10-03T14:03:48.416Z",
-      "updatedAt": "2026-10-04T15:35:37.001Z"
+      "updatedAt": "2026-11-06T15:23:03.499Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
@@ -24,10 +24,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/engineering/codebase-design/SKILL.md",
-      "skillFolderHash": "07ba1cd60efc12d0d3a083005c1d9651cf15e39a",
+      "skillFolderHash": "4cbe1c131e1ea54109cb1e4e5f3c505810db6606",
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-10-03T14:04:43.186Z",
-      "updatedAt": "2026-10-03T14:04:43.186Z"
+      "updatedAt": "2026-11-06T15:23:03.512Z"
     },
     "retro": {
       "source": "mattpocock/skills",

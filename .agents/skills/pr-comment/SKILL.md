@@ -19,17 +19,13 @@ says it is from, and whether it landed.
 Prefix every agent-authored comment with this callout:
 
 ```md
-> 🤖 ** responding on behalf of <user>**
+> 🤖 **Responding on behalf of <user>**
 
 Actual comment starts here.
 ```
 
-- `<model>` is the verified model that wrote the comment; `<user>` is the user's name or GitHub
-  login, resolved through `gh api user --jq .nameOrLogin` when in doubt.
-- **When the model name is not exposed, omit it**: `🤖 **on behalf of <user>**`. Never guess a
-  model name, and never name a model the session is not.
-- Delegate case: a sub-agent's comment names the sub-agent's model when the harness exposes it,
-  otherwise falls back to the parent session's, otherwise omits.
+- `<user>` is the user's GitHub login, from `gh api user --jq .login`.
+- The prefix names the user only. Copy it as written, with no model or tool name.
 - Keep the attribution inside the note and the actual reply outside it. The context line starts
   with the robot emoji. Add no horizontal rule, Setext underline, heading, signature footer, or a
   second attribution anywhere in the comment.

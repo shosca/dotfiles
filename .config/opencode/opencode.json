@@ -102,6 +102,16 @@
     "mise": {
       "type": "local",
       "command": ["mise", "mcp"]
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chrome",
+        "--sandbox"
+      ]
     }
   },
   "lsp": {
