@@ -24,6 +24,7 @@
     "input.select.buffer.end": "none"
   },
   "theme": {
-    "name": "ayu-dark"
+    "name": "github-dark",
+    "mode": "dark"
   }
 }

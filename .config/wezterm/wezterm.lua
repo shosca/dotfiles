@@ -1,32 +1,31 @@
 local wezterm = require("wezterm")
-local agent_deck = wezterm.plugin.require("https://github.com/Eric162/wezterm-agent-deck")
 
--- Ayu Dark, matching ~/.config/ghostty/config (Ghostty's bundled themes/Ayu)
+-- GitHub Dark, matching ~/.config/ghostty/themes/github-dark
 local colors = {
-  background = "#0b0e14",
-  foreground = "#bfbdb6",
-  cursor_bg = "#e6b450",
-  cursor_fg = "#0b0e14",
-  selection_bg = "#409fff",
-  selection_fg = "#0b0e14",
+  background = "#010409",
+  foreground = "#e6edf3",
+  cursor_bg = "#e6edf3",
+  cursor_fg = "#010409",
+  selection_bg = "#264f78",
+  selection_fg = "#e6edf3",
   ansi = {
-    black = "#11151c",
-    red = "#ea6c73",
-    green = "#7fd962",
-    yellow = "#f9af4f",
-    blue = "#53bdfa",
-    magenta = "#cda1fa",
-    cyan = "#90e1c6",
-    white = "#c7c7c7",
+    black = "#484f58",
+    red = "#ff7b72",
+    green = "#3fb950",
+    yellow = "#d29922",
+    blue = "#58a6ff",
+    magenta = "#bc8cff",
+    cyan = "#39c5cf",
+    white = "#b1bac4",
   },
   brights = {
-    black = "#686868",
-    red = "#f07178",
-    green = "#aad94c",
-    yellow = "#ffb454",
-    blue = "#59c2ff",
-    magenta = "#d2a6ff",
-    cyan = "#95e6cb",
+    black = "#6e7681",
+    red = "#ffa198",
+    green = "#56d364",
+    yellow = "#e3b341",
+    blue = "#79c0ff",
+    magenta = "#d2a8ff",
+    cyan = "#56d4dd",
     white = "#ffffff",
   },
 }
@@ -136,28 +135,39 @@ local config = {
   freetype_load_flags = "FORCE_AUTOHINT",
   exit_behavior = "Close",
   unzoom_on_switch_pane = true,
-  leader = { key = "`", mods = "", timeout_milliseconds = 500 },
+  -- Ghostty parity: same split keys as ~/.config/ghostty/config defaults.
+  -- Ghostty super = SUPER here; on Wayland the compositor may own some SUPER combos.
   keys = {
-    { key = "`", mods = "LEADER", action = wezterm.action({ SendString = "`" }) },
-    { key = "\\", mods = "LEADER", action = wezterm.action({ SplitHorizontal = { domain = "DefaultDomain" } }) },
-    { key = "-", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "DefaultDomain" } }) },
-    { key = "c", mods = "LEADER", action = wezterm.action({ SpawnTab = "DefaultDomain" }) },
-    { key = "j", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Next" }) },
-    { key = "k", mods = "LEADER", action = wezterm.action({ ActivatePaneDirection = "Prev" }) },
-    { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
-    { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
-    { key = "y", mods = "LEADER", action = wezterm.action.ActivateCopyMode },
-    { key = "1", mods = "LEADER", action = wezterm.action.ActivateTab(0) },
-    { key = "2", mods = "LEADER", action = wezterm.action.ActivateTab(1) },
-    { key = "3", mods = "LEADER", action = wezterm.action.ActivateTab(2) },
-    { key = "4", mods = "LEADER", action = wezterm.action.ActivateTab(3) },
-    { key = "5", mods = "LEADER", action = wezterm.action.ActivateTab(4) },
-    { key = "6", mods = "LEADER", action = wezterm.action.ActivateTab(5) },
-    { key = "7", mods = "LEADER", action = wezterm.action.ActivateTab(6) },
+    { key = "o", mods = "CTRL|SHIFT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+    { key = "e", mods = "CTRL|SHIFT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = "LeftArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Left") },
+    { key = "RightArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Right") },
+    { key = "UpArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Up") },
+    { key = "DownArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Down") },
+    { key = "[", mods = "SUPER|CTRL", action = wezterm.action.ActivatePaneDirection("Prev") },
+    { key = "]", mods = "SUPER|CTRL", action = wezterm.action.ActivatePaneDirection("Next") },
+    {
+      key = "LeftArrow",
+      mods = "SUPER|CTRL|SHIFT",
+      action = wezterm.action.AdjustPaneSize({ "Left", 10 }),
+    },
+    {
+      key = "RightArrow",
+      mods = "SUPER|CTRL|SHIFT",
+      action = wezterm.action.AdjustPaneSize({ "Right", 10 }),
+    },
+    {
+      key = "UpArrow",
+      mods = "SUPER|CTRL|SHIFT",
+      action = wezterm.action.AdjustPaneSize({ "Up", 10 }),
+    },
+    {
+      key = "DownArrow",
+      mods = "SUPER|CTRL|SHIFT",
+      action = wezterm.action.AdjustPaneSize({ "Down", 10 }),
+    },
+    { key = "Enter", mods = "CTRL|SHIFT", action = wezterm.action.TogglePaneZoomState },
   },
-  -- ghostty parity: copy-on-select = clipboard copies the selection to both
-  -- the system clipboard and the primary selection, and still opens links.
-  -- ClearSelection drops the highlight once the text is copied.
   mouse_bindings = {
     {
       event = { Up = { streak = 1, button = "Left" } },
@@ -169,66 +179,5 @@ local config = {
     },
   },
 }
-
--- Status dots in tab titles + notifications when an agent waits for input.
-agent_deck.apply_to_config(config, {
-  update_interval = 1000,
-
-  -- Match the Solarized Dark Patched palette above.
-  colors = {
-    working = colors.ansi.green,
-    waiting = colors.ansi.yellow,
-    idle = colors.ansi.blue,
-    inactive = colors.brights.black,
-  },
-
-  -- The plugin ships empty nerd glyphs; supply ones present in VictorMono NFM.
-  icons = {
-    style = "nerd",
-    nerd = {
-      working = "\u{f111}", -- nf-fa-circle
-      waiting = "\u{f042}", -- nf-fa-adjust
-      idle = "\u{f10c}", -- nf-fa-circle_o
-      inactive = "\u{f0766}", -- nf-md-circle_outline
-    },
-  },
-
-  -- WezTerm's native toast never expires on KDE Plasma (wezterm#7553, #7573),
-  -- so disable it; the notify-send handler below honours the timeout instead.
-  notifications = { enabled = false },
-})
-
--- The GNOME overview and taskbar read wezterm's window title, which wezterm
--- recomputes from the focused pane. Focusing a zsh split rewrote the title to
--- "zsh", losing which agent the window runs. Name the agent instead by scanning
--- every pane in the window; agent-deck already detects agents per pane.
-local AGENTS = {
-  claude = { label = "Claude", strip = "^✳%s*" },
-  opencode = { label = "OpenCode", strip = "^OC%s*|%s*" },
-  codex = { label = "Codex" },
-  gemini = { label = "Gemini" },
-  aider = { label = "Aider" },
-}
-
-wezterm.on("format-window-title", function(_tab, _pane, tabs, _panes, _config)
-  local parts = {}
-  for _, t in ipairs(tabs) do
-    for _, p in ipairs(t.panes) do
-      local state = agent_deck.get_agent_state(p.pane_id)
-      if state then
-        local meta = AGENTS[state.agent_type] or { label = state.agent_type }
-        local topic = p.title or ""
-        if meta.strip then
-          topic = topic:gsub(meta.strip, "")
-        end
-        parts[#parts + 1] = meta.label .. ": " .. topic
-      end
-    end
-  end
-  if #parts == 0 then
-    return nil -- no agent in this window: keep wezterm's default title
-  end
-  return table.concat(parts, "  |  ")
-end)
 
 return config

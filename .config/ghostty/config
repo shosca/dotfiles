@@ -7,8 +7,9 @@ font-feature = calt, clig, liga, ss01, ss02, ss03, ss04, ss05, ss06, ss07, ss08,
 # Pick an existing tmux session (fzf chooser), else create the home session
 command = /usr/bin/zsh --login
 
-# Ayu Dark (Ghostty bundled; same palette as Empryo's "Ayu Dark")
-theme = Ayu
+# devvm — Ayu structure retinted to devvm.dev's palette (themes/devvm)
+# GitHub Dark is installed alongside it: switch with `theme = github-dark`.
+theme = github-dark
 background-opacity = 0.75
 
 # No GTK CSD titlebar (too tall on GNOME); rely on window management keys

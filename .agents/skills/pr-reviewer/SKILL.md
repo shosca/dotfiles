@@ -298,7 +298,7 @@ worktree, because a push dismisses it:
    a deleted directory cannot run the rest of the cleanup.
 2. Check the worktree. `git -C "$ROOT/pr-<n>" status --porcelain` must print nothing. If it
    lists anything, keep the worktree and the Space, say so in the pane, and stop there.
-3. Prune the worktree and its branch from the clone root: `gwt rm "pr/<n>" --yes`. It runs the
+3. Prune the worktree and its branch from the clone root: `gwt rm "pr/<n>" --force --yes`. It runs the
    repo's `[hooks.delete]`, the counterpart of the `[hooks.pr]` that `gwt pr` ran when it made this
    worktree. Raw git skips that hook.
 4. Close the Space last, because closing it ends this session. Find it by `checkout_path` in

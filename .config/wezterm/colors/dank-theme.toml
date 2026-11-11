@@ -1,0 +1,13 @@
+[colors]
+background = '#0c0e12'
+foreground = '#f3f3f8'
+
+cursor_bg = '#8fc6fd'
+cursor_fg = '#0c0e12'
+cursor_border = '#8fc6fd'
+
+selection_bg = '#6ea5da'
+selection_fg = '#f3f3f8'
+
+ansi = ['#0c0e12', '#ff729c', '#7efd8f', '#fff772', '#72b1f0', '#6ea5da', '#8fc6fd', '#eff7ff']
+brights = ['#3a3e42', '#ff9fbc', '#a5ffb1', '#fffaa5', '#a0cfff', '#b1d8ff', '#cde6ff', '#f8fbff']

@@ -2,7 +2,6 @@
 "github:avivsinai/jenkins-cli" = "latest"
 "github:hmans/beans" = "latest"
 "github:looker-open-source/looker-cli" = "latest"
-"github:penso/herdr-gpui" = "latest"
 "npm:billion-context" = "latest"
 "npm:chrome-devtools-mcp" = "latest"
 "pipx:mycli" = "latest"
