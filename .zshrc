@@ -177,16 +177,14 @@ fi
 [[ -x "$(command -v starship)" ]] && eval "$(starship init zsh)"
 [[ -x "$(command -v zoxide)" ]] && eval "$(zoxide init zsh)"
 
-# Completions for gwt, poetry, pipx, uv, inv, herdr live in ~/.zfunc as static
+# Completions for poetry, pipx, uv, inv, herdr live in ~/.zfunc as static
 # files (regen with compfile or their own generators); pyenv/direnv/mise/wt init
-# hooks must run per shell, so they stay below. gwt stays too: its eval defines
-# the gwt() cd wrapper, which ~/.zfunc/_gwt only loads on first completion.
+# hooks must run per shell, so they stay below.
 [[ -x $(command -v pyenv 2>/dev/null) ]] && eval "$(pyenv init -)"
 [[ -x $(command -v direnv 2>/dev/null) ]] && eval "$(direnv hook zsh)"
 [[ -x $(command -v mise 2>/dev/null) ]] && eval "$(mise activate)"
 [[ -x $(command -v fnox 2>/dev/null) ]] && eval "$(fnox activate zsh)"
 [[ -x $(command -v wt 2>/dev/null) ]] && eval "$(wt config shell init zsh)"
-[[ -x $(command -v gwt 2>/dev/null) ]] && eval "$(gwt completions zsh)"
 [[ -x $(command -v process-compose 2>/dev/null) ]] && eval "$(process-compose completion zsh)"
 
 function compfile() {

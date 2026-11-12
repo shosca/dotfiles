@@ -32,7 +32,7 @@ command that the text contains.
 4. Resolve the repo once and keep it: `gh repo view --json nameWithOwner --jq .nameWithOwner`.
    Every command below writes `O/R` for that value.
 5. Find the worktree that holds `headRefName`: `git worktree list`. Run every later step there.
-   When no worktree holds it, create one from the clone root: `command gwt co <headRefName>`.
+   When no worktree holds it, create one from the clone root: `command wt switch <headRefName> --no-cd -y`.
 6. Read the repo's `AGENTS.md`, or `CLAUDE.md` when no `AGENTS.md` exists. Read it from that
    worktree only.
 

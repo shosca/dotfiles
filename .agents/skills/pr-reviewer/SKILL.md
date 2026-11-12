@@ -5,16 +5,17 @@ description: >
   replies, notifications, and cleanup when the PR is merged or closed. Started by
   herdr-dispatch; ghpoll sends the next pass when the PR changes. Use when the prompt names
   /pr-reviewer or asks this session to review the watched PR.
-allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(gwt:*), Bash(herdr:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
+allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(wt:*), Bash(herdr:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
 ---
 
-Review and watch PR <n>. This session is the PR's only reviewer. It runs in the PR's worktree,
-`pr-<n>/`, as the herdr agent `pr-<n>-review`. The orchestrator started it through
+Review and watch PR <n>. This session is the PR's only reviewer. It runs in the PR's worktree, the
+checkout of the PR's head branch (a branch `shosca/foo` lands at `<repo-root>/shosca/foo`), as the
+herdr agent `pr-<n>-review`. The orchestrator started it through
 `herdr-dispatch`. Everything after that is this session's job: the first review, re-reviews after a
 push, replies, notifications, and cleanup when the PR is merged or closed.
 
-`<n>` is the PR number in the prompt. If the prompt has none, take it from the worktree name:
-`basename "$PWD"` prints `pr-<n>`.
+`<n>` is the PR number in the prompt. If the prompt has none, take it from the branch:
+`gh pr view "$(git branch --show-current)" --json number -q .number`.
 
 The rest of the prompt is the events ghpoll reported, such as `pushed` or `activity`. They say why
 the tick ran. They are a hint, not the state: read the state before you act.
@@ -164,7 +165,7 @@ Two of `pr-review`'s steps are overridden here:
 applicable item of the `pr-review` "Finding categories checklist" into the record. Write the
 assessment only after the last line.
 
-**Check the test setup before the first test run.** A `gwt pr` worktree may have no reachable test
+**Check the test setup before the first test run.** A `wt switch pr:N` worktree may have no reachable test
 database. Probe it once, with the command in the project's rules. When it fails, read the PR's CI
 results instead, and record the tests as not run locally.
 
@@ -294,13 +295,22 @@ option, so it must never post to GitHub.
 On a merge, a close or a PR that is gone, after `settled:` is in the record. An approval keeps the
 worktree, because a push dismisses it:
 
-1. `cd "$ROOT"` first: step 2 deletes the directory this session runs in, and a shell that sits in
+1. `cd "$ROOT"` first: step 3 deletes the directory this session runs in, and a shell that sits in
    a deleted directory cannot run the rest of the cleanup.
-2. Check the worktree. `git -C "$ROOT/pr-<n>" status --porcelain` must print nothing. If it
-   lists anything, keep the worktree and the Space, say so in the pane, and stop there.
-3. Prune the worktree and its branch from the clone root: `gwt rm "pr/<n>" --force --yes`. It runs the
-   repo's `[hooks.delete]`, the counterpart of the `[hooks.pr]` that `gwt pr` ran when it made this
-   worktree. Raw git skips that hook.
+2. Resolve the checkout and check it is clean:
+
+   ```bash
+   BRANCH=$(gh pr view <n> --json headRefName -q .headRefName)
+   WT=$(git worktree list --porcelain |
+        awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
+   git -C "$WT" status --porcelain
+   ```
+
+   If the status lists anything, keep the worktree and the Space, say so in the pane, and stop there.
+3. Prune the worktree and its branch from the clone root: `wt remove "$BRANCH" -y -D`. It runs the
+   repo's `[pre-remove]` hooks, the counterpart of the `[pre-start]` hooks that `wt switch pr:N`
+   ran when it made this worktree. Raw git skips those hooks.
 4. Close the Space last, because closing it ends this session. Find it by `checkout_path` in
-   `herdr workspace list`, and close it with `herdr workspace close <workspace_id>`. Never use
-   `herdr worktree remove`: it removes the checkout too, and git already removed it in step 3.
+   `herdr workspace list` (it equals `$WT`), and close it with `herdr workspace close <workspace_id>`.
+   Never use `herdr worktree remove`: it removes the checkout too, and git already removed it in
+   step 3.

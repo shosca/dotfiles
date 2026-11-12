@@ -47,7 +47,7 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 ## Worktrees and branches
 
 - I work in feature branches and git worktrees, never directly on main/master. If a change seems unrelated to current work, suggest creating a new worktree first.
-- Use my `gwt` tool if you see a bare checkout repo setup; see `gwt help`.
+- Use `wt` (worktrunk) if you see a bare checkout repo setup; see `wt --help`.
 - **Layout:** bare clone + worktrees. Run worktree commands from repo root (where `.git/` lives), not inside a worktree.
 - **Worktree dirs:** the git branch name and worktree names may contain slashes.
 - **Worktree → session cwd:** whenever you create a git worktree, immediately make it the current session's working directory (cd into it, or use your runtime's session-move mechanism — e.g. OpenCode's `tools.opencode.session_move`, or `opencode2 api post /api/session/<id>/move --data '{"directory":"/absolute/path/to/worktree"}'`). All subsequent commands run there; don't keep working from the old directory.

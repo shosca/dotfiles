@@ -1,7 +1,7 @@
 ---
 name: split-work
 description: Hand a plan worked out in this session to a fresh agent session in its own worktree and WezTerm window or Herdr pane. Use when planning is done and the implementation should run somewhere else, separately steerable. Triggers on "/split-work", "split this off", or "hand this to a new session".
-allowed-tools: Bash(gwt:*), Bash(git:*), Bash(wezterm:*), Bash(herdr:*), Bash(uuidgen:*), Bash(opencode:*), Write, Read
+allowed-tools: Bash(wt:*), Bash(git:*), Bash(wezterm:*), Bash(herdr:*), Bash(uuidgen:*), Bash(opencode:*), Write, Read
 ---
 
 # split-work
@@ -22,7 +22,7 @@ Run every check below before any action. If a gate fails, you have created nothi
 so. The two probes pick the muxer, and both failing is the one stop they cause.
 
 ```bash
-command -v gwt                     # gate: worktree helper
+command -v wt                      # gate: worktree helper
 git rev-parse --show-toplevel      # gate: must be a repo
 command -v claude                  # gate: resolve the agent from these two
 command -v opencode
@@ -49,16 +49,16 @@ On the herdr path, the slug also becomes the herdr agent name. It must then matc
 ## Step 2: Create the worktree
 
 ```bash
-command gwt co "$BRANCH"
+command wt switch "$BRANCH" --no-cd -y
 WT=$(git worktree list --porcelain |
      awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
 ```
 
-Read the path back from `git worktree list` rather than parsing `gwt` output. Do not `cd` into it. This session stays where it is. When `$WT` is empty, stop: the lookup found no worktree for the branch, and every later step would run in the wrong directory.
+Read the path back from `git worktree list` rather than parsing `wt` output. Do not `cd` into it. This session stays where it is. When `$WT` is empty, stop: the lookup found no worktree for the branch, and every later step would run in the wrong directory.
 
-Call the binary with `command gwt`, never bare `gwt`. The shell profile defines a `gwt` wrapper function that runs `cd` into the new worktree after the binary exits, and the agent's shell snapshot carries that function. The Bash tool keeps its working directory between calls, so the wrapper moves this session into the new worktree. `command` skips the function. The binary alone creates the worktree and runs its hooks, but changes no directory.
+Call `command wt`, never bare `wt`. The shell profile defines a `wt` wrapper function that runs `cd` into the new worktree after the binary exits, and the agent's shell snapshot carries that function. `--no-cd` stops the binary from asking for that move; `command` skips the wrapper too. `-y` skips the one-time project-hook approval prompt, which would hang a non-interactive shell.
 
-`gwt co` runs the repo's setup hooks, including a dependency install. Expect it to take a moment.
+`wt switch` runs the repo's setup hooks (`[pre-start]` before the worktree is ready, `[post-start]` in the background), including a dependency install. Expect it to take a moment.
 
 **Done:** `$WT` holds the new worktree path, and this session's working directory is unchanged.
 
@@ -174,8 +174,8 @@ wezterm cli spawn --new-window --cwd "$WT" \
 ### Herdr
 
 Herdr already groups per repo, and `herdr worktree create` would put checkouts under
-`~/.herdr/worktrees/<repo>/<branch-slug>`, past where gwt and the repo hooks manage them. So gwt
-owns the disk and herdr hosts the seat: create the worktree with `gwt` (Step 2), then seat the
+`~/.herdr/worktrees/<repo>/<branch-slug>`, past where wt and the repo hooks manage them. So wt
+owns the disk and herdr hosts the seat: create the worktree with `wt` (Step 2), then seat the
 session with the `herdr-dispatch` skill.
 
 Pass it four values:

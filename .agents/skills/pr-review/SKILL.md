@@ -75,21 +75,24 @@ What to look for:
 Run from the **repo root** (where `.git/` lives), not inside a worktree. The project's `AGENTS.md`
 or `CLAUDE.md` describes the worktree layout.
 
-Check out with `gwt pr` (the worktree manager, at `~/.local/bin/gwt`):
+Check out with `wt switch pr:N` (worktrunk):
 
 ```bash
-gwt pr PR_NUMBER
+BRANCH=$(gh pr view N --json headRefName -q .headRefName)
+wt switch pr:N --no-cd -y
+WT=$(git worktree list --porcelain |
+     awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
 ```
 
-`gwt pr` fetches `pull/<N>/head`, creates local branch `pr/<N>`, creates a worktree at `pr-<N>/`
-relative to the repo root, and auto-cd's into it via a shell hook. Work from that directory. The
-**base branch worktree** (e.g. `master`) stays checked out separately — that is the pre-PR state
-you grep against for missed consumers.
+`wt switch pr:N` fetches `pull/<N>/head` and checks out the PR's head branch, `$BRANCH`, into a
+worktree at `{{ repo_path }}/{{ branch }}` — a branch named `shosca/foo` lands in
+`<repo-root>/shosca/foo`. The `wt` shell hook would cd into it; agents pass `--no-cd` and enter the
+path themselves. Work from `$WT`. The **base branch worktree** (e.g. `master`) stays checked out
+separately — that is the pre-PR state you grep against for missed consumers.
 
-**If in plan mode (read-only):** you cannot run `gwt pr` or `git worktree add` yourself. Ask the
-user to run `gwt pr PR_NUMBER` and tell you the worktree path (typically `pr-<N>` relative to the
-repo root, i.e. `../pr-<N>` from inside the main worktree). Then use Read/Grep/Glob/LSP on that
-worktree directory for the rest of the review.
+**If in plan mode (read-only):** you cannot run `wt switch` or `git worktree add` yourself. Ask the
+user to run the commands above and tell you the worktree path `$WT`. Then use Read/Grep/Glob/LSP on
+that worktree directory for the rest of the review.
 
 If the PR is already on a local branch (e.g. you authored it), skip the checkout — just work
 from its existing worktree.
@@ -473,10 +476,13 @@ left something.
 When the review is done, remove the review worktree and its branch from the repo root:
 
 ```bash
-gwt rm "pr/PR_NUMBER" --yes
+BRANCH=$(gh pr view PR_NUMBER --json headRefName -q .headRefName)
+wt remove "$BRANCH" -y -D
 ```
 
-`gwt rm` runs the repo's `[hooks.delete]` first, then removes the worktree and deletes the branch.
+`wt remove` runs the repo's `[pre-remove]` hooks first, then removes the worktree and deletes the
+branch. `-D` deletes the branch even though a squashed PR branch never counts as merged; Step 12's
+merge check is what makes that safe.
 Skip it if the user wants to inspect the PR themselves, or if the PR was already on a local branch
 they own.
 

@@ -44,15 +44,13 @@ dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"
 
 [dotfiles]
-"~/bin" = {}
 "~/.agents" = { source = "~/dotfiles/.agents" }
-"~/.claude/CLAUDE.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
-"~/.codex/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
-"~/.pi/agent/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
-"~/.config/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
 "~/.aliases" = {}
 "~/.bashrc" = {}
+"~/.claude/CLAUDE.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
 "~/.claude/skills" = { source = "~/dotfiles/.agents/skills" }
+"~/.codex/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
+"~/.config/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
 "~/.config/direnv" = {}
 "~/.config/ghostty" = {}
 "~/.config/ghpoll" = {}
@@ -72,10 +70,13 @@ dotfiles.default_mode = "symlink"
 "~/.config/starship.toml" = {}
 "~/.config/tmux" = {}
 "~/.config/wezterm" = {}
+"~/.config/worktrunk/config.toml" = {}
 "~/.gemrc" = {}
 "~/.inputrc" = {}
 "~/.pdbrc" = {}
 "~/.pdbrc.py" = {}
+"~/.pi/agent/AGENTS.md" = { source = "~/dotfiles/.agents/AGENTS.md" }
 "~/.profile" = {}
 "~/.zprofile" = {}
 "~/.zshrc" = {}
+"~/bin" = {}

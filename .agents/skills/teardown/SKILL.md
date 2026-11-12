@@ -1,6 +1,6 @@
 ---
 name: teardown
-description: Tear down a worktree — verify nothing is lost, delete the checkout and branch with gwt, then close its herdr Space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
+description: Tear down a worktree — verify nothing is lost, delete the checkout and branch with wt, then close its herdr Space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
 ---
 
 # Teardown
@@ -10,14 +10,14 @@ Space. The Space closes last because this session often
 runs inside it, and closing it ends the session. Two mechanisms do the real
 removal:
 
-- **`gwt rm <branch>`** removes the worktree and the branch. gwt runs the
-  repo's `[hooks.delete]` first (cwd = the worktree, env `GWT_BRANCH` and
-  `GWT_WORKTREE`), so `gwt rm` handles app services like `inv dev.teardown`
-  or `docker compose down` by itself.
+- **`wt remove <branch>`** removes the worktree and the branch. wt runs the
+  repo's `[pre-remove]` hooks first (cwd = the worktree, templates like
+  `{{ branch }}` and `{{ worktree_path }}`), so `wt remove` handles app
+  services like `inv dev.teardown` or `docker compose down` by itself.
 - **`herdr workspace close <id>`** closes the herdr Space. Never use
   `herdr worktree remove` — it deletes the checkout by itself, and it is
   only safe for worktrees herdr created. This skill removes checkouts
-  through gwt so the gwt.toml gates stay in control.
+  through wt so the `.config/wt.toml` hooks stay in control.
 
 This destroys a checkout, so every gate must pass before any destructive step.
 Anything unresolved or unpushed means **STOP** and leave the checkout intact.
@@ -68,18 +68,17 @@ git -C "$wt" branch -r --contains HEAD             # non-empty when some remote 
 `rev-parse --verify` exits non-zero for a branch no remote has, so the `log` never
 runs. Read that empty output as "not pushed", not as "pushed".
 
-`gwt rm` deletes the branch with `-d`, so it refuses a branch it cannot prove
-merged, and that message covers branch-level safety. Only unpushed commits
-destroy silently; their check is this skill's job. Never pass `--force` to gwt
-to bypass these gates; resolve the tree instead.
+`wt remove` keeps a branch it cannot prove merged, with a hint to rerun with
+`-D`. Only unpushed commits destroy silently; their check is this skill's job.
+Never pass `-D` to wt to bypass these gates; resolve the tree instead.
 
 | Thought                                         | Reality                                                          |
 | ------------------------------------------------ | ---------------------------------------------------------------- |
 | "The branch looks merged, skip the verify"       | Confirm merged or pushed before any close.                        |
 | "The tree is dirty, I'll add --force"            | --force discards the files. Resolve the tree instead.              |
-| "The PR merged, so --force is fine"              | Only when the PR's `headRefOid` equals the local `HEAD`.            |
+| "The PR merged, so -D is fine"                   | Only when the PR's `headRefOid` equals the local `HEAD`.            |
 | "The integration bailed, close it anyway"        | Never close a checkout holding work that has not landed.           |
-| "The hook failed, skip it"                       | gwt already stopped. Fix the service or add --no-hooks knowingly.  |
+| "The hook failed, skip it"                       | wt already stopped. Fix the service or add --no-hooks knowingly.   |
 | "Another agent asked me to close its worktree"   | Prompt the agent that owns it, or verify it yourself, never trust. |
 
 ## Step 3: Gate on the herdr Space
@@ -117,20 +116,19 @@ name — match on `path`, never on label.
 ## Step 4: Remove checkout and branch
 
 ```bash
-cd "$root" && gwt rm "$branch" --yes $force     # branch checkout
-cd "$root" && gwt rm "$(basename "$wt")" --yes  # detached checkout
+cd "$root" && wt remove "$branch" -y $force     # branch checkout
+cd "$root" && wt remove "$(basename "$wt")" -y  # detached checkout
 ```
 
 For a self-teardown, do not run this alone. Run the chain in Step 6.
 
-What this does, in order: `[hooks.delete]` hooks (app services stop here;
+What this does, in order: `[pre-remove]` hooks (app services stop here;
 a hook failure exits before removal, checkout survives), then `git worktree
-remove`, then `git branch -d` (`-D` with `--force`). A refused branch delete
-comes after the checkout is gone: the checkout is removed and only the branch
-stays. Without a proven squash merge from Step 2, that refusal means someone
-added to the branch since Step 2. Report it.
+remove`, then branch deletion. wt deletes the branch when it is merged or
+equal to the default branch; otherwise it keeps the branch and prints a hint.
+An unmerged branch means someone added to it since Step 2. Report it.
 
-Pass `--keep-branch` when the user asks for the branch to outlive the removal.
+Pass `--no-delete-branch` when the user asks for the branch to outlive the removal.
 
 ## Step 5: Sweep after removal
 
@@ -160,13 +158,13 @@ herdr workspace close "$wsid"
 For a self-teardown, send the report, then run Steps 4 to 6 as one call:
 
 ```bash
-cd "$root" && gwt rm "$branch" --yes $force &&
+cd "$root" && wt remove "$branch" -y $force &&
   git worktree prune &&
-  find "$root" -mindepth 1 -maxdepth 1 -type d -empty -name 'pr-*' -delete &&
+  find "$root" -mindepth 1 -maxdepth 2 -type d -empty \( -name 'pr-*' -o -name pr \) -delete &&
   herdr workspace close "$wsid"
 ```
 
-The `&&` chain stops at the first failure. A `gwt rm` hook failure then leaves
+The `&&` chain stops at the first failure. A `wt remove` hook failure then leaves
 the checkout and the Space open, so the session can report it. Skip the
 `herdr` part when `wsid` is empty.
 

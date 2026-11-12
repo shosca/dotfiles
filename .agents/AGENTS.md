@@ -27,7 +27,7 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 
 ## Worktrees and branches
 
-- Never work on main/master. The layout is a bare clone plus worktrees: run worktree commands from the repo root (where `.git/` lives), never inside a worktree. Use `gwt` (`gwt help`). Worktree and branch names may contain slashes. Suggest a new worktree when a change is unrelated to current work.
+- Never work on main/master. The layout is a bare clone plus worktrees: run worktree commands from the repo root (where `.git/` lives), never inside a worktree. Use `wt` (`wt --help`). Worktree and branch names may contain slashes. Suggest a new worktree when a change is unrelated to current work.
 - Worktree to session cwd: when you create a worktree, make it the current session's working directory immediately (cd into it, or use your runtime's session-move mechanism, e.g. OpenCode's `tools.opencode.session_move`). Run all later commands there.
 
 ## Muxer names

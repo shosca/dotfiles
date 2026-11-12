@@ -47,7 +47,8 @@ that goes back to draft sends `back to draft` once, then nothing until `ready fo
 
 A PR's worktree is:
 
-- review: `$ROOT/pr-<n>`
+- review: the checkout of the PR's head branch, from `git worktree list` (`wt switch pr:<n>` puts it
+  at `{{ repo_path }}/{{ branch }}`)
 - babysit: the worktree whose branch is the PR's `headRefName`, from `git worktree list`. The PR
   number is not in that path.
 
@@ -72,7 +73,7 @@ Run `herdr agent list` once. A PR's session is the agent whose `cwd` is that wor
 |---|---|
 | `new` | Dispatch a reviewer. See section 4 |
 | `pushed`, `ready for review`, `activity` | Tick the reviewer with `/pr-reviewer <n> <events>`. With no reviewer, dispatch one |
-| `merged`, `closed`, `gone` | Tick the reviewer so it runs its own cleanup. With no reviewer and a `pr-<n>/` worktree, dispatch one so its first tick cleans up. See section 4 |
+| `merged`, `closed`, `gone` | Tick the reviewer so it runs its own cleanup. With no reviewer and a checkout of the PR's head branch, dispatch one so its first tick cleans up. See section 4 |
 | `dropped (on hold)` | Nothing. Record it and leave the reviewer's Space open |
 | `dropped (wip)`, `dropped (stale)` | Nothing. ghpoll took the PR out of the queue. A stale PR keeps its reviewer, so close that Space by hand when you no longer need it |
 
@@ -80,17 +81,20 @@ Run `herdr agent list` once. A PR's session is the agent whose `cwd` is that wor
 
 A PR with no reviewer takes two steps.
 
-1. Create the checkout, unless `pr-<n>/` exists:
+1. Create the checkout, unless one already holds the PR's head branch:
 
    ```bash
-   command gwt pr <n>
+   BRANCH=$(gh pr view <n> --json headRefName -q .headRefName)
+   command wt switch pr:<n> --no-cd -y
+   WT=$(git worktree list --porcelain |
+        awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
    ```
 
-   The `[hooks.pr]` hook installs dependencies and registers the Space.
+   The `[pre-start]` hook installs dependencies and registers the Space.
 
 2. Invoke the `herdr-dispatch` skill with four values:
 
-       path=<ROOT>/pr-<n>
+       path=$WT
        name=pr-<n>-review
        task=/pr-reviewer <n> <events>
        agent=claude
@@ -130,7 +134,7 @@ When a `security` PR has `new`, `ready for review` or `merged`, do this in addit
 table's action:
 
 1. From the `herdr agent list` output, take every babysit session whose `cwd` is under `$ROOT`,
-   except the security PR's own session and this one. Skip the reviewers in `pr-<n>/`: a reviewer
+   except the security PR's own session and this one. Skip the reviewers in the PR's checkout: a reviewer
    never changes the author's branch, and a rebase line makes it force-push one. Map each session
    to its PR: its worktree's branch gives `gh pr list --head <branch> --repo <owner>/<repo> --json
    number,baseRefName`.

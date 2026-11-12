@@ -1,4 +1,4 @@
-alias g="gwt"
+alias g="wt"
 alias showpath='echo $PATH | tr ":" "\n"'
 alias c='clear'
 alias dmesg="dmesg -L"
