@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Poll GitHub for pull request changes and wake a herdr orchestrator agent.
+"""Poll GitHub for pull request changes and wake a Herdr orchestrator agent.
 
 ghpoll detects changes and nothing else. It holds no review or merge logic and never names an
 agent. Each round, per configured repo, it:
@@ -14,18 +14,21 @@ agent. Each round, per configured repo, it:
 3. Compares each PR with the snapshot from the last round and turns the differences into short
    events, such as ``pushed``, ``checks FAILURE`` or ``merged``. Events pile up per PR until
    they are delivered.
-4. Delivers the pending events as one single-line prompt to the herdr agent in the repo's
-   ``ghpoll`` space: the space with that label whose repo root is the configured ``root``. Space
-   labels repeat across projects, so the label alone is not enough. It sends only when that
-   agent is ``idle`` or
-   ``done``. A ``working`` agent gets the merged events on a later round, so the agent never
-   holds a queue of prompts. A ``blocked`` agent, or no agent, gets one herdr notification per
-   state change, because typed input would answer whatever the agent is asking.
+4. Delivers the pending events as one single-line prompt to the terminal in the repo's space:
+   the Herdr space named by the configured ``space`` whose folder is the configured ``root``.
+   Space names repeat across projects, so the name alone is not enough. It sends only when that
+   terminal is ``idle`` or
+   ``done``. A ``working`` terminal gets the merged events on a later round, so the session never
+   holds a queue of prompts. A ``blocked`` terminal, or none, only reports once per state change,
+   because typed input would answer whatever the agent is asking.
 
 The prompt is one line because a newline typed into an agent TUI can submit it early.
 
 ``--replay`` puts the last delivered events back in the queue, for every PR or the ones named,
 and runs a normal round. Use it to retry a prompt the agent dropped or to test the digest.
+
+``--ping`` sends one fixed test line to each repo's orchestrator and writes no state. Name repos to
+limit it. Add ``--dry-run`` to resolve the target and send nothing.
 
 Config lives in ``~/.config/ghpoll/config.toml``::
 
@@ -35,7 +38,7 @@ Config lives in ``~/.config/ghpoll/config.toml``::
     [[repo]]
     name = "owner/repo"
     root = "~/src/repo"          # clone root
-    space = "ghpoll"             # herdr space label whose agent wakes
+    space = "ghpoll"             # Herdr space whose session wakes
     age_days = 14                # review PRs idle longer than this are ignored
     hold_label = "on hold"
     ignore_authors = []
@@ -359,17 +362,19 @@ def diff(old: dict[str, Any] | None, new: dict[str, Any]) -> list[str]:
 
 
 def find_agent(root: Path, space: str) -> dict[str, Any] | None:
-    workspaces = json.loads(run("herdr", "workspace", "list"))["result"]["workspaces"]
-    ids = {
-        workspace["workspace_id"]
-        for workspace in workspaces
-        if workspace.get("label") == space
-        and (repo_root := (workspace.get("worktree") or {}).get("repo_root"))
-        # herdr reports a bare clone's repo_root as its .git directory.
-        and Path(repo_root).resolve() in (root, root / ".git")
-    }
-    agents = json.loads(run("herdr", "agent", "list"))["result"]["agents"]
-    return next((agent for agent in agents if agent.get("workspace_id") in ids), None)
+    """Return the terminal in the repo's space, or None when the window is closed or empty."""
+    try:
+        spaces = json.loads(run("herdr-app", "ls"))["spaces"]
+    except subprocess.CalledProcessError:
+        return None
+    for candidate in spaces:
+        if candidate["name"] != space or not candidate.get("folder"):
+            continue
+        if Path(candidate["folder"]).resolve() != root:
+            continue
+        terminals = [terminal for tab in candidate["tabs"] for terminal in tab["terminals"]]
+        return next((terminal for terminal in terminals if terminal["status"]), None)
+    return None
 
 
 def render(repo: str, pending: dict[str, dict[str, list[str]]], prefix: str) -> str:
@@ -383,11 +388,6 @@ def render(repo: str, pending: dict[str, dict[str, list[str]]], prefix: str) -> 
             )
             parts.append(f"{role}: {items}")
     return f"{prefix}ghpoll {repo} — " + " — ".join(parts)
-
-
-def notify(title: str, body: str) -> None:
-    args = ["herdr", "notification", "show", title, "--body", body, "--sound", "request"]
-    subprocess.run(args, check=False, capture_output=True)
 
 
 def collect(
@@ -457,25 +457,24 @@ def collect(
 def deliver(name: str, root: Path, space: str, message: str, state: dict[str, Any]) -> bool:
     """Prompt the target agent when it can take input. Return True when the prompt went in.
 
-    Any other outcome, including a failed prompt, notifies once per distinct status, so a
-    persistent failure is visible without a notification every round.
+    Any other outcome, including a failed prompt, reports once per distinct status, so a
+    persistent failure stays visible without a line every round.
     """
     agent = find_agent(root, space)
-    status = agent["agent_status"] if agent else "missing"
+    status = agent["status"] if agent else "missing"
     if status in DELIVERABLE:
         try:
-            run("herdr", "agent", "prompt", agent["pane_id"], message)
+            run("hc", "send", agent["terminal"], message)
         except subprocess.CalledProcessError as error:
             print(f"ghpoll {name}: prompt failed: {error.stderr.strip()}", file=sys.stderr)
             status = "rejecting prompts"
         else:
             state["notice"] = None
-            print(f"ghpoll {name}: prompted {agent['pane_id']}")
+            print(f"ghpoll {name}: prompted {agent['terminal']}")
             return True
     if status != "working" and state.get("notice") != status:
-        notify(f"ghpoll {name}", f"orchestrator in space {space} is {status}; events wait")
         state["notice"] = status
-        print(f"ghpoll {name}: orchestrator {status}; notified")
+        print(f"ghpoll {name}: orchestrator {status}; events wait")
     else:
         print(f"ghpoll {name}: orchestrator {status}; events queued")
     return False
@@ -557,10 +556,40 @@ def main() -> None:
         metavar="PR",
         help="queue the last delivered events again, for all PRs or the ones named",
     )
+    mode.add_argument(
+        "--ping",
+        nargs="*",
+        metavar="REPO",
+        help="send one test line to each repo's orchestrator, for all repos or the ones named; "
+        "writes no state",
+    )
     args = parser.parse_args()
 
     config = tomllib.loads(args.config.expanduser().read_text())
     login = config.get("login") or run("gh", "api", "user", "--jq", ".login").strip()
+
+    if args.ping is not None:
+        matched = 0
+        for repo in config["repo"]:
+            name = repo["name"]
+            if args.ping and not {name, name.rsplit("/", 1)[-1]} & set(args.ping):
+                continue
+            matched += 1
+            root = Path(repo["root"]).expanduser().resolve()
+            space = repo.get("space", "ghpoll")
+            agent = find_agent(root, space)
+            if agent is None:
+                print(f"ghpoll {name}: no orchestrator reporting a status in space {space}")
+            elif agent["status"] not in DELIVERABLE:
+                print(f"ghpoll {name}: orchestrator {agent['status']}; not pinged")
+            elif args.dry_run:
+                print(f"ghpoll {name}: would ping {agent['terminal']}")
+            else:
+                run("hc", "send", agent["terminal"], "ghpoll ping: no action needed")
+                print(f"ghpoll {name}: pinged {agent['terminal']} ({agent['status']})")
+        if not matched:
+            sys.exit(f"ghpoll: no repo matches {' '.join(args.ping)}")
+        return
 
     STATE.mkdir(parents=True, exist_ok=True)
     remaining = int(json.loads(run("gh", "api", "rate_limit"))["resources"]["graphql"]["remaining"])

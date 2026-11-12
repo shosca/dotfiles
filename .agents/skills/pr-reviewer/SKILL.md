@@ -5,12 +5,12 @@ description: >
   replies, notifications, and cleanup when the PR is merged or closed. Started by
   herdr-dispatch; ghpoll sends the next pass when the PR changes. Use when the prompt names
   /pr-reviewer or asks this session to review the watched PR.
-allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(wt:*), Bash(herdr:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
+allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(wt:*), Bash(herdr-app:*), Bash(hc:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
 ---
 
 Review and watch PR <n>. This session is the PR's only reviewer. It runs in the PR's worktree, the
 checkout of the PR's head branch (a branch `shosca/foo` lands at `<repo-root>/shosca/foo`), as the
-herdr agent `pr-<n>-review`. The orchestrator started it through
+Herdr tab `pr-<n>-review`. The orchestrator started it through
 `herdr-dispatch`. Everything after that is this session's job: the first review, re-reviews after a
 push, replies, notifications, and cleanup when the PR is merged or closed.
 
@@ -50,7 +50,8 @@ Then work through these in order. Cases 1 to 3 end the tick.
    (default `on hold`). It means the author or the team parked the PR. Record the label once and
    do nothing else. When the label comes off, the next tick carries on normally.
 4. **`new` or `pushed` is in the events, or `headRefOid` is not the newest `revisions` entry.**
-   Fetch. When an earlier review exists, run "Re-review after a push" in the `pr-review` skill.
+   Fetch, and when `git status --porcelain` is empty, `git reset --hard <headRefOid>` so the
+   worktree stays on the PR head. When an earlier review exists, run "Re-review after a push" in the `pr-review` skill.
    Review the head when it is new work. See "Review and posting".
    A newest entry marked `mode: diff-only` came from an older draft review that read only the
    diff. When the PR is no longer a draft, review its head in full once, reading that entry first,
@@ -274,7 +275,7 @@ promises findings that are not up yet.
 
 The question box hides every line printed in the same turn, the end-of-tick block included. Put
 the full end-of-tick summary, the PR URL included, in the question text itself, after the one-line
-event. Never set `preview` on an option: herdr reports a pane with a preview dialog as `done`, not
+event. Never set `preview` on an option: an agent that opens a preview dialog can report `done`, not
 `blocked`, so ghpoll types into it and its Enter picks an option.
 
 When I answer a question with "clarify" instead of an option, the summary did not reach me. Print
@@ -282,9 +283,10 @@ the full summary as plain text, then ask what I want to clarify. Do not ask the 
 again.
 
 To ping, write `notified:` first, then ask me a question and wait. That is the only ping this
-session sends: the rich-notifications plugin turns a `blocked` pane into a desktop notification, and
-it is the one channel that behaves the same for every agent. `herdr notification show` reaches the
-herdr window only, so do not use it here. Use whatever blocking question the harness has (Claude:
+session sends: a `blocked` terminal is how the app marks that a session waits on the person, and
+it is the one channel that behaves the same for every agent. The app plays its blocked sound and
+marks the tab; it has no command that raises a desktop notification, so do not build one into this
+step. Use whatever blocking question the harness has (Claude:
 `AskUserQuestion`). Start the question with the event: `#<n> waiting on you: <assessment>, <one line
 on what changed>`. The summary follows it. Offer the verdict the event asks for, such as approve or leave it, and act on the answer
 in the same turn. Put the option that changes nothing first. A stray Enter selects the first
@@ -310,7 +312,7 @@ worktree, because a push dismisses it:
 3. Prune the worktree and its branch from the clone root: `wt remove "$BRANCH" -y -D`. It runs the
    repo's `[pre-remove]` hooks, the counterpart of the `[pre-start]` hooks that `wt switch pr:N`
    ran when it made this worktree. Raw git skips those hooks.
-4. Close the Space last, because closing it ends this session. Find it by `checkout_path` in
-   `herdr workspace list` (it equals `$WT`), and close it with `herdr workspace close <workspace_id>`.
-   Never use `herdr worktree remove`: it removes the checkout too, and git already removed it in
-   step 3.
+4. Close the space last, because closing it ends this session. Find it by its folder in
+   `herdr-app ls` (it equals `$WT`), and close it with
+   `herdr-app do space.close --id <space_id> --confirmed true`. The close ends terminals only; the
+   checkout went with `wt remove` in step 3.

@@ -1,7 +1,7 @@
 ---
 name: split-work
-description: Hand a plan worked out in this session to a fresh agent session in its own worktree and WezTerm window or Herdr pane. Use when planning is done and the implementation should run somewhere else, separately steerable. Triggers on "/split-work", "split this off", or "hand this to a new session".
-allowed-tools: Bash(wt:*), Bash(git:*), Bash(wezterm:*), Bash(herdr:*), Bash(uuidgen:*), Bash(opencode:*), Write, Read
+description: Hand a plan worked out in this session to a fresh agent session in its own worktree and WezTerm window or Herdr space. Use when planning is done and the implementation should run somewhere else, separately steerable. Triggers on "/split-work", "split this off", or "hand this to a new session".
+allowed-tools: Bash(wt:*), Bash(git:*), Bash(wezterm:*), Bash(herdr-app:*), Bash(hc:*), Bash(uuidgen:*), Bash(opencode:*), Write, Read
 ---
 
 # split-work
@@ -26,11 +26,13 @@ command -v wt                      # gate: worktree helper
 git rev-parse --show-toplevel      # gate: must be a repo
 command -v claude                  # gate: resolve the agent from these two
 command -v opencode
-herdr status >/dev/null 2>&1       # probe: is the herdr server reachable?
+herdr-app status >/dev/null 2>&1   # probe: is the Herdr window open?
 wezterm cli list >/dev/null 2>&1   # probe: is this a WezTerm mux?
 ```
 
-Pick the muxer in this order: herdr (server reachable over its socket), WezTerm, then stop and say so. The herdr CLI talks to the server socket even from a pane that is not herdr-managed, and it never uses UI focus. Everything below targets explicit IDs read from JSON responses. A herdr instance the user runs in parallel is a feature here, not a failure.
+Pick the muxer in this order: Herdr (window open), WezTerm, then stop and say so. The app talks
+to the running window, and everything below takes explicit ids from `herdr-app ls`. A Herdr
+window the user runs in parallel is a feature here, not a failure.
 
 ## Step 1: Settle the inputs
 
@@ -40,7 +42,7 @@ Nothing is created yet. Decide three values now, in this order.
 
 **Slug.** The slug names the work, not the directory: `drop-npx-from-agent-docs`, `report-query-counter`. Kebab-case, 3 to 5 words. One slug drives everything downstream: the branch, the worktree path, and the session name. Take it from the user's argument when they gave one. Otherwise propose one from the work, and confirm it before creating anything. A slug is hard to change afterwards: it is baked into the branch name, and the branch name cannot change once a PR is open.
 
-On the herdr path, the slug also becomes the herdr agent name. It must then match `[a-z][a-z0-9_-]{0,31}`: lowercase kebab-case of at most 32 characters. Three to five words can pass that cap, so drop a word when the slug runs long. Lowercase everything and strip characters outside that set.
+On the Herdr path, the slug also becomes the tab name. It must then match `[a-z][a-z0-9_-]{0,31}`: lowercase kebab-case of at most 32 characters. Three to five words can pass that cap, so drop a word when the slug runs long. Lowercase everything and strip characters outside that set.
 
 **Branch name.** The branch convention is declared by the repo, not by this skill. Read the repo's `CLAUDE.md`, `AGENTS.md`, or `CONTRIBUTING.md`, and follow what it declares. If no convention is documented, ask the user. Never invent a ticket key.
 
@@ -51,7 +53,7 @@ On the herdr path, the slug also becomes the herdr agent name. It must then matc
 ```bash
 command wt switch "$BRANCH" --no-cd -y
 WT=$(git worktree list --porcelain |
-     awk -v b="refs/heads/$BRANCH" '/^worktree /{p=$2} $0=="branch "b{print p}')
+     grep -B2 -x "branch refs/heads/$BRANCH" | sed -n 's/^worktree //p')
 ```
 
 Read the path back from `git worktree list` rather than parsing `wt` output. Do not `cd` into it. This session stays where it is. When `$WT` is empty, stop: the lookup found no worktree for the branch, and every later step would run in the wrong directory.
@@ -101,14 +103,14 @@ not end the turn to signal that you need the user. On a merge or a close, stop a
 
 Prose, not a transcript. Aim for one screen. Leave out the exploration that produced the plan.
 
-Always include **After the PR is open**, as written. An open question puts the session in a waiting state the muxer can detect: herdr calls it `blocked`, and the rich-notifications plugin turns that into a desktop notification. That is the one channel that behaves the same for every agent; do not send a notification call of your own. A finished turn looks the same as a quiet check, so it never reaches the user. For Claude, the question tool is `AskUserQuestion`. For OpenCode, it is `question`.
+Always include **After the PR is open**, as written. An open question puts the session in a waiting state the muxer can detect: Herdr calls it `blocked`, and the app marks the tab and its space. That is the one channel that behaves the same for every agent; do not send a notification call of your own. A finished turn looks the same as a quiet check, so it never reaches the user. For Claude, the question tool is `AskUserQuestion`. For OpenCode, it is `question`.
 
 **Done:** `$DOC` holds an absolute path, and the file exists.
 
 ## Step 4: Build the launch command
 
-Only the WezTerm path uses `$LAUNCH`. On the herdr path, `herdr-dispatch` builds it from the task
-line, so skip this step there.
+Only the WezTerm path uses `$LAUNCH`. On the Herdr path, `herdr-dispatch` builds the argv and the
+task, so skip this step there.
 
 ### Claude
 
@@ -140,8 +142,8 @@ Sessions are directory-scoped. `opencode session list` inside the worktree shows
 
 The prompt is an argv string the shell expands: backticks and `$(...)` inside it run as commands. Keep identifiers out of the prompt. The handoff doc holds them. Interpolate only `$DOC` and `$SLUG`.
 
-On the herdr path, keep the task line short: pane typing injection truncates at 1024 bytes
-(herdr#2862), and a truncated command never runs. The handoff doc carries everything else.
+On the Herdr path, keep the task line to one line: a newline can submit the message early. The
+handoff doc carries everything else.
 
 **Done (WezTerm):** `$LAUNCH` is set for `$AGENT`.
 
@@ -173,10 +175,8 @@ wezterm cli spawn --new-window --cwd "$WT" \
 
 ### Herdr
 
-Herdr already groups per repo, and `herdr worktree create` would put checkouts under
-`~/.herdr/worktrees/<repo>/<branch-slug>`, past where wt and the repo hooks manage them. So wt
-owns the disk and herdr hosts the seat: create the worktree with `wt` (Step 2), then seat the
-session with the `herdr-dispatch` skill.
+wt owns the disk, and the Herdr app hosts the seat. It groups terminals by folder, so create the
+worktree with `wt` (Step 2), then seat the session with the `herdr-dispatch` skill.
 
 Pass it four values:
 
@@ -185,18 +185,17 @@ Pass it four values:
     task=Read <doc path> and implement it.
     agent=$AGENT
 
-Substitute the absolute path of `$DOC` for `<doc path>` before you dispatch. `herdr-dispatch`
-forbids `$` in the task, and the launching shell expands it to nothing.
+Substitute the absolute path of `$DOC` for `<doc path>` before you dispatch. The task stays one
+line, so the doc path is the only thing to interpolate.
 
-`herdr-dispatch` registers the Space, starts the agent, and reports the pane and its state. It owns
-the launch rules: `wait-output` before `pane run`, a resume of the worktree's transcript, and the
-`agent start` failure modes. Do not repeat them here, and do not run `worktree open`, `pane run` or
-`agent start` yourself.
+`herdr-dispatch` creates the space when the checkout has none, starts the tab with its first
+message, and reports the terminal and its state. It owns the launch rules: the transcript resume
+and the first-message check. Do not run `space.new` or `tab.new` yourself.
 
 Skip Step 4 on this path. The task line replaces `$LAUNCH`.
 
-**Done:** the skill reports a pane and an agent state, or it reports the pane whose agent did not
-start.
+**Done:** the skill reports a space, a tab and a terminal with a state, or it reports the space
+whose agent did not start.
 
 ## Step 6: Report back
 
@@ -210,17 +209,17 @@ On the WezTerm path:
 
 - the resume command: Claude: `cd <worktree> && claude --resume <SID>`. OpenCode: `cd <worktree> && opencode -s $(opencode session list | grep "<slug>" | cut -f1 | head -1)`, or pick by name from the session list in the TUI
 
-On the herdr path, instead:
+On the Herdr path, instead:
 
-- the Space and the pane id. `herdr agent list` finds the agent, and the sidebar groups it under the repo.
-- how to prompt it later: `herdr agent prompt "$PANE" "..."`
-- how to resume it: `herdr agent attach "$PANE"`, which takes over the pane. `herdr-dispatch` names the session `$SLUG`, so this is the name to look for.
-- the pane, if `herdr agent get` still failed for it after about 90 seconds
+- the space, the tab and the terminal address. `herdr-app ls` shows them, and the app groups the tab under its repo.
+- how to prompt it later: `hc send <terminal> "..."`
+- how to resume it: `hc attach <terminal>`, which takes over the terminal. `herdr-dispatch` names the tab `$SLUG`, so this is the name to look for.
+- the space, if no terminal appeared after about 90 seconds
 
 ## Notes
 
 - The new session groups under its own project in the picker (`<repo> · <branch>`), not under the one you launched from. The name is how you find it: the search box matches on it.
 - The new session runs its own `SessionStart` hooks. Beans, branch-based renames, and anything else hooked fire again there.
-- OpenCode: a Stop-hook rename, if one is configured, replaces the seeded title after the first turn ends, so the `/resume`-searchable name can drift. The slug, the handoff doc filename, and the branch name keep the link. On the herdr path, herdr's own `herdr agent rename` can re-pin it.
-- Herdr names: the agent name follows the pane occupant and clears when the agent exits or is replaced. Check `herdr agent get` before scripting against it.
-- Deleting a Space is `herdr workspace close <id>`, never `git worktree remove`. The second deletes the checkout. Delete only a checkout that herdr created itself.
+- OpenCode: a Stop-hook rename, if one is configured, replaces the seeded title after the first turn ends, so the `/resume`-searchable name can drift. The slug, the handoff doc filename, and the branch name keep the link. On the Herdr path, `herdr-app do tab.rename` can re-pin the tab.
+- Herdr names: a tab keeps the name it was given. The agent status clears when the agent exits. Check `hc get` before scripting against it.
+- Closing a space is `herdr-app do space.close --id <id> --confirmed true`, never `git worktree remove`. The second deletes the checkout. Close only spaces you created.

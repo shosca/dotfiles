@@ -1,5 +1,18 @@
 local utils = require("sh.utils")
 
+-- Shells get the project's venv from mise; nvim processes started outside one
+-- (herdr-nvim's pane) do not, so uv finds the venv from the project instead.
+-- That pane also lacks mise's shims on PATH, so resolve uv by hand when needed.
+local uv = vim.fn.exepath("uv")
+if uv == "" then
+  local shim = vim.fn.expand("~/.local/share/mise/shims/uv")
+  uv = vim.fn.executable(shim) == 1 and shim or ""
+end
+if uv ~= "" then
+  vim.lsp.config("pyrefly", { cmd = { uv, "run", "--no-sync", "pyrefly", "lsp" } })
+  vim.lsp.config("ruff", { cmd = { uv, "run", "--no-sync", "ruff", "server" } })
+end
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if ok then

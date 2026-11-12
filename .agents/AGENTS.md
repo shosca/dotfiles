@@ -32,8 +32,8 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 
 ## Muxer names
 
-- Name a shared container (herdr space) after the branch or worktree it holds.
-- A single session (herdr agent row) does one task. Name it after the task, e.g. `review-pr-123`, and rename it when the task changes. herdr names agents automatically, so do not rename them.
+- Name a shared container (Herdr space) after the branch or worktree it holds.
+- A single session (one terminal in a Herdr tab) does one task. Name the tab after the task, e.g. `review-pr-123`, and rename it with `herdr-app do tab.rename` when the task changes.
 
 ## Command output
 

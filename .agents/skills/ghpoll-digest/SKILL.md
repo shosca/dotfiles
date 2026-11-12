@@ -7,8 +7,8 @@ description: >
 
 # ghpoll digest
 
-ghpoll (`~/.local/bin/ghpoll`) watches GitHub and wakes you, the orchestrator in the repo's `ghpoll`
-herdr space, when pull requests change. It sends facts, never instructions. This skill turns each
+ghpoll (`~/.local/bin/ghpoll`) watches GitHub and wakes you, the orchestrator in the repo's
+Herdr space, when pull requests change. It sends facts, never instructions. This skill turns each
 fact into one action. You dispatch and tick other sessions. You never review, fix or merge a PR
 yourself.
 
@@ -52,19 +52,19 @@ A PR's worktree is:
 - babysit: the worktree whose branch is the PR's `headRefName`, from `git worktree list`. The PR
   number is not in that path.
 
-Run `herdr agent list` once. A PR's session is the agent whose `cwd` is that worktree. Its
-`agent_status` decides how you reach it:
+Run `hc ls` once. A PR's session is the terminal whose `cwd` is that worktree. `hc get <terminal>`
+gives its `status`, which decides how you reach it:
 
-- `idle` or `done`: first run `herdr pane read <pane> --source visible`. herdr can report `done`
-  while a question or choice dialog is open, and the Enter of a prompt then selects the highlighted
-  option. If the screen shows an open question, treat the pane as `blocked`. Otherwise run
-  `herdr agent prompt <pane> "<command>"`. Do not pass `--wait`: this path needs no confirmation,
-  and a stall is only reported with `--wait`.
-- `working`: run `herdr agent wait <pane> --timeout 60000`, then act on the new status. A timeout
-  exits non-zero, so run the wait and the prompt as separate commands. A timed-out wait says nothing
-  about delivery: never send the same prompt twice. When the agent still works, send it anyway and
-  assume it queues text that arrives mid-turn, because a dropped tick is lost for good.
-- `blocked`: never type into it. List it in the report as waiting on the user.
+- `idle` or `done`: first run `hc read <terminal> --lines 0`. An agent can report `done` while a
+  question or choice dialog is open, and the Enter of a prompt then selects the highlighted option.
+  If the screen shows an open question, treat it as `blocked`. Otherwise run
+  `hc send <terminal> "<command>"`. Do not pass `--wait`: this path needs no confirmation, and a
+  stall is only reported with `--wait`.
+- `working`: run `hc wait <terminal> --timeout 60`, then act on the new status. A timeout exits
+  non-zero, so run the wait and the send as separate commands. A timed-out wait says nothing about
+  delivery: never send the same prompt twice. When the agent still works, send it anyway and assume
+  it queues text that arrives mid-turn, because a dropped tick is lost for good.
+- `blocked` or `error`: never type into it. List it in the report as waiting on the user.
 - none: act as the role's table says.
 
 ## 3. Review events
@@ -100,8 +100,8 @@ A PR with no reviewer takes two steps.
        agent=claude
 
    `<events>` is the PR's events from this digest, as written, for example `pushed, activity` or
-   `merged`. The skill starts the agent in that Space and reports the pane and its state. Report
-   the same line.
+   `merged`. The skill starts the agent in that space and reports the tab, the terminal and its
+   state. Report the same line.
 
 The task is the reviewer's first tick.
 
@@ -133,7 +133,7 @@ real fix merges. So tell the other sessions to wait.
 When a `security` PR has `new`, `ready for review` or `merged`, do this in addition to the role
 table's action:
 
-1. From the `herdr agent list` output, take every babysit session whose `cwd` is under `$ROOT`,
+1. From the `hc ls` output, take every babysit session whose `cwd` is under `$ROOT`,
    except the security PR's own session and this one. Skip the reviewers in the PR's checkout: a reviewer
    never changes the author's branch, and a rebase line makes it force-push one. Map each session
    to its PR: its worktree's branch gives `gh pr list --head <branch> --repo <owner>/<repo> --json
@@ -144,9 +144,9 @@ table's action:
      check on this branch. Wait for #<n> to merge.`
    - `merged`: `#<n> is in <base>. Rebase onto <base> so that check passes.`
 
-Report the broadcast as one row: the PR, the event, and the panes you reached.
+Report the broadcast as one row: the PR, the event, and the terminals you reached.
 
 ## 7. Report
 
 Print one table. Columns: PR (linked), role, events, action taken. Below it, print one line per
-`blocked` session, naming its workspace. Print nothing else.
+`blocked` session, naming its space and terminal. Print nothing else.

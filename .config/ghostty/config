@@ -10,7 +10,8 @@ command = /usr/bin/zsh --login
 # devvm — Ayu structure retinted to devvm.dev's palette (themes/devvm)
 # GitHub Dark is installed alongside it: switch with `theme = github-dark`.
 theme = github-dark
-background-opacity = 0.75
+# Transparency comes from Blur my Shell now (per-app), so the terminal stays opaque.
+# background-opacity = 0.75
 
 # No GTK CSD titlebar (too tall on GNOME); rely on window management keys
 # Flat GTK CSD in windowed mode; auto = titlebar auto-hides when fullscreened

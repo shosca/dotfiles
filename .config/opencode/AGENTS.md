@@ -54,6 +54,6 @@ These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on
 
 ## Muxer names
 
-- A shared container (tmux session, herdr space) holds several sessions. Name it after the branch or worktree it holds.
-- A single session (tmux window, herdr agent row) does one task. Name it after the task, e.g. `review-pr-123`. Rename when the task changes.
-- **herdr:** agent naming is automatic; do not rename the agent. **tmux:** rename the session only (`tmux rename-session <session>`), never windows.
+- A shared container (tmux session, Herdr space) holds several sessions. Name it after the branch or worktree it holds.
+- A single session (tmux window, terminal in a Herdr tab) does one task. Name it after the task, e.g. `review-pr-123`. Rename when the task changes.
+- **Herdr:** name the tab (`herdr-app do tab.rename`). **tmux:** rename the session only (`tmux rename-session <session>`), never windows.

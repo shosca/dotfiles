@@ -97,8 +97,9 @@ local config = {
   bold_brightens_ansi_colors = false,
   --dpi = 192,
   default_cursor_style = "BlinkingBar",
-  window_background_opacity = 0.800,
-  wayland_window_background_blur = true,
+  -- Transparency comes from Blur my Shell now (per-app), so the terminal stays opaque.
+  -- window_background_opacity = 0.800,
+  -- wayland_window_background_blur = true,
   warn_about_missing_glyphs = false,
   font = wezterm.font({
     -- family = "Fira Code",
