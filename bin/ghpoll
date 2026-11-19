@@ -432,7 +432,11 @@ def collect(
         if keeps_snapshot and key in tracked:
             reason = None
         if reason:
-            if key in tracked:
+            if reason == "draft":
+                # A draft still sits in the state (the status bar reads it), it just stays
+                # quiet: no events, and it is announced only when it leaves draft.
+                current[key] = snap
+            elif key in tracked:
                 events[key] = (snap["role"], [f"dropped ({reason})"])
             continue
         old = tracked.get(key)

@@ -252,3 +252,18 @@ export PATH=/home/serkan/.opencode/bin:$PATH
 
 # invalidate AWS SSO session and clear cached short-lived creds
 alias awsdone="aws sso logout && rm -rf ~/.aws/sso/cache ~/.aws/cli/cache && unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN"
+
+# >>> agent-resume >>>
+# Agent resume (herdr-agent-resume): a restored Herdr terminal starts its agent again.
+# Set AGENT_RESUME_AUTO=0 to pause it; `install.py --no-auto` removes these lines.
+if [[ -o interactive && -n "$HC_TERMINAL_ID" ]]; then
+    __agent_resume() {
+        add-zsh-hook -d precmd __agent_resume
+        unfunction __agent_resume
+        if [[ "$AGENT_RESUME_AUTO" != 0 && -f '/home/serkan/.config/herdr-app/mods/agent-resume/agent_resume.py' ]]; then
+            command python3 '/home/serkan/.config/herdr-app/mods/agent-resume/agent_resume.py' here || command python3 '/home/serkan/.config/herdr-app/mods/agent-resume/agent_resume.py' after $?
+        fi
+    }
+    autoload -Uz add-zsh-hook && add-zsh-hook precmd __agent_resume
+fi
+# <<< agent-resume <<<

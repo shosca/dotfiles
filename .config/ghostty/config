@@ -29,6 +29,12 @@ keybind = ctrl+shift+r=reload_config
 # Paste clipboard, matching ctrl+shift+v
 keybind = shift+insert=paste_from_clipboard
 
+# Pane moves, matching WezTerm and Herdr
+keybind = alt+h=goto_split:left
+keybind = alt+j=goto_split:down
+keybind = alt+k=goto_split:up
+keybind = alt+l=goto_split:right
+
 # keybind = `>\=new_split:right
 # keybind = `>-=new_split:down
 # keybind = `>j=goto_split:next

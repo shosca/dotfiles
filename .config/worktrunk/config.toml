@@ -35,7 +35,7 @@
 #
 # Bare repository (`~/code/myproject/feature-auth`):
 #
-worktree-path = "{{ repo_path }}/{{ branch }}"
+worktree-path = "{{ repo_path }}/../{{ branch }}"
 #
 # `~` expands to the home directory. Relative paths resolve from `repo_path`.
 #

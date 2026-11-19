@@ -141,6 +141,10 @@ local config = {
   keys = {
     { key = "o", mods = "CTRL|SHIFT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
     { key = "e", mods = "CTRL|SHIFT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = "h", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Left") },
+    { key = "j", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Down") },
+    { key = "k", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Up") },
+    { key = "l", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Right") },
     { key = "LeftArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Left") },
     { key = "RightArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Right") },
     { key = "UpArrow", mods = "CTRL|ALT", action = wezterm.action.ActivatePaneDirection("Up") },

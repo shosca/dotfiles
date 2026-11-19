@@ -53,8 +53,8 @@ Take ids from this output. Do not derive them from sidebar order.
 ## Show something the person asked for
 
 ```bash
-herdr-app do space.new --name api --folder /path/to/api
-herdr-app do tab.new --name "fix login" --space <space-id> --folder /path/to/api --argv '["claude"]' --task "Look at the login bug"
+herdr-app do space.new --name api --folder /path/to/api --focus false
+herdr-app do tab.new --name "fix login" --space <space-id> --folder /path/to/api --argv '["claude"]' --task "Look at the login bug" --focus false
 herdr-app do pane.split --direction right --pane <pane-id>
 herdr-app do agent.focus --terminal <t>
 ```

@@ -57,25 +57,14 @@ for s in json.load(sys.stdin)["spaces"]:
    git -C "$WT" rev-parse --is-inside-work-tree
    ```
 
-2. Find the space that holds the checkout, and create it when missing:
-
-   ```bash
-   sid=$(space_for "$WT")
-   if [ -z "$sid" ]; then
-     herdr-app do space.new --name "$NAME" --folder "$WT" >/dev/null
-     sid=$(space_for "$WT")
-   fi
-   [ -n "$sid" ] || { echo "no space for $WT"; exit 1; }
-   ```
-
-3. Stop when an agent already reports there. This skill starts cold sessions only.
+2. Stop when an agent already reports there. This skill starts cold sessions only.
 
    ```bash
    found=$(agent_on "$WT" "$NAME")
    [ -z "$found" ] || { echo "agent already live: $found"; exit 0; }
    ```
 
-4. Build the launch. Resume the worktree's transcript when one exists; otherwise start a new
+3. Build the launch. Resume the worktree's transcript when one exists; otherwise start a new
    session. Either way the tab carries `$NAME`.
 
    ```bash
@@ -92,13 +81,24 @@ for s in json.load(sys.stdin)["spaces"]:
    fi
    ```
 
-5. Start the tab with its first message:
+4. Find the space that holds the checkout, and start the tab in it:
 
    ```bash
-   herdr-app do tab.new --space "$sid" --name "$NAME" --folder "$WT" --argv "$ARGV" --task "$TASK"
+   sid=$(space_for "$WT")
+   if [ -z "$sid" ]; then
+     # The space's first tab is the agent: space.new takes the argv and the task,
+     # so no empty shell tab is left behind.
+     herdr-app do space.new --name "$NAME" --folder "$WT" --tab "$NAME" --argv "$ARGV" --task "$TASK" --focus false >/dev/null
+     sid=$(space_for "$WT")
+     started=1
+   fi
+   [ -n "$sid" ] || { echo "no space for $WT"; exit 1; }
+   if [ -z "$started" ]; then
+     herdr-app do tab.new --space "$sid" --name "$NAME" --folder "$WT" --argv "$ARGV" --task "$TASK" --focus false
+   fi
    ```
 
-6. Poll for the terminal, then read its status:
+5. Poll for the terminal, then read its status:
 
    ```bash
    for _ in {1..18}; do
@@ -116,11 +116,17 @@ for s in json.load(sys.stdin)["spaces"]:
 
 ## Rules
 
-- Never send the task twice. `tab.new` delivers it, and a duplicate runs a second turn. When
-  `hc get` reports `first_message: {sent: false}`, read the screen first, then send once.
-- `tab.new` runs argv in the person's interactive shell, with that shell's environment. No
-  environment strip is needed, because the caller's agent variables do not reach it.
+- Never send the task twice. `tab.new` or `space.new` delivers it, and a duplicate runs a
+  second turn. When `hc get` reports `first_message: {sent: false}`, read the screen first,
+  then send once.
+- `tab.new` and `space.new --argv` run argv in the person's interactive shell, with that
+  shell's environment. No environment strip is needed, because the caller's agent variables
+  do not reach it.
+- Create the space with `--tab --argv --task` when it is missing. A bare `space.new` leaves an
+  empty shell tab in the space, and it stays after the agent exits.
 - Keep `$TASK` to one line. A newline can submit the message early.
+- Pass `--focus false` to `space.new` and `tab.new`. Both take the focus by default, which
+  moves the person out of what they were working on.
 - A space that an earlier command created keeps its name, not `$NAME`. The tab carries `$NAME`.
   Report both, and do not claim they share a name.
 - If no terminal appears after about 90 seconds, report the space and stop. The tab may show an
