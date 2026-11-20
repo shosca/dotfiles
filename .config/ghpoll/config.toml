@@ -1,6 +1,14 @@
 login = "shosca"
 prefix = "/ghpoll-digest "
 
+# Send every repo's digest to one agent instead of one per repo. The space must have the folder
+# below as its folder, so find its name in `herdr-app ls`. ghpoll creates that space on the first
+# round when no space uses the folder yet, and starts `argv` in it (default ["claude"]).
+[orchestrator]
+root = "~/ghpoll"
+space = "ghpoll"
+argv = ["claude"]
+
 [[repo]]
 name = "ForceTherapeutics/force-web"
 root = "~/src/force/force-web"

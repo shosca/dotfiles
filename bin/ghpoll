@@ -16,7 +16,9 @@ agent. Each round, per configured repo, it:
    they are delivered.
 4. Delivers the pending events as one single-line prompt to the terminal in the repo's space:
    the Herdr space named by the configured ``space`` whose folder is the configured ``root``.
-   Space names repeat across projects, so the name alone is not enough. It sends only when that
+   Space names repeat across projects, so the name alone is not enough. A top-level
+   ``[orchestrator]`` table (``root`` and ``space``) sends every repo to that one space instead,
+   for a single orchestrator agent. It sends only when that
    terminal is ``idle`` or
    ``done``. A ``working`` terminal gets the merged events on a later round, so the session never
    holds a queue of prompts. A ``blocked`` terminal, or none, only reports once per state change,
@@ -484,6 +486,38 @@ def deliver(name: str, root: Path, space: str, message: str, state: dict[str, An
     return False
 
 
+def target(config: dict[str, Any], repo: dict[str, Any]) -> tuple[Path, str]:
+    """The space whose agent gets the digest: the shared ``[orchestrator]`` when set, else the repo's own."""
+    shared = config.get("orchestrator") or repo
+    return Path(shared["root"]).expanduser().resolve(), shared.get("space", "ghpoll")
+
+
+def ensure_space(root: Path, space: str, argv: list[str]) -> None:
+    """Create the orchestrator space when no space already works on that folder.
+
+    The space is found by name and folder, so a space on the folder with another name is left
+    alone and shows up as a missing orchestrator. A window that is closed creates nothing.
+    """
+    try:
+        spaces = json.loads(run("herdr-app", "ls"))["spaces"]
+    except subprocess.CalledProcessError:
+        return
+    if any(Path(s["folder"]).resolve() == root for s in spaces if s.get("folder")):
+        return
+    try:
+        run(
+            "herdr-app", "do", "space.new",
+            "--name", space,
+            "--folder", str(root),
+            "--tab", space,
+            "--argv", json.dumps(argv),
+            "--focus", "false",
+        )
+        print(f"ghpoll: created space {space} on {root}")
+    except subprocess.CalledProcessError as error:
+        print(f"ghpoll: could not create space {space}: {error.stderr.strip()}", file=sys.stderr)
+
+
 def poll(
     repo: dict[str, Any],
     login: str,
@@ -491,6 +525,7 @@ def poll(
     dry_run: bool,
     seed: bool,
     replay: list[str] | None,
+    where: tuple[Path, str],
 ) -> None:
     """Run one round for one repo.
 
@@ -498,8 +533,7 @@ def poll(
     holds only PRs still tracked or just delivered, so closed PRs age out after one round.
     """
     name = repo["name"]
-    root = Path(repo["root"]).expanduser().resolve()
-    space = repo.get("space", "ghpoll")
+    root, space = where
     state_file = STATE / f"{name.replace('/', '__')}.json"
     state = json.loads(state_file.read_text()) if state_file.exists() else {}
     pending: dict[str, dict[str, list[str]]] = state.get("pending", {})
@@ -571,16 +605,22 @@ def main() -> None:
 
     config = tomllib.loads(args.config.expanduser().read_text())
     login = config.get("login") or run("gh", "api", "user", "--jq", ".login").strip()
+    shared = config.get("orchestrator")
 
     if args.ping is not None:
         matched = 0
+        if shared and not args.dry_run:
+            ensure_space(
+                Path(shared["root"]).expanduser().resolve(),
+                shared.get("space", "ghpoll"),
+                shared.get("argv", ["claude"]),
+            )
         for repo in config["repo"]:
             name = repo["name"]
             if args.ping and not {name, name.rsplit("/", 1)[-1]} & set(args.ping):
                 continue
             matched += 1
-            root = Path(repo["root"]).expanduser().resolve()
-            space = repo.get("space", "ghpoll")
+            root, space = target(config, repo)
             agent = find_agent(root, space)
             if agent is None:
                 print(f"ghpoll {name}: no orchestrator reporting a status in space {space}")
@@ -603,6 +643,12 @@ def main() -> None:
         )
     failures = 0
     prefix = config.get("prefix", "")
+    if shared and not args.dry_run:
+        ensure_space(
+            Path(shared["root"]).expanduser().resolve(),
+            shared.get("space", "ghpoll"),
+            shared.get("argv", ["claude"]),
+        )
     with open(STATE / "lock", "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -610,7 +656,7 @@ def main() -> None:
             sys.exit("ghpoll: another round is running")
         for repo in config["repo"]:
             try:
-                poll(repo, login, prefix, args.dry_run, args.seed, args.replay)
+                poll(repo, login, prefix, args.dry_run, args.seed, args.replay, target(config, repo))
             except subprocess.CalledProcessError as error:
                 failures += 1
                 print(f"ghpoll {repo['name']}: {error.stderr.strip()}", file=sys.stderr)
