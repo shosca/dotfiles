@@ -1,25 +1,18 @@
----
-name: pr-writer
-description: Open a pull request, or refresh an existing one after material changes.
----
+______________________________________________________________________
 
-# PR Writer
+## name: pr-writer description: Open a pull request, or refresh an existing one after material changes.
 
-**The PR title and body become the commit message.** On GitHub squash merges, the title becomes the
-subject (with ` (#NNNNN)` appended) and the body becomes the body, permanently. Write them for
-someone reading `git log` in two years, not as review chatter.
+# PR writer
 
-For commits inside the branch, see the [`commit`](../commit/SKILL.md) skill. Requires `gh`, authenticated.
-
-One PR per feature or fix, never bundled. Smaller PRs get faster, better reviews, and the
-description carries the why that the code cannot.
+The PR title and body become the squash-merge commit message permanently. Write them for someone
+reading `git log` in two years, not as review chatter. Keep one PR per feature or fix, never
+bundled.
 
 ## Precedence
 
-This is the generic skill. If the current repo carries its own `pr-writer` skill (`.claude/skills/`
-or equivalent) or documents release conventions in `CLAUDE.md` / `.claude/docs/`, that layer wins.
-Before writing a title or picking a base, check for both; the steps below assume nothing about the
-repo's branch model, ticketing, or labels beyond squash-merge GitHub.
+This is the generic skill. If the repo has its own `pr-writer` skill (`.claude/skills/` or
+equivalent) or documents release rules in `CLAUDE.md` or `.claude/docs/`, that layer wins. Check
+for both before picking a base, title format, or labels.
 
 ## Process
 
@@ -33,8 +26,8 @@ git log "origin/$BASE"..HEAD
 git diff "origin/$BASE"...HEAD
 ```
 
-Everything committed, branch pushed, rebased on its base. Understand every change before writing
-anything: the dominant change drives the title, the reviewer-relevant surprises drive the body.
+Commit, push, and rebase all work on the base branch first. Read every change before writing: the
+dominant change drives the title, and reviewer-relevant surprises drive the body.
 
 ### Step 2: Check for an existing PR
 
@@ -42,168 +35,122 @@ anything: the dominant change drives the title, the reviewer-relevant surprises 
 gh pr view --json number,title,body,url,baseRefName,headRefName
 ```
 
-With no argument it reads the PR for the current branch. A non-zero exit means no PR exists yet:
-skip to Step 3 and create one.
+With no argument, this reads the current branch's PR. A non-zero exit means no PR exists, so
+continue to Step 3.
 
-Treat the current title and body as inputs, not source of truth, and compare them against the
-**current** diff rather than the diff from when the PR was opened. Keep the title only if it still
-matches the dominant change. Rewrite the body as a fresh description, never an append-only changelog.
-Refresh proactively after material follow-up changes — a scope change, a new approach from review
-feedback, context the body no longer explains — but skip trivial edits like typos.
+Treat the existing title and body as inputs, not truth. Compare them against the current diff. Keep
+the title only if it still matches the dominant change. Rewrite the body fresh, never as an
+append-only changelog. Refresh proactively after material follow-up changes (scope changes, new
+approaches from review, outdated context), and skip trivial edits like typos.
 
 ### Step 3: Write the title
 
-Follow the repo's own convention when one exists (ticket prefixes, conventional-commit scopes). Where
-none is established, use the conventional-commits track: `[Ticket] Imperative subject` when a ticket
-exists, `<type>: <Subject>` otherwise (`feat`, `fix`, `ref`, `perf`, `docs`, `test`, `build`, `ci`,
-`chore`, `style`, `revert`). Scope in parentheses is one lowercase word.
+Follow the repo's convention when one exists. Otherwise use `[Ticket] Imperative subject` when a
+ticket exists, or `<type>: <Subject>` (`feat`, `fix`, `ref`, `perf`, `docs`, `test`, `build`, `ci`,
+`chore`, `style`, `revert`) with an optional one-word lowercase scope in parentheses.
 
-Rules that hold everywhere:
+- Describe the dominant change, not the latest commit or branch name. Aim for 70 characters or fewer.
+- Use the repo's ticket syntax (`Fixes KEY-NNNNN`, `Refs KEY-NNNNN`, `Fixes #NNNN`) only when a
+  ticket exists. Never invent a number.
+- Omit agent brackets (`[codex]`, `[claude]`, `[ai]`, `[bot]`).
+- Keep `[wip]` if the author added it, and never add or remove it unprompted. `[<topic> N/M]` is
+  fine for a split series.
+- Avoid vague titles (`update`, `cleanup`, `address feedback`) and trailing periods.
+- Check whether repo CI parses titles for build variables or tag suppression, because a stray
+  `key=value` can change or skip pipeline stages.
 
-- Describe the dominant change, not the latest commit. Aim ≤70 characters.
-- **Derive the title from the diff.** A branch-name title like `Dgockel/case filters to smart form`
-  tells a reviewer nothing and lands on `master` forever.
-- Never invent a ticket number; no ticket means no ticket prefix.
-- No attribution brackets — no `[codex]`, `[claude]`, `[ai]`, `[bot]`.
-- `[wip]` is fine if the author put it there; do not add or strip it unprompted.
-- `[<topic> N/M]` is fine for a genuinely split series.
-- No vague process titles (`update`, `cleanup`, `address feedback`). No trailing period.
-- Check whether CI in this repo parses the title (build variables, tag suppression). A stray
-  `key=value` in a title can silently change or skip a pipeline stage.
-
-Test on updates: reading only the title, would a reviewer form the right expectation of the current
+Test on updates: reading only the title, does a reviewer form the right expectation of the current
 diff?
 
 ### Step 4: Write the description
 
-Reviewer-facing prose, not a narrated diff. Lead with 1–3 sentences on what changed and why it
-matters, then 0–3 `**Bold Block**` sections of 1–2 sentences, one per distinct reviewer-relevant
-point.
+Lead with 1 to 3 sentences on what changed and why it matters. Follow with 0 to 3 `**Bold block**`
+sections of 1 to 2 sentences, one per distinct reviewer-relevant point.
 
-**Voice.** Plain, skimmable, human. The failure mode is the literary essay: long clauses, dramatic
-headings, punchlines that land only at the end. Guard against it. The blog-post path at Step 4
-loosens order, not clarity.
+**Voice and clarity.** Follow `AGENTS.md` prose rules (`asd-ste100` and `unslop`). State facts
+before implications, with no delayed reveals, nested parentheticals, or rhetorical asides. Headings
+state the takeaway in plain words (`**Fix: blank email row for empty-string values**`), never a
+dramatic setup.
 
-- **Google developer documentation style, approximating ASD-STE100 Simplified Technical English.**
-  One idea per sentence, ≤25 words. Active voice, present tense. No idioms or metaphor. No
-  nominalizations ("perform an installation" → "install"). Never "simply", "just" or "easily". No
-  future tense for behavior — "returns X", never "will return X".
-- Fact first, implication second. A reader who stops after the first sentence of each section should
-  have the full picture — no delayed reveals.
-- Headings state the takeaway in plain words. "The Email row went blank for exactly the patient it
-  exists to describe" is a dramatic setup; "**Fix: blank email row for empty-string values**" is the
-  same fact, readable at a glance.
-- No nested parentheticals, no rhetorical asides, no sentences whose point depends on the one before.
+**Content rules.**
 
-- Lead with changed behavior; implementation detail only where it helps review.
-- **Describe the code, not the metric that justified the change.** A complexity score, a line-count
-  delta, or a file count says a number moved, not what the code does. Open with what the code does,
-  and add a metric only where the number *is* the change (a perf PR). Headings do the same.
-- Pick the smallest view that carries the point. One view per PR. Add a second only when two
-  different readers need two different pictures.
-- Match the view to the change:
-  - Logic or an algorithm: pseudocode in a `text` block, no language syntax.
-  - Runtime control flow: a call tree, ordered by call rather than by file.
-  - UI structure: a component tree with the state and module boundaries that matter.
-  - File responsibility or a broad refactor: a shallow file tree, one comment per file.
-  - Interaction or data flow between components: a Mermaid `sequenceDiagram`.
-  - A shape that already exists: a `diff` block, trimmed to the changed lines. A sketch, not the
-    real diff.
-- Show the whole block when most of it is new, when trimmed context would hide ownership or order,
-  or when a reviewer needs a copyable target shape.
-- Put each view next to the text it supports. Cut every call, file, prop, and state that does not
-  answer the reviewer's question.
-- Before/after fenced blocks only for changed contracts: output shapes, config, payloads,
-  permissions.
-- Mermaid diagrams are welcome where they explain structure or flow better than prose: internal call
-  graphs, architecture, state machines, sample usage flows.
-- For changes with benchmarks, show a before/after table: baseline from the target branch, candidate
-  from the PR. Same machine, same workload, both numbers.
-- Name the evidence that made the change safe (a measured query count, a production figure, a
-  mutation test) and the thing you deliberately did *not* change, with the reason.
-- The description covers the final aggregate diff — what a reviewer sees against the base branch, and
-  what the squash-merge commit will say. Never narrate intermediate states: not the earlier commit
-  layout, not "went from +6k to +1k lines," not how a refactor moved between commits. That history is
-  invisible after squash and is commentary, not description.
-- Backtick every code identifier — function/variable/class, filenames, constants — in every
-  paragraph, not just the `**Bold Block**` sections. The lead paragraph is the easiest one to typo
-  plain, since it is usually drafted first and fastest; re-read it last, specifically for bare
-  identifiers, before posting.
+- Lead with changed behavior, and add implementation detail only where it helps review.
+- Describe what the code does, not a metric that prompted the change (line count, file count,
+  complexity score). Include metrics only when the number is the change, such as a perf PR.
+- Cover the final aggregate diff against the base branch. Never narrate intermediate commits or
+  earlier refactor states.
+- Backtick every code identifier (functions, variables, classes, filenames, constants) in every
+  paragraph. Re-read the lead paragraph last to catch bare identifiers.
+- Name the evidence that makes the change safe (query count, production data, mutation test) and
+  anything you deliberately left unchanged, with the reason.
+- For benchmarked changes, include a before/after table from the same machine and workload (base
+  branch vs PR).
 
-A `**Manual testing**` block is allowed, and only for steps a human has to perform by hand — a flow
-to click through, a state to set up in an admin, a migration to run against a restored dump. Nothing
-CI already does: never list running lint, tests, or type checks. If CI covers the change, omit the
-block entirely.
+**Visual views.** Use at most one view per PR unless two readers need different pictures. Place it
+beside the text it supports, and trim every call, file, prop, or state that does not answer the
+reviewer's question.
 
-**Never state a test's *outcome*, anywhere in the body, block or no block.** No pass count ("254
-passed, 215 subtests"), no suite-status claim ("`reports` is green"), no flaky-test prediction about
-what CI will show, no "this proves it's safe" tied to a local run. This is narrower than "never
-mention testing": a *new test file* in the diff stays, described by what it pins, what invariant it
-closes and why the gap existed. The line is whether the sentence reports what happened when
-something ran, or describes what the test code does. The first never survives. A flaky-test callout
-is how a stale claim re-enters: it reads as a fact right up until the branch already contained the
-fix it cited. To get a flaky or known-broken test in front of a human, use a PR **comment**, never
-the body.
+| Change | View |
+|---|---|
+| Logic or algorithm | Pseudocode in a `text` block, no language syntax |
+| Runtime control flow | Call tree ordered by call, not by file |
+| UI structure | Component tree with relevant state and module boundaries |
+| File responsibility or broad refactor | Shallow file tree, one comment per file |
+| Component interaction, architecture, or state machine | Mermaid diagram (for example, `sequenceDiagram`) |
+| Existing shape modified | Trimmed `diff` sketch of changed lines (show full block if mostly new or copyable) |
+| Changed contract (output, config, payload, permissions) | Separate before/after fenced blocks |
 
-A genuinely impressive, difficult, or high-risk/wide-scoped change may be written like a technical
-blog post instead: context and storytelling, code samples, before/after diagrams. Earn it — most PRs
-are not this. Even there, the voice rules above hold: short sentences, facts before implications.
+**Manual testing.** Add a `**Manual testing**` block only for steps a human must run by hand (a UI
+flow, admin setup, or migration against a dump). Never list lint, tests, or type checks that CI
+runs. Omit the block when CI covers the change.
 
-Do not include: generic headings (`## Summary`, `## Changes`, `## Type of Change`); a `## Test plan`
-heading or checkbox test steps; test outcomes (the rule above holds here too); file-by-file
-narration or redundant diff summaries; AI-disclosure boilerplate — no generated-with footer, no
-"This PR is AI-generated" line. Attribution lives on the commits (`Co-Authored-By` trailers), which
-GitHub lifts onto the squash commit; the PR body does not carry it. And never include customer data
-— org names, user emails, support ticket contents, PII. Describe the technical symptom, cite the
-ticket instead.
+**Never state test outcomes.** Do not include pass counts, green-suite claims, local-run proof, or
+flaky-test predictions anywhere in the body. Describing a new test file by what it pins and why the
+gap existed is fine. Put flaky or known-broken test callouts in a PR comment, never the body.
 
-> This diverges from much of GitHub history, where bodies carry `## Summary` and `## Test plan`
-> headings inherited from PR templates. That is intentional; they add nothing to a squashed commit
-> message. Genuine manual steps survive as a `**Manual testing**` block.
+**Long-form exception.** A difficult or high-risk change may read like a technical blog post with
+context, code samples, and diagrams. Most PRs do not earn this. Keep short sentences and facts
+before implications.
 
-Skim test before posting — the completion criterion for this step. Read only the title, the
-headings, and the first sentence of each block. If that does not tell the whole story, rewrite.
+**Omit from every body.**
+
+- Generic headings (`## Summary`, `## Changes`, `## Type of Change`) and `## Test plan` checklists.
+- File-by-file narration or redundant diff summaries.
+- AI-disclosure footers (`Co-Authored-By` trailers on commits carry attribution into squash merges).
+- Customer data (org names, user emails, support ticket contents, PII). Describe the technical
+  symptom and cite the ticket instead.
+
+**Skim test (completion check).** Read only the title, headings, and the first sentence of each
+block. If that misses the story, rewrite.
 
 ### Step 5: Create or update
 
-Always pass the body from a file. Inline heredocs (`--body "$(cat <<'EOF' … EOF)"`) and `-f
-body="..."` lose backticks and quotes on the way through the shell or `gh`.
+Always pass the body from a file. Inline `--body` flags and heredocs lose backticks and quotes.
 
 ```bash
 gh pr create --title "Subject" --body-file /tmp/pr-body.md
+gh pr edit PR_NUMBER --title "Subject" --body-file /tmp/pr-body.md
 ```
 
-Check the repo's default base with `gh repo view --json defaultBranchRef --jq .defaultBranchRef.name`
-before creating.
+If `gh pr edit` fails with a Projects (classic) deprecation error, local `gh` predates 2.82.1
+(`cli/cli#11987`). Upgrade `gh`, or update through the REST API:
 
-Update an existing PR with `gh pr edit PR_NUMBER --title '...' --body-file /tmp/pr-body.md`, having
-re-evaluated both. **If that fails with a Projects (classic) deprecation error**, the local `gh`
-predates 2.82.1, which fixed it (cli/cli#11987) — check `gh --version` and upgrade, since distro
-packages lag badly. Until then `gh api -X PATCH repos/{owner}/{repo}/pulls/PR_NUMBER -F
-title='...' -F body=@/tmp/pr-body.md` bypasses the GraphQL path.
+```bash
+gh api -X PATCH repos/{owner}/{repo}/pulls/PR_NUMBER -F title='Subject' -F body=@/tmp/pr-body.md
+```
 
-## Labels
+## Labels, drafts, and reviewers
 
-Labels carry process state, so the title and body stay pure description. Labels are repo-specific —
-run `gh label list` before assuming any exist, and leave owned labels (`QA`, `priority`, release
-gates) to the humans who own them. Never invent one.
-
-Apply a label with `gh pr edit PR_NUMBER --add-label "<name>"`, or pass `--label "<name>"` to
-`gh pr create`. Read `gh label list --json name,description` first: a name alone often hides what the
-label means in that repo. Pick only the labels whose description matches this diff. One clear label
-beats three guesses, and a small self-explanatory change takes none.
-
-Apply the repo's agent-attribution label if one exists (`ai-generated` is the common name) — it is
-how a bot PR is told apart from its author's own work. Attribution stays out of the title and body;
-the `Co-Authored-By` trailer rides on the commits.
-
-Apply the repo's `security` label if one exists when the PR fixes a check that fails on every
-branch, such as a dependency bump that clears an audit advisory. ghpoll-digest reads the label and
-tells the sessions on other PRs to wait for this fix instead of repeating it.
-
-**Never open a draft PR** where the team does not use them — never pass `--draft` on such a repo.
-Use the repo's WIP convention (`WIP` label or `[wip]` prefix) instead; do not add either unprompted,
-and do not remove one the author set.
+- **Labels.** Read `gh label list --json name,description` before adding labels (`--label` on create
+  or `gh pr edit PR_NUMBER --add-label "<name>"`). Never invent labels, and skip human-owned labels
+  (`QA`, `priority`, release gates). Apply only labels whose description matches the diff, or none
+  for a small change.
+- **Special labels.** Apply the repo's agent-attribution label (`ai-generated`) if one exists. Apply
+  `security` if one exists when the PR fixes a check failing on every branch, such as an audit
+  advisory. `ghpoll-digest` reads it to pause duplicate fixes on other PRs.
+- **Drafts.** Never pass `--draft` on a repo that avoids draft PRs. Follow the repo's WIP convention
+  (`WIP` label or `[wip]` prefix), without adding or removing it unprompted.
+- **Reviewers.** Do not pass `--reviewer`. Let `CODEOWNERS` or review policy assign reviewers.
 
 ## Examples
 
@@ -235,8 +182,8 @@ Trims the detail endpoint from 46 to 35 top-level fields by dropping ten fields 
 ever reads from `/api/details/current/`, plus the nested `user` object and the 45-field
 `organization` blob.
 
-`/api/details/current/` comes out byte-identical — verified by diffing generated field sets against
-the default branch — because the mobile apps depend on it and ship on their own cadence.
+`/api/details/current/` comes out byte-identical, verified by diffing generated field sets against
+the default branch, because the mobile apps depend on it and ship on their own cadence.
 
 **Serializer hierarchy**
 
@@ -244,14 +191,3 @@ the default branch — because the mobile apps depend on it and ship on their ow
 declarations plus five named groups on its `Meta`, and the three concrete serializers compose
 `fields` additively from those groups instead of subtracting from a shared list.
 ```
-
-## Ticket references
-
-Use the repo's own ticket syntax when it has one (`Fixes KEY-NNNNN`, `Refs KEY-NNNNN`, `Fixes #NNNN`),
-and only when the ticket exists — never invent a number. Tickets belong in the PR title when the
-repo's squash merge makes that the permanent subject.
-
-## Reviewers
-
-CODEOWNERS or a review policy assigns reviewers automatically — expect them and do not fight the
-assignment. Do not pass `--reviewer` to preempt it.

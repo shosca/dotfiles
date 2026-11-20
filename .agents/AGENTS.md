@@ -1,42 +1,37 @@
 # Global agent rules
 
-These rules apply to every repo. A repo-level `AGENTS.md` or `CLAUDE.md` wins on repo workflow. The safety rules below never yield.
-
-## Session start
-
-- Read `AGENTS.md` and `CLAUDE.md` in the project root, plus any in directories you touch. Nearest file wins. Treat them as binding project instructions.
+These rules apply to every repo. Read `AGENTS.md` and `CLAUDE.md` in the project root and any directory you touch: nearest file wins on repo workflow. Safety rules below never yield.
 
 ## Safety (never yields to repo rules)
 
-- Do not run destructive or irreversible commands without explicit confirmation: force push, `reset --hard`, `rm -rf`, drop or truncate on a database, forced tool unload.
-- Do not commit secrets, credentials, or `.env` contents. Check staged files before `git add -A`.
-- Do not overwrite uncommitted work you did not create. Investigate first.
+- Ask for confirmation before destructive or irreversible commands: force push, `reset --hard`, `rm -rf`, database drop or truncate, forced tool unload.
+- Never commit secrets, credentials, or `.env` contents. Check staged files before `git add -A`.
+- Never overwrite uncommitted work you did not create. Investigate first.
 
 ## Skills
 
-- Load the `coding` skill before writing or editing any code.
-- Before the first `git commit`, a fresh subagent loads the `pr-review` skill and reviews your uncommitted diff — no PR, no comments posted, findings back as text. Fix from its findings; never review your own diff in-session.
-- Load the `commit` skill before you run `git commit`.
-- Load the `pr-writer` skill before you create or edit a pull request title or body.
-- Load the matching file-type skill (`docx`, `xlsx`, `pptx`, `pdf`, and any newer one) before creating or editing that file type.
+- Load `coding` before writing or editing code.
+- Before the first `git commit`, spawn a fresh subagent with `pr-review` to review the uncommitted diff (no PR, no comments posted, findings as text). Fix from its findings. Never review your own diff in-session.
+- Load `commit` before `git commit`.
+- Load `pr-writer` before creating or editing a PR title or body.
+- Load the matching file-type skill (`docx`, `xlsx`, `pptx`, `pdf`, or newer) before creating or editing that file type.
 
 ## Prose
 
-- Chat replies: present tense, active voice, one idea per sentence, 25 words or fewer. No idioms or metaphor, no nominalizations, no "simply/just/easily", no future tense for behavior.
-- Text that leaves the chat (PR descriptions, reviews and comments, Jira tickets, commit messages, code comments, docs): load `asd-ste100` and use STE-flavored mode, then load `unslop`. Write in the Google developer documentation style guide's voice.
+- Chat replies: present tense, active voice, one idea per sentence, 25 words max. Avoid idioms, metaphors, nominalizations, "simply/just/easily", and future tense for behavior.
+- External text (PR descriptions, reviews, comments, Jira tickets, commit messages, code comments, docs): load `asd-ste100` (STE-flavored mode), then load `unslop`. Match the Google developer documentation style guide voice.
 
 ## Worktrees and branches
 
-- Never work on main/master. The layout is a bare clone plus worktrees: run worktree commands from the repo root (where `.git/` lives), never inside a worktree. Use `wt` (`wt --help`). Worktree and branch names may contain slashes. Suggest a new worktree when a change is unrelated to current work.
-- Worktree to session cwd: when you create a worktree, make it the current session's working directory immediately (cd into it, or use your runtime's session-move mechanism, e.g. OpenCode's `tools.opencode.session_move`). Run all later commands there.
+- Never work on `main` or `master`. Repos use a bare clone plus worktrees: run worktree commands via `wt` (`wt --help`) from the repo root (where `.git/` lives), never inside a worktree. Names may contain slashes. Suggest a new worktree when a change does not belong to current work.
+- After creating a worktree, move the session cwd there immediately (`cd` or runtime session move, such as `tools.opencode.session_move`). Run all later commands there.
 
 ## Muxer names
 
-- Name a shared container (Herdr space) after the branch or worktree it holds.
-- A single session (one terminal in a Herdr tab) does one task. Name the tab after the task, e.g. `review-pr-123`, and rename it with `herdr-app do tab.rename` when the task changes.
+- Name each Herdr space after its branch or worktree.
+- Keep one task per Herdr tab. Name it after the task (for example `review-pr-123`) and rename it with `herdr-app do tab.rename` when the task changes.
 
 ## Command output
 
-- Output here is condensed to save tokens. It keeps every signal and drops noise. Treat it as the complete result, and re-run only when it is unusable.
-- Batch related commands into one call to save turns.
-- Re-run as `rtk proxy <cmd>` only when the result is empty but output was expected, contradicts its exit code, or is garbled.
+- Tool output arrives condensed to save tokens and keeps every signal. Treat it as complete, and batch related commands into one call.
+- Re-run as `rtk proxy <cmd>` only when output arrives empty despite expecting data, contradicts the exit code, or looks unreadable.

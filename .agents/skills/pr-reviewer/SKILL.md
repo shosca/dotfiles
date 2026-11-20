@@ -1,29 +1,17 @@
----
-name: pr-reviewer
-description: >
-  Review and watch one PR from its own worktree session: first review, re-reviews after a push,
-  replies, notifications, and cleanup when the PR is merged or closed. Started by
-  herdr-dispatch; ghpoll sends the next pass when the PR changes. Use when the prompt names
-  /pr-reviewer or asks this session to review the watched PR.
-allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(wt:*), Bash(herdr-app:*), Bash(hc:*), Bash(jq:*), Bash(rg:*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
----
+______________________________________________________________________
 
-Review and watch PR <n>. This session is the PR's only reviewer. It runs in the PR's worktree, the
-checkout of the PR's head branch (a branch `shosca/foo` lands at `<repo-root>/shosca/foo`), as the
-Herdr tab `pr-<n>-review`. The orchestrator started it through
-`herdr-dispatch`. Everything after that is this session's job: the first review, re-reviews after a
-push, replies, notifications, and cleanup when the PR is merged or closed.
+## name: pr-reviewer description: > Review and watch one PR from its own worktree session across first review, push re-reviews, replies, notifications, and cleanup. Started by herdr-dispatch and ticked by ghpoll on PR changes. Use when the prompt names /pr-reviewer or asks this session to review the watched PR. allowed-tools: Bash(gh pr view:*), Bash(gh api:*), Bash(gh pr diff:*), Bash(gh pr comment:*), Bash(gh pr review:*), Bash(git:*), Bash(wt:*), Bash(herdr-app:*), Bash(hc:*), Bash(jq:*), Bash(rg:\*), Read, Write, Edit, Grep, Glob, Skill, AskUserQuestion
 
-`<n>` is the PR number in the prompt. If the prompt has none, take it from the branch:
-`gh pr view "$(git branch --show-current)" --json number -q .number`.
+# PR Reviewer
 
-The rest of the prompt is the events ghpoll reported, such as `pushed` or `activity`. They say why
-the tick ran. They are a hint, not the state: read the state before you act.
+Review and watch PR `<n>` as its sole reviewer from the PR worktree (`<repo-root>/<branch>`) in
+Herdr tab `pr-<n>-review`.
 
-One invocation is one tick. ghpoll watches the PR and wakes the orchestrator, which forwards the
-PR's events. This session starts no loop of its own.
-
-Resolve the clone root once:
+- Take `<n>` from the prompt, or fall back to
+  `gh pr view "$(git branch --show-current)" --json number -q .number`.
+- Treat prompt events (`pushed`, `activity`) as hints, not live state.
+- One invocation is one tick. Never start a polling loop. Let `ghpoll` wake the next tick.
+- Resolve the shared clone root once:
 
 ```bash
 ROOT=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
@@ -31,85 +19,64 @@ ROOT=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
 
 ## Each tick
 
-Read the live state and the record at `$ROOT/.reviews/pr-<n>.md`:
+Read live PR state and `$ROOT/.reviews/pr-<n>.md`:
 
 ```bash
 gh pr view <n> --json state,headRefOid,baseRefName,updatedAt,reviewDecision,isDraft,labels,title,url
 ```
 
-Then work through these in order. Cases 1 to 3 end the tick.
+Work through cases 1–6 in order. Cases 1–3 end the tick.
 
-1. **Merged, closed or gone.** `state` is not `OPEN`, or the events say `gone`. A state read that
-   fails because the PR no longer exists counts as gone. Write `settled:` into the record and
-   clean up. See "Cleanup".
-2. **Approved.** `reviewDecision` is `APPROVED`. Write `settled: approved <time> on <sha>` into the
-   record once, keep the worktree and the Space, and report one line. When `reviewDecision` is not
-   `APPROVED` but the record says `settled: approved`, a push dismissed the approval: remove the
-   `settled:` line and go on to case 3.
-3. **The repo's hold label is on.** `hold_label` in `~/.config/ghpoll/config.toml` names it
-   (default `on hold`). It means the author or the team parked the PR. Record the label once and
-   do nothing else. When the label comes off, the next tick carries on normally.
-4. **`new` or `pushed` is in the events, or `headRefOid` is not the newest `revisions` entry.**
-   Fetch, and when `git status --porcelain` is empty, `git reset --hard <headRefOid>` so the
-   worktree stays on the PR head. When an earlier review exists, run "Re-review after a push" in the `pr-review` skill.
-   Review the head when it is new work. See "Review and posting".
-   A newest entry marked `mode: diff-only` came from an older draft review that read only the
-   diff. When the PR is no longer a draft, review its head in full once, reading that entry first,
-   even when the SHA matches. The full review adds an entry without `mode`, so the rule stops
-   applying by itself.
-5. **`activity` is in the events, or `updatedAt` is newer than `activity_seen`.** See "Someone
-   replied without pushing". A push and a reply in the same tick run 4 then 5: the review does not
-   cover the reply.
-6. **Nothing above applied.** The event was informational. Report one line and stop.
+1. **Merged, closed, or gone**: `state` is not `OPEN`, events say `gone`, or the PR lookup reports
+   not found. Write `settled:` in the record and run [Cleanup](#cleanup).
+1. **Approved**: `reviewDecision` is `APPROVED`. Write `settled: approved <time> on <sha>` once,
+   keep the worktree and Space, and print one line. If `reviewDecision` is not `APPROVED` while the
+   record has `settled: approved`, a push dismissed it: remove `settled:` and continue to case 3.
+1. **Hold label active**: the label named by `hold_label` in `~/.config/ghpoll/config.toml`
+   (default `on hold`) is present. Record it once and stop.
+1. **New commits or draft upgrade**: `new` or `pushed` is in events, or `headRefOid` differs from
+   the newest `revisions` entry. Run `git fetch`, and when `git status --porcelain` is empty, run
+   `git reset --hard <headRefOid>`. If an earlier review exists, run "Re-review after a push" in
+   `pr-review`. Review new work under [Review and posting](#review-and-posting). Also run one full
+   review when the newest entry has `mode: diff-only` and the PR leaves draft, even if the SHA
+   matches.
+1. **Activity**: `activity` is in events, or `updatedAt` is newer than `activity_seen`. Handle under
+   [Someone replied without pushing](#someone-replied-without-pushing). Run case 4 then case 5 when
+   both occur in one tick.
+1. **No action**: print one informational line and stop.
 
-End every tick with one block in the pane. A tick where nothing changed prints one line. A tick
-that reviewed a revision, or that asks for my verdict, prints the review summary, in this order:
+### End-of-tick block
 
-1. The assessment and the blocker and nit counts, then the PR URL on its own line.
-2. What changed since the last revision: a rebase with no code change, or what the push changed.
-3. What the PR does, in two or three lines.
-4. The requirement check: each acceptance criterion and its result.
-5. The findings, one line each with its link, or "none".
-6. What I let pass, and why. This lists only items checked and judged not a problem. An earlier
-   bug, an unprobed claim or an open question is a finding, so it goes in item 5.
-7. What I did not verify, such as CI that is still running or tests not run locally.
+Print one line when nothing changed. After any review or verdict request, print the summary in this
+exact order:
 
-The **assessment** is this session's reading of the revision: `clean`, `clean, 2 nits` or
-`blocked, 1 blocker`. The **verdict** is mine: approve, request changes, or wait. The pane reports
-the assessment and puts the verdict to me as a question.
+1. Assessment (`clean`, `clean, 2 nits`, or `blocked, 1 blocker`) and counts, then the full PR URL
+   on its own line with no trailing punctuation.
+1. What changed since the last revision (no-op rebase or push changes).
+1. What the PR does (two or three lines).
+1. Requirement check (each acceptance criterion and result).
+1. Findings (one line each with link, or `none`).
+1. Items checked and judged clean (never put bugs, unprobed claims, or open questions here).
+1. Items not checked (running CI, tests skipped locally).
 
-A count alone gives me nothing to decide on. Without the summary, I cannot approve. A tick that
-pings carries the summary inside the question as well, as "Notify me" describes.
-
-When the block asks for my verdict, it carries the PR's full URL on its own line, with no
-punctuation after it, so I can open it from the pane. This covers a revision that comes back with
-no blockers. `#<n>` alone is not a link.
-
-**An approval pauses the watch.** When I tell this pane to approve, submit the approval and write
-`settled: approved <time> on <sha>` into the record in the same turn. When someone else approves,
-the next tick sees `reviewDecision: APPROVED` and records it the same way. Keep the worktree and
-the Space. The repo dismisses an approval on a push, and ghpoll keeps ticking an approved PR, so
-the next push comes back here as a re-review. Clean up only on a merge, a close or a PR that is
-gone.
+The **assessment** is this session's reading. The **verdict** (approve, request changes, wait)
+belongs to the user.
 
 ## Records
 
-Write every review to one file per PR, `$ROOT/.reviews/pr-<n>.md`, beside `.beans/` at the
-shared clone root. It resolves from inside any worktree, and it sits outside all of them, so git
-never sees it. Create the directory when it is missing.
-
-The file holds every revision I have reviewed, newest first, so it opens on the latest:
+Store all revisions for PR `<n>` in `$ROOT/.reviews/pr-<n>.md` (create `.reviews/` if missing),
+newest revision first:
 
 ```markdown
 ---
 pr: 12345
 url: https://github.com/OWNER/REPO/pull/12345
-settled:                      # how the PR ended; absent while it is open
+settled:                      # how the PR ended; absent while open
 revisions:
   - sha: 03072dcd555a718d69cde2bea4836462c6e93eb3
     reviewed: 2026-09-10T13:22:00Z
     activity_seen: 2026-09-10T13:22:00Z
-    notified:                 # the sha or comment id already pinged, if any
+    notified:                 # sha or comment id already pinged, if any
     mode:                     # diff-only when that pass read only the diff
     assessment: clean, 3 nits
     blockers: 0
@@ -125,110 +92,55 @@ The finding, and the evidence that made it real.
 
 ### Verified clean
 
-What I checked that came back fine: the URL parity, the missed consumer that wasn't, the behaviour
-unchanged after the push.
+Items checked clean (suffix with `(agent)` when a subagent checked them).
 ```
 
-- **Dedupe on the `revisions` list.** A head that already appears there is reviewed. A new push
-  adds a SHA rather than a file, and so does a rebase that carries the assessment forward. Record a
-  clean review too. It posts nothing to GitHub, so this file is the only thing that stops it being
-  redone on every tick.
-- **Append, never restart.** A re-review opens on what the last one concluded and checked clean,
-  and reads the new revision against that. Say in the new section what changed since the revision
-  below it.
-- **Write the findings in full.** The pane scrolls away, and the posted comments carry only what
-  is about the code. The reasoning behind an assessment and everything that checked out fine live
-  nowhere else.
-- `blockers` is per revision, so "waiting on me" is computable rather than parsed out of prose.
-- `settled:` in the frontmatter records how the PR ended: an approval, a merge, a close, or the PR
-  disappearing. A push that dismisses the approval removes `settled: approved`.
-- **Mark who checked each "Verified clean" item.** Suffix an item with `(agent)` when a subagent
-  ran it and you did not read the evidence yourself. A re-review carries an `(agent)` item forward
-  only after you check that its evidence still holds at the new head.
+- **Dedupe on `revisions`**: any listed SHA counts as reviewed, including clean reviews and no-op
+  rebases.
+- **Append, never restart**: open each re-review from the prior conclusion and note what changed.
+- **Record full reasoning**: store findings, evidence, and checked-clean items here because pane
+  scrollback disappears. Keep numeric `blockers` per revision.
+- **Tag `(agent)` items**: a re-review carries an `(agent)` item forward only after you re-check its
+  evidence at the new head.
 
 ## Review and posting
 
-Use the `pr-review` skill. It carries the review: the full patch, prior threads, missed consumers,
-the project's documented rules, behaviour changes and probes.
+Run the `pr-review` skill with two overrides: skip worktree checkout/cleanup (this session owns the
+worktree), and post findings immediately without waiting for permission.
 
-**Load the `pr-comment` skill with the Skill tool before every post**, approval bodies included.
-Copy its attribution prefix exactly as written; the skill is the only source of that format. It
-also carries the secret scan and the return-URL check.
-
-Two of `pr-review`'s steps are overridden here:
-
-- **The worktree already exists.** It is this session's cwd. Skip the checkout step. Do not remove
-  the worktree at the end.
-- **Posting is pre-authorized.** The skill's "wait for the user to ask" step does not apply. Post
-  findings as soon as the review is done.
-
-**The review is done when the record has a result for each checklist item.** Write one line per
-applicable item of the `pr-review` "Finding categories checklist" into the record. Write the
-assessment only after the last line.
-
-**Check the test setup before the first test run.** A `wt switch pr:N` worktree may have no reachable test
-database. Probe it once, with the command in the project's rules. When it fails, read the PR's CI
-results instead, and record the tests as not run locally.
-
-**Repo rules.** If `$ROOT/.reviews/rules.md` exists, read it before reviewing. It holds that
-repo's rules. Do not put them in this skill.
-
-**Findings get posted.** Post every comment in one review, as `pr-review` Step 11 describes: one
-`comments[]` array, one notification. Blocking findings state problem, impact and fix. Nits carry
-the `Nit (non-blocking):` prefix.
-
-**Posted comments consume review requests.** GitHub silently removes a team's request when one of
-its members posts any review, including comments only. The PR then leaves the team's queue with no
-verdict. Before you post, record `gh pr view <n> --json reviewRequests`. After you post, restore
-each team that is gone:
-`gh api -X POST repos/{owner}/{repo}/pulls/<n>/requested_reviewers -f 'team_reviewers[]=<slug>'`.
-
-**Unslop the literal string, not an earlier draft.** Running the skill once in a turn does not
-clean text drafted later in the same turn. Re-read the exact body going into the `gh api` or
-`gh pr comment` call immediately before the call. Look for em-dash chains, colon-as-connector,
-dense parentheticals and "here's what I did" framing.
-
-**A review given in chat gets answered in chat.** An internal review, an agent's findings, notes I
-relay: none of that goes onto the PR. The test is whether a PR reader can tell what the comment
-responds to. If the thing being answered is not on the PR, the answer does not belong there.
-Replying to genuine GitHub review threads stays fine.
-
-**Never submit a review verdict. That is mine.** No `--approve` or `--request-changes` on your own
-judgment, and no `gh pr review` at all except the approval I ask for below, including the
-`request_changes` event `pr-review` suggests for a blocking finding. Post individual comments
-through the comments API only. Do not tell the author the PR is approved, ready to merge, or
-blocked. Do not ask me to approve it in the PR itself. This holds even when the review is clean and
-even when every finding is a nit.
-
-**When I do say "approve", that approval carries a body.** Two or three sentences giving the
-verdict's basis: what the review turned up, or that it was clean and what the review checked. On a
-re-review after fixes, say what was addressed. The full
-reasoning lives in the record, which nobody but me can read, so an empty approval throws it away
-for everyone else. The rule that a clean review posts no comments governs the comment stream, not
-the approval body. Keep the body short and unslop it like any other posted text. Then follow "An
-approval ends the watch" above.
-
-**Pin the approval to the reviewed SHA.** Read `headRefOid` first. When it differs from the newest
-reviewed SHA, review the new commits and tell me before you approve. Then approve through the
-reviews API with that SHA:
+- **Repo rules**: if `$ROOT/.reviews/rules.md` exists, read it first.
+- **Test DB probe**: probe the test setup once using the repo's command. If unreachable, read CI
+  results instead and record tests as not run locally.
+- **Completion bar**: write one line per applicable item of `pr-review` "Finding categories
+  checklist" into the record before writing the assessment.
+- **Before every post (approvals included)**: load `pr-comment` via the Skill tool for the exact
+  attribution prefix, secret scan, and returned-URL check. Re-run `unslop` on the exact literal
+  string right before `gh api` or `gh pr comment`.
+- **Post findings in one review**: follow `pr-review` Step 11 (`comments[]` array, `event: "COMMENT"`). Blocking comments state problem, impact, and fix. Nits start with
+  `Nit (non-blocking):`.
+- **Restore team review requests**: posting any review removes a team's request. Record
+  `gh pr view <n> --json reviewRequests` before posting, then restore missing teams with
+  `gh api -X POST repos/{owner}/{repo}/pulls/<n>/requested_reviewers -f 'team_reviewers[]=<slug>'`.
+- **Keep chat feedback in chat**: never post replies to internal chat reviews or relayed notes onto
+  the PR. Only reply to real GitHub threads.
+- **Never submit a verdict on your own**: never run `--approve`, `--request-changes`, `gh pr review`, or `event: "REQUEST_CHANGES"`. Never claim approval, readiness, or a block to the author,
+  and never ask for approval on GitHub.
+- **User-directed approval**: when the user tells you to approve, check `headRefOid` first (if it
+  moved, review new commits and report before approving). Write a short 2–3 sentence unslopped body
+  explaining the basis (clean checks or addressed fixes). Submit pinned to the reviewed SHA and
+  record `settled: approved <time> on <sha>`, keeping the worktree and Space so future pushes
+  re-trigger review:
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/<n>/reviews \
   -f commit_id=<reviewed sha> -f event=APPROVE -f body="<body>"
 ```
 
-`gh pr review --approve` approves the live head. A push that lands while my verdict is pending then
-gets an approval for code nobody read.
-
 ## Someone replied without pushing
 
-An author who answers a finding without changing a line leaves the SHA alone, so the dedupe skips
-the review, and that is right: there is no new code to read. But a reply to a blocking finding is
-the single most stallable thing in this whole watch. It is waiting on me, and nothing else surfaces
-it. **Report the substance, notify per "Notify me", never re-review.**
-
-The watermark is `activity_seen` on the newest revision entry, falling back to `reviewed` when
-absent. When `updatedAt` is newer, classify what changed:
+Compare `updatedAt` against `activity_seen` on the newest revision (falling back to `reviewed`).
+When newer, inspect activity (also check timeline if `updatedAt` looks stale, since events like
+`auto_merge_enabled` do not bump it):
 
 ```bash
 gh api repos/{owner}/{repo}/issues/<n>/timeline --paginate --jq '.[]|[.created_at // .submitted_at // "",.event,(.actor.login // .user.login // "")]|@tsv'
@@ -236,70 +148,46 @@ gh api repos/{owner}/{repo}/pulls/<n>/comments --paginate --jq '.[]|{id,created_
 gh api repos/{owner}/{repo}/issues/<n>/comments --paginate --jq '.[]|[.created_at,.user.login]|@tsv'
 ```
 
-`updatedAt` does not move for every event (`auto_merge_enabled` leaves it alone), so read the
-timeline rather than trusting the timestamp when something looks stale.
-
-What counts: **a reply on a thread I authored, or a re-request.** Someone answering my finding is
-waiting on me in a way an unrelated comment is not. Ignore my own comments and bots: a bot
-re-posting its status is not a person waiting. A bot account has `type: "Bot"` in the API payload,
-or a `[bot]` suffix on its login.
-
-Quote the reply's substance in the pane, not just that it exists. The decision it asks for is
-usually in the text. Then stop. I read it in the pane and tell this session what to say back; the
-`pr-review` rules on replies forbid answering on my behalf.
-
-**Write `activity_seen` back on every tick that looked, always.** Without it the comparison is
-against `reviewed`, which never moves, so a single reply fires on every tick for as long as the PR
-stays open. Copy the value from the `updatedAt` you read, never from the clock: a clock time
-later than a reply hides that reply. A push tick that writes a new revision runs this section too
-when `updatedAt` is newer than the previous `activity_seen`.
+- **What counts**: a human reply on a thread you authored, or a review re-request. Ignore your own
+  comments and bots (`type: "Bot"` or `[bot]` login suffix).
+- **Action**: quote the reply's substance in the pane, notify under [Notify me](#notify-me), and
+  stop. Never re-review without new code and never answer on the user's behalf (`pr-review` reply
+  rule).
+- **Update watermark**: always write the `updatedAt` value you read (never wall-clock time) back to
+  `activity_seen` on every tick that checked activity.
 
 ## Notify me
 
-A tick runs while I am in another window, so an event that wants something from me has to reach
-me. One notification per event, never two for the same one.
+Send at most one ping per event, deduped via `notified: <sha or comment id>` on the revision entry.
+Ping on three events:
 
-Ping when the newest revision has `blockers: 0`, because the PR then waits on my verdict. A
-blocked PR waits on its author, so a reply on it goes in the pane only. The one exception is a
-reply on the blocking thread itself: the author disputes or answers the blocker, and that waits on
-me. Events that ping:
+- A review completes with `blockers: 0` (waits on user verdict).
+- A reply on your thread or a re-request arrives while `blockers: 0`.
+- A reply arrives on a blocking thread (any blocker count).
 
-- **A review that comes back with no blockers.** It now waits on my verdict.
-- **A reply on my thread, or a re-request,** while the newest revision has no blockers.
-- **A reply on a blocking thread**, whatever the blocker count.
+Replies on non-blocking threads of a blocked PR go in the pane only.
 
-Dedupe through the record: write `notified: <sha or comment id>` on the revision entry when the
-ping goes out, and send nothing for an event already listed there. Ping last in the tick, in this
-order: post the comments, write the record, print the end-of-tick block, then ask. The ping never
-promises findings that are not up yet.
+**Order at end of tick**: post comments, write the record, print the end-of-tick block, write
+`notified:`, then ask the blocking question (`AskUserQuestion` in Claude). Do not trigger desktop
+notifications. Herdr's `blocked` terminal state is the notification channel.
 
-The question box hides every line printed in the same turn, the end-of-tick block included. Put
-the full end-of-tick summary, the PR URL included, in the question text itself, after the one-line
-event. Never set `preview` on an option: an agent that opens a preview dialog can report `done`, not
-`blocked`, so ghpoll types into it and its Enter picks an option.
-
-When I answer a question with "clarify" instead of an option, the summary did not reach me. Print
-the full summary as plain text, then ask what I want to clarify. Do not ask the same question
-again.
-
-To ping, write `notified:` first, then ask me a question and wait. That is the only ping this
-session sends: a `blocked` terminal is how the app marks that a session waits on the person, and
-it is the one channel that behaves the same for every agent. The app plays its blocked sound and
-marks the tab; it has no command that raises a desktop notification, so do not build one into this
-step. Use whatever blocking question the harness has (Claude:
-`AskUserQuestion`). Start the question with the event: `#<n> waiting on you: <assessment>, <one line
-on what changed>`. The summary follows it. Offer the verdict the event asks for, such as approve or leave it, and act on the answer
-in the same turn. Put the option that changes nothing first. A stray Enter selects the first
-option, so it must never post to GitHub.
+- **Question format**: start with `#<n> waiting on you: <assessment>, <one line on what changed>`,
+  then include the full end-of-tick summary and PR URL inside the question text (the prompt UI
+  hides earlier pane output).
+- **Option safety**: put the no-op option first (a stray Enter selects option 1 and must never post
+  to GitHub). Never set `preview` on an option (preview dialogs can exit `blocked` state so `ghpoll`
+  types into them).
+- **Clarify fallback**: if the user answers `clarify`, print the full summary as plain text and ask
+  what to clarify instead of repeating the same question.
+- Act on the user's chosen verdict in the same turn.
 
 ## Cleanup
 
-On a merge, a close or a PR that is gone, after `settled:` is in the record. An approval keeps the
-worktree, because a push dismisses it:
+Run only on merge, close, or gone (never on approval), after writing `settled:` into the record:
 
-1. `cd "$ROOT"` first: step 3 deletes the directory this session runs in, and a shell that sits in
-   a deleted directory cannot run the rest of the cleanup.
-2. Resolve the checkout and check it is clean:
+1. Run `cd "$ROOT"` first so the shell leaves the worktree before step 3 removes it.
+
+1. Resolve the checkout and check for uncommitted work:
 
    ```bash
    BRANCH=$(gh pr view <n> --json headRefName -q .headRefName)
@@ -308,11 +196,10 @@ worktree, because a push dismisses it:
    git -C "$WT" status --porcelain
    ```
 
-   If the status lists anything, keep the worktree and the Space, say so in the pane, and stop there.
-3. Prune the worktree and its branch from the clone root: `wt remove "$BRANCH" -y -D`. It runs the
-   repo's `[pre-remove]` hooks, the counterpart of the `[pre-start]` hooks that `wt switch pr:N`
-   ran when it made this worktree. Raw git skips those hooks.
-4. Close the space last, because closing it ends this session. Find it by its folder in
-   `herdr-app ls` (it equals `$WT`), and close it with
-   `herdr-app do space.close --id <space_id> --confirmed true`. The close ends terminals only; the
-   checkout went with `wt remove` in step 3.
+   If status is non-empty, keep the worktree and Space, report it in the pane, and stop.
+
+1. Remove the worktree and branch from `$ROOT`: `wt remove "$BRANCH" -y -D` (runs `[pre-remove]`
+   hooks).
+
+1. Close the Space last (this ends the session): locate its id by matching folder `$WT` in
+   `herdr-app ls`, then run `herdr-app do space.close --id <space_id> --confirmed true`.

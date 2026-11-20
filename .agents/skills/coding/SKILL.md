@@ -1,49 +1,35 @@
----
-name: coding
-description: Coding discipline. Load before writing, editing, or reviewing code, and before planning a change.
----
+______________________________________________________________________
+
+## name: coding description: Coding discipline. Load before writing, editing, or reviewing code, and before planning a change.
 
 # Coding
 
-How the work runs. What the finished code must be is the `codestyle` skill — load it with this
-one; a failing codestyle rule is a failing change regardless of process.
+This skill defines how the work runs. Load `codestyle` alongside it for the bar on finished code.
+A failing `codestyle` rule fails the change regardless of process.
 
-## Think
+## Think and sequence
 
-- State your assumptions and restate the intent. Turn vague instructions into verifiable success
-  criteria.
-- Ask when unsure rather than guessing.
+- State assumptions, restate intent, and turn vague requests into checkable criteria. Ask when
+  unsure instead of guessing.
+- Get the data shape right before writing logic.
+- Split work into small, checkable units. Finish and check one unit before starting the next.
+- Temporary red states are fine when planned and reversible. For example, change a signature first,
+  let the type checker list broken callers, fix each one, and undo with `git checkout` if needed.
 
-## Order the work
+## Test first and fix causes
 
-- Get the data shape right before you write the logic.
-- Sequence work into verifiable units: finish one small unit, check it, then start the next.
-- Aim at the end state you can check. A break in the middle is allowed when you planned it and
-  can undo it — e.g. change a function's signature first, let the type checker list every broken
-  caller, and fix them one by one; the build stays red until the last caller, and `git checkout`
-  undoes it.
+- Write a failing test before changing code, watch it fail for the expected reason, then write the
+  smallest fix that makes it pass.
+- If an honest test is impractical, say so instead of writing a weak one.
+- For test-only edits, the suite passing with the failure or warning gone is the check.
+- Reproduce a bug, then fix its root cause. Grep every caller before editing a shared function, and
+  fix the cause once in the function rather than in each caller.
 
-## Test first
+## Gates and discipline
 
-- Write the failing test before you change the code. See it fail for the reason you expect. Make
-  the smallest change that makes it pass.
-- If an honest test is impractical, say so rather than write a bad one.
-- For a change to test code only, the suite passing with the warning or failure gone is the
-  check.
-
-## Fix causes
-
-- Reproduce it, then fix the cause. Before you edit a shared function, grep its callers. Fix it
-  once in the function, not in each caller.
-
-## Meet the project's gates
-
-- Treat the project's existing gates as the bar for done: coverage floors, complexity caps,
-  duplication checks. If a gate is missing, suggest it to the user; do not add one.
-
-## Discipline
-
-- Before adding complexity for a speculative race or security edge case, explain the concrete
-  failure mode, likelihood, and cost to the user and get their buy-in.
-- Run the project's tests and lint before reporting done. Stop any background servers or temp
-  files you started.
+- Meet the repo's existing gates (coverage floors, complexity caps, duplication checks). Suggest a
+  missing gate to the user instead of adding one unasked.
+- Before adding complexity for a speculative race or security edge case, present the failure mode,
+  likelihood, and cost to the user for approval.
+- Run the repo's tests and lint before reporting done. Stop background servers and remove temp
+  files you created.

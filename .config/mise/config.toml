@@ -32,6 +32,8 @@ sonarqube-cli = "latest"
 k6 = "latest"
 herdr = "latest"
 pulumi = "latest"
+antigravity-cli = "latest"
+"pipx:mdformat" = "latest"
 
 [shell_alias]
 pc = "process-compose"

@@ -1,22 +1,12 @@
----
-name: pr-comment
-description: >
-  Standard for every agent-authored comment left on GitHub on the user's behalf: attribution
-  callout, secret scan, post-then-verify. Use before posting any PR comment, review comment,
-  reply, resolve or dismiss explanation — whenever a comment leaves GitHub through this agent.
----
+______________________________________________________________________
 
-# PR Comment
+## name: pr-comment description: > Standard for agent-authored GitHub comments: attribution callout, secret scan, and delivery check. Use before posting any PR comment, review comment, approval body, reply, or resolve note.
 
-Govern the format and delivery of comments this agent posts to GitHub. The review content
-itself — findings, verdicts, style — lives in the calling skill ([`pr-review`](../pr-review/SKILL.md),
-[`pr-reviewer`](../pr-reviewer/SKILL.md), [`babysit-pr`](../babysit-pr/SKILL.md)) and its
-`asd-ste100` + `unslop` prose rules. This skill covers what those skills do not: who the comment
-says it is from, and whether it landed.
+# PR comment
 
 ## Attribution
 
-Prefix every agent-authored comment with this callout:
+Prefix every agent-authored comment with this callout verbatim:
 
 ```md
 > 🤖 **Responding on behalf of <user>**
@@ -24,33 +14,24 @@ Prefix every agent-authored comment with this callout:
 Actual comment starts here.
 ```
 
-- `<user>` is the user's GitHub login, from `gh api user --jq .login`.
-- The prefix names the user only. Copy it as written, with no model or tool name.
-- Keep the attribution inside the note and the actual reply outside it. The context line starts
-  with the robot emoji. Add no horizontal rule, Setext underline, heading, signature footer, or a
-  second attribution anywhere in the comment.
-
-### Where attribution applies
-
-| Applies | Does not apply |
-| --- | --- |
-| Top-level PR comments | PR descriptions |
-| Inline review comments | Commit messages |
-| Replies to bots or reviewers | Text the user asked to post verbatim |
-| Explanations used before resolving or dismissing feedback | |
+- `<user>` is the user's GitHub login from `gh api user --jq .login`.
+- Name the user only, with no model or tool name.
+- Keep the attribution inside the quote block and the reply outside it.
+- Add no horizontal rule, Setext underline, heading, signature footer, or second attribution.
+- **Applies to.** Top-level PR comments, inline review comments, approval bodies, replies to bots or
+  reviewers, and resolve or dismiss notes.
+- **Skip on.** PR descriptions, commit messages, and text the user asked to post verbatim.
 
 ## Before posting
 
-- **Scan the whole comment for secrets and private details** — quoted text and attachments
-  included. This expands the `pr-review` rule beyond customer data: credentials, tokens,
-  internal hostnames, anything that must not be public. Anything found: redact, do not post.
-- The user gave no instruction to post this text verbatim; the attribution applies.
+- **Scan for secrets and private details.** Check the whole comment, including quoted text and
+  attachments, for credentials, tokens, internal hostnames, customer data, and anything private.
+  Redact anything you find, or do not post.
+- **Preview the markdown.** Check that quoting and blank lines match the template above.
 
 ## After posting
 
-- **Verify GitHub returned the comment or review URL.** A silent failure means no comment
-  exists. The POST response's `html_url` is the evidence; no URL, no comment — retry or report
-  before going on.
-- **Post before resolve.** Resolve, dismiss, or reply linking the comment only after the response
-  is confirmed on GitHub (`babysit-pr` section 5 encodes the same ordering for its push).
-- Preview the final markdown first so quoting and blank lines render as shown.
+- **Check the response URL.** GitHub must return `html_url` in the POST response. A silent failure
+  means no comment exists, so retry or report before continuing.
+- **Post before resolving.** Resolve, dismiss, or link the comment only after GitHub returns its
+  URL.

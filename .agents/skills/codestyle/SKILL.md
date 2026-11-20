@@ -1,53 +1,42 @@
----
-name: codestyle
-description: The code-quality bar — the product rules that coding writes to and pr-review judges against.
----
+______________________________________________________________________
+
+## name: codestyle description: The code-quality bar for finished code. Coding writes to these rules and pr-review judges against them.
 
 # Codestyle
 
-What finished code must be. Every rule here is visible in a diff, so a reviewer can check it and
-an author can be held to it. Process — how the work runs — lives in the `coding` skill.
+Rules for finished code that a reviewer can check in a diff. Process lives in the `coding` skill.
 
-## Simplicity
+## Simplicity and scope
 
-- Ship the smallest edit that solves the problem. No abstractions nobody asked for.
+- Ship the smallest edit that solves the problem. Avoid unrequested abstractions.
 - Subtract before you add.
-- One decision lives in one place.
+- Keep one decision in one place.
+- Default to surgical changes. Touch only code the request covers so every changed line traces back
+  to it.
+- When a new requirement (a second caller, format, or source) makes the old design lie, redesign
+  from first principles. Build what day one should have had, and deliver it in pieces.
 
-## Scope
+## Boundaries and types
 
-- Default to surgical changes: touch only code the request covers; every changed line traces
-  back to what was asked.
-- When the new requirement forces the old design to misrepresent itself — a second caller, a
-  second format, a second source — redesign from first principles: build what you would have
-  built from day one, and deliver it in pieces.
-
-## Boundaries
-
-- Check the data where it enters; inside, trust it. Keep business logic in pure functions.
-- Make the illegal value impossible to write. Parse outside data once, where it comes in. Do not
-  silence the compiler.
-- Make operations idempotent: running twice, or resuming after a crash halfway through, ends in
-  the same state.
-- If two workers do not need the same mutable thing, give each its own. If they do, allow one
-  writer and enforce that in the structure.
-
-## Types
-
-- Rely on type inference; annotate only when necessary for exports or clarity.
-- Prefer `unknown` or a generic over `any`/`Any`. When `any` is unavoidable, state why in one
-  line.
+- Check data where it enters, then trust it inside. Keep business logic in pure functions.
+- Parse outside data once at the boundary so illegal values cannot compile. Do not silence the
+  compiler.
+- Make operations idempotent. Running twice or resuming after a crash ends in the same state.
+- Give workers separate state when they do not need shared mutable data. Otherwise enforce one
+  writer in the structure.
+- Rely on type inference. Annotate only when exports or clarity require it.
+- Prefer `unknown` or a generic over `any`/`Any`. When `any` is unavoidable, state why in one line.
 
 ## Tests
 
-- The test calls the code the way its user does and checks the result that user would see. If the
-  test would still pass when every function returned nothing, throw it out.
-- A guard that only hides the crash is not a fix.
+- Call the code the way its user does and check the result that user sees. Delete any test that
+  still passes if every function returns nothing.
+- A guard that only hides a crash is not a fix.
 
-## Structure of a function
+## Function structure
 
-- Inline single-use logic at the call site. Extract a helper only when it is reused, hides a
-  genuinely complex boundary, or has a clear independent name that improves the caller.
-- Docstrings carry the reasoning: why the function exists, design choices, ordering constraints,
-  what it mirrors. Inline comments stay rare: one short line tied to one surprising line. Tests
-  follow the same rule.
+- Inline single-use logic at the call site. Extract a helper only when multiple callers share it, it
+  hides a complex boundary, or a clear name improves the caller.
+- Put reasoning in docstrings (why the function exists, design choices, ordering constraints, what
+  it mirrors). Keep inline comments rare: one short line tied to one surprising line. Apply the same
+  rule to tests.

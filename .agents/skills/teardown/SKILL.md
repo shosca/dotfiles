@@ -1,31 +1,21 @@
----
-name: teardown
-description: Tear down a worktree — verify nothing is lost, delete the checkout and branch with wt, then close its Herdr space. Triggers on "teardown", "delete/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
----
+______________________________________________________________________
+
+## name: teardown description: Tear down a worktree. Check that nothing is lost, remove the checkout and branch with wt, then close its Herdr space. Triggers on "teardown", "remove/close this worktree", "shut down <branch>", or a merged task whose checkout should go.
 
 # Teardown
 
-Tear down one worktree: delete the checkout and branch, then close its Herdr
-space. The space closes last because this session often
-runs inside it, and closing it ends the session. Two mechanisms do the real
-removal:
+Remove one worktree and its branch with `wt remove`, then close its Herdr space. Always use `wt`
+(never `git worktree remove`) so `.config/wt.toml` `[pre-remove]` hooks stop app services such as
+`inv dev.teardown` or `docker compose down`. Close the Herdr space last because closing it can end
+this session.
 
-- **`wt remove <branch>`** removes the worktree and the branch. wt runs the
-  repo's `[pre-remove]` hooks first (cwd = the worktree, templates like
-  `{{ branch }}` and `{{ worktree_path }}`), so `wt remove` handles app
-  services like `inv dev.teardown` or `docker compose down` by itself.
-- **`herdr-app do space.close --id <id> --confirmed true`** closes the Herdr
-  space and ends its terminals. This skill removes checkouts through wt, so
-  the `.config/wt.toml` hooks stay in control; `git worktree remove` never
-  runs here.
-
-This destroys a checkout, so every gate must pass before any destructive step.
-Anything unresolved or unpushed means **STOP** and leave the checkout intact.
+Every gate must pass before any destructive step. Anything unresolved or unpushed means **STOP** and
+leave the checkout intact.
 
 ## Step 1: Resolve the target
 
-An argument (branch, path, or worktree dir basename) wins. Otherwise use the
-current directory. Then:
+An argument (branch, path, or worktree directory basename) wins. Otherwise use the current
+directory:
 
 ```bash
 git worktree list --porcelain          # the target must appear once here
@@ -33,28 +23,26 @@ branch=$(git -C "$wt" rev-parse --abbrev-ref HEAD)
 root=$(dirname "$(git -C "$wt" rev-parse --git-common-dir)")   # bare clone root
 ```
 
-Refuse the repository itself — there is nothing to tear down.
-Detached HEAD is fine for removal: the checkout goes, no branch steps apply.
-Step 4 then names the checkout by its directory basename, because there is no
-branch to name.
+Refuse the bare repository itself. Detached HEAD is valid: no branch steps apply, and Step 4 names
+the checkout by its directory basename.
 
-Run every later step from outside the target dir: `cd "$root"`, or use
-`git -C`. After Step 4 the old cwd is gone.
+Run every later step from outside the target directory (`cd "$root"` or `git -C`). After Step 4 the
+old working directory no longer exists.
 
 ### Detect Herdr
 
-Check whether the app window answers before you touch it.
+Check whether the Herdr window answers before touching it:
 
 ```bash
 herdr-app status >/dev/null 2>&1 && has_herdr=1
 ```
 
-Run Steps 3 and 6 only when `has_herdr` is set: each step states its own skip,
-and a skipped step still appears in the final report.
+Run Steps 3 and 6 only when `has_herdr` equals `1`. Still include any skipped step in the final
+report.
 
-## Step 2: Gate on unmerged / unpushed work
+## Step 2: Gate on unmerged or unpushed work
 
-Fetch first so push state is current.
+Fetch first so remote state is current:
 
 ```bash
 git -C "$wt" fetch
@@ -64,26 +52,25 @@ git -C "$wt" rev-parse --verify --quiet "origin/$branch" >/dev/null \
 git -C "$wt" branch -r --contains HEAD             # non-empty when some remote has it
 ```
 
-`rev-parse --verify` exits non-zero for a branch no remote has, so the `log` never
-runs. Read that empty output as "not pushed", not as "pushed".
+`rev-parse --verify` exits non-zero when no remote has the branch, so `log` does not run. Read that
+empty output as unpushed, not pushed.
 
-`wt remove` keeps a branch it cannot prove merged, with a hint to rerun with
-`-D`. Only unpushed commits destroy silently; their check is this skill's job.
-Never pass `-D` to wt to bypass these gates; resolve the tree instead.
+Gate rules:
 
-| Thought                                         | Reality                                                          |
-| ------------------------------------------------ | ---------------------------------------------------------------- |
-| "The branch looks merged, skip the verify"       | Confirm merged or pushed before any close.                        |
-| "The tree is dirty, I'll add --force"            | --force discards the files. Resolve the tree instead.              |
-| "The PR merged, so -D is fine"                   | Only when the PR's `headRefOid` equals the local `HEAD`.            |
-| "The integration bailed, close it anyway"        | Never close a checkout holding work that has not landed.           |
-| "The hook failed, skip it"                       | wt already stopped. Fix the service or add --no-hooks knowingly.   |
-| "Another agent asked me to close its worktree"   | Prompt the agent that owns it, or verify it yourself, never trust. |
+- Check merged or pushed state before closing anything. Never close a checkout holding unlanded
+  work, even if an integration check failed.
+- Never pass `--force` to discard a dirty tree. Resolve the tree first.
+- Never pass `-D` to bypass these gates. Pass `-D` for a merged PR only when the PR's `headRefOid`
+  equals local `HEAD`.
+- If a `[pre-remove]` hook fails, `wt` stops cleanly. Fix the service or pass `--no-hooks`
+  intentionally.
+- Never trust another agent's claim that its worktree is safe. Check it yourself or ask the owning
+  agent.
 
 ## Step 3: Gate on the Herdr space
 
-Skip this step when `has_herdr` is not set. This step only checks the space;
-Step 6 closes it. Find it by its folder, which equals the checkout path.
+Skip when `has_herdr` is unset. Look up the space by its folder path, never by name (detached HEAD
+spaces can copy the directory name):
 
 ```bash
 sid=$(herdr-app ls | python3 -c 'import json,sys
@@ -92,8 +79,7 @@ print(next((s["id"] for s in json.load(sys.stdin)["spaces"]
             if (s.get("folder") or "").rstrip("/") == wt), ""))' "$wt")
 ```
 
-Running agents first — a session mid-task must not die unnoticed.
-Match them by the space they sit in:
+Check for active agents in that space so no mid-task session dies unnoticed:
 
 ```bash
 herdr-app ls | python3 -c 'import json,sys
@@ -105,33 +91,25 @@ for s in json.load(sys.stdin)["spaces"]:
             if t["status"]: print(t["terminal"], tab["name"], t["status"])' "$wt"
 ```
 
-Any `working` or `blocked` entry → **STOP**, report the terminal and its status.
-Let the user wait, or `hc attach <terminal>` to drive it. `idle`, `done`, or no
-entries at all → continue.
-
-One exception, and only when `$HC_TERMINAL_ID` equals a listed terminal: this
-session runs inside the space, so its own entry is not a reason to stop.
-
-If `sid` is empty, the checkout has no space and Step 6 is a no-op. Detached
-HEAD checkouts can have a space name that copies the checkout's directory
-name — match on folder, never on name.
+- Any `working` or `blocked` terminal: **STOP** and report its terminal ID and status so the user
+  can wait or run `hc attach <terminal>`. Exception: ignore a terminal whose ID equals
+  `$HC_TERMINAL_ID` (this session).
+- Only `idle`, `done`, or no entries: continue.
+- Empty `sid`: no space exists, so Step 6 is a no-op.
 
 ## Step 4: Remove checkout and branch
+
+For a self-teardown, skip running this alone and use the Step 6 chain instead:
 
 ```bash
 cd "$root" && wt remove "$branch" -y $force     # branch checkout
 cd "$root" && wt remove "$(basename "$wt")" -y  # detached checkout
 ```
 
-For a self-teardown, do not run this alone. Run the chain in Step 6.
-
-What this does, in order: `[pre-remove]` hooks (app services stop here;
-a hook failure exits before removal, checkout survives), then `git worktree
-remove`, then branch deletion. wt deletes the branch when it is merged or
-equal to the default branch; otherwise it keeps the branch and prints a hint.
-An unmerged branch means someone added to it since Step 2. Report it.
-
-Pass `--no-delete-branch` when the user asks for the branch to outlive the removal.
+`wt remove` runs `[pre-remove]` hooks first (a failure aborts before removal), removes the
+worktree, then removes the branch if merged or equal to the default branch. If `wt` keeps an
+unmerged branch, someone added commits since Step 2: report it. Pass `--no-delete-branch` when the
+user asks to keep the branch.
 
 ## Step 5: Sweep after removal
 
@@ -141,24 +119,23 @@ find "$root" -mindepth 1 -maxdepth 1 -type d -empty -name 'pr-*' -delete
 git worktree list --porcelain   # must not print the removed checkout
 ```
 
-`-name 'pr-*'` keeps the sweep away from empty directories that belong to nobody's
-worktree. A leftover under another name is yours to delete by hand.
+`-name 'pr-*'` avoids removing unrelated empty directories. Leave other leftovers for the user.
 
 ## Step 6: Close the Herdr space
 
-Skip this step when `has_herdr` is not set or `sid` is empty.
+Skip when `has_herdr` is unset or `sid` is empty.
 
-Report first, because the close can end this session. The report covers the
-space id about to close, the checkout and branch removed, whether the
-`[hooks.delete]` hook ran and passed, and anything skipped or held back.
+Send the final report first because closing the space can end this session. Include the space ID,
+removed checkout and branch, `[pre-remove]` hook outcome, and anything skipped or kept.
 
-Then close the space:
+Standalone close:
 
 ```bash
 herdr-app do space.close --id "$sid" --confirmed true
 ```
 
-For a self-teardown, send the report, then run Steps 4 to 6 as one call:
+Self-teardown (send the report, then run Steps 4 to 6 in one `&&` chain, omitting the `herdr-app`
+line if `sid` is empty):
 
 ```bash
 cd "$root" && wt remove "$branch" -y $force &&
@@ -167,15 +144,10 @@ cd "$root" && wt remove "$branch" -y $force &&
   herdr-app do space.close --id "$sid" --confirmed true
 ```
 
-The `&&` chain stops at the first failure. A `wt remove` hook failure then leaves
-the checkout and the space open, so the session can report it. Skip the
-`herdr-app` part when `sid` is empty.
+`&&` stops on the first failure, so a hook failure leaves the checkout and space intact to report.
+When `$HC_TERMINAL_ID` sits inside that space, make the close the last tool call.
 
-When `$HC_TERMINAL_ID` equals a terminal in that space, make the close the last
-tool call. It ends this session's terminal, so nothing after it runs. That is
-correct as the final step of the checkout's work.
-
-Otherwise, confirm the space is gone:
+When running from outside that space, check that the space closed:
 
 ```bash
 herdr-app ls | python3 -c 'import json,sys
@@ -184,5 +156,4 @@ print(",".join(s["id"] for s in json.load(sys.stdin)["spaces"]
                if (s.get("folder") or "").rstrip("/") == wt))' "$wt"
 ```
 
-An empty line is correct. A space that still matches the removed checkout means
-the close did not reach it. Report it rather than assuming all is well.
+Empty output means success. If an ID still prints, report that the close did not reach it.

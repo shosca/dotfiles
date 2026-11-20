@@ -1,26 +1,29 @@
----
-name: herdr
-description: "Control Herdr, the desktop app for coding agents, and its herdr-core terminals. Use only when the user explicitly mentions Herdr or asks to inspect or control spaces, tabs, panes, terminals, or another agent. Do not use merely because a task could benefit from a background terminal, delegation, or parallel work."
----
+______________________________________________________________________
+
+## name: herdr description: "Control Herdr, the desktop app for coding agents, and its herdr-core terminals. Use only when the user explicitly mentions Herdr or asks to inspect or control spaces, tabs, panes, terminals, or another agent. Do not use merely because a task could benefit from a background terminal, delegation, or parallel work."
 
 # Herdr
 
-Herdr has two parts. The app (`herdr-app`) shows spaces, tabs and panes in a window.
-herdr-core (`hc`) runs the terminals and keeps them alive when the window closes.
-An agent reports `idle`, `working`, `done`, `blocked` or `error`; the app shows that state.
+Herdr has two binaries:
 
-## Verify the session
+- `hc` (herdr-core) owns terminal processes (`start`, `read`, `send`, `keys`, `wait`, `get`, `list`,
+  `kill`, `label`) and keeps them alive when the window closes. Every agent is an `hc` terminal, and
+  your own address is `$HC_TERMINAL_ID` (not a pane ID).
+- `herdr-app do` changes what the person sees: spaces, tabs, panes, and focus. Agents report `idle`,
+  `working`, `done`, `blocked`, or `error`. The window shows that state.
+
+## Check the session
 
 ```bash
 test -n "${HC_TERMINAL_ID:-}"   # you run in a core terminal
 herdr-app status                # the window is open
 ```
 
-If the first check fails, say that you are not running in a Herdr terminal and stop.
+If the first check fails, report that you are not running in a Herdr terminal and stop.
 
 ## Learn the current CLI
 
-The installed binaries are the authority. Read their manuals before the first control command:
+Installed binaries are authoritative. Read their manuals before your first control command:
 
 ```bash
 hc --skill          # terminals, agents, statuses, waiting
@@ -29,16 +32,7 @@ herdr-app commands  # every app command with its arguments
 hc <command> --help
 ```
 
-Bare `herdr-app` opens the window. Bare `hc` opens a terminal picker. Use these two
-only when the person asked for that.
-
-## Choose the binary
-
-- `hc` owns processes: start, read, send, keys, wait, get, list, kill, label.
-  Every agent is an hc terminal.
-- `herdr-app do` changes what the person sees: spaces, tabs, panes, focus.
-
-Your own address is `$HC_TERMINAL_ID`, not a pane id.
+Bare `herdr-app` opens the window, and bare `hc` opens a terminal picker. Run them only when asked.
 
 ## Read state
 
@@ -48,7 +42,7 @@ hc ls            # live terminals: cwd, program, name, turn
 hc get <t>       # one terminal's full record, including status
 ```
 
-Take ids from this output. Do not derive them from sidebar order.
+Take IDs from this output. Never derive them from sidebar order.
 
 ## Show something the person asked for
 
@@ -59,8 +53,8 @@ herdr-app do pane.split --direction right --pane <pane-id>
 herdr-app do agent.focus --terminal <t>
 ```
 
-`--argv` starts a program in the person's interactive shell. `--task` sends its first message.
-Name every space and tab you create.
+`--argv` starts a program in the interactive shell. `--task` sends its first message. Name every
+space and tab you create.
 
 ## Work an agent
 
@@ -75,24 +69,24 @@ hc keys <t> esc                           # answer a dialog
 hc interrupt <t>                          # stop its turn, keep the process
 ```
 
-A send is not proof of delivery. Read the screen before you send the same text again.
+A send does not prove delivery. Read the screen before sending the same text again.
 
-## Start a worker the window need not show
+## Hidden workers
 
 ```bash
 hc run --bg --name build cargo build --release
 hc wait build
 ```
 
-`hc run` starts a hidden terminal. Passing `--label herdr.space=<id>` and
-`--label herdr.tab=<id>` makes the app show it.
+`hc run` starts a hidden terminal. Pass `--label herdr.space=<id>` and `--label herdr.tab=<id>` to
+show it in the app.
 
 ## Safety
 
-- Do not stop, signal or restart the app or the core. A closed window does not end terminals.
-- Close only spaces, tabs and terminals you created, and only when the person asked.
-  `space.close` and `tab.close` end their terminals.
-- Pass `--confirmed true` only after the person agreed to end that work.
-- A `blocked` session waits on the person. Read it, then ask; do not type an answer.
-- Do not experiment with pointer or key automation on the person's display.
-- `idle` and `done` mean ready for input. Neither proves the work is finished.
+- Do not stop, signal, or restart the app or core. Closing the window does not end terminals.
+- Close only spaces, tabs, and terminals you created, and only when asked (`space.close` and
+  `tab.close` end their terminals).
+- Pass `--confirmed true` only after the person agrees to end that work.
+- A `blocked` session waits on the person. Read it, then ask. Do not type an answer.
+- Do not automate pointer or key input on the person's screen.
+- `idle` and `done` mean ready for input. Neither proves the agent finished the work.
